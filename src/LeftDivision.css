@@ -1,0 +1,39 @@
+@import "./Globals.css";
+
+
+.LeftDivision {
+    height: 100vh;
+    width: 30vw;
+    min-width: 420px;
+    background-color: var(--main-bg-color);
+}
+
+
+.load_more_button {
+  height: 50px;
+  width: 100%;
+  border: none;
+  outline: none;
+  color: rgb(120,133,161);
+  font-size: large;
+  background-color: var(--main-bg-color);
+}
+
+.load_more_button:active{
+  background-color:#263135;
+}
+
+.ScrollableThreadContainer {
+  margin: 0;
+  height: calc(100% - 35px);
+
+}
+
+
+.SimpleBar2 {
+  height: 100%;
+}
+
+* {
+  border: none;
+}

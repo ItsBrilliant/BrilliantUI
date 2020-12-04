@@ -1,0 +1,20 @@
+@import './Globals.css';
+
+.AddTaskModal{
+    width: auto;
+}
+
+.text_input{
+    border: 2px solid black;
+    color:black;
+    width: 100%;
+    font-size: medium;
+    display: inline-block;
+    margin-bottom: 20px;
+
+}
+
+.text_input[name='email_text']{
+    height: 150px;
+    padding-bottom: 24%;
+}
