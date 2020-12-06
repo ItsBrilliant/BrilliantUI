@@ -2,11 +2,14 @@ import { GroupedThreads } from './GroupedThreads.js';
 import SimpleBar from 'simplebar-react';
 import 'simplebar/dist/simplebar.min.css';
 import Menues from './Menues';
-import { group_by_function, get_sort_function_by_type, filter_by_property } from './utils.js';
+import { group_by_function, get_sort_function_by_type, filter_by_property, create_mail_object } from './utils.js';
 import './LeftDivision.css';
 import { Thread, TIME_KEY, PRIORITY_KEY } from './EmailObjects.js';
 import { Component } from 'react';
 import { person0 } from './RawData.js';
+import axios from 'axios';
+axios.defaults.xsrfCookieName = 'csrftoken'
+axios.defaults.xsrfHeaderName = "X-CSRFTOKEN"
 
 
 export class LeftDivision extends Component {
@@ -85,8 +88,12 @@ function ScrollableThreadContainer(emailThreads, handle_select, selected_thread_
     <SimpleBar className='SimpleBar2'>
       <div>
         {groupings}
-        <button className='load_more_button'>Load more</button>
+        <button className='load_more_button' onClick={load_more}>Load more</button>
       </div>
     </SimpleBar>
   );
+}
+
+function load_more() {
+  console.log("load_more_button clicked");
 }

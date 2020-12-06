@@ -48,7 +48,7 @@ export class CenterDivision extends React.Component {
         const modal = this.state.selected_value == 'Add Task' ?
             <AddTaskModal show={this.state.show_add_task} handle_ok={this.add_task}
                 close={this.reset} /> :
-            <EmailReplyModal show={this.state.show_add_task} handle_ok={this.handle_ok}
+            <EmailReplyModal show={this.state.show_add_task} handle_ok={this.reset}
                 close={this.reset} />
         const emails = this.props.thread.emails.map(
             (email) => <EmailContainer key={email.id} email={email} options_button={options_button} />).reverse();

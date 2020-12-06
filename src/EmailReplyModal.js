@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import './Modal.css';
 import MyModal from './Modal.js'
 import { Fragment } from 'react';
+import { create_mail_object } from './utils';
+import Axios from 'axios';
 
 export class EmailReplyModal extends Component {
     constructor(props) {
@@ -12,9 +14,16 @@ export class EmailReplyModal extends Component {
             email_text: "",
         };
         this.handle_input_change = this.handle_input_change.bind(this);
+        this.send_mail = this.send_mail.bind(this);
     }
     handle_input_change(e) {
         this.setState({ [e.target.name]: e.target.value });
+    }
+
+    send_mail() {
+        const email = create_mail_object([this.state.email_address], this.state.email_subject, this.state.email_text);
+        Axios.post('/sendmail_react', email).then(res => console.log(res));
+        this.props.handle_ok();
     }
     render() {
         const modal_body_props = {
@@ -27,7 +36,7 @@ export class EmailReplyModal extends Component {
             <div className='MyModal'>
                 <MyModal title="Send Email"
                     show={this.props.show}
-                    onOk={() => alert('Email Sent')}
+                    onOk={this.send_mail}
                     closeModal={this.props.close}
                     ModalBody={EmailReplyModalBody(modal_body_props)} />
             </div>

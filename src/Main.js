@@ -4,11 +4,12 @@ import { RightDivision } from './RightDivision.js';
 import './Main.css';
 import { emailThreads } from './RawData.js';
 import { Component } from 'react';
-
+import axios from 'axios';
 
 export class Main extends Component {
     constructor(props) {
         super(props);
+        console.log("Started Main");
         this.state = {
             selected_thread_index: emailThreads.selected_index
         };

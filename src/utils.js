@@ -84,6 +84,30 @@ export function get_file_icon(extension) {
     return 'file_icons/' + icon_name;
 }
 
+export function create_mail_object(receiver_addresses, email_subject, email_content) {
+    const recipients = receiver_addresses.map((r) => {
+        const recipeint = {
+            emailAddress: {
+                address: r
+            }
+        }
+        return recipeint
+    });
+
+    const email = {
+        message: {
+            subject: email_subject,
+            body: {
+                contentType: "Text",
+                content: email_content
+            },
+            toRecipients: recipients
+        },
+        saveToSentItems: "false"
+    }
+    return email;
+}
+
 
 
 
