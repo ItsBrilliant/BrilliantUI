@@ -16,6 +16,7 @@ export function Contact(id, name, image_link) {
     this.last_name = this.name.split(' ')[1];
     this.equals = (other) => this.id === other.id;
     this.get_initials = (() => this.first_name[0] + '.' + this.last_name[0] + '.');
+    this.get_address = (() => this.email_address)
 
 }
 
@@ -47,6 +48,18 @@ export class Email {
         this.tasks = tasks == undefined ? [] : tasks;
 
     }
+
+    get_email_text() {
+        return this.content.text()
+    }
+    get_email_subject() {
+        return this.content.subject()
+    }
+
+    get_sender_address() {
+        return this.sender.email_address.address
+    }
+
     get_num_tasks() {
         var count = 0;
         for (const task of this.tasks) {
