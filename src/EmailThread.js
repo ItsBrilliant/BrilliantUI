@@ -58,11 +58,12 @@ class EmailThread extends Component {
         //        const receiver_icons = this.get_receiver_icons();
         const selected_email = this.get_selected_email();
         const has_attatchments = this.get_has_attachments();
+        const sender_full_name = selected_email.sender.first_name + " " + selected_email.sender.last_name;
         return (
             <div>
                 <button onClick={() => this.props.handle_select(this.props.id)}>
                     <div className={this.get_style()}>
-                        {EmailStamp([selected_email.sender.image_link], selected_email.date, selected_email.sender.first_name)}
+                        {EmailStamp([selected_email.sender.image_link], selected_email.date, sender_full_name)}
                         <EmailTextArea isUnread={this.has_unread()} content={selected_email.content} tags={selected_email.tags} />
                         {ThreadLabels(num_tasks, has_attatchments, this.props.priority)}
                     </div>

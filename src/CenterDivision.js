@@ -69,9 +69,10 @@ class EmailContainer extends React.Component {
 
         const email = this.props.email;
         const contatcs = email.receivers.map(receiver => receiver.image_link)
+        const sender_full_name = email.sender.first_name + " " + email.sender.last_name;
         return (
             <div className='EmailContainer'>
-                {EmailStamp([email.sender.image_link], email.date, email.sender.first_name)}
+                {EmailStamp([email.sender.image_link], email.date, sender_full_name)}
                 <EmailTextArea isUnread={email.isUnread} content={email.content} overflow={true}
                     options_button={this.props.options_button} tags={email.tags} id={email.id} />
                 <div className="mail_right_info">
