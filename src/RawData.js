@@ -1,5 +1,4 @@
-import { Contact, Thread, Task, Email } from './EmailObjects.js';
-import { URGENT, IMPORTANT, CAN_WAIT } from './EmailObjects.js';
+import { Contact, Thread, Task, Email, URGENT, IMPORTANT, CAN_WAIT } from './data_objects/EmailObjects.js';
 
 export const person0 = new Contact(0, 'Amy Cohen', 'person_images/0.jpg');
 export const person1 = new Contact(1, 'Jonny Tomas', 'person_images/1.jpg');

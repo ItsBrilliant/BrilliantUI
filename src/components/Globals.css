@@ -1,0 +1,8 @@
+
+:root {
+  --main-bg-color: rgb(10,11,15);
+  --main-text-color: rgb(120,133,161);
+  --selected_thread_bg_color: rgb(20,25,40);
+  --selected_thread_text_color: rgb(240,240,240);
+  --email_container_background: rgb(16, 20, 33);
+}

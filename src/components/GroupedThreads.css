@@ -1,0 +1,37 @@
+
+@import './Globals.css';
+
+.GroupedThreads {
+    display: flex;
+    flex-direction: column;
+}
+.GroupedThreads button {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--main-bg-color);
+    margin: 20px 5px;
+}
+
+button.Urgent {
+  color: red;
+}
+
+button.Important {
+  color: orange;
+}
+
+button.CanWait {
+  color: green;
+}
+
+button.Default {
+  color: rgb(24, 116, 177);
+}
+
+button.Urgent , button.Important, button.CanWait, button.Default{
+  font-size: large;
+  border-color: var(--email_container_background);
+  border-width: 2px;
+  border-style: solid;
+}

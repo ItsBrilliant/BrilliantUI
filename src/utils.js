@@ -1,4 +1,4 @@
-import { TIME_KEY, PRIORITY_KEY, URGENT, IMPORTANT, CAN_WAIT } from './EmailObjects.js';
+import { TIME_KEY, PRIORITY_KEY, URGENT, IMPORTANT, CAN_WAIT } from './data_objects/EmailObjects.js';
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 export function format_date(dateOjbect) {
