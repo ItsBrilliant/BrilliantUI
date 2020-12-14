@@ -99,5 +99,4 @@ function ScrollableThreadContainer(emailThreads, handle_select, selected_thread_
 
 function load_more() {
   console.log("load_more_button clicked");
-  axios.get('/inbox_react').then(res => console.log(res));
 }
