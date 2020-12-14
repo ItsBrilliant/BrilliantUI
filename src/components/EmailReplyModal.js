@@ -3,7 +3,8 @@ import './Modal.css';
 import MyModal from './Modal.js'
 import { Fragment } from 'react';
 import { create_mail_object } from '../utils';
-import Axios from 'axios';
+import { send_email } from '../data_objects/Connect.js'
+
 
 export class EmailReplyModal extends Component {
     constructor(props) {
@@ -22,7 +23,7 @@ export class EmailReplyModal extends Component {
 
     send_mail() {
         const email = create_mail_object([this.state.email_address], this.state.email_subject, this.state.email_text);
-        Axios.post('/sendmail_react', email).then(res => console.log(res));
+        send_email(email);
         this.props.handle_ok();
     }
     render() {
@@ -38,7 +39,7 @@ export class EmailReplyModal extends Component {
                     show={this.props.show}
                     onOk={this.send_mail}
                     closeModal={this.props.close}
-                    ModalBody={EmailReplyModalBody(modal_body_props)} />
+                    modalBody={EmailReplyModalBody(modal_body_props)} />
             </div>
 
         );

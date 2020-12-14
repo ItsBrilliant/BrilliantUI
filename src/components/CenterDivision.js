@@ -34,7 +34,7 @@ export class CenterDivision extends React.Component {
             this.reset()
         }
         else if (e.value === 'Mark Read') {
-            this.props.thread.get_email(email_id).isUnread = false;
+            this.props.thread.get_email(email_id).set_is_read(true);
             this.reset();
         } else {
             this.setState({ show_add_task: true, selected_value: e.value, email_id: email_id });
@@ -50,8 +50,8 @@ export class CenterDivision extends React.Component {
                 close={this.reset} /> :
             <EmailReplyModal show={this.state.show_add_task} handle_ok={this.reset}
                 close={this.reset} />
-        const emails = this.props.thread.emails.map(
-            (email) => <EmailContainer key={email.id} email={email} options_button={options_button} />).reverse();
+        const emails = this.props.thread.get_emails().map(
+            (email) => <EmailContainer key={email.get_id()} email={email} options_button={options_button} />).reverse();
         return (
             <div className='CenterDivision' >
                 <SimpleBar className="CenterSimpleBar">
@@ -68,13 +68,18 @@ class EmailContainer extends React.Component {
     render() {
 
         const email = this.props.email;
-        const contatcs = email.receivers.map(receiver => receiver.image_link)
-        const sender_full_name = email.sender.first_name + " " + email.sender.last_name;
+        const contatcs = email.get_receivers().map(receiver => receiver.image_link)
+        const sender_full_name = email.get_sender().get_name();
         return (
             <div className='EmailContainer'>
-                {EmailStamp([email.sender.image_link], email.date, sender_full_name)}
-                <EmailTextArea isUnread={email.isUnread} content={email.content} overflow={true}
-                    options_button={this.props.options_button} tags={email.tags} id={email.id} />
+                {EmailStamp([email.get_sender().image_link], email.date, sender_full_name)}
+                <EmailTextArea isUnread={!email.get_is_read()}
+                    content={email.get_content()}
+                    html_content={true}
+                    subject={email.get_subject()}
+                    overflow={true}
+                    options_button={this.props.options_button}
+                    tags={email.get_tags()} id={email.get_id()} />
                 <div className="mail_right_info">
                     {GroupIcon(contatcs)}
                     {AttachedFiles(email.attachments)}

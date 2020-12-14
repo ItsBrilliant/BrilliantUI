@@ -167,7 +167,7 @@ export class Thread {
     get_participants() {
         var participants = new Set()
         for (const email of this.emails) {
-            participants.add(email.sender);
+            participants.add(email.get_sender());
             for (const receiver of email.receivers) {
                 participants.add(receiver);
             }

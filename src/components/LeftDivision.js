@@ -6,10 +6,7 @@ import { group_by_function, get_sort_function_by_type, filter_by_property } from
 import './LeftDivision.css';
 import { Thread, TIME_KEY, PRIORITY_KEY } from '../data_objects/EmailObjects.js';
 import { Component } from 'react';
-import { person0 } from '../RawData.js';
-import axios from 'axios';
-axios.defaults.xsrfCookieName = 'csrftoken'
-axios.defaults.xsrfHeaderName = "X-CSRFTOKEN"
+import { person0 } from './Main.js';
 
 
 export class LeftDivision extends Component {
@@ -50,7 +47,7 @@ export class LeftDivision extends Component {
           {ScrollableThreadContainer(
             this.props.emailThreads,
             this.props.handle_select,
-            this.props.selected_thread_index,
+            this.props.selected_thread_id,
             this.state.group_type,
             this.state.sort_type,
             this.state.incoming)}
@@ -61,16 +58,22 @@ export class LeftDivision extends Component {
 }
 
 function filter_threads(incoming, threads) {
-  var property = 'receivers';
-  if (incoming === 'Outgoing') {
-    property = 'sender';
+  var property = {
+    name: 'receivers',
+    func: email => email.get_receivers()
   }
-  var filter_function = Thread.get_filter_function(property, person0);
-  return filter_by_property(threads, property, filter_function);
+  if (incoming === 'Outgoing') {
+    property = {
+      name: 'sender',
+      func: email => email.get_sender()
+    }
+  }
+  var filter_function = Thread.get_filter_function(property.name, person0);
+  return filter_by_property(Object.values(threads), property.func, filter_function);
 }
 
-function ScrollableThreadContainer(emailThreads, handle_select, selected_thread_index, group_type, sort_type, incoming) {
-  const filtered_threads = filter_threads(incoming, emailThreads.threads)
+function ScrollableThreadContainer(emailThreads, handle_select, selected_thread_id, group_type, sort_type, incoming) {
+  const filtered_threads = filter_threads(incoming, emailThreads)
   var grouped_threads = group_by_function(filtered_threads, Thread.get_group_function(group_type));
   var sorted_group_keys = Object.keys(grouped_threads).sort(get_sort_function_by_type(group_type));
   for (let key of sorted_group_keys) {
@@ -81,7 +84,7 @@ function ScrollableThreadContainer(emailThreads, handle_select, selected_thread_
       emailThreads={grouped_threads[key]}
       group_key={key}
       group_key_type={group_type}
-      selected_thread_index={selected_thread_index}
+      selected_thread_id={selected_thread_id}
       handle_select={handle_select} />)
 
   return (

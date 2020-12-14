@@ -1,15 +1,20 @@
 import { Contact } from './Contact.js';
 import { CAN_WAIT, URGENT, IMPORTANT } from './EmailObjects.js';
 
-export default class Email {
+export class Email {
 
     constructor(email_json, tags, tasks) {
-        this.email = JSON.parse(email_json)
-        this.tags = tags == undefined ? [] : tags;
-        this.tasks = tasks == undefined ? [] : tasks;
+        this.email = email_json;
+        this.tags = tags === undefined ? [] : tags;
+        this.tasks = tasks === undefined ? [] : tasks;
+        this.date = new Date(this.email['sentDateTime']);
 
     }
-    get_num_undone_tasks() {
+
+    get_tags() {
+        return this.tags
+    }
+    get_num_tasks() {
         var count = 0;
         for (const task of this.tasks) {
             if (!task.isDone) {
@@ -36,37 +41,58 @@ export default class Email {
     add_task(task) {
         this.tasks.push(task);
     }
+
     get_id() {
         return this.email['id']
     }
 
     get_sender() {
-        return new Contact(this.email.sender)
+        return Contact.create_contact(this.email['sender'])
     }
     get_receivers() {
-        return this.email['toRecipients'].map((c) => new Contact(c));
+        return this.email['toRecipients'].map((c) => Contact.create_contact(c));
     }
 
     get_ccs() {
-        return this.email['ccRecipients'].map((c) => new Contact(c));
+        return this.email['ccRecipients'].map((c) => Contact.create_contact(c));
     }
+
     get_bccs() {
-        return this.email['bccRecipients'].map((c) => new Contact(c));
+        return this.email['bccRecipients'].map((c) => Contact.create_contact(c));
     }
+
     get_sent_time() {
         return this.email['sentDateTime'];
     }
+
+    get_date() {
+        return this.date;
+    }
+
+    get_thread_id() {
+        return this.email['conversationId']
+    }
+
     get_is_read() {
         return this.email['isRead'];
+    }
+
+    set_is_read(is_read) {
+        this.email['isRead'] = is_read;
     }
 
     get_content() {
         return this.email['body']['content'];
     }
 
+    get_subject() {
+        return this.email['subject'];
+    }
+
     get_content_type() {
         return this.email['body']['contentType'];
     }
+
     get_has_attachments() {
         return this.email['hasAttachments'];
     }

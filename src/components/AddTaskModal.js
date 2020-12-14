@@ -35,7 +35,7 @@ export class AddTaskModal extends Component {
                     show={this.props.show}
                     onOk={this.handle_ok}
                     closeModal={this.props.close}
-                    ModalBody={AddTaskModalBody(modal_body_props)} />
+                    modalBody={AddTaskModalBody(modal_body_props)} />
             </div>
 
         );

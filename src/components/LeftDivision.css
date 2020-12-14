@@ -3,7 +3,7 @@
 
 .LeftDivision {
     height: 100vh;
-    width: 30vw;
+    width: 25vw;
     min-width: 420px;
     background-color: var(--main-bg-color);
 }
@@ -26,6 +26,7 @@
 .ScrollableThreadContainer {
   margin: 0;
   height: calc(100% - 35px);
+  width: 100%;
 
 }
 
