@@ -11,7 +11,7 @@ export default function ({ size = 'sm', closeModal, ...props }) {
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body padding>
-                {props.ModalBody}
+                {props.modalBody}
             </Modal.Body>
             <Modal.Footer>
                 <button

@@ -12,8 +12,10 @@
   width: 70%;
 }
 
+
 .adjust_height_to_text{
   height: auto;
+    width: 70%;
 }
 
 .threadIcon {
@@ -41,7 +43,9 @@ h1.threadIcon {
     margin: 5px;
     color: var(--main-text-color);
     justify-content: flex-start;
+    overflow-x: hidden;
     font-size: medium;
+    width:100px;
 }
 
 .attachment {
@@ -50,11 +54,13 @@ h1.threadIcon {
 }
 
 .emailThread {
-  background-color: var(--main-bg-color);
   display: flex;
   flex-direction: row;
-  border-radius: 10%;
+  border-radius: 20px;
   margin: 5px;
+  width: 100%;
+  overflow-x: hidden;
+
 }
 
 .emailThread * p {
@@ -118,8 +124,8 @@ div.CanWait {
 
 .EmailOptionsButton{
   position: relative;
-  left: 80%;
-  top: 5%;
+  left: 85%;
+  top: 10px;
   background: transparent;
 }
 

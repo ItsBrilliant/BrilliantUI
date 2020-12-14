@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import './EmailThread.css';
-import { merge_icons, format_date } from './utils.js';
+import { merge_icons, format_date } from '../utils.js';
 import { Menu } from './Menues.js'
+import parse from 'html-react-parser'
+import { htmlToText } from 'html-to-text';
 
 class EmailThread extends Component {
 
     get_selected_email() {
-        return this.props.thread.emails[0]
+        return this.props.thread.get_emails()[0]
     }
 
     get_style() {
@@ -26,7 +28,7 @@ class EmailThread extends Component {
         return receiver_icons;
     }
     get_has_attachments() {
-        for (const email of this.props.thread.emails) {
+        for (const email of this.props.thread.get_emails()) {
             if (email.attachments !== undefined && email.attachments.length > 0) {
                 return true;
             }
@@ -35,8 +37,8 @@ class EmailThread extends Component {
     }
 
     has_unread() {
-        for (const email of this.props.thread.emails) {
-            if (email.isUnread) {
+        for (const email of this.props.thread.get_emails()) {
+            if (!email.get_is_read()) {
                 return true;
             }
         }
@@ -46,7 +48,7 @@ class EmailThread extends Component {
     get_num_unread() {
         var count = 0
         for (const email of this.props.thread.emails) {
-            if (email.isUnread) {
+            if (!email.get_is_read()) {
                 count++;
             }
         }
@@ -58,16 +60,19 @@ class EmailThread extends Component {
         //        const receiver_icons = this.get_receiver_icons();
         const selected_email = this.get_selected_email();
         const has_attatchments = this.get_has_attachments();
+        const sender_full_name = selected_email.get_sender().get_name();
         return (
-            <div>
-                <button onClick={() => this.props.handle_select(this.props.id)}>
-                    <div className={this.get_style()}>
-                        {EmailStamp([selected_email.sender.image_link], selected_email.date, selected_email.sender.first_name)}
-                        <EmailTextArea isUnread={this.has_unread()} content={selected_email.content} tags={selected_email.tags} />
-                        {ThreadLabels(num_tasks, has_attatchments, this.props.priority)}
-                    </div>
-                </button>
-            </div>
+            <button onClick={() => this.props.handle_select(this.props.id)}>
+                <div className={this.get_style()}>
+                    {EmailStamp([selected_email.get_sender().get_icon()], selected_email.date, sender_full_name)}
+                    <EmailTextArea isUnread={this.has_unread()}
+                        content={htmlToText(selected_email.get_content())}
+                        html_content={false}
+                        subject={selected_email.get_subject()}
+                        tags={selected_email.get_tags()} />
+                    {ThreadLabels(num_tasks, has_attatchments, this.props.priority)}
+                </div>
+            </button>
         )
     }
 }
@@ -113,13 +118,13 @@ export class EmailTextArea extends Component {
         }
     }
     render() {
-        const subject = this.props.content.subject;
-        const text = this.props.content.text;
+        const subject = this.props.subject;
+        const content = this.props.html_content ? parse(this.props.content) : this.props.content;
         return (
             <div className={this.get_style()}>
                 {this.get_email_options_button()}
                 <h4>{subject + this.get_tags()}</h4>
-                <p>{text}</p>
+                {content}
             </div>
         );
     }

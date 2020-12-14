@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import './Modal.css';
-import { CAN_WAIT, Task, URGENT } from "./EmailObjects.js";
+import { CAN_WAIT, Task, URGENT } from "../data_objects/EmailObjects.js";
 import MyModal from './Modal.js'
 import { Fragment } from 'react';
 
@@ -35,7 +35,7 @@ export class AddTaskModal extends Component {
                     show={this.props.show}
                     onOk={this.handle_ok}
                     closeModal={this.props.close}
-                    ModalBody={AddTaskModalBody(modal_body_props)} />
+                    modalBody={AddTaskModalBody(modal_body_props)} />
             </div>
 
         );

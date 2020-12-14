@@ -1,7 +1,6 @@
 import React from 'react';
-import { EmailTextArea, EmailStamp, attachmentIcon } from './EmailThread.js';
 import './RightDivision.css';
-import { get_priority_style, get_file_icon, format_date } from './utils';
+import { get_priority_style, get_file_icon, format_date } from '../utils.js';
 
 
 export function RightDivision(thread) {

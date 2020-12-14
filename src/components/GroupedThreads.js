@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import './GroupedThreads.css';
 import { EmailThread } from "./EmailThread.js";
-import { PRIORITIES, URGENT, IMPORTANT, CAN_WAIT, PRIORITY_KEY, TIME_KEY } from "./EmailObjects.js";
-import { format_date } from './utils';
+import { PRIORITIES, URGENT, IMPORTANT, CAN_WAIT, PRIORITY_KEY, TIME_KEY } from "../data_objects/EmailObjects.js";
+import { format_date } from '../utils';
 
 class GroupedThreads extends Component {
 
@@ -43,7 +43,7 @@ class GroupedThreads extends Component {
     render() {
         const title = this.create_title()
         const threads = this.props.emailThreads.map((thread) =>
-            <EmailThread key={thread.id} id={thread.id} thread={thread} is_selected={thread.id == this.props.selected_thread_index}
+            <EmailThread key={thread.get_id()} id={thread.get_id()} thread={thread} is_selected={thread.get_id() === this.props.selected_thread_id}
                 handle_select={this.props.handle_select} priority={this.get_priority_style(thread.get_priority())} />);
         return (
             <div className='GroupedThreads'>

@@ -1,4 +1,4 @@
-import { TIME_KEY, PRIORITY_KEY, URGENT, IMPORTANT, CAN_WAIT } from './EmailObjects.js';
+import { TIME_KEY, PRIORITY_KEY, URGENT, IMPORTANT, CAN_WAIT } from './data_objects/EmailObjects.js';
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 export function format_date(dateOjbect) {
@@ -45,8 +45,8 @@ export function get_sort_function_by_type(sort_type) {
 
 export function filter_by_property(array, property, filter_function) {
     const result = array.filter(function (thread) {
-        for (const email of thread.emails) {
-            if (filter_function(email[property])) {
+        for (const email of thread.get_emails()) {
+            if (filter_function(property(email))) {
                 return true;
             }
         }
