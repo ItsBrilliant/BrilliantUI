@@ -43,13 +43,17 @@ export class Email {
     }
 
     get_id() {
-        return this.email['id']
+        return this.email['id'];
     }
 
     get_sender() {
-        return Contact.create_contact(this.email['sender'])
+        return Contact.create_contact(this.email['sender']);
     }
+
     get_receivers() {
+        return this.get_recipients().concat(this.get_ccs()).concat(this.get_bccs());
+    }
+    get_recipients() {
         return this.email['toRecipients'].map((c) => Contact.create_contact(c));
     }
 
