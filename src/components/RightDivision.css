@@ -1,8 +1,8 @@
 @import "./Globals.css";
 
 .RightDivision{
-    width: 25vw;
-    height: 100vh;
+    width: 25%;
+    height: 100%;
     overflow: hidden;
 }
 

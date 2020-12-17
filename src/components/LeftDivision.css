@@ -3,8 +3,8 @@
 
 .LeftDivision {
     height: 100vh;
-    width: 25vw;
-    min-width: 420px;
+    width: 25%;
+    min-width:300px;
     background-color: var(--main-bg-color);
 }
 

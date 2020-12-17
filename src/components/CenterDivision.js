@@ -5,7 +5,7 @@ import SimpleBar from 'simplebar-react';
 import { AddTaskModal } from './AddTaskModal.js';
 import { EmailReplyModal } from './EmailReplyModal.js';
 import { GroupIcon } from './EmailThread.js'
-
+import { htmlToText } from 'html-to-text';
 export class CenterDivision extends React.Component {
     constructor(props) {
         super(props);
@@ -41,6 +41,7 @@ export class CenterDivision extends React.Component {
         }
     }
     render() {
+        if (!this.props.thread) { return null; }
         const options_button = {
             selected_value: this.state.selected_value,
             onChange: this.handle_option_button_click,
@@ -74,8 +75,8 @@ class EmailContainer extends React.Component {
             <div className='EmailContainer'>
                 {EmailStamp([email.get_sender().image_link], email.date, sender_full_name)}
                 <EmailTextArea isUnread={!email.get_is_read()}
-                    content={email.get_content()}
-                    html_content={true}
+                    content={htmlToText(email.get_content())}
+                    html_content={false}
                     subject={email.get_subject()}
                     overflow={true}
                     options_button={this.props.options_button}

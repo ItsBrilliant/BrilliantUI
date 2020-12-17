@@ -3,7 +3,7 @@
 .CenterDivision{
     background-color: var(--email_container_background);
     height: 100vh;
-    width: 55vw;
+    width: 55%;
 }
 
 .EmailContainer{
@@ -11,6 +11,7 @@
     flex-direction: row;
     padding: 0px;
     margin: 20px;
+    overflow-wrap: break-word;
 }
 
 .EmailContainer .email_text_area{
@@ -18,7 +19,6 @@
     padding-left: 15px;
     padding-right: 15px;
     border-radius: 30px;
-    overflow: visible;
 
 }
 

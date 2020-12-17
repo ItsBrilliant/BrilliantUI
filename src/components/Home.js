@@ -2,9 +2,24 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route, Link, Redirect } from 'react-router-dom';
 import { Main } from './Main.js'
 import './Home.css';
+import { get_mailbox } from '../data_objects/Connect.js';
+import { create_threads } from '../data_objects/Thread.js';
 
 export class Home extends React.Component {
-
+    constructor(props) {
+        super(props);
+        console.log("Started Home");
+        this.state = {
+            emailThreads: {}
+        };
+    }
+    componentDidMount() {
+        get_mailbox((emails) => this.set_threads(emails));
+    }
+    set_threads(emails) {
+        this.setState({ emailThreads: create_threads(emails) });
+        //  this.setState({ selected_thread_id: Object.keys(this.emailThreads)[0] });
+    }
     render() {
         return (
             <Router>
@@ -12,7 +27,12 @@ export class Home extends React.Component {
                     <Nav />
                     <Switch>
                         <Route
-                            path='/mail' exact component={Main}>
+                            path='/mail' exact
+                            render={() =>
+                                <Main emailThreads={this.state.emailThreads}
+                                    load_threads_function={() => get_mailbox((emails) => this.set_threads(emails))}
+                                />
+                            }>
                         </Route>
                     </Switch>
                 </div>

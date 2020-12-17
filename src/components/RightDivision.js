@@ -4,12 +4,13 @@ import { get_priority_style, get_file_icon, format_date } from '../utils.js';
 
 
 export function RightDivision(thread) {
-    return (
+    return (thread ?
         <div className='RightDivision'>
             {Tasks(thread.get_tasks())}
             {Participants(thread.get_participants())}
             {FileAttachments(thread.get_attachments())}
-        </div>
+        </div> :
+        null
     )
 }
 

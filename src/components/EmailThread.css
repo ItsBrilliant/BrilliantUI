@@ -10,12 +10,13 @@
   margin-left: 5px;
   font-size: medium;
   width: 70%;
+  text-overflow: ellipsis;
 }
 
 
 .adjust_height_to_text{
   height: auto;
-    width: 70%;
+  width: 75%;
 }
 
 .threadIcon {
@@ -34,18 +35,18 @@ h1.threadIcon {
   height: 30px;
   color: rgba(255, 255, 255, 0.704)
 }
-.emailStamp {
+.emailStamp{
     display: flex;
     flex-direction: column;
     align-items: center;
-    text-align: center;
     font-size: small;
     margin: 5px;
     color: var(--main-text-color);
     justify-content: flex-start;
-    overflow-x: hidden;
+    overflow: hidden;
     font-size: medium;
     width:100px;
+    line-height: 1;
 }
 
 .attachment {
@@ -53,26 +54,31 @@ h1.threadIcon {
   width: 40px;
 }
 
-.emailThread {
+
+.emailThread{
   display: flex;
   flex-direction: row;
   border-radius: 20px;
-  margin: 5px;
   width: 100%;
   overflow-x: hidden;
 
 }
 
-.emailThread * p {
-      color: var(--main-text-color);
-      padding-bottom: 1px;
-      margin: 2px;;
+.thread_button{
+      background-color: transparent;
+      margin-top: 5px;
+      margin: 5px;
       font-size: medium;
       font-weight: normal;
 }
 
+
+.selected_thread {
+  background-color: var(--selected_thread_bg_color);
+}
+
+
 .thread_labels {
-  margin: 3px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -91,11 +97,6 @@ h1.threadIcon {
   text-align: center;
   font-weight: bold;
   font-size: large;
-}
-
-.selected_thread {
-  background-color: var(--selected_thread_bg_color);
-  padding-bottom: 7px;
 }
 
 .unread h4 {
@@ -149,4 +150,10 @@ div.CanWait {
   justify-content: start;
   display: grid;
   grid-template-columns: repeat(auto-fit,  minmax(10px, max-content)) ;
+}
+
+.TimeStamp p{
+  margin: 0px;
+  padding: 0px;
+  font-size: 13px;
 }

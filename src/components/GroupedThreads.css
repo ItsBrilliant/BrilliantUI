@@ -6,13 +6,14 @@
     flex-direction: column;
     width: 100%;
     overflow-x: hidden;
+    background-color: var(--main-bg-color);
 }
-.GroupedThreads button {
+.GroupedThreads .group_button {
     text-align: left;
     display: flex;
     flex-direction: column;
-    background-color: var(--main-bg-color);
-    margin: 20px 5px;
+    margin: 10px 5px;
+    background-color: transparent;
 }
 
 button.Urgent {

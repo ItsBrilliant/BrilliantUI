@@ -48,6 +48,7 @@ export class LeftDivision extends Component {
             this.props.emailThreads,
             this.props.handle_select,
             this.props.selected_thread_id,
+            this.props.load_threads_function,
             this.state.group_type,
             this.state.sort_type,
             this.state.incoming)}
@@ -72,7 +73,8 @@ function filter_threads(incoming, threads) {
   return filter_by_property(Object.values(threads), property.func, filter_function);
 }
 
-function ScrollableThreadContainer(emailThreads, handle_select, selected_thread_id, group_type, sort_type, incoming) {
+function ScrollableThreadContainer(emailThreads, handle_select, selected_thread_id, load_func,
+  group_type, sort_type, incoming) {
   const filtered_threads = filter_threads(incoming, emailThreads)
   var grouped_threads = group_by_function(filtered_threads, Thread.get_group_function(group_type));
   var sorted_group_keys = Object.keys(grouped_threads).sort(get_sort_function_by_type(group_type));
@@ -91,7 +93,7 @@ function ScrollableThreadContainer(emailThreads, handle_select, selected_thread_
     <SimpleBar className='SimpleBar2'>
       <div>
         {groupings}
-        <button className='load_more_button' onClick={load_more}>Load more</button>
+        <button className='load_more_button' onClick={load_func}>Load more</button>
       </div>
     </SimpleBar>
   );

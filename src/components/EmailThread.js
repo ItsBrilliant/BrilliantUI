@@ -62,11 +62,11 @@ class EmailThread extends Component {
         const has_attatchments = this.get_has_attachments();
         const sender_full_name = selected_email.get_sender().get_name();
         return (
-            <button onClick={() => this.props.handle_select(this.props.id)}>
+            <button className='thread_button' onClick={() => this.props.handle_select(this.props.id)}>
                 <div className={this.get_style()}>
                     {EmailStamp([selected_email.get_sender().get_icon()], selected_email.date, sender_full_name)}
                     <EmailTextArea isUnread={this.has_unread()}
-                        content={htmlToText(selected_email.get_content())}
+                        content={selected_email.get_content_type() === 'text' ? selected_email.get_content() : htmlToText(selected_email.get_content())}
                         html_content={false}
                         subject={selected_email.get_subject()}
                         tags={selected_email.get_tags()} />
@@ -150,7 +150,7 @@ export function attachmentIcon() {
 export function TimeStamp(date) {
     const formatted_date = format_date(date)
     return (
-        <div>
+        <div className='TimeStamp'>
             <p>{formatted_date.time}</p>
             <p>{formatted_date.date}</p>
         </div>
