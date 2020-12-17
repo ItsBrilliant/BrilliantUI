@@ -2,23 +2,30 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import { Main } from './Main.js'
 import './Home.css';
-import { get_mailbox } from '../data_objects/Connect.js';
+import { get_calendar, get_mailbox } from '../data_objects/Connect.js';
 import { create_threads } from '../data_objects/Thread.js';
+import { Calendar } from './Calendar.js';
+import { create_calendar_events } from '../utils.js';
 
 export class Home extends React.Component {
     constructor(props) {
         super(props);
         console.log("Started Home");
         this.state = {
-            emailThreads: {}
+            emailThreads: {},
+            calendarEvents: []
         };
     }
     componentDidMount() {
         get_mailbox((emails) => this.set_threads(emails));
+        get_calendar((events) => this.set_calendar(events));
     }
     set_threads(emails) {
         this.setState({ emailThreads: create_threads(emails) });
         //  this.setState({ selected_thread_id: Object.keys(this.emailThreads)[0] });
+    }
+    set_calendar(events) {
+        this.setState({ calendarEvents: create_calendar_events(events) });
     }
     render() {
         return (
@@ -31,8 +38,12 @@ export class Home extends React.Component {
                             render={() =>
                                 <Main emailThreads={this.state.emailThreads}
                                     load_threads_function={() => get_mailbox((emails) => this.set_threads(emails))}
-                                />
-                            }>
+                                />}>
+                        </Route>
+                        <Route
+                            path='/calendar' exact
+                            render={() =>
+                                <Calendar events={this.state.calendarEvents} />}>
                         </Route>
                     </Switch>
                 </div>

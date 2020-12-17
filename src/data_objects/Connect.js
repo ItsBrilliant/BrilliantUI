@@ -16,6 +16,16 @@ export function get_mailbox(callback_func) {
     });
 }
 
+export function get_calendar(callback_func) {
+    Axios.get('/calendar_react').then(res => {
+        const events = res.data;
+        callback_func(events);
+    }).catch((res) => {
+        console.log('unable to load events');
+    });
+}
+
+
 export function send_email(email) {
     Axios.post('/sendmail_react', email).then(res => console.log(res));
 }
