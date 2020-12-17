@@ -7,7 +7,7 @@ import { Contact } from '../data_objects/Contact.js';
 
 export const person0 = Contact.create_contact({
     'emailAddress': {
-        'address': 'dovbridger@itsbrilliant.com',
+        'address': 'dovbridger@hotmail.com',
         'name': 'Dov Bridger'
     }
 })

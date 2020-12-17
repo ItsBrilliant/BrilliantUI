@@ -78,6 +78,7 @@ h1.threadIcon {
 }
 
 
+
 .thread_labels {
   display: flex;
   flex-direction: column;
@@ -102,7 +103,7 @@ h1.threadIcon {
 .unread h4 {
   color: white;
 }
-.unread p {
+.unread * {
   color: var(--selected_thread_text_color);
 }
 

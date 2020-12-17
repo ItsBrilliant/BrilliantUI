@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route, Link, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import { Main } from './Main.js'
 import './Home.css';
 import { get_mailbox } from '../data_objects/Connect.js';
@@ -42,14 +42,19 @@ export class Home extends React.Component {
 }
 
 function Nav() {
-    const icon_link = { icon: "file_icons/attachment.png", link: '/mail' }
-    const home_link = { icon: "file_icons/attachment.png", link: '/' }
+    const accounts = { icon: "button_icons/accounts.svg", link: '/' }
+    const mail = { icon: "button_icons/mail.svg", link: '/mail' }
+    const layout = { icon: "button_icons/layout.svg", link: '/' }
+    const calendar = { icon: "button_icons/calendar.svg", link: '/calendar' }
+    const files = { icon: "button_icons/files.svg", link: '/' }
+    const people = { icon: "button_icons/people.svg", link: '/' }
+    const task = { icon: "button_icons/task.svg", link: '/' }
     return (
         <div className='Nav'>
-            {NavCluster([home_link])}
-            {NavCluster([icon_link])}
-            {NavCluster([icon_link, icon_link, icon_link, icon_link, icon_link])}
-            {NavCluster([icon_link, icon_link])}
+            {NavCluster([mail])}
+            {NavCluster([task])}
+            {NavCluster([mail, task, calendar, people, files])}
+            {NavCluster([layout, accounts])}
         </div>
     );
 }
@@ -57,8 +62,8 @@ function Nav() {
 function NavCluster(icon_links) {
     return (
         <div className='NavCluster'>
-            {icon_links.map(i_l => <Link to={i_l.link}>
-                <img className='nav_link' src={i_l.icon} />
+            {icon_links.map(i_l => <Link className='nav_link' to={i_l.link}>
+                <img src={i_l.icon} />
             </Link>)}
         </div>
     )
