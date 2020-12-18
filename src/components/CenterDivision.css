@@ -1,12 +1,13 @@
 @import "./Globals.css";
 
 .CenterDivision{
-    background-color: var(--email_container_background);
+    background-color: var(--email-container-background);
     height: 100vh;
     width: 55%;
 }
 
 .EmailContainer{
+    background-color: var(--email-container-background);
     display:flex;
     flex-direction: row;
     padding: 0px;
@@ -16,7 +17,7 @@
 }
 
 .EmailContainer .email_text_area{
-    background-color:  rgb(24, 30, 50);
+    background-color:  var(--email-text-area-bg);
     padding-left: 15px;
     padding-right: 15px;
     border-radius: 30px;
@@ -42,7 +43,7 @@
 
 .ReplyForm {
     border: 2px solid var(--main-bg-color);
-    background-color: var(--email_container_background);
+    background-color: var(--email-container-background);
     width: 95%;
     height: 40px;
     margin: 10px;
@@ -55,7 +56,7 @@
 
 input[type='text'] {
     color:var(--main-text-color);
-    background-color: var(--email_container_background);
+    background-color: var(--email-container-background);
     outline: none;
     width: 100%;
     height: 100%;

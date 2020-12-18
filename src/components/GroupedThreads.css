@@ -34,7 +34,7 @@ button.Default {
 
 button.Urgent , button.Important, button.CanWait, button.Default{
   font-size: large;
-  border-color: var(--email_container_background);
+  border-color: var(--email-container-background);
   border-width: 2px;
   border-style: solid;
 }

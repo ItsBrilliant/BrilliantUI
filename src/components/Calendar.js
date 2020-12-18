@@ -1,7 +1,7 @@
 import './Calendar.css';
 
 import * as React from 'react';
-import { ScheduleComponent, Day, Week, WorkWeek, Month, Agenda, Inject } from '@syncfusion/ej2-react-schedule';
+import { ScheduleComponent, Day, Week, WorkWeek, Month, Agenda, Inject, ViewsDirective, ViewDirective } from '@syncfusion/ej2-react-schedule';
 export class Calendar extends React.Component {
     constructor(props) {
         super(props)
@@ -19,8 +19,13 @@ export class Calendar extends React.Component {
     render() {
         const events = this.adjust_date_fields();
         return (
-            <div>
-                <ScheduleComponent height="800px" eventSettings={{ dataSource: events }}>
+            <div className='Calendar'>
+                <ScheduleComponent height="auto" width="auto" eventSettings={{ dataSource: events }}>
+                    <ViewsDirective>
+                        <ViewDirective option='Day'></ViewDirective>
+                        <ViewDirective option='Week'></ViewDirective>
+                        <ViewDirective option='Month'></ViewDirective>
+                    </ViewsDirective>
                     <Inject services={[Day, Week, Month]} />
                 </ScheduleComponent>
             </div>

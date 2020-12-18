@@ -8,14 +8,15 @@
     background-color: var(--main-bg-color);
     display: flex;
     flex-direction: row;
+    height: 100vh;
 
 }
 .Nav {
-    background-color: var(--email_container_background);
+    background-color: var(--email-container-background);
     display: flex;
     flex-direction: column;
-    width:70px;
-    height:100vh;
+    width:60px;
+    height:100%;
     align-items: center;
 }
 
@@ -25,11 +26,11 @@
 
 
 .nav_link {
-    margin: 10px;
+    margin: 20px;
     background-color: var(--main-bg-color);
     border-radius: 100%;
-    width: 60px;
-    height: 60px;
+    width: 40px;
+    height: 40px;
     display: flex;
     justify-content: center;
 
@@ -46,4 +47,47 @@
 
 .nav_link:hover{
     background-color: var(--link_hover_color);
+}
+
+.not_nav{
+    background-color: var(--main-bg-color);
+    height:100%;
+    width: calc(100% - 40px);
+}
+
+.top_buttons{
+    display:flex;
+    flex-direction: row;
+    height: 60px;
+}
+
+.filter_button{
+    background-color: var(--email-text-area-bg);
+    color:var(--unread-text-color);
+    font-size: 16px;
+    margin: 10px 20px;
+    border-radius: 10px;
+    width: 100px;
+}
+.SearchBar{
+    display: flex;
+    align-items: center;
+    background-color: var(--email-container-background);
+    padding: 10px;
+    margin: 10px 10px 10px 30px;
+    border-radius: 10px;
+    border: 1px solid var(--main-text-color);
+}
+
+.SearchBar input, input::placeholder{
+    font-weight: bold;
+    background-color: transparent;
+    font-size: 16px;
+    color: var(--main-text-color);
+    outline: none;
+}
+
+.SearchBar img {
+    margin-right: 10px;
+    width: 20px;
 }

@@ -74,7 +74,7 @@ h1.threadIcon {
 
 
 .selected_thread {
-  background-color: var(--selected_thread_bg_color);
+  background-color: var(--selected-thread-bg-color);
 }
 
 
@@ -104,7 +104,7 @@ h1.threadIcon {
   color: white;
 }
 .unread * {
-  color: var(--selected_thread_text_color);
+  color: var(--unread-text-color);
 }
 
 button {
@@ -154,7 +154,7 @@ div.CanWait {
 }
 
 .TimeStamp p{
-  margin: 0px;
+  margin: 2px;
   padding: 0px;
   font-size: 13px;
 }

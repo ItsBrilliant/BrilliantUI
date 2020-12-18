@@ -17,7 +17,7 @@
 }
 
 .Tasks {
-    background-color: var(--email_container_background);
+    background-color: var(--email-container-background);
 }
 ul {
     list-style: none;
@@ -46,7 +46,7 @@ ul li.CanWait::before{
 
 .Container{
     display: block;
-    background-color: var(--email_container_background);
+    background-color: var(--email-container-background);
     color: var(--main-text-color);
     margin: 5px 20px 20px 20px;
     padding-top: 2px;
