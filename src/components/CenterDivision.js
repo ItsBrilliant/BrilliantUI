@@ -5,7 +5,6 @@ import SimpleBar from 'simplebar-react';
 import { AddTaskModal } from './AddTaskModal.js';
 import { EmailReplyModal } from './EmailReplyModal.js';
 import { GroupIcon } from './EmailThread.js'
-import { htmlToText } from 'html-to-text';
 export class CenterDivision extends React.Component {
     constructor(props) {
         super(props);
@@ -52,7 +51,8 @@ export class CenterDivision extends React.Component {
             <EmailReplyModal show={this.state.show_add_task} handle_ok={this.reset}
                 close={this.reset} />
         const emails = this.props.thread.get_emails().map(
-            (email) => <EmailContainer key={email.get_id()} email={email} options_button={options_button} />).reverse();
+            (email) => <EmailContainer key={email.get_id()} email={email} options_button={options_button}
+                selected_task={this.props.selected_task} />).reverse();
         return (
             <div className='CenterDivision' >
                 <SimpleBar className="CenterSimpleBar">
@@ -75,12 +75,13 @@ class EmailContainer extends React.Component {
             <div className='EmailContainer'>
                 {EmailStamp([email.get_sender().image_link], email.date, sender_full_name)}
                 <EmailTextArea isUnread={!email.get_is_read()}
-                    content={htmlToText(email.get_content())}
-                    html_content={false}
+                    content={email.get_text()}
                     subject={email.get_subject()}
                     overflow={true}
                     options_button={this.props.options_button}
-                    tags={email.get_tags()} id={email.get_id()} />
+                    tags={email.get_tags()} id={email.get_id()}
+                    tasks={email.get_tasks()}
+                    selected_task={this.props.selected_task} />
                 <div className="mail_right_info">
                     {GroupIcon(contatcs)}
                     {AttachedFiles(email.attachments)}

@@ -1,4 +1,5 @@
 import Axios from 'axios';
+import { sleep } from '../utils.js';
 import { Email } from './Email.js';
 Axios.defaults.xsrfCookieName = 'csrftoken';
 Axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
@@ -9,9 +10,11 @@ export function get_mailbox(callback_func) {
         callback_func(emails.map(e => new Email(e)));
     }).catch((res) => {
         console.log('unable to load emails');
-        if (res.response.status === 500) {
+        console.log(res);
+        if (res.response && res.response.status === 500) {
             console.log("Server response 500, redirecting to 'signin' page");
-            window.open('http://localhost:8000/signin')
+            window.open('http://localhost:8000/signin');
+            sleep(3000);
         }
     });
 }

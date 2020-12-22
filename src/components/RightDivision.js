@@ -3,10 +3,10 @@ import './RightDivision.css';
 import { get_priority_style, get_file_icon, format_date } from '../utils.js';
 
 
-export function RightDivision(thread) {
+export function RightDivision(thread, on_task_hover) {
     return (thread ?
         <div className='RightDivision'>
-            {Tasks(thread.get_tasks())}
+            {Tasks(thread.get_tasks(), on_task_hover)}
             {Participants(thread.get_participants())}
             {FileAttachments(thread.get_attachments())}
         </div> :
@@ -14,7 +14,7 @@ export function RightDivision(thread) {
     )
 }
 
-function Tasks(tasks) {
+function Tasks(tasks, on_task_hover) {
     const finished_tasks = tasks.filter(task => task.isDone);
     const active_tasks = tasks.filter(task => !task.isDone);
     if (finished_tasks.length === 0 && active_tasks.length === 0) {
@@ -22,8 +22,8 @@ function Tasks(tasks) {
     } else {
         return (
             <div className='Container'>
-                {TasksDisplayer(active_tasks, false)}
-                {TasksDisplayer(finished_tasks, true)}
+                {TasksDisplayer(active_tasks, false, on_task_hover)}
+                {TasksDisplayer(finished_tasks, true, on_task_hover)}
             </div>
         )
     }
@@ -31,12 +31,12 @@ function Tasks(tasks) {
 
 }
 
-function TasksDisplayer(tasks, areDone) {
+function TasksDisplayer(tasks, areDone, on_hover) {
     if (tasks.length === 0) {
         return null;
     }
     const title = areDone ? "Finished Tasks" : "Priority Tasks"
-    const tasks_elements = tasks.map(task => <li className={get_priority_style(task.priority)}>
+    const tasks_elements = tasks.map(task => <li onClick={() => on_hover(task)} className={get_priority_style(task.priority)}>
         {task.text + " (" + format_date(task.deadline).date + ")"}
     </li>)
     return (

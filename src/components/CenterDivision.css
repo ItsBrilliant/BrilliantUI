@@ -2,7 +2,7 @@
 
 .CenterDivision{
     background-color: var(--email-container-background);
-    height: 100vh;
+    height: 100%;
     width: 55%;
 }
 

@@ -124,6 +124,13 @@ export function create_calendar_events(events) {
     return events
 }
 
+export function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+export function rand_int(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min;
+}
 
 
 

@@ -20,7 +20,9 @@ export class Calendar extends React.Component {
         const events = this.adjust_date_fields();
         return (
             <div className='Calendar'>
-                <ScheduleComponent height="auto" width="auto" eventSettings={{ dataSource: events }}>
+                <ScheduleComponent height="auto" width="auto" eventSettings={{ dataSource: events }}
+                    timeScale={{ enable: true, interval: 60, slotCount: 2 }}
+                    startHour='07:00' endHour='21:00'>
                     <ViewsDirective>
                         <ViewDirective option='Day'></ViewDirective>
                         <ViewDirective option='Week'></ViewDirective>

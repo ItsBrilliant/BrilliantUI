@@ -4,6 +4,7 @@ import { merge_icons, format_date } from '../utils.js';
 import { Menu } from './Menues.js'
 import parse from 'html-react-parser'
 import { htmlToText } from 'html-to-text';
+import { PRIORITY_KEY } from '../data_objects/EmailObjects';
 
 class EmailThread extends Component {
 
@@ -66,8 +67,7 @@ class EmailThread extends Component {
                 <div className={this.get_style()}>
                     {EmailStamp([selected_email.get_sender().get_icon()], selected_email.date, sender_full_name)}
                     <EmailTextArea isUnread={this.has_unread()}
-                        content={selected_email.get_content_type() === 'text' ? selected_email.get_content() : htmlToText(selected_email.get_content())}
-                        html_content={false}
+                        content={selected_email.get_text()}
                         subject={selected_email.get_subject()}
                         tags={selected_email.get_tags()} />
                     {ThreadLabels(num_tasks, has_attatchments, this.props.priority)}
@@ -117,14 +117,47 @@ export class EmailTextArea extends Component {
             return null;
         }
     }
+    // Insert task highligts
+    render_content(text) {
+        if (!this.props.tasks || this.props.tasks.length == 0) {
+            return <span>{text}</span>
+        }
+        var sections = []
+        const first_highlight = this.props.tasks[0].get_source_indexes()
+        if (first_highlight && first_highlight.start > 0) {
+            sections.push(<span>{text.slice(0, first_highlight.start)}</span>)
+        }
+        for (let i = 0; i < this.props.tasks.length; i++) {
+            const start = this.props.tasks[i].get_source_indexes().start
+            const end = this.props.tasks[i].get_source_indexes().end
+            var style = 'task_source'
+            if (this.props.tasks[i] === this.props.selected_task) {
+                style += ' selected_task'
+            }
+            sections.push(
+                <span className={style}>
+                    {text.slice(start, end)}
+                </span>)
+            const next_start = i + 1 < this.props.tasks.length ? this.props.tasks[i + 1].get_source_indexes().start : text.length;
+            if (next_start > end) {
+                sections.push(
+                    <span>
+                        {text.slice(end, next_start)}
+                    </span>)
+            }
+        }
+        return sections;
+    }
     render() {
         const subject = this.props.subject;
-        const content = this.props.html_content ? parse(this.props.content) : this.props.content;
+        const content = this.props.content;
         return (
             <div className={this.get_style()}>
                 {this.get_email_options_button()}
                 <h4>{subject + this.get_tags()}</h4>
-                {content}
+                <p>
+                    {this.render_content(content)}
+                </p>
             </div>
         );
     }

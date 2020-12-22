@@ -158,3 +158,12 @@ div.CanWait {
   padding: 0px;
   font-size: 13px;
 }
+
+.task_source {
+
+}
+
+.selected_task{
+  background-color: rgb(34, 99, 157);
+  color: rgb(11, 3, 4);
+}

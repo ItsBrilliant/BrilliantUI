@@ -44,6 +44,14 @@ ul li.CanWait::before{
   color:green;
 }
 
+ul li:hover{
+    cursor: pointer;
+}
+
+ul li:active{
+    background-color: rgb(34, 99, 157);
+}
+
 .Container{
     display: block;
     background-color: var(--email-container-background);

@@ -1,5 +1,9 @@
 import { Contact } from './Contact.js';
 import { CAN_WAIT, URGENT, IMPORTANT } from './EmailObjects.js';
+import { rand_int } from '../utils.js';
+import { Task } from './Task.js';
+import parse from 'html-react-parser'
+import { htmlToText } from 'html-to-text';
 
 export class Email {
 
@@ -8,9 +12,43 @@ export class Email {
         this.tags = tags === undefined ? [] : tags;
         this.tasks = tasks === undefined ? [] : tasks;
         this.date = new Date(this.email['sentDateTime']);
+        this.add_request_document_task()
+
+    }
+    add_request_document_task() {
+        const document_request_detection = this.email['document_request_intention_detection'];
+        if (!document_request_detection || document_request_detection.length === 0) {
+            return;
+        }
+        for (let i = 0; i < document_request_detection.length; i++) {
+            const probability = parseFloat(document_request_detection[i][2])
+            if (probability < 60) {
+                continue;
+            }
+            const start_index = parseInt(document_request_detection[i][0])
+            const text_length = parseInt(document_request_detection[i][1])
+            var task_text = `Send the document (${Math.round(probability)}%)`;
+            var task = new Task(task_text, new Date(), IMPORTANT, false, { start: start_index, end: start_index + text_length })
+            this.add_task(task);
+        }
 
     }
 
+    add_random_tasks() {
+        const abc = "abcdefghijklmnopqrstuvwxyz"
+        var len = rand_int(3, 7);
+        var name = ""
+        if (Math.random() < 0.5) {
+            for (let i = 0; i < len; i++) {
+                let index = rand_int(0, 25);
+                name += abc[index]
+            }
+            var source_indexes = { start: rand_int(0, this.get_content().length - 1) }
+            source_indexes['end'] = rand_int(source_indexes.start + 1, this.get_content().length)
+            var task = new Task(name, new Date(), IMPORTANT, false, source_indexes)
+            this.tasks.push(task)
+        }
+    }
     get_tags() {
         return this.tags
     }
@@ -37,7 +75,9 @@ export class Email {
             return CAN_WAIT;
         }
     }
-
+    get_tasks() {
+        return this.tasks;
+    }
     add_task(task) {
         this.tasks.push(task);
     }
@@ -94,9 +134,24 @@ export class Email {
     }
 
     get_content_type() {
-        return this.email['body']['contentType'];
+        return this.email['body']['contentType'].toLowerCase();
     }
-
+    get_text() {
+        const content = this.get_content();
+        if (this.get_content_type() === 'text') {
+            return content;
+        } else {
+            return htmlToText(content)
+        }
+    }
+    get_html() {
+        const content = this.get_content();
+        if (this.get_content_type() === 'html') {
+            return parse(content)
+        } else {
+            return <p>{content}</p>
+        }
+    }
     get_has_attachments() {
         return this.email['hasAttachments'];
     }
