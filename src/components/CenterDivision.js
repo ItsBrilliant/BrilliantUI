@@ -5,6 +5,8 @@ import SimpleBar from 'simplebar-react';
 import { AddTaskModal } from './AddTaskModal.js';
 import { EmailReplyModal } from './EmailReplyModal.js';
 import { GroupIcon } from './EmailThread.js'
+import { SHOW_HTML } from './Home.js'
+
 export class CenterDivision extends React.Component {
     constructor(props) {
         super(props);
@@ -71,11 +73,14 @@ class EmailContainer extends React.Component {
         const email = this.props.email;
         const contatcs = email.get_receivers().map(receiver => receiver.image_link)
         const sender_full_name = email.get_sender().get_name();
+        const is_html = SHOW_HTML && email.get_content_type() === 'html'
+        const content = is_html ? email.get_html() : email.get_text();
         return (
             <div className='EmailContainer'>
                 {EmailStamp([email.get_sender().image_link], email.date, sender_full_name)}
                 <EmailTextArea isUnread={!email.get_is_read()}
-                    content={email.get_text()}
+                    content={content}
+                    is_html={is_html}
                     subject={email.get_subject()}
                     overflow={true}
                     options_button={this.props.options_button}

@@ -4,7 +4,7 @@ import { rand_int } from '../utils.js';
 import { Task } from './Task.js';
 import parse from 'html-react-parser'
 import { htmlToText } from 'html-to-text';
-
+const REQUEST_DOCUMENT_PROBABILITY_THRESHOLD = 80;
 export class Email {
 
     constructor(email_json, tags, tasks) {
@@ -22,7 +22,7 @@ export class Email {
         }
         for (let i = 0; i < document_request_detection.length; i++) {
             const probability = parseFloat(document_request_detection[i][2])
-            if (probability < 60) {
+            if (probability < REQUEST_DOCUMENT_PROBABILITY_THRESHOLD) {
                 continue;
             }
             const start_index = parseInt(document_request_detection[i][0])

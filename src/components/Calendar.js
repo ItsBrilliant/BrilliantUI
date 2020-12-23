@@ -40,5 +40,6 @@ const event_adjustment_mapping = {
     end: "EndTime",
     subject: "Subject",
     isAllDay: "IsAllDay",
-    id: "Id"
+    id: "Id",
+    location: "Location"
 }

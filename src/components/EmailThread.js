@@ -150,14 +150,14 @@ export class EmailTextArea extends Component {
     }
     render() {
         const subject = this.props.subject;
-        const content = this.props.content;
+        const content = this.props.is_html ? this.props.content : this.render_content(this.props.content);
         return (
             <div className={this.get_style()}>
                 {this.get_email_options_button()}
                 <h4>{subject + this.get_tags()}</h4>
-                <p>
-                    {this.render_content(content)}
-                </p>
+                <div>
+                    {content}
+                </div>
             </div>
         );
     }

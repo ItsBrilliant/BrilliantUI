@@ -3,15 +3,18 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import { Main } from './Main.js'
 import './Home.css';
 import { get_calendar, get_mailbox } from '../data_objects/Connect.js';
-import { create_threads } from '../data_objects/Thread.js';
+import { expand_threads } from '../data_objects/Thread.js';
 import { Calendar } from './Calendar.js';
 import { create_calendar_events } from '../utils.js';
+
+export const SHOW_HTML = true;
 
 export class Home extends React.Component {
     constructor(props) {
         super(props);
         console.log("Started Home");
         this.update_search_bar = this.update_search_bar.bind(this);
+        this.get_mailboxes = this.get_mailboxes.bind(this)
         this.state = {
             emailThreads: {},
             calendarEvents: [],
@@ -22,12 +25,16 @@ export class Home extends React.Component {
         this.setState({ search: value });
     }
 
+    get_mailboxes() {
+        get_mailbox((emails) => this.set_threads(emails), '/inbox_react');
+        get_mailbox((emails) => this.set_threads(emails), '/get_sent_react');
+    }
     componentDidMount() {
-        get_mailbox((emails) => this.set_threads(emails));
         get_calendar((events) => this.set_calendar(events));
+        this.get_mailboxes();
     }
     set_threads(emails) {
-        this.setState({ emailThreads: create_threads(emails) });
+        this.setState({ emailThreads: expand_threads(emails) });
         //  this.setState({ selected_thread_id: Object.keys(this.emailThreads)[0] });
     }
     set_calendar(events) {
@@ -48,7 +55,7 @@ export class Home extends React.Component {
                                 path='/mail' exact
                                 render={() =>
                                     <Main emailThreads={this.state.emailThreads}
-                                        load_threads_function={() => get_mailbox((emails) => this.set_threads(emails))}
+                                        load_threads_function={this.get_mailboxes}
                                     />}>
                             </Route>
                             <Route

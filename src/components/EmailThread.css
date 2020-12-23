@@ -160,7 +160,7 @@ div.CanWait {
 }
 
 .task_source {
-
+  background-color: rgba(48, 110, 160, 0.3);
 }
 
 .selected_task{

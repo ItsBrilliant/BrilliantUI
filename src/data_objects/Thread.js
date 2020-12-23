@@ -8,7 +8,7 @@ export class Thread {
     }
     static group_functions = {};
     static sort_functions = {};
-
+    static threads = {}
     static get_group_function(group_type) {
         return Thread.group_functions[group_type];
     }
@@ -128,14 +128,13 @@ Thread.group_functions[TIME_KEY] = (thread) => {
 Thread.sort_functions[PRIORITY_KEY] = (a, b) => a.get_priority() - b.get_priority();
 Thread.sort_functions[TIME_KEY] = (a, b) => b.get_date().valueOf() - a.get_date().valueOf();
 
-export function create_threads(emails) {
-    var threads = {}
+export function expand_threads(emails) {
     for (const email of emails) {
         const thread_id = email.get_thread_id()
-        if (threads[thread_id] === undefined) {
-            threads[thread_id] = new Thread(thread_id, [])
+        if (Thread.threads[thread_id] === undefined) {
+            Thread.threads[thread_id] = new Thread(thread_id, [])
         }
-        threads[thread_id].add_email(email)
+        Thread.threads[thread_id].add_email(email)
     }
-    return threads;
+    return Thread.threads
 }
