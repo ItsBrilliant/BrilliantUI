@@ -6,6 +6,7 @@ import { get_calendar, get_mailbox } from '../backend/Connect.js';
 import { expand_threads } from '../data_objects/Thread.js';
 import { Calendar } from './calendar/Calendar.js';
 import { create_calendar_events } from '../utils.js';
+import { EmailComposer } from './EmailComposer.js';
 
 export const SHOW_HTML = true;
 
@@ -63,6 +64,10 @@ export class Home extends React.Component {
                                 render={() =>
                                     <Calendar events={this.state.calendarEvents} />}>
                             </Route>
+                            <Route
+                                path='/compose' exact
+                                component={EmailComposer}>
+                            </Route>
                         </Switch>
                     </div>
                 </div>
@@ -73,7 +78,7 @@ export class Home extends React.Component {
 
 function Nav() {
     const logo = { icon: "button_icons/logo.svg", link: '/' }
-    const brilliant_mode = { icon: "button_icons/brilliant.svg", link: '/' }
+    const brilliant_mode = { icon: "button_icons/brilliant.svg", link: '/compose' }
     const accounts = { icon: "button_icons/accounts.svg", link: '/' }
     const mail = { icon: "button_icons/mail.svg", link: '/mail' }
     const layout = { icon: "button_icons/layout.svg", link: '/' }
