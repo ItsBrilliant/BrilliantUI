@@ -1,5 +1,5 @@
 import { Contact } from './Contact.js';
-import { CAN_WAIT, URGENT, IMPORTANT } from './EmailObjects.js';
+import { CAN_WAIT, URGENT, IMPORTANT } from './Consts.js';
 import { rand_int } from '../utils.js';
 import { Task } from './Task.js';
 import parse from 'html-react-parser'

@@ -1,12 +1,13 @@
 import { GroupedThreads } from './GroupedThreads.js';
 import SimpleBar from 'simplebar-react';
 import 'simplebar/dist/simplebar.min.css';
-import Menues from './Menues';
-import { group_by_function, get_sort_function_by_type, filter_by_property } from '../utils.js';
+import Menues from '../external/Menues';
+import { group_by_function, get_sort_function_by_type, filter_by_property } from '../../utils.js';
 import './LeftDivision.css';
-import { Thread, TIME_KEY, PRIORITY_KEY } from '../data_objects/EmailObjects.js';
+import { TIME_KEY, PRIORITY_KEY } from '../../data_objects/Consts.js';
 import { Component } from 'react';
-import { person0 } from './Main.js';
+import { Thread } from '../../data_objects/Thread.js';
+import { person0 } from './Mail.js';
 
 
 export class LeftDivision extends Component {
@@ -99,6 +100,3 @@ function ScrollableThreadContainer(emailThreads, handle_select, selected_thread_
   );
 }
 
-function load_more() {
-  console.log("load_more_button clicked");
-}

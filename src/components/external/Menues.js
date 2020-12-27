@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './Menues.css';
 import Dropdown from 'react-dropdown';
-import { PRIORITY_KEY, TIME_KEY } from '../data_objects/EmailObjects.js';
+import { PRIORITY_KEY, TIME_KEY } from '../../data_objects/Consts.js';
 
 
 

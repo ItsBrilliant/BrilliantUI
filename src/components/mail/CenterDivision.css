@@ -1,4 +1,4 @@
-@import "./Globals.css";
+@import "../Globals.css";
 
 .CenterDivision{
     background-color: var(--email-container-background);

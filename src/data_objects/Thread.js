@@ -1,4 +1,4 @@
-import { Email, TIME_KEY, PRIORITY_KEY, CAN_WAIT } from "./EmailObjects";
+import { TIME_KEY, PRIORITY_KEY, CAN_WAIT } from "./Consts";
 
 export class Thread {
     constructor(id, emails) {

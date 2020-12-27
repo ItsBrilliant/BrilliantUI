@@ -1,4 +1,4 @@
-@import "./Globals.css";
+@import "../Globals.css";
 
 .menue_label {
     color: var(--main-text-color);

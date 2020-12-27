@@ -1,10 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-import { Main } from './Main.js'
+import { Mail } from './mail/Mail.js'
 import './Home.css';
-import { get_calendar, get_mailbox } from '../data_objects/Connect.js';
+import { get_calendar, get_mailbox } from '../backend/Connect.js';
 import { expand_threads } from '../data_objects/Thread.js';
-import { Calendar } from './Calendar.js';
+import { Calendar } from './calendar/Calendar.js';
 import { create_calendar_events } from '../utils.js';
 
 export const SHOW_HTML = true;
@@ -54,7 +54,7 @@ export class Home extends React.Component {
                             <Route
                                 path='/mail' exact
                                 render={() =>
-                                    <Main emailThreads={this.state.emailThreads}
+                                    <Mail emailThreads={this.state.emailThreads}
                                         load_threads_function={this.get_mailboxes}
                                     />}>
                             </Route>

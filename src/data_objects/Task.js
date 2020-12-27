@@ -1,4 +1,4 @@
-import { rand_int } from '../utils.js';
+
 export class Task {
     constructor(text, deadline, priority, isDone, source_indexes) {
         this.text = text;

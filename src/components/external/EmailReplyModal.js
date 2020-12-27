@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import './Modal.css';
 import MyModal from './Modal.js'
 import { Fragment } from 'react';
-import { create_mail_object } from '../utils';
-import { send_email } from '../data_objects/Connect.js'
+import { create_mail_object } from '../../utils';
+import { send_email } from '../../backend/Connect.js'
 
 
 export class EmailReplyModal extends Component {

@@ -1,4 +1,4 @@
-@import 'Globals.css';
+@import './Globals.css';
 
 :root {
   --link_hover_color: rgb(107,161,219);

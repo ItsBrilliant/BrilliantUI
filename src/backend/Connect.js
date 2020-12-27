@@ -1,9 +1,8 @@
 import Axios from 'axios';
-import { sleep } from '../utils.js';
-import { Email } from './Email.js';
+import { Email } from '../data_objects/Email.js';
 Axios.defaults.xsrfCookieName = 'csrftoken';
 Axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
-var REDIRECTED = false
+
 export async function get_mailbox(callback_func, url) {
     while (true) {
         try {

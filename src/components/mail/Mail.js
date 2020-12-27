@@ -1,9 +1,9 @@
 import { LeftDivision } from './LeftDivision.js';
 import { CenterDivision } from './CenterDivision.js';
 import { RightDivision } from './RightDivision.js';
-import './Main.css';
+import './Mail.css';
 import React, { Component } from 'react';
-import { Contact } from '../data_objects/Contact.js';
+import { Contact } from '../../data_objects/Contact.js';
 
 export const person0 = Contact.create_contact({
     'emailAddress': {
@@ -12,7 +12,7 @@ export const person0 = Contact.create_contact({
     }
 })
 
-export class Main extends Component {
+export class Mail extends Component {
     constructor(props) {
         super(props);
         console.log("Started Main");
@@ -34,12 +34,9 @@ export class Main extends Component {
 
 
     render() {
-        // if (this.state.selected_thread_id === undefined) {
-        //            return null;
-        //       }
         const selected_thread = this.props.emailThreads[this.state.selected_thread_id]
         return (
-            <div className='Main'>
+            <div className='Mail'>
                 <LeftDivision
                     emailThreads={this.props.emailThreads}
                     handle_select={this.handleSelect}

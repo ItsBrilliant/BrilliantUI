@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import './Modal.css';
-import { CAN_WAIT, Task, URGENT } from "../data_objects/EmailObjects.js";
+import { CAN_WAIT, URGENT } from "../../data_objects/Consts.js";
 import MyModal from './Modal.js'
 import { Fragment } from 'react';
 

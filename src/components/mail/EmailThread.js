@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 import './EmailThread.css';
-import { merge_icons, format_date } from '../utils.js';
-import { Menu } from './Menues.js'
-import parse from 'html-react-parser'
-import { htmlToText } from 'html-to-text';
-import { PRIORITY_KEY } from '../data_objects/EmailObjects';
+import { format_date } from '../../utils.js';
+import { Menu } from '../external/Menues.js'
 
 class EmailThread extends Component {
 

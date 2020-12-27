@@ -2,10 +2,10 @@ import React from 'react';
 import { EmailTextArea, EmailStamp, attachmentIcon } from './EmailThread.js';
 import './CenterDivision.css';
 import SimpleBar from 'simplebar-react';
-import { AddTaskModal } from './AddTaskModal.js';
-import { EmailReplyModal } from './EmailReplyModal.js';
+import { AddTaskModal } from '../external/AddTaskModal.js';
+import { EmailReplyModal } from '../external/EmailReplyModal.js';
 import { GroupIcon } from './EmailThread.js'
-import { SHOW_HTML } from './Home.js'
+import { SHOW_HTML } from '../Home.js'
 
 export class CenterDivision extends React.Component {
     constructor(props) {

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import './GroupedThreads.css';
 import { EmailThread } from "./EmailThread.js";
-import { PRIORITIES, URGENT, IMPORTANT, CAN_WAIT, PRIORITY_KEY, TIME_KEY } from "../data_objects/EmailObjects.js";
-import { format_date } from '../utils';
+import { PRIORITIES, URGENT, IMPORTANT, CAN_WAIT, PRIORITY_KEY, TIME_KEY } from "../../data_objects/Consts.js";
+import { format_date } from '../../utils';
 
 class GroupedThreads extends Component {
 
