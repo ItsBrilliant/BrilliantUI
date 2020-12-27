@@ -23,13 +23,19 @@
     background-color: var(--main-bg-color);
 }
 
-input{
+.Recipients input, .Subject input{
     border: 1px solid var(--main-text-color);
     border-radius: 10px;
-    padding: 5px
+    padding: 5px;
+    width: 100%;
+    background-color: var(--email-container-background);
+    color: var(--main-text-color);
+    outline: none;
 }
+
 .EmailComposer{
     background-color: var(--main-bg-color);
+
 }
 
 .subject_title_line {
@@ -43,21 +49,17 @@ input{
     margin: 2px;
 }
 
-.Subject > input {
+.Subject input {
     font-size: 16px;
     padding: 5px;
 }
 
-input:focus {
+.EmailComposer input:focus {
     border: 1px solid rgb(107, 161, 219);
 }
 
 .Subject .Dropdown-menu {
     min-width: 100px;
-}
-
-.Subject {
-    height: 20px;
 }
 
 .Subject .Menu {

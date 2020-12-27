@@ -54,16 +54,17 @@
 
 }
 
-input[type='text'] {
+.ReplyForm input[type='text'] {
     color:var(--main-text-color);
     background-color: var(--email-container-background);
     outline: none;
     width: 100%;
     height: 100%;
     vertical-align: top;
+    border: none;
 }
 
-input[type='button'], input[type='file'] {
+.ReplyForm input[type='button'], input[type='file'] {
     width: 40px;
     z-index: 3;
     background-color: transparent;

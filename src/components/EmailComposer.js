@@ -1,7 +1,7 @@
-import { attributesToProps } from 'html-react-parser';
 import React from 'react';
+import { Menu } from './external/Menues.js';
+import ReactQuillWrapper from './external/ReactQuillWrapper.js';
 import './EmailComposer.css';
-import { Menu } from './external/Menues.js'
 
 export function EmailComposer() {
     return (
@@ -11,6 +11,7 @@ export function EmailComposer() {
             <Recipients label='CC'></Recipients>
             <Recipients label='BCC'></Recipients>
             <Subject></Subject>
+            <EmailContent></EmailContent>
         </div>
     );
 }
@@ -35,4 +36,14 @@ function Subject() {
             <input type='text' placeholder=''></input>
         </div>
     );
+}
+
+
+export function EmailContent() {
+    return (
+        <div className='EmailContent'>
+            <h3>Content</h3>
+            <ReactQuillWrapper />
+        </div>
+    )
 }

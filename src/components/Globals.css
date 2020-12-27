@@ -8,3 +8,8 @@
   --email-text-area-bg: rgb(24, 30, 50);
   --link_hover_color: rgb(107,161,219);
 }
+
+input, button {
+  outline: none;
+  border: none;
+}
