@@ -103,7 +103,7 @@ export function create_mail_object(receiver_addresses, email_subject, email_cont
             },
             toRecipients: recipients
         },
-        saveToSentItems: "false"
+        saveToSentItems: "true"
     }
     return email;
 }
