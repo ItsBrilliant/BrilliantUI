@@ -2,7 +2,7 @@
 /* global React */
 /* global ReactQuill */
 import ReactQuill from 'react-quill';
-import '../../styles/quill.snow.css';
+import '../../override_styles/quill.snow.css';
 import React from 'react';
 
 if (typeof React !== 'object') {
@@ -82,6 +82,10 @@ export default class Editor extends React.Component {
     bottom_toolbar() {
         return (
             <div id="toolbar">
+                <select class="ql-font">
+                    <option value="sans-serif"></option>
+                    <option value="david"></option>
+                </select>
                 <select class="ql-size">
                     <option value="small"></option>
                     <option selected></option>
@@ -89,8 +93,10 @@ export default class Editor extends React.Component {
                     <option value="huge"></option>
                 </select>
                 <button class="ql-bold"></button>
-                <button class="ql-script" value="sub"></button>
-                <button class="ql-script" value="super"></button>
+                <button class="ql-italic"></button>
+                <button class="ql-underline"></button>
+                <button class="ql-strike"></button>
+                <select class="ql-color"></select>
             </div>
         )
 

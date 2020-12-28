@@ -1,8 +1,9 @@
 import { Component } from 'react';
 import './Modal.css';
 import { CAN_WAIT, URGENT } from "../../data_objects/Consts.js";
-import MyModal from './Modal.js'
+import MyModal from './Modal.js';
 import { Fragment } from 'react';
+import { Task } from '../../data_objects/Task.js'
 
 export class AddTaskModal extends Component {
     constructor(props) {

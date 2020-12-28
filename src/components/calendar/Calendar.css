@@ -7,7 +7,7 @@
 @import "../../../node_modules/@syncfusion/ej2-navigations/styles/material-dark.css";
 @import "../../../node_modules/@syncfusion/ej2-splitbuttons/styles/material-dark.css";
 @import "../../../node_modules/@syncfusion/ej2-popups/styles/material-dark.css";
-@import "../../../src/styles/ej2-react-schedule.css";
+@import "../../../src/override_styles/ej2-react-schedule.css";
 
 .Calendar{
     margin-left: 20px;

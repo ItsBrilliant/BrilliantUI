@@ -1,4 +1,5 @@
 import { TIME_KEY, PRIORITY_KEY, CAN_WAIT } from "./Consts";
+import { Email } from './Email.js'
 
 export class Thread {
     constructor(id, emails) {
