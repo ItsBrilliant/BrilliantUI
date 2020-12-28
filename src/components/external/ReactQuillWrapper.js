@@ -1,7 +1,7 @@
 
 /* global React */
 /* global ReactQuill */
-import ReactQuill from 'react-quill';
+import ReactQuill, { Quill } from 'react-quill';
 import '../../override_styles/quill.snow.css';
 import React from 'react';
 
@@ -13,7 +13,30 @@ if (typeof ReactQuill !== 'function') {
     alert('ReactQuill not found. Did you run "make build"?')
 }
 
+// Add fonts to whitelist and register them
+const Font = Quill.import("formats/font");
+Font.whitelist = [
+    "sans-serif",
+    "arial",
+    "comic-sans",
+    "courier-new",
+    "georgia",
+    "helvetica",
+    "lucida"
+];
+Quill.register(Font, true);
+
 var EMPTY_DELTA = { ops: [] };
+
+function handle_attach() {
+    const cursorPosition = this.quill.getSelection().index;
+    this.quill.insertText(cursorPosition, "♥");
+    this.quill.setSelection(cursorPosition + 1);
+}
+
+function handle_send() {
+    alert(this.quill.getSelection())
+}
 
 export default class Editor extends React.Component {
 
@@ -83,8 +106,10 @@ export default class Editor extends React.Component {
         return (
             <div id="toolbar">
                 <select class="ql-font">
-                    <option value="sans-serif"></option>
-                    <option value="david"></option>
+                    <option value="sans-serif">Sans-Serif</option>
+                    <option value="comic-sans">Comic Sans</option>
+                    <option value="courier-new">Courier New</option>
+                    <option value="georgia">Georgia</option>
                 </select>
                 <select class="ql-size">
                     <option value="small"></option>
@@ -97,6 +122,13 @@ export default class Editor extends React.Component {
                 <button class="ql-underline"></button>
                 <button class="ql-strike"></button>
                 <select class="ql-color"></select>
+                <select className="ql-align" />
+                <button className="ql-list" value="ordered" />
+                <button className="ql-direction" />
+                <button className="ql-image" />
+                <button className="ql-link" />
+                <button className="ql-attach" > A </button>
+                <button className="ql-send" > S </button>
             </div>
         )
 
@@ -187,7 +219,11 @@ Editor.modules = {
         // toggle to add extra line breaks when pasting HTML:
         matchVisual: false,
     },
-    toolbar: "#toolbar"
-
+    toolbar: {
+        container: "#toolbar",
+        handlers: {
+            attach: handle_attach,
+            send: handle_send
+        }
+    }
 }
-
