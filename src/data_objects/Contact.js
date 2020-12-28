@@ -38,3 +38,10 @@ export class Contact {
         return initials;
     }
 }
+
+export const person0 = Contact.create_contact({
+    'emailAddress': {
+        'address': 'dovbridger@itsbrilliant.com',
+        'name': 'Dov Bridger'
+    }
+})

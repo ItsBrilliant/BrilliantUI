@@ -3,14 +3,6 @@ import { CenterDivision } from './CenterDivision.js';
 import { RightDivision } from './RightDivision.js';
 import './Mail.css';
 import React, { Component } from 'react';
-import { Contact } from '../../data_objects/Contact.js';
-
-export const person0 = Contact.create_contact({
-    'emailAddress': {
-        'address': 'dovbridger@itsbrilliant.com',
-        'name': 'Dov Bridger'
-    }
-})
 
 export class Mail extends Component {
     constructor(props) {
@@ -31,7 +23,6 @@ export class Mail extends Component {
     handle_task_hover(task) {
         this.setState({ selected_task: task });
     }
-
 
     render() {
         const selected_thread = this.props.emailThreads[this.state.selected_thread_id]
