@@ -976,11 +976,6 @@
   font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
 }
 
-.quill, .ql-editor, .ql-container {
-  min-height: 225px;
-  background-color: var(--main-bg-color);
-}
-
 #toolbar, #toolbar span, #toolbar select, #toolbar button{
   background-color: rgb(83, 92, 123);
   color: var(--toolbar-button-color);

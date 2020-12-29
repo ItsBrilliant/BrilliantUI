@@ -6,23 +6,27 @@ import './EmailComposer.css';
 import { send_email } from '../backend/Connect.js';
 import { create_mail_object, get_priority_style_by_name } from '../utils.js';
 import { person0 } from './mail/Mail.js';
+import Draggable from 'react-draggable';
+import { attributesToProps } from 'html-react-parser';
 
 
-export function EmailComposer() {
+export function EmailComposer(props) {
     const [to, set_to] = useState([]);
     const [cc, set_cc] = useState([]);
     const [bcc, set_bcc] = useState([]);
     const [subject, set_subject] = useState("");
     const handle_send = (html) => send(to, subject, html, cc, bcc);
     return (
-        <div className='EmailComposer'>
-            <ComposeHeader />
-            <Recipients label='To' items={to} onChange={set_to}></Recipients>
-            <Recipients label='CC' items={cc} onChange={set_cc}></Recipients>
-            <Recipients label='BCC' items={bcc} onChange={set_bcc}></Recipients>
-            <Subject onChange={(e) => set_subject(e.target.value)}></Subject>
-            <EmailContent handle_send={handle_send}></EmailContent>
-        </div>
+        <Draggable handle=".EmailComposer" cancel=".EmailContent">
+            <div className='EmailComposer'>
+                <ComposeHeader on_close={props.on_close} on_send={props.on_send} />
+                <Recipients label='To' items={to} onChange={set_to}></Recipients>
+                <Recipients label='CC' items={cc} onChange={set_cc}></Recipients>
+                <Recipients label='BCC' items={bcc} onChange={set_bcc}></Recipients>
+                <Subject onChange={(e) => set_subject(e.target.value)}></Subject>
+                <EmailContent handle_send={handle_send}></EmailContent>
+            </div>
+        </Draggable>
     );
 }
 
@@ -64,7 +68,7 @@ export function EmailContent(props) {
     );
 }
 
-function ComposeHeader() {
+function ComposeHeader(props) {
     return (
         <div className="header">
             <div className="header_label">
@@ -72,6 +76,7 @@ function ComposeHeader() {
                 <span id="from_label">From</span>
             </div>
             <span id="sender_address">{person0.get_address()}</span>
+            <button id="delete">&times;</button>
         </div>
 
     );

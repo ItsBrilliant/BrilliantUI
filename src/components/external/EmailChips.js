@@ -1,5 +1,5 @@
 import React from "react";
-
+import { Contact } from '../../data_objects/Contact.js'
 import "./EmailChips.css";
 
 export class EmailChips extends React.Component {
@@ -80,7 +80,7 @@ export class EmailChips extends React.Component {
             <div id="chips_container">
                 {this.props.items.map(item => (
                     <div className="tag-item" key={item}>
-                        {item}
+                        {Contact.get_contact_name_by_address(item) || item}
                         <button
                             type="button"
                             className="button"

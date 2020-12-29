@@ -94,6 +94,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    pointer-events: none;
 }
 
 .header_label {
@@ -112,9 +113,21 @@
     font-size: larger;
 }
 
+#delete {
+    margin-left: auto;
+    background-color: transparent;
+    color: var(--main-text-color);
+    font-size: large;
+}
+
+button:hover{
+    cursor: pointer;
+}
+
 #sender_address{
     color:white;
     font-size: larger;
+    pointer-events: none;
 }
 
 .quill, .ql-editor, .ql-container {

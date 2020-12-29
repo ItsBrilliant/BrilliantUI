@@ -10,6 +10,11 @@ export class Contact {
         }
 
     }
+    static get_contact_name_by_address(address) {
+        const contact = Contact.contact_dict[address]
+        return contact ? contact.get_name() : null
+    }
+
     constructor(recipient_object, image_link) {
         this.recipient = recipient_object;
         this.image_link = image_link ? image_link : 'person_images/' + Object.keys(Contact.contact_dict).length + ".jpg";
