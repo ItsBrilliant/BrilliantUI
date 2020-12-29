@@ -84,24 +84,31 @@ export function get_file_icon(extension) {
     return 'file_icons/' + icon_name;
 }
 
-export function create_mail_object(receiver_addresses, email_subject, email_content) {
-    const recipients = receiver_addresses.map((r) => {
+export function create_mail_object(to, email_subject, email_content, content_type = "Text", cc = [], bcc = []) {
+
+    function address_to_recipeint(recipeint_address) {
         const recipeint = {
             emailAddress: {
-                address: r
+                address: recipeint_address
             }
         }
         return recipeint
-    });
+    }
+
+    const to_recipients = to.map((address) => address_to_recipeint(address));
+    const cc_recipients = cc.map((address) => address_to_recipeint(address));
+    const bcc_recipients = bcc.map((address) => address_to_recipeint(address));
 
     const email = {
         message: {
             subject: email_subject,
             body: {
-                contentType: "Text",
+                contentType: content_type,
                 content: email_content
             },
-            toRecipients: recipients
+            toRecipients: to_recipients,
+            ccRecipients: cc_recipients,
+            bccRecipients: bcc_recipients
         },
         saveToSentItems: "true"
     }

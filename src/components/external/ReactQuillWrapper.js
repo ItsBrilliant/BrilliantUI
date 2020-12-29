@@ -4,7 +4,7 @@
 import ReactQuill, { Quill } from 'react-quill';
 import '../../override_styles/quill.snow.css';
 import React from 'react';
-
+var reactQuillRef = null;
 if (typeof React !== 'object') {
     alert('React not found. Did you run "npm install"?');
 }
@@ -35,7 +35,7 @@ function handle_attach() {
 }
 
 function handle_send() {
-    alert(this.quill.getSelection())
+    this.quill.handle_send(this.quill.root.innerHTML);
 }
 
 export default class Editor extends React.Component {
@@ -50,7 +50,6 @@ export default class Editor extends React.Component {
             events: []
         };
     }
-
     formatRange(range) {
         return range
             ? [range.index, range.index + range.length].join(',')
@@ -141,9 +140,13 @@ export default class Editor extends React.Component {
     }
 
     render() {
+        const set_editor_hook = (el) => {
+            if (el && el.getEditor()) { el.getEditor().handle_send = this.props.handle_send };
+        }
         return (
             <div>
                 {this.state.enabled && <ReactQuill
+                    ref={set_editor_hook}
                     theme={this.state.theme}
                     value={this.state.value}
                     readOnly={this.state.readOnly}
