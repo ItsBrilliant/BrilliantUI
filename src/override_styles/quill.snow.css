@@ -4,6 +4,11 @@
  * Copyright (c) 2014, Jason Chen
  * Copyright (c) 2013, salesforce.com
  */
+
+ :root{
+    --toolbar-button-color: rgb(189, 200, 223);
+ }
+
 .ql-container {
   box-sizing: border-box;
   font-family: Helvetica, Arial, sans-serif;
@@ -554,20 +559,20 @@
 }
 .ql-snow .ql-stroke {
   fill: none;
-  stroke: #444;
+  stroke: var(--toolbar-button-color);
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-width: 2;
 }
 .ql-snow .ql-stroke-miter {
   fill: none;
-  stroke: #444;
+  stroke: var(--toolbar-button-color);
   stroke-miterlimit: 10;
   stroke-width: 2;
 }
 .ql-snow .ql-fill,
 .ql-snow .ql-stroke.ql-fill {
-  fill: #444;
+  fill:var(--toolbar-button-color);
 }
 .ql-snow .ql-empty {
   fill: none;
@@ -849,7 +854,7 @@
   border: 1px solid #ccc;
   box-sizing: border-box;
   font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
-  padding: 8px;
+  padding: 0px;
 }
 .ql-toolbar.ql-snow .ql-formats {
   margin-right: 15px;
@@ -969,4 +974,40 @@
 .ql-font-lucida,
 .ql-font span[data-value="lucida"]::before {
   font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+}
+
+.quill, .ql-editor, .ql-container {
+  min-height: 225px;
+  background-color: var(--main-bg-color);
+}
+
+#toolbar, #toolbar span, #toolbar select, #toolbar button{
+  background-color: rgb(83, 92, 123);
+  color: var(--toolbar-button-color);
+}
+
+.ql-attach img, .ql-send img{
+  height:20px;
+  width:100%;
+
+}
+.custom_buttons {
+    background-color: rgb(56, 65, 96);
+    margin-left: auto;
+}
+
+.ql-attach, .ql-send{
+    height:30px !important;
+    width:30px !important;
+    background-color: rgb(56, 65, 96) !important;
+}
+
+.ql-attach:hover, .ql-send:hover{
+    background-color: var(--link_hover_color) !important;
+}
+
+#toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
 }

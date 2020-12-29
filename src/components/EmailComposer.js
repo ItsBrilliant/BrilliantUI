@@ -26,7 +26,7 @@ function Recipients(props) {
 }
 
 function Subject() {
-    const options = ['None', 'Urgent', 'Important', 'Can Wait'];
+    const options = ['No Priority', 'Urgent', 'Important', 'Can Wait'];
     return (
         <div className='Subject'>
             <div className="subject_title_line">

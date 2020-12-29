@@ -20,7 +20,7 @@
     min-width:35px;
     margin-right: 5px;
     vertical-align: middle;
-    background-color: var(--main-bg-color);
+    background-color: var(--email-container-background);
 }
 
 .Recipients input, .Subject input{
@@ -28,13 +28,13 @@
     border-radius: 10px;
     padding: 5px;
     width: 100%;
-    background-color: var(--email-container-background);
+    background-color: var(--main-bg-color);
     color: var(--main-text-color);
     outline: none;
 }
 
 .EmailComposer{
-    background-color: var(--main-bg-color);
+    background-color: var(--email-container-background);
 
 }
 
@@ -45,16 +45,21 @@
     align-items: center;
 }
 
-.subject_title_line h3 {
-    margin: 2px;
+.subject_title_line h3, .EmailContent h3 {
+    margin: 2px 0px;
+    font-weight: normal;
 }
 
+.Subject {
+    margin: 20px 20px 20px 0px;
+    margin-right: 15px;
+}
 .Subject input {
     font-size: 16px;
     padding: 5px;
 }
 
-.EmailComposer input:focus {
+.EmailComposer input:focus, .ql-editor:focus {
     border: 1px solid rgb(107, 161, 219);
 }
 
@@ -62,6 +67,15 @@
     min-width: 100px;
 }
 
+.Subject .Dropdown-control {
+        background-color: transparent;
+}
+
 .Subject .Menu {
     justify-content: flex-end;
 }
+
+.EmailContent {
+
+}
+

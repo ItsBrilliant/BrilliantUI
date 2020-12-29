@@ -124,11 +124,17 @@ export default class Editor extends React.Component {
                 <select class="ql-color"></select>
                 <select className="ql-align" />
                 <button className="ql-list" value="ordered" />
-                <button className="ql-direction" />
+                <button className="ql-direction" value='rtl' />
                 <button className="ql-image" />
                 <button className="ql-link" />
-                <button className="ql-attach" > A </button>
-                <button className="ql-send" > S </button>
+                <div className="custom_buttons">
+                    <button className="ql-attach" >
+                        <img src="button_icons/files.svg"></img>
+                    </button>
+                    <button className="ql-send" >
+                        <img src="button_icons/send.png"></img>
+                    </button>
+                </div>
             </div>
         )
 
