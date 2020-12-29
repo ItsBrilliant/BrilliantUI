@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './Menues.css';
 import Dropdown from 'react-dropdown';
 import { PRIORITY_KEY, TIME_KEY } from '../../data_objects/Consts.js';
+import { attributesToProps } from 'html-react-parser';
 
 
 
@@ -18,11 +19,12 @@ export default class Menues extends Component {
 }
 
 export function Menu(props) {
+
     return (
         <div className='Menu'>
             <span>{props.label}</span>
             <div>
-                <Dropdown
+                <Dropdown className={props.style_class}
                     options={props.options}
                     value={props.value}
                     onChange={props.onChange}

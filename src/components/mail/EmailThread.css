@@ -113,15 +113,15 @@ button {
   font-weight: normal;
 }
 
-div.Urgent {
+.num_threads_label .Urgent {
   background-color: red;
 }
 
-div.Important {
+.num_threads_label .Important {
   background-color: orange;
 }
 
-div.CanWait {
+.num_threads_label .CanWait {
   background-color: green;
 }
 

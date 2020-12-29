@@ -1,4 +1,4 @@
-import { TIME_KEY, PRIORITY_KEY, URGENT, IMPORTANT, CAN_WAIT } from './data_objects/Consts.js';
+import { PRIORITIES, TIME_KEY, PRIORITY_KEY, URGENT, IMPORTANT, CAN_WAIT } from './data_objects/Consts.js';
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 export function format_date(dateOjbect) {
@@ -67,6 +67,9 @@ export function get_priority_style(priority_code) {
     }
 }
 
+export function get_priority_style_by_name(priority_name) {
+    return get_priority_style(PRIORITIES.indexOf(priority_name))
+}
 export function get_file_icon(extension) {
     var icon_name = 'attachment.png';
     if (extension === 'png' || extension === 'jpg' || extension === 'bmp' || extension === 'jpeg') {

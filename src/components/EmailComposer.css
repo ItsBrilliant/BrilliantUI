@@ -2,18 +2,18 @@
 
 .EmailComposer {
     color: var(--main-text-color);
-    border: 2px solid green;
     width: 600px;
-    padding: 0px 20px;
+    padding: 20px 20px;
     height: 600px;
+    margin: 10px;
+    border: 1px solid rgb(107, 161, 219);
 }
-
 
 .Recipients {
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin-bottom: 10px;
+    margin-top:  10px;
 }
 
 .Recipients > label{
@@ -23,13 +23,14 @@
     background-color: var(--email-container-background);
 }
 
-.Recipients input, .Subject input{
+.Recipients .input_container, .Subject input{
     border: 1px solid var(--main-text-color);
     border-radius: 10px;
     padding: 5px;
     width: 100%;
     background-color: var(--main-bg-color);
     color: var(--main-text-color);
+    display: flex;
     outline: none;
 }
 
@@ -59,7 +60,7 @@
     padding: 5px;
 }
 
-.EmailComposer input:focus, .ql-editor:focus {
+.input_container:focus, .ql-editor:focus, .Subject input:focus {
     border: 1px solid rgb(107, 161, 219);
 }
 
@@ -73,9 +74,17 @@
 
 .Subject .Menu {
     justify-content: flex-end;
-}
-
-.EmailContent {
 
 }
 
+.subject_title_line .Urgent .Dropdown-placeholder.is-selected {
+  color: red;
+}
+
+.subject_title_line .Important .Dropdown-placeholder.is-selected {
+  color: orange;
+}
+
+.subject_title_line .CanWait .Dropdown-placeholder.is-selected {
+  color: green;
+}
