@@ -5,6 +5,7 @@ import { EmailChips } from './external/EmailChips.js';
 import './EmailComposer.css';
 import { send_email } from '../backend/Connect.js';
 import { create_mail_object, get_priority_style_by_name } from '../utils.js';
+import { person0 } from './mail/Mail.js';
 
 
 export function EmailComposer() {
@@ -15,6 +16,7 @@ export function EmailComposer() {
     const handle_send = (html) => send(to, subject, html, cc, bcc);
     return (
         <div className='EmailComposer'>
+            <ComposeHeader />
             <Recipients label='To' items={to} onChange={set_to}></Recipients>
             <Recipients label='CC' items={cc} onChange={set_cc}></Recipients>
             <Recipients label='BCC' items={bcc} onChange={set_bcc}></Recipients>
@@ -59,7 +61,20 @@ export function EmailContent(props) {
             <h3>Content</h3>
             <ReactQuillWrapper handle_send={props.handle_send} />
         </div>
-    )
+    );
+}
+
+function ComposeHeader() {
+    return (
+        <div className="header">
+            <div className="header_label">
+                <img src="button_icons/mail.svg"></img>
+                <span id="from_label">From</span>
+            </div>
+            <span id="sender_address">{person0.get_address()}</span>
+        </div>
+
+    );
 }
 
 function send(to, subject, html_content, cc, bcc) {
@@ -67,4 +82,5 @@ function send(to, subject, html_content, cc, bcc) {
     //   console.log(email);
     send_email(email);
 }
+
 

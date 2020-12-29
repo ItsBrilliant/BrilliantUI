@@ -4,7 +4,7 @@ import { rand_int } from '../utils.js';
 import { Task } from './Task.js';
 import parse from 'html-react-parser'
 import { htmlToText } from 'html-to-text';
-const REQUEST_DOCUMENT_PROBABILITY_THRESHOLD = 80;
+const REQUEST_DOCUMENT_PROBABILITY_THRESHOLD = 90;
 export class Email {
 
     constructor(email_json, tags, tasks) {
