@@ -87,3 +87,7 @@
     margin-right: 10px;
     width: 20px;
 }
+
+#root {
+    z-index: 2000;
+}

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ReactDOM from 'react-dom'
 import { Menu } from './external/Menues.js';
 import ReactQuillWrapper from './external/ReactQuillWrapper.js';
 import { EmailChips } from './external/EmailChips.js';
@@ -10,6 +11,23 @@ import Draggable from 'react-draggable';
 import { attributesToProps } from 'html-react-parser';
 
 
+export function EmailComposers() {
+    const handle_close = () => { };
+    const handle_send = () => { };
+    const lst = [2, 1, 0];
+    const [focused, set_focus] = useState(0);
+    const composers = lst.map(i =>
+        <div className={focused === i ? "on_top" : undefined} onClick={e => set_focus(i)}>
+            <EmailComposer on_send={handle_send}
+                on_close={handle_close} id={lst.indexOf(i)}
+            />
+        </div>
+    );
+    return ReactDOM.createPortal(
+        composers,
+        document.getElementById('email_composer')
+    );
+}
 export function EmailComposer(props) {
     const [to, set_to] = useState([]);
     const [cc, set_cc] = useState([]);
@@ -17,14 +35,14 @@ export function EmailComposer(props) {
     const [subject, set_subject] = useState("");
     const handle_send = (html) => send(to, subject, html, cc, bcc);
     return (
-        <Draggable handle=".EmailComposer" cancel=".EmailContent">
+        <Draggable handle=".EmailComposer" cancel=".EmailContent" axis="x" defaultPosition={{ x: 50 * props.id, y: 0 }}>
             <div className='EmailComposer'>
                 <ComposeHeader on_close={props.on_close} on_send={props.on_send} />
                 <Recipients label='To' items={to} onChange={set_to}></Recipients>
                 <Recipients label='CC' items={cc} onChange={set_cc}></Recipients>
                 <Recipients label='BCC' items={bcc} onChange={set_bcc}></Recipients>
                 <Subject onChange={(e) => set_subject(e.target.value)}></Subject>
-                <EmailContent handle_send={handle_send}></EmailContent>
+                <EmailContent id={props.id} handle_send={handle_send}></EmailContent>
             </div>
         </Draggable>
     );
@@ -63,7 +81,7 @@ export function EmailContent(props) {
     return (
         <div className='EmailContent'>
             <h3>Content</h3>
-            <ReactQuillWrapper handle_send={props.handle_send} />
+            <ReactQuillWrapper id={props.id} handle_send={props.handle_send} />
         </div>
     );
 }
@@ -83,6 +101,8 @@ function ComposeHeader(props) {
 }
 
 function send(to, subject, html_content, cc, bcc) {
+    console.log("Sending mail:");
+    console.log(html_content)
     const email = create_mail_object(to, subject, html_content, 'html', cc, bcc);
     //   console.log(email);
     send_email(email);

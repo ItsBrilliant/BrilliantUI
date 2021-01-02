@@ -27,7 +27,21 @@ Font.whitelist = [
 Quill.register(Font, true);
 
 var EMPTY_DELTA = { ops: [] };
-
+function get_modules(id) {
+    return {
+        clipboard: {
+            // toggle to add extra line breaks when pasting HTML:
+            matchVisual: false,
+        },
+        toolbar: {
+            container: "#toolbar" + id,
+            handlers: {
+                attach: handle_attach,
+                send: handle_send
+            }
+        }
+    }
+}
 function handle_attach() {
     const cursorPosition = this.quill.getSelection().index;
     this.quill.insertText(cursorPosition, "♥");
@@ -49,6 +63,7 @@ export default class Editor extends React.Component {
             value: EMPTY_DELTA,
             events: []
         };
+
     }
     formatRange(range) {
         return range
@@ -103,7 +118,7 @@ export default class Editor extends React.Component {
 
     bottom_toolbar() {
         return (
-            <div id="toolbar">
+            <div id={"toolbar" + this.props.id} >
                 <select class="ql-font">
                     <option value="sans-serif">Sans-Serif</option>
                     <option value="comic-sans">Comic Sans</option>
@@ -154,7 +169,7 @@ export default class Editor extends React.Component {
                     onChangeSelection={this.onEditorChangeSelection}
                     onFocus={this.onEditorFocus}
                     onBlur={this.onEditorBlur}
-                    modules={Editor.modules}
+                    modules={get_modules(this.props.id)}
                 />
                 }
                 {this.bottom_toolbar()}
@@ -200,39 +215,5 @@ export default class Editor extends React.Component {
                 />
             </div>
         );
-    }
-}
-
-var toolbarOptions = [
-    ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-    ['blockquote', 'code-block'],
-
-    [{ 'header': 1 }, { 'header': 2 }],               // custom button values
-    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-    [{ 'script': 'sub' }, { 'script': 'super' }],      // superscript/subscript
-    [{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
-    [{ 'direction': 'rtl' }],                         // text direction
-
-    [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-
-    [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-    [{ 'font': [] }],
-    [{ 'align': [] }],
-
-    ['clean']                                         // remove formatting button
-];
-
-Editor.modules = {
-    clipboard: {
-        // toggle to add extra line breaks when pasting HTML:
-        matchVisual: false,
-    },
-    toolbar: {
-        container: "#toolbar",
-        handlers: {
-            attach: handle_attach,
-            send: handle_send
-        }
     }
 }

@@ -6,7 +6,7 @@ import { get_calendar, get_mailbox } from '../backend/Connect.js';
 import { expand_threads } from '../data_objects/Thread.js';
 import { Calendar } from './calendar/Calendar.js';
 import { create_calendar_events } from '../utils.js';
-import { EmailComposer } from './EmailComposer.js';
+import { EmailComposer, EmailComposers } from './EmailComposer.js';
 
 export const SHOW_HTML = true;
 
@@ -46,7 +46,7 @@ export class Home extends React.Component {
             <Router>
                 <div className='Home'>
                     <Nav />
-                    <div className='not_nav'>
+                    <div id="not_nav" className='not_nav'>
                         <div className='top_buttons'>
                             {SearchBar(this.state.search, this.update_search_bar)}
                             <button className='filter_button'>Filter</button>
@@ -64,13 +64,10 @@ export class Home extends React.Component {
                                 render={() =>
                                     <Calendar events={this.state.calendarEvents} />}>
                             </Route>
-                            <Route
-                                path='/compose' exact
-                                component={EmailComposer}>
-                            </Route>
                         </Switch>
                     </div>
                 </div>
+                <EmailComposers />
             </Router>
         );
     }
