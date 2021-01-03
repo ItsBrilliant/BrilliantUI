@@ -36,7 +36,7 @@
 
 .EmailComposer{
     position: absolute;
-    top: 15%;
+    top: 10%;
     left: 25%;
     background-color: var(--email-container-background);
     z-index: 100;

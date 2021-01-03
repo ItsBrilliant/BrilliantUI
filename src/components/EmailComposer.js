@@ -12,7 +12,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Delete } from '../actions/email_composer.js'
 
 
-export function EmailComposers(props) {
+export function EmailComposers() {
     const handle_send = () => { };
     const composer_names = useSelector(state => state.email_composers);
     const dispatch = useDispatch();

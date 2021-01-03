@@ -7,6 +7,8 @@ import { expand_threads } from '../data_objects/Thread.js';
 import { Calendar } from './calendar/Calendar.js';
 import { create_calendar_events } from '../utils.js';
 import { EmailComposers } from './EmailComposer.js';
+import { Create } from '../actions/email_composer.js';
+import { useDispatch } from 'react-redux';
 
 export const SHOW_HTML = true;
 
@@ -67,13 +69,14 @@ export class Home extends React.Component {
                         </Switch>
                     </div>
                 </div>
-                <EmailComposers names={['a', 'c', 'b']} />
+                <EmailComposers />
             </Router>
         );
     }
 }
 
 function Nav() {
+    const dispatch = useDispatch();
     const logo = { icon: "button_icons/logo.svg", link: '/' }
     const brilliant_mode = { icon: "button_icons/brilliant.svg", link: '/compose' }
     const accounts = { icon: "button_icons/accounts.svg", link: '/' }
@@ -84,6 +87,8 @@ function Nav() {
     const people = { icon: "button_icons/people.svg", link: '/' }
     const task = { icon: "button_icons/task.svg", link: '/' }
     const user_account = { icon: "person_images/0.jpg", link: '/' }
+
+    mail.additional = <div className="plus"><button onClick={() => dispatch(Create())}>+</button></div>
     return (
         <div className='Nav'>
             {NavCluster([logo])}
@@ -100,9 +105,15 @@ function Nav() {
 function NavCluster(icon_links) {
     return (
         <div className='NavCluster'>
-            {icon_links.map(i_l => <Link className='nav_link' to={i_l.link}>
-                <img src={i_l.icon} />
-            </Link>)}
+            {icon_links.map(i_l =>
+                <div className='nav_link'>
+                    <Link to={i_l.link}>
+                        <div></div>
+                    </Link>
+                    <img src={i_l.icon} />
+                    {i_l.additional}
+                </div>
+            )}
         </div>
     )
 }

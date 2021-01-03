@@ -16,12 +16,6 @@ const store = createStore(
 );
 
 store.dispatch(Login(person0));
-store.dispatch(Create());
-store.dispatch(Create());
-store.dispatch(Create());
-store.dispatch(Create());
-store.dispatch(Create());
-store.dispatch(Create());
 
 ReactDOM.render(
 
