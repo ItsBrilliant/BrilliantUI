@@ -6,7 +6,7 @@ import { get_calendar, get_mailbox } from '../backend/Connect.js';
 import { expand_threads } from '../data_objects/Thread.js';
 import { Calendar } from './calendar/Calendar.js';
 import { create_calendar_events } from '../utils.js';
-import { EmailComposer, EmailComposers } from './EmailComposer.js';
+import { EmailComposers } from './EmailComposer.js';
 
 export const SHOW_HTML = true;
 

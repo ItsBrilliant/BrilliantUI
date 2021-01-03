@@ -6,19 +6,19 @@ import { EmailChips } from './external/EmailChips.js';
 import './EmailComposer.css';
 import { send_email } from '../backend/Connect.js';
 import { create_mail_object, get_priority_style_by_name } from '../utils.js';
-import { person0 } from './mail/Mail.js';
+import { person0 } from '../data_objects/Contact.js';
 import Draggable from 'react-draggable';
-import { attributesToProps } from 'html-react-parser';
+import { useSelector, useDispatch } from 'react-redux';
+import { Delete } from '../actions/email_composer.js'
 
 
 export function EmailComposers(props) {
     const handle_send = () => { };
-    const [composer_names, set_composers] = useState(props.names)
-    const [focused, set_focus] = useState(0);
+    const composer_names = useSelector(state => state.email_composers);
+    const dispatch = useDispatch();
+    const [focused, set_focus] = useState(-1);
     const handle_close = (id) => {
-        var new_names = [...composer_names];
-        new_names.splice(id, 1);
-        set_composers(new_names);
+        dispatch(Delete(id));
     };
     const composers = composer_names.map(n => (
         <div className={focused === n ? "on_top" : undefined} onClick={e => set_focus(n)}>

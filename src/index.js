@@ -7,6 +7,7 @@ import { CombinedReducers } from './reducers/combined_reducers.js';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import { Login } from './actions/login';
+import { Delete, Create } from './actions/email_composer.js';
 import { person0 } from './data_objects/Contact.js';
 
 const store = createStore(
@@ -14,7 +15,14 @@ const store = createStore(
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
 
-store.dispatch(Login(person0))
+store.dispatch(Login(person0));
+store.dispatch(Create());
+store.dispatch(Create());
+store.dispatch(Create());
+store.dispatch(Create());
+store.dispatch(Create());
+store.dispatch(Create());
+
 ReactDOM.render(
 
   <React.StrictMode>
