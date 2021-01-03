@@ -5,9 +5,10 @@ import Menues from '../external/Menues';
 import { group_by_function, get_sort_function_by_type, filter_by_property } from '../../utils.js';
 import './LeftDivision.css';
 import { TIME_KEY, PRIORITY_KEY } from '../../data_objects/Consts.js';
+import { person0 } from '../../data_objects/Contact.js';
 import { Component } from 'react';
 import { Thread } from '../../data_objects/Thread.js';
-import { person0 } from './Mail.js';
+
 
 
 export class LeftDivision extends Component {

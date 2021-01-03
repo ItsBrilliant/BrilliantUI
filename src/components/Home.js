@@ -83,12 +83,16 @@ function Nav() {
     const files = { icon: "button_icons/files.svg", link: '/' }
     const people = { icon: "button_icons/people.svg", link: '/' }
     const task = { icon: "button_icons/task.svg", link: '/' }
+    const user_account = { icon: "person_images/0.jpg", link: '/' }
     return (
         <div className='Nav'>
             {NavCluster([logo])}
             {NavCluster([brilliant_mode])}
             {NavCluster([mail, task, calendar, people, files])}
             {NavCluster([layout, accounts])}
+            {<Link className='last_nav_link' to={user_account.link}>
+                <img src={user_account.icon} />
+            </Link>}
         </div>
     );
 }
