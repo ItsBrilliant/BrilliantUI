@@ -67,7 +67,7 @@ export class Home extends React.Component {
                         </Switch>
                     </div>
                 </div>
-                <EmailComposers />
+                <EmailComposers names={['a', 'c', 'b']} />
             </Router>
         );
     }

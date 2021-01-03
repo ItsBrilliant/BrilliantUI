@@ -39,11 +39,11 @@
     top: 15%;
     left: 25%;
     background-color: var(--email-container-background);
-    z-index: 1000;
+    z-index: 100;
 }
 
-.on_top *{
-    z-index: 1002;
+.on_top .EmailComposer{
+    z-index: 101;
 }
 
 .subject_title_line {
@@ -101,7 +101,6 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    pointer-events: none;
 }
 
 .header_label {
@@ -120,7 +119,7 @@
     font-size: larger;
 }
 
-#delete {
+button.delete {
     margin-left: auto;
     background-color: transparent;
     color: var(--main-text-color);

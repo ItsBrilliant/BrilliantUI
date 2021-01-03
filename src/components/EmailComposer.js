@@ -11,18 +11,22 @@ import Draggable from 'react-draggable';
 import { attributesToProps } from 'html-react-parser';
 
 
-export function EmailComposers() {
-    const handle_close = () => { };
+export function EmailComposers(props) {
     const handle_send = () => { };
-    const lst = [2, 1, 0];
+    const [composer_names, set_composers] = useState(props.names)
     const [focused, set_focus] = useState(0);
-    const composers = lst.map(i =>
-        <div className={focused === i ? "on_top" : undefined} onClick={e => set_focus(i)}>
+    const handle_close = (id) => {
+        var new_names = [...composer_names];
+        new_names.splice(id, 1);
+        set_composers(new_names);
+    };
+    const composers = composer_names.map(n => (
+        <div className={focused === n ? "on_top" : undefined} onClick={e => set_focus(n)}>
             <EmailComposer on_send={handle_send}
-                on_close={handle_close} id={lst.indexOf(i)}
+                on_close={handle_close} id={composer_names.indexOf(n)}
             />
         </div>
-    );
+    ));
     return ReactDOM.createPortal(
         composers,
         document.getElementById('email_composer')
@@ -33,11 +37,13 @@ export function EmailComposer(props) {
     const [cc, set_cc] = useState([]);
     const [bcc, set_bcc] = useState([]);
     const [subject, set_subject] = useState("");
-    const handle_send = (html) => send(to, subject, html, cc, bcc);
+    const handle_close = () => props.on_close(props.id);
+    const handle_send = (html) => { send(to, subject, html, cc, bcc); handle_close() };
+
     return (
         <Draggable handle=".EmailComposer" cancel=".EmailContent" axis="x" defaultPosition={{ x: 50 * props.id, y: 0 }}>
             <div className='EmailComposer'>
-                <ComposeHeader on_close={props.on_close} on_send={props.on_send} />
+                <ComposeHeader on_close={handle_close} />
                 <Recipients label='To' items={to} onChange={set_to}></Recipients>
                 <Recipients label='CC' items={cc} onChange={set_cc}></Recipients>
                 <Recipients label='BCC' items={bcc} onChange={set_bcc}></Recipients>
@@ -94,7 +100,7 @@ function ComposeHeader(props) {
                 <span id="from_label">From</span>
             </div>
             <span id="sender_address">{person0.get_address()}</span>
-            <button id="delete">&times;</button>
+            <button className="delete" onClick={props.on_close}>&times;</button>
         </div>
 
     );
