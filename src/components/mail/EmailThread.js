@@ -75,6 +75,35 @@ class EmailThread extends Component {
 }
 
 export class EmailTextArea extends Component {
+    constructor(props) {
+        super(props);
+        this.state = { add_task_icon: null };
+    }
+    handle_mouse_up(e) {
+        const selection = window.getSelection();
+        if (selection && selection.rangeCount > 0) {
+            const range = selection.getRangeAt(0);
+            const start_grand_parent = range.startContainer.parentElement.parentElement;
+            const end_grand_parent = range.endContainer.parentElement.parentElement;
+            if (start_grand_parent === end_grand_parent &&
+                start_grand_parent.className === "span_text_area" &&
+                range.startOffset < range.endOffset) {
+                console.log("valid");
+                console.log(range.startOffset + "," + range.endOffset);
+                return (
+                    <img className="manual_add_task" src='button_icons/task.svg'
+                        style={{
+                            position: 'fixed',
+                            top: e.pageY - 60,
+                            left: e.pageX - 20,
+                        }}
+                        onClick={() => alert("dov")}></img>
+                );
+            }
+        }
+        return null;
+    }
+
     get_style() {
         var style = 'email_text_area';
         if (this.props.isUnread) {
@@ -152,9 +181,10 @@ export class EmailTextArea extends Component {
             <div className={this.get_style()}>
                 {this.get_email_options_button()}
                 <h4>{subject + this.get_tags()}</h4>
-                <div>
+                <div className="span_text_area" onMouseUpCapture={(e) => this.setState({ add_task_icon: this.handle_mouse_up(e) })}>
                     {content}
                 </div>
+                {this.state.add_task_icon}
             </div>
         );
     }
