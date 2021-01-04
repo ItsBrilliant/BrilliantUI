@@ -82,7 +82,7 @@ class EmailContainer extends React.Component {
                     content={content}
                     is_html={is_html}
                     subject={email.get_subject()}
-                    overflow={true}
+                    of_center_email={true}
                     options_button={this.props.options_button}
                     tags={email.get_tags()} id={email.get_id()}
                     tasks={email.get_tasks()}

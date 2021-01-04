@@ -81,7 +81,9 @@ export class EmailTextArea extends Component {
     }
     handle_mouse_up(e) {
         const selection = window.getSelection();
-        if (selection && selection.rangeCount > 0) {
+        if (this.props.of_center_email && selection && selection.rangeCount > 0) {
+            //Text was selected, and it happend in the center email display (not left thread display)
+
             const range = selection.getRangeAt(0);
             const start_grand_parent = range.startContainer.parentElement.parentElement;
             const end_grand_parent = range.endContainer.parentElement.parentElement;
@@ -109,7 +111,7 @@ export class EmailTextArea extends Component {
         if (this.props.isUnread) {
             style = style + ' unread';
         }
-        if (this.props.overflow) {
+        if (this.props.of_center_email) {
             style = style + ' adjust_height_to_text';
         }
         return style;
