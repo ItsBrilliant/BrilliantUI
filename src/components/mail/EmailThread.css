@@ -169,15 +169,3 @@ button {
   color: rgb(11, 3, 4);
 }
 
-.manual_add_task {
-  width: 25px;
-  height: 25px;
-  padding: 5px;
-  border-radius: 20%;
-  background-color: var(--email-container-background);
-}
-
-.manual_add_task:hover {
-  cursor: pointer;
-  background-color: var(--link_hover_color);
-}

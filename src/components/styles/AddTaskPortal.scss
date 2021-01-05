@@ -1,0 +1,57 @@
+@import "../Globals.css";
+
+@mixin flex_row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.AddTaskPortal * {
+    margin: 2px;
+}
+
+.AddTaskPortal {
+    width: 400px;
+    background-color: var(--email-container-background);
+    z-index: 1000;
+    input {
+        background-color: transparent;
+        display: flex;
+        justify-content: flex-start;
+        margin: 5px;
+    }
+}
+
+.FooterButtons{
+    @include flex_row;
+    padding: 2px;
+    background-color: rgb(56, 65, 96);
+    .Menu .Dropdown-control {
+        background-color: transparent;
+        color: black;
+    }
+    button.create_task {
+        background-color: var(--email-container-background);
+        color: white;
+        font-size: small;
+        height: 100%;
+    }
+}
+
+.TaskContent {
+    @include flex_row;
+    input, input::placeholder {
+        background-color: var(--eamil-container-background);
+        color: white;
+        font-weight: normal;
+        width: 90%;
+        
+    }
+    img {
+        height: 30px;
+        width: 30px;
+        border-radius: 100%;
+        margin: 5px;
+    }
+}

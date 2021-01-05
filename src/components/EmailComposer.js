@@ -10,11 +10,11 @@ import { person0 } from '../data_objects/Contact.js';
 import Draggable from 'react-draggable';
 import { useSelector, useDispatch } from 'react-redux';
 import { Delete } from '../actions/email_composer.js'
+import { IMPORTANT } from '../data_objects/Consts.js';
 
 
 export function EmailComposers() {
-    const handle_send = () => { };
-    const composer_names = useSelector(state => state.email_composers);
+    const composer_names = useSelector(state => state.email);
     const dispatch = useDispatch();
     const [focused, set_focus] = useState(-1);
     const handle_close = (id) => {
@@ -22,9 +22,7 @@ export function EmailComposers() {
     };
     const composers = composer_names.map(n => (
         <div className={focused === n ? "on_top" : undefined} onClick={e => set_focus(n)}>
-            <EmailComposer on_send={handle_send}
-                on_close={handle_close} id={composer_names.indexOf(n)}
-            />
+            <EmailComposer on_close={handle_close} id={composer_names.indexOf(n)} />
         </div>
     ));
     return ReactDOM.createPortal(
@@ -67,18 +65,31 @@ function Recipients(props) {
 }
 
 function Subject(props) {
-    const options = ['No Priority', 'Urgent', 'Important', 'Can Wait'];
-    const default_selection_index = 0;
-    const [selected, set_selected] = useState(options[default_selection_index]);
-    const style_class = get_priority_style_by_name(selected);
     return (
         <div className='Subject'>
             <div className="subject_title_line">
                 <h3>Subject</h3>
-                <Menu value={selected} options={options} style_class={style_class} onChange={(sel) => set_selected(sel.value)}></Menu>
+                {<PriorityOptions default_selection={IMPORTANT} />}
             </div>
             <input type='text' placeholder='' onChange={props.onChange}></input>
         </div>
+    );
+}
+
+export function PriorityOptions(props) {
+    const options = ['Urgent', 'Important', 'Can Wait', 'No Priority'];
+    const [selected, set_selected] = useState(options[props.default_selection]);
+    const style_class = get_priority_style_by_name(selected);
+    return (
+        <Menu value={selected} options={options} style_class={style_class}
+            onChange={(sel) => {
+                set_selected(sel.value)
+                if (props && props.onChange) {
+                    props.onChange(sel.value);
+                }
+            }
+            }
+        />
     );
 }
 

@@ -86,7 +86,8 @@ class EmailContainer extends React.Component {
                     options_button={this.props.options_button}
                     tags={email.get_tags()} id={email.get_id()}
                     tasks={email.get_tasks()}
-                    selected_task={this.props.selected_task} />
+                    selected_task={this.props.selected_task}
+                    add_task={email.add_task.bind(email)} />
                 <div className="mail_right_info">
                     {GroupIcon(contatcs)}
                     {AttachedFiles(email.attachments)}

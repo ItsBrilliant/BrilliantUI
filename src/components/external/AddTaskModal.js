@@ -4,6 +4,7 @@ import { CAN_WAIT, URGENT } from "../../data_objects/Consts.js";
 import MyModal from './Modal.js';
 import { Fragment } from 'react';
 import { Task } from '../../data_objects/Task.js'
+import { PriorityOptions } from '../EmailComposer.js';
 
 export class AddTaskModal extends Component {
     constructor(props) {
@@ -50,12 +51,7 @@ function AddTaskModalBody(props) {
             <input name='task_text' className="text_input" value={props.task_text} onChange={props.handle_input_change}></input>
             <label for="task_deadline"> Deadline: </label>
             <input name='task_deadline' type='date' value={props.task_deadline} onChange={props.handle_input_change}></input>
-            <label for="task_priority"> Priority: </label>
-            <select name="task_priority" id="priority" value={props.task_priority} onChange={props.handle_input_change}>
-                <option value="0">Urgent</option>
-                <option value="1">Important</option>
-                <option value="2">Can Wait</option>
-            </select>
+            <PriorityOptions />
         </Fragment>
     );
 }

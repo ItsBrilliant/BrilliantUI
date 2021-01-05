@@ -95,3 +95,16 @@
     height: calc(100% - 60px);
     overflow-x: hidden;
 }
+
+.manual_add_task {
+  width: 25px;
+  height: 25px;
+  padding: 5px;
+  border-radius: 20%;
+  background-color: var(--email-container-background);
+}
+
+.manual_add_task:hover {
+  cursor: pointer;
+  background-color: var(--link_hover_color);
+}

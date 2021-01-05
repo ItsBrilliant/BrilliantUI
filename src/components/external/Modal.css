@@ -18,3 +18,7 @@
     height: 150px;
     padding-bottom: 24%;
 }
+
+.modal_body{
+    background-color: var(--email-container-background);
+}

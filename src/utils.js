@@ -143,4 +143,18 @@ export function rand_int(min, max) {
 }
 
 
+export function getSelectionOffsetRelativeTo(parentElement, currentNode, offset = 0) {
 
+    var prevSibling, nodeContent;
+
+    if (currentNode === parentElement) {
+        return offset;
+    }
+
+    while (prevSibling = (prevSibling || currentNode).previousSibling) {
+        nodeContent = prevSibling.innerText || prevSibling.nodeValue || "";
+        offset += nodeContent.length;
+    }
+
+    return getSelectionOffsetRelativeTo(parentElement, currentNode.parentNode, offset);
+}

@@ -1,0 +1,5 @@
+@import './im';
+
+input {
+    @include colorize(red, blue);
+}

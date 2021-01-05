@@ -1,4 +1,4 @@
-import '@trendmicro/react-modal/dist/react-modal.css';
+import './react-modal.css';
 import Modal from '@trendmicro/react-modal';
 
 
@@ -10,7 +10,7 @@ export default function ({ size = 'sm', closeModal, ...props }) {
                     {props.title}
                 </Modal.Title>
             </Modal.Header>
-            <Modal.Body padding>
+            <Modal.Body padding className="modal_body">
                 {props.modalBody}
             </Modal.Body>
             <Modal.Footer>

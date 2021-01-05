@@ -1,0 +1,103 @@
+@import url(c:\Dov\Personal\work\DD\react\BrilliantUi\src\components\Globals.css);
+.AddTaskPortal * {
+  margin: 2px;
+}
+
+.AddTaskPortal {
+  width: 400px;
+  background-color: var(--email-container-background);
+  z-index: 1000;
+}
+
+.AddTaskPortal input {
+  background-color: transparent;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  margin: 5px;
+}
+
+.FooterButtons {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 2px;
+  background-color: #384160;
+}
+
+.FooterButtons .Menu .Dropdown-control {
+  background-color: transparent;
+  color: black;
+}
+
+.FooterButtons button.create_task {
+  background-color: var(--email-container-background);
+  color: white;
+  font-size: small;
+  height: 100%;
+}
+
+.TaskContent {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.TaskContent input, .TaskContent input::-webkit-input-placeholder {
+  background-color: var(--eamil-container-background);
+  color: white;
+  font-weight: normal;
+  width: 90%;
+}
+
+.TaskContent input, .TaskContent input:-ms-input-placeholder {
+  background-color: var(--eamil-container-background);
+  color: white;
+  font-weight: normal;
+  width: 90%;
+}
+
+.TaskContent input, .TaskContent input::-ms-input-placeholder {
+  background-color: var(--eamil-container-background);
+  color: white;
+  font-weight: normal;
+  width: 90%;
+}
+
+.TaskContent input, .TaskContent input::placeholder {
+  background-color: var(--eamil-container-background);
+  color: white;
+  font-weight: normal;
+  width: 90%;
+}
+
+.TaskContent img {
+  height: 30px;
+  width: 30px;
+  border-radius: 100%;
+  margin: 5px;
+}
+/*# sourceMappingURL=AddTaskPortal.css.map */

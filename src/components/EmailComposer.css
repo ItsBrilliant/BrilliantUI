@@ -84,15 +84,15 @@
 
 }
 
-.subject_title_line .Urgent .Dropdown-placeholder.is-selected {
+.Urgent .Dropdown-placeholder.is-selected {
   color: red;
 }
 
-.subject_title_line .Important .Dropdown-placeholder.is-selected {
+.Important .Dropdown-placeholder.is-selected {
   color: orange;
 }
 
-.subject_title_line .CanWait .Dropdown-placeholder.is-selected {
+.CanWait .Dropdown-placeholder.is-selected {
   color: green;
 }
 

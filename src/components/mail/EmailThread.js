@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import './EmailThread.css';
-import { format_date } from '../../utils.js';
-import { Menu } from '../external/Menues.js'
+import { format_date, getSelectionOffsetRelativeTo } from '../../utils.js';
+import { Menu } from '../external/Menues.js';
+import { AddTaskPortal } from '../AddTaskPortal.js';
+import { Task } from '../../data_objects/Task.js';
+import { URGENT } from '../../data_objects/Consts';
 
 class EmailThread extends Component {
 
@@ -77,7 +80,47 @@ class EmailThread extends Component {
 export class EmailTextArea extends Component {
     constructor(props) {
         super(props);
-        this.state = { add_task_icon: null };
+        this.state = {
+            add_task_icon: null,
+            add_task_component: null,
+            task_args: null
+        };
+        this.handle_task_component_close = this.handle_task_component_close.bind(this)
+        this.handle_add_task = this.handle_add_task.bind(this)
+
+    }
+    handle_task_component_close() {
+        this.setState({ add_task_component: null });
+    }
+    handle_add_task(text, date, priority) {
+        this.handle_task_component_close();
+        const task_args = this.state.task_args;
+        const task_format_indexes = {
+            start: task_args.selection_indexes[0],
+            end: task_args.selection_indexes[1]
+        }
+        const task = new Task(text, date, priority, false, task_format_indexes);
+        this.props.add_task(task);
+
+    }
+
+    handle_task_icon_click(position_style, selection_indexes) {
+        this.setState(
+            {
+                add_task_icon: null,
+                add_task_component: <AddTaskPortal style={position_style}
+                    handle_ok={this.handle_add_task}
+                    handle_close={this.handle_task_component_close}
+
+                />,
+                task_args: {
+                    selection_indexes: selection_indexes,
+                    text: "",
+                    date: new Date(),
+                    priority: URGENT
+                }
+            }
+        );
     }
     handle_mouse_up(e) {
         const selection = window.getSelection();
@@ -85,21 +128,28 @@ export class EmailTextArea extends Component {
             //Text was selected, and it happend in the center email display (not left thread display)
 
             const range = selection.getRangeAt(0);
-            const start_grand_parent = range.startContainer.parentElement.parentElement;
+            const start_parent = range.startContainer.parentElement
+            const start_grand_parent = start_parent.parentElement;
             const end_grand_parent = range.endContainer.parentElement.parentElement;
             if (start_grand_parent === end_grand_parent &&
                 start_grand_parent.className === "span_text_area" &&
                 range.startOffset < range.endOffset) {
-                console.log("valid");
-                console.log(range.startOffset + "," + range.endOffset);
+                const siblings_offset = getSelectionOffsetRelativeTo(start_grand_parent, start_parent);
+                const startOffset = range.startOffset + siblings_offset;
+                const endOffset = range.endOffset + siblings_offset;
+                const top_offset = e.pageY - 60;
+                const left_offset = e.pageX - 20
+                const position_style = {
+                    position: 'fixed',
+                    top: top_offset,
+                    left: left_offset,
+                };
                 return (
                     <img className="manual_add_task" src='button_icons/task.svg'
-                        style={{
-                            position: 'fixed',
-                            top: e.pageY - 60,
-                            left: e.pageX - 20,
-                        }}
-                        onClick={() => alert("dov")}></img>
+                        style={position_style}
+                        onClick={() => this.handle_task_icon_click(position_style,
+                            [startOffset, endOffset])}>
+                    </img>
                 );
             }
         }
@@ -151,22 +201,23 @@ export class EmailTextArea extends Component {
             return <span>{text}</span>
         }
         var sections = []
-        const first_highlight = this.props.tasks[0].get_source_indexes()
+        const tasks = this.props.tasks.sort(function (a, b) { return a.get_source_indexes().start - b.get_source_indexes().start; });
+        const first_highlight = tasks[0].get_source_indexes()
         if (first_highlight && first_highlight.start > 0) {
             sections.push(<span>{text.slice(0, first_highlight.start)}</span>)
         }
-        for (let i = 0; i < this.props.tasks.length; i++) {
-            const start = this.props.tasks[i].get_source_indexes().start
-            const end = this.props.tasks[i].get_source_indexes().end
+        for (let i = 0; i < tasks.length; i++) {
+            const start = tasks[i].get_source_indexes().start
+            const end = tasks[i].get_source_indexes().end
             var style = 'task_source'
-            if (this.props.tasks[i] === this.props.selected_task) {
+            if (tasks[i] === this.props.selected_task) {
                 style += ' selected_task'
             }
             sections.push(
                 <span className={style}>
                     {text.slice(start, end)}
                 </span>)
-            const next_start = i + 1 < this.props.tasks.length ? this.props.tasks[i + 1].get_source_indexes().start : text.length;
+            const next_start = i + 1 < tasks.length ? tasks[i + 1].get_source_indexes().start : text.length;
             if (next_start > end) {
                 sections.push(
                     <span>
@@ -183,10 +234,13 @@ export class EmailTextArea extends Component {
             <div className={this.get_style()}>
                 {this.get_email_options_button()}
                 <h4>{subject + this.get_tags()}</h4>
-                <div className="span_text_area" onMouseUpCapture={(e) => this.setState({ add_task_icon: this.handle_mouse_up(e) })}>
+                <div className="span_text_area" onMouseUpCapture={this.props.of_center_email ?
+                    (e) => this.setState({ add_task_icon: this.handle_mouse_up(e) }) :
+                    null}>
                     {content}
                 </div>
                 {this.state.add_task_icon}
+                {this.state.add_task_component}
             </div>
         );
     }
