@@ -37,7 +37,7 @@ function TasksDisplayer(tasks, areDone, on_hover) {
     }
     const title = areDone ? "Finished Tasks" : "Priority Tasks"
     const tasks_elements = tasks.map(task => <li onClick={() => on_hover(task)} className={get_priority_style(task.priority)}>
-        {task.text + " (" + format_date(task.deadline).date + ")"}
+        {task.text + " (due: " + format_date(task.deadline).date + ")"}
     </li>)
     return (
         <div className='TasksDisplayer'>

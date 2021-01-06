@@ -5,6 +5,7 @@ import { Task } from './Task.js';
 import parse from 'html-react-parser'
 import { htmlToText } from 'html-to-text';
 const REQUEST_DOCUMENT_PROBABILITY_THRESHOLD = 90;
+const REQUEST_MEETING_PROBABILITY_THRESHOLD = 90;
 export class Email {
 
     constructor(email_json, tags, tasks) {
@@ -12,7 +13,8 @@ export class Email {
         this.tags = tags === undefined ? [] : tags;
         this.tasks = tasks === undefined ? [] : tasks;
         this.date = new Date(this.email['sentDateTime']);
-        this.add_request_document_task()
+        this.add_request_document_task();
+        this.add_request_meeting_task();
 
     }
     add_request_document_task() {
@@ -34,21 +36,38 @@ export class Email {
 
     }
 
-    add_random_tasks() {
-        const abc = "abcdefghijklmnopqrstuvwxyz"
-        var len = rand_int(3, 7);
-        var name = ""
-        if (Math.random() < 0.5) {
-            for (let i = 0; i < len; i++) {
-                let index = rand_int(0, 25);
-                name += abc[index]
+    add_request_meeting_task() {
+        const meeting_scheduler = this.email['meeting_scheduler'];
+        if (!meeting_scheduler || meeting_scheduler.length === 0) {
+            return;
+        }
+        for (let i = 0; i < meeting_scheduler.length; i++) {
+            const probability = parseFloat(meeting_scheduler[i][2])
+            if (probability < REQUEST_MEETING_PROBABILITY_THRESHOLD) {
+                continue;
             }
-            var source_indexes = { start: rand_int(0, this.get_content().length - 1) }
-            source_indexes['end'] = rand_int(source_indexes.start + 1, this.get_content().length)
-            var task = new Task(name, new Date(), IMPORTANT, false, source_indexes)
-            this.tasks.push(task)
+            const start_index = parseInt(meeting_scheduler[i][0])
+            const text_length = parseInt(meeting_scheduler[i][1])
+            const slots = meeting_scheduler[i].slice(3,);
+            var times = []
+            var durations = []
+            for (var slot of slots) {
+                slot = slot[0];
+                if (slot.Type === "Duration") {
+                    times.push(slot.Data.values[0]);
+                }
+                else if (slot.Type === "Time") {
+                    durations.push(slot.Data)
+                }
+
+            }
+
+            var task_text = `Setup Meeting(${Math.round(probability)}%);` + " Time: " + times.join(' | ') + "; Duration: " + durations.join(' | ') + ";";
+            var task = new Task(task_text, new Date(), URGENT, false, { start: start_index, end: start_index + text_length })
+            this.add_task(task);
         }
     }
+
     get_tags() {
         return this.tags
     }
@@ -79,7 +98,7 @@ export class Email {
         return this.tasks;
     }
     add_task(task) {
-        this.tasks.push(task);
+        this.tasks = [...this.tasks, task];
     }
 
     get_id() {
