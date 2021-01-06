@@ -5,7 +5,8 @@ import "./EmailChips.css";
 export class EmailChips extends React.Component {
     state = {
         value: "",
-        error: null
+        error: null,
+        options: []
     };
 
     handleKeyDown = evt => {
@@ -24,10 +25,14 @@ export class EmailChips extends React.Component {
     };
 
     handleChange = evt => {
+        const options = Contact.get_filtered_contacts(evt.target.value);
+        const value = options.length === 1 && evt.target.value.length > this.state.value.length ? options[0] : evt.target.value;
         this.setState({
-            value: evt.target.value,
-            error: null
+            value: value,
+            error: null,
+            options: options
         });
+        //     eventFire(document.getElementById('select_list'), 'click');
     };
 
     handleDelete = item => {
@@ -99,11 +104,23 @@ export class EmailChips extends React.Component {
                     onChange={this.handleChange}
                     onPaste={this.handlePaste}
                 />
-
+                <select id="select_list" onChange={(e) => { this.handleChange(e); }}>
+                    {this.state.options.map(o => <option value={o}>{o}</option>)}
+                </select>
 
             </div>
         );
     }
 }
 
+
+function eventFire(el, etype) {
+    if (el.fireEvent) {
+        el.fireEvent('on' + etype);
+    } else {
+        var evObj = document.createEvent('Events');
+        evObj.initEvent(etype, true, false);
+        el.dispatchEvent(evObj);
+    }
+}
 //                {this.state.error && <p className="error">{this.state.error}</p>}

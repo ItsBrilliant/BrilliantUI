@@ -6,6 +6,7 @@
   width: auto;
   color: var(--main-text-color);
   -webkit-appearance: none;
+  flex-grow: 1;
 }
 
 .input:focus {

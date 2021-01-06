@@ -34,6 +34,10 @@
     outline: none;
 }
 
+.Recipients .input_container input{
+
+}
+
 .EmailComposer{
     position: absolute;
     top: 10%;

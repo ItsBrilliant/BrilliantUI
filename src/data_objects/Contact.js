@@ -15,6 +15,11 @@ export class Contact {
         return contact ? contact.get_name() : null
     }
 
+    static get_filtered_contacts(sub_address, max_num = 7) {
+        const all_addresses = Object.keys(Contact.contact_dict);
+        return all_addresses.filter(a => a.search(sub_address) !== -1)
+    }
+
     constructor(recipient_object, image_link) {
         this.recipient = recipient_object;
         this.image_link = image_link ? image_link : 'person_images/' + Object.keys(Contact.contact_dict).length + ".jpg";
