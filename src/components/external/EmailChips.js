@@ -26,7 +26,11 @@ export class EmailChips extends React.Component {
 
     handleChange = evt => {
         const options = Contact.get_filtered_contacts(evt.target.value);
-        const value = options.length === 1 && evt.target.value.length > this.state.value.length ? options[0] : evt.target.value;
+        var value = options.length === 1 && evt.target.value.length > this.state.value.length ? options[0] : evt.target.value;
+        if (value === 0) {
+            // If the text comes from li click it is found in innerText. Fix this later
+            value = evt.target.innerText;
+        }
         this.setState({
             value: value,
             error: null,
@@ -96,7 +100,7 @@ export class EmailChips extends React.Component {
                     </div>
                 ))}
 
-                <input
+                <input autoComplete="off"
                     className={"input " + (this.state.error && " has-error")}
                     value={this.state.value}
                     placeholder=""
@@ -104,9 +108,10 @@ export class EmailChips extends React.Component {
                     onChange={this.handleChange}
                     onPaste={this.handlePaste}
                 />
-                <select id="select_list" onChange={(e) => { this.handleChange(e); }}>
-                    {this.state.options.map(o => <option value={o}>{o}</option>)}
-                </select>
+                <ul>
+                    {this.state.options.map(o => <li onClick={(e) => this.handleChange(e)}
+                        value={o}>{o}</li>)}
+                </ul>
 
             </div>
         );

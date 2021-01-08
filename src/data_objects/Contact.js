@@ -16,6 +16,9 @@ export class Contact {
     }
 
     static get_filtered_contacts(sub_address, max_num = 7) {
+        if (sub_address === "") {
+            return []
+        }
         const all_addresses = Object.keys(Contact.contact_dict);
         return all_addresses.filter(a => a.search(sub_address) !== -1)
     }

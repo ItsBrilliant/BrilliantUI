@@ -1,6 +1,6 @@
 @import "../Globals.css";
 
-.input {
+.Recipients input {
   background-color: transparent;
   border: none;
   width: auto;
@@ -9,12 +9,12 @@
   flex-grow: 1;
 }
 
-.input:focus {
+.Recipients input:focus {
   border-color: cornflowerblue;
   outline: none;
 }
 
-.input.has-error {
+input.has-error {
   color: tomato;
 }
 
@@ -33,6 +33,7 @@
     min-height: 100%;
     width: auto;
     height: auto;
+    overflow: visible;
 }
 
 .tag-item {
@@ -63,3 +64,26 @@
   align-items: center;
   justify-content: center;
 }
+
+.Recipients li::before {
+  content: none;
+  margin: 0;
+}
+
+.Recipients ul li {
+  background-color: var(--email-container-background);
+  color:cornsilk;
+}
+.Recipients ul li:hover {
+  background-color: var(--link_hover_color);
+}
+
+.Recipients ul {
+  max-height: 20px;
+  overflow: visible;
+  flex-grow: 2;
+  position: relative;
+  left: 0;
+  margin: 0;
+}
+

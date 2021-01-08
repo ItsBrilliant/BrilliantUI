@@ -5,7 +5,7 @@ import { Task } from './Task.js';
 import parse from 'html-react-parser'
 import { htmlToText } from 'html-to-text';
 const REQUEST_DOCUMENT_PROBABILITY_THRESHOLD = 90;
-const REQUEST_MEETING_PROBABILITY_THRESHOLD = 90;
+const REQUEST_MEETING_PROBABILITY_THRESHOLD = 50;
 export class Email {
 
     constructor(email_json, tags, tasks) {
@@ -61,8 +61,9 @@ export class Email {
                 }
 
             }
-
-            var task_text = `Setup Meeting(${Math.round(probability)}%);` + " Time: " + times.join(' | ') + "; Duration: " + durations.join(' | ') + ";";
+            const time_text = times.length > 0 ? " Time: " + times.join(' | ') + ";" : "";
+            const duration_text = durations.length > 0 ? " Duration: " + durations.join(' | ') + ";" : "";
+            const task_text = `Setup Meeting(${Math.round(probability)}%);` + time_text + duration_text
             var task = new Task(task_text, new Date(), URGENT, false, { start: start_index, end: start_index + text_length })
             this.add_task(task);
         }
