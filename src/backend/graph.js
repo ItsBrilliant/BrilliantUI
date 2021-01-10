@@ -12,17 +12,32 @@ module.exports = {
     return user;
   },
 
-  // <GetEventsSnippet>
+
   getEvents: async function (accessToken) {
     const client = getAuthenticatedClient(accessToken);
     const events = await client
       .api('/me/events')
-      .select('subject,organizer,start,end')
+      .select('subject,organizer,start,end,location,attendees')
       .orderby('createdDateTime DESC')
       .get();
-    return events;
+    return events.value;
+  },
+
+  getMail: async function (accessToken) {
+    const client = getAuthenticatedClient(accessToken);
+    const emails = await client
+      .api('/me/messages')
+      .orderby('createdDateTime DESC')
+      .get();
+    return emails.value;
+  },
+
+  sendMail: async function (accessToken, email) {
+    const client = getAuthenticatedClient(accessToken);
+    const res = await client.api('/me/sendMail').post(email);
+    return res;
   }
-  // </GetEventsSnippet>
+
 };
 
 function getAuthenticatedClient(accessToken) {

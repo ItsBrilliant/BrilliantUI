@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import { Mail } from './mail/Mail.js'
 import './Home.css';
-import { get_calendar, get_mailbox } from '../backend/Connect.js';
+import { get_all_mail, get_calendar, get_mailbox } from '../backend/Connect.js';
 import { expand_threads } from '../data_objects/Thread.js';
 import { Calendar } from './calendar/Calendar.js';
 import { create_calendar_events } from '../utils.js';
@@ -10,7 +10,7 @@ import { EmailComposers } from './EmailComposer.js';
 import { Create } from '../actions/email_composer.js';
 import { useDispatch } from 'react-redux';
 
-export const SHOW_HTML = true;
+export const SHOW_HTML = false;
 
 export class Home extends React.Component {
     constructor(props) {
@@ -34,8 +34,9 @@ export class Home extends React.Component {
     }
     componentDidMount() {
         get_calendar((events) => this.set_calendar(events));
-        this.get_mailboxes();
+        get_all_mail((emails) => this.set_threads(emails));
     }
+
     set_threads(emails) {
         this.setState({ emailThreads: expand_threads(emails) });
         //  this.setState({ selected_thread_id: Object.keys(this.emailThreads)[0] });

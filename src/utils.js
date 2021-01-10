@@ -128,6 +128,7 @@ export function create_calendar_events(events) {
         }
     }
     for (let event of events) {
+        event['location'] = event['location']['displayName']
         event['start'] = convert_time_zone(event['start'])
         event['end'] = convert_time_zone(event['end'])
     }
@@ -157,4 +158,13 @@ export function getSelectionOffsetRelativeTo(parentElement, currentNode, offset 
     }
 
     return getSelectionOffsetRelativeTo(parentElement, currentNode.parentNode, offset);
+}
+
+export function my_html_to_text(html) {
+    var temp = document.createElement("div");
+    temp.innerHTML = html;
+    var text = temp.textContent || temp.innerText || "";
+    var re = new RegExp("<!--[\\s\\S]*?-->", 'g')
+    var text_no_xml_comment = text.replaceAll(re, "")
+    return text_no_xml_comment.trim();
 }

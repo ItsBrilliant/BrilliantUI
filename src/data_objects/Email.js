@@ -1,9 +1,9 @@
 import { Contact } from './Contact.js';
 import { CAN_WAIT, URGENT, IMPORTANT } from './Consts.js';
-import { rand_int } from '../utils.js';
+import { rand_int, my_html_to_text } from '../utils.js';
 import { Task } from './Task.js';
 import parse from 'html-react-parser'
-import { htmlToText } from 'html-to-text';
+
 const REQUEST_DOCUMENT_PROBABILITY_THRESHOLD = 90;
 const REQUEST_MEETING_PROBABILITY_THRESHOLD = 50;
 export class Email {
@@ -161,7 +161,7 @@ export class Email {
         if (this.get_content_type() === 'text') {
             return content;
         } else {
-            return htmlToText(content)
+            return my_html_to_text(content)
         }
     }
     get_html() {
@@ -175,4 +175,5 @@ export class Email {
     get_has_attachments() {
         return this.email['hasAttachments'];
     }
+
 }

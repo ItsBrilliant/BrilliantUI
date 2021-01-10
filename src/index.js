@@ -15,7 +15,7 @@ const store = createStore(
 );
 
 store.dispatch(Login(person0));
-//var backened = required('./backend/graph/app.js')
+
 ReactDOM.render(
 
   <React.StrictMode>
