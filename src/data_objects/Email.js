@@ -107,6 +107,9 @@ export class Email {
     }
 
     get_sender() {
+        if (!this.email['sender']) {
+            return null;
+        }
         return Contact.create_contact(this.email['sender']);
     }
 

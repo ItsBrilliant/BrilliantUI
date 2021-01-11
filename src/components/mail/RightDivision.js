@@ -48,9 +48,12 @@ function TasksDisplayer(tasks, areDone, on_hover) {
 }
 
 function Participants(contacts) {
+    if (contacts.includes(null)) {
+        console.log("found null contact");
+    }
     const icons = contacts.map(contact =>
         <div>
-            <p className="contact_initials">{contact.get_initials()}</p>
+            <p className="contact_initials">{contact ? contact.get_initials() : ""}</p>
             <img src={contact.image_link} />
         </div>)
 

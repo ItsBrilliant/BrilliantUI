@@ -53,14 +53,15 @@ export class LeftDivision extends Component {
             this.props.load_threads_function,
             this.state.group_type,
             this.state.sort_type,
-            this.state.incoming)}
+            this.state.incoming,
+            this.props.user)}
         </div>
       </div>
     );
   }
 }
 
-function filter_threads(incoming, threads) {
+function filter_threads(incoming, threads, user) {
   var property = {
     name: 'receivers',
     func: email => email.get_receivers()
@@ -71,13 +72,13 @@ function filter_threads(incoming, threads) {
       func: email => email.get_sender()
     }
   }
-  var filter_function = Thread.get_filter_function(property.name, person0);
+  var filter_function = Thread.get_filter_function(property.name, user);
   return filter_by_property(Object.values(threads), property.func, filter_function);
 }
 
 function ScrollableThreadContainer(emailThreads, handle_select, selected_thread_id, load_func,
-  group_type, sort_type, incoming) {
-  const filtered_threads = filter_threads(incoming, emailThreads)
+  group_type, sort_type, incoming, user) {
+  const filtered_threads = filter_threads(incoming, emailThreads, user)
   var grouped_threads = group_by_function(filtered_threads, Thread.get_group_function(group_type));
   var sorted_group_keys = Object.keys(grouped_threads).sort(get_sort_function_by_type(group_type));
   for (let key of sorted_group_keys) {

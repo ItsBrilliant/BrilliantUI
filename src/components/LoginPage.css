@@ -1,0 +1,36 @@
+@import "./Globals.css";
+.LoginPage{
+    position: relative;
+    margin: 50px;
+    padding: 5px;
+    border: 2px solid var(--link_hover_color);
+    width:700px;
+        font-size: xx-large;
+    background-color: var(--email-container-background);
+
+}
+
+.LoginPage h2{
+    color: var(--main-text-color);
+    margin-top: 0;
+    text-align: center;
+}
+
+.LoginPage input {
+    font-size: xx-large;
+    width: calc(100% - 100px);
+         color: white;
+    background-color: var(--selected-thread-bg-color);
+
+}
+
+ .LoginPage label{
+    font-size: xx-large;
+    color: var(--main-text-color);
+
+ }
+
+  .LoginPage button {
+      background-color: rgb(0, 45, 128);
+      font-size: large;
+  }

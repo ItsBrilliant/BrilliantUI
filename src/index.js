@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-import { Home } from './components/Home.js';
+import ConnectedHome from './components/Home.js';
 import { CombinedReducers } from './reducers/combined_reducers.js';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
@@ -20,7 +20,7 @@ ReactDOM.render(
 
   <React.StrictMode>
     <Provider store={store}>
-      <Home />,
+      <ConnectedHome />,
     </Provider>,
   </React.StrictMode>,
   document.getElementById('root')

@@ -15,6 +15,7 @@ import { IMPORTANT } from '../data_objects/Consts.js';
 
 export function EmailComposers() {
     const composer_names = useSelector(state => state.email);
+    const user_address = useSelector(state => state.user.get_address());
     const dispatch = useDispatch();
     const [focused, set_focus] = useState(-1);
     const handle_close = (id) => {
@@ -22,7 +23,7 @@ export function EmailComposers() {
     };
     const composers = composer_names.map(n => (
         <div className={focused === n ? "on_top" : undefined} onClick={e => set_focus(n)}>
-            <EmailComposer on_close={handle_close} id={composer_names.indexOf(n)} />
+            <EmailComposer user_address={user_address} on_close={handle_close} id={composer_names.indexOf(n)} />
         </div>
     ));
     return ReactDOM.createPortal(
@@ -41,7 +42,7 @@ export function EmailComposer(props) {
     return (
         <Draggable handle=".EmailComposer" cancel=".EmailContent" axis="x" defaultPosition={{ x: 50 * props.id, y: 0 }}>
             <div className='EmailComposer'>
-                <ComposeHeader on_close={handle_close} />
+                <ComposeHeader on_close={handle_close} user_address={props.user_address} />
                 <Recipients label='To' items={to} onChange={set_to}></Recipients>
                 <Recipients label='CC' items={cc} onChange={set_cc}></Recipients>
                 <Recipients label='BCC' items={bcc} onChange={set_bcc}></Recipients>
@@ -110,7 +111,7 @@ function ComposeHeader(props) {
                 <img src="button_icons/mail.svg"></img>
                 <span id="from_label">From</span>
             </div>
-            <span id="sender_address">{person0.get_address()}</span>
+            <span id="sender_address">{props.user_address}</span>
             <button className="delete" onClick={props.on_close}>&times;</button>
         </div>
 
@@ -121,7 +122,6 @@ function send(to, subject, html_content, cc, bcc) {
     console.log("Sending mail:");
     console.log(html_content)
     const email = create_mail_object(to, subject, html_content, 'html', cc, bcc);
-    //   console.log(email);
     send_email(email);
 }
 

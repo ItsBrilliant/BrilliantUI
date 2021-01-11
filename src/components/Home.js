@@ -9,6 +9,10 @@ import { create_calendar_events } from '../utils.js';
 import { EmailComposers } from './EmailComposer.js';
 import { Create } from '../actions/email_composer.js';
 import { useDispatch } from 'react-redux';
+import { LoginPage } from './LoginPage.js';
+import { connect } from "react-redux";
+import { Login } from "../actions/login.js";
+import { Contact } from '../data_objects/Contact.js';
 
 export const SHOW_HTML = false;
 
@@ -28,11 +32,20 @@ export class Home extends React.Component {
         this.setState({ search: value });
     }
 
+    handle_login(user_address) {
+        console.log("new user address" + user_address);
+        this.props.Login(change_user(user_address));
+        this.setState({
+            emailThreads: {},
+            calendarEvents: []
+        });
+    }
+
     get_mailboxes() {
-        get_all_mail((emails) => this.set_threads(emails));
+        get_all_mail((emails) => this.set_threads(emails), this.props.user);
     }
     componentDidMount() {
-        get_calendar((events) => this.set_calendar(events));
+        get_calendar((events) => this.set_calendar(events), this.props.user);
         this.get_mailboxes();
     }
 
@@ -59,12 +72,18 @@ export class Home extends React.Component {
                                 render={() =>
                                     <Mail emailThreads={this.state.emailThreads}
                                         load_threads_function={this.get_mailboxes}
+                                        user={this.props.user}
                                     />}>
                             </Route>
                             <Route
                                 path='/calendar' exact
                                 render={() =>
                                     <Calendar events={this.state.calendarEvents} />}>
+                            </Route>
+                            <Route
+                                path='/login' exact
+                                render={() =>
+                                    <LoginPage user_address={this.props.user.get_address()} on_login={(new_user) => this.handle_login(new_user)} />}>
                             </Route>
                         </Switch>
                     </div>
@@ -86,8 +105,7 @@ function Nav() {
     const files = { icon: "button_icons/files.svg", link: '/' }
     const people = { icon: "button_icons/people.svg", link: '/' }
     const task = { icon: "button_icons/task.svg", link: '/' }
-    const user_account = { icon: "person_images/0.jpg", link: '/' }
-
+    const user_account = { icon: "person_images/0.jpg", link: '/login' }
     mail.additional = <div className="plus"><button onClick={() => dispatch(Create())}>+</button></div>
     return (
         <div className='Nav'>
@@ -133,3 +151,18 @@ const SearchBar = (keyword, setKeyword) => {
     );
 }
 
+function change_user(new_addresss) {
+    Contact.clear_contacts();
+    const new_user = Contact.create_contact_from_address(new_addresss);
+    return new_user;
+}
+
+const mapStateToProps = state => ({
+    user: state.user
+});
+
+const mapDispatchToProps = {
+    Login
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

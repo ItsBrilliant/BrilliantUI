@@ -72,12 +72,13 @@ class EmailContainer extends React.Component {
 
         const email = this.props.email;
         const contatcs = email.get_receivers().map(receiver => receiver.image_link)
-        const sender_full_name = email.get_sender().get_name();
+        const sender = email.get_sender()
         const is_html = SHOW_HTML && email.get_content_type() === 'html'
         const content = is_html ? email.get_html() : email.get_text();
+        const stamp = sender ? EmailStamp([sender.image_link], email.date, sender.get_name()) : null
         return (
             <div className='EmailContainer'>
-                {EmailStamp([email.get_sender().image_link], email.date, sender_full_name)}
+                {stamp}
                 <EmailTextArea isUnread={!email.get_is_read()}
                     content={content}
                     is_html={is_html}

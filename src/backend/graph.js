@@ -26,10 +26,12 @@ export const graph = {
   },
 
   getMail: async function (accessToken) {
+    const select_params = "subject,sender,body,toRecipients,ccRecipients,bccRecipients"
     const client = getAuthenticatedClient(accessToken);
     const emails = await callingPattern(client, (client) =>
       client.api('/me/messages')
         .top(1000)
+        //        .select(select_params)
         .orderby('createdDateTime DESC')
         .get());
     return emails;

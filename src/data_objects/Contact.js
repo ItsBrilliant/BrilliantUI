@@ -1,13 +1,30 @@
 export class Contact {
     static contact_dict = {};
+    static clear_contacts() {
+        Contact.contact_dict = {};
+    }
     static create_contact(recipient_object, image_link) {
         const address = recipient_object['emailAddress']['address']
-        if (Contact.contact_dict[address]) {
-            return Contact.contact_dict[address]
+        var existing_contact = Contact.contact_dict[address]
+        if (existing_contact) {
+            const name = recipient_object['emailAddress']['name'];
+            if (name && !existing_contact.get_name())
+                existing_contact.set_name(name)
+            return existing_contact
         } else {
             this.contact_dict[address] = new Contact(recipient_object, image_link)
             return this.contact_dict[address]
         }
+
+    }
+    static create_contact_from_address(address) {
+        const recipient_object = {
+            'emailAddress': {
+                'address': address,
+                'name': ''
+            }
+        }
+        return Contact.create_contact(recipient_object);
 
     }
     static get_contact_name_by_address(address) {
@@ -34,6 +51,10 @@ export class Contact {
 
     get_name() {
         return this.recipient['emailAddress']['name'];
+    }
+
+    set_name(name) {
+        this.recipient['emailAddress']['name'] = name;
     }
 
     get_icon() {
