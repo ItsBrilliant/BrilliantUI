@@ -32,7 +32,7 @@ export async function get_all_mail(callback_func, user) {
     } catch (e) {
         console.log("Error getting email messages:");
         console.log(e);
-        check_reauthenticate(e)
+        check_reauthenticate(e, user)
     }
 }
 
@@ -55,29 +55,39 @@ export async function send_email(email, user) {
 }
 
 async function get_access_token(user) {
-    var ACCESS_TOKEN = window.localStorage.getItem("ACCESS_TOKEN");
+    var ACCESS_TOKEN = window.localStorage.getItem(get_user_token_key(user));
     if (!ACCESS_TOKEN) {
         console.log("getting token");
         try {
             const res = await Axios.post('/token/auth/get_token',
                 { email_address: user.get_address() });
             ACCESS_TOKEN = res.data;
-            window.localStorage.setItem("ACCESS_TOKEN", ACCESS_TOKEN);
+            window.localStorage.setItem(get_user_token_key(user), ACCESS_TOKEN);
             console.log("got token:");
             console.log(res);
         } catch (e) {
             console.log("Error getting token:");
             console.log(e);
-            console.log(e.response && e.response.data)
+            // Set an invalid token
+            ACCESS_TOKEN = "e123"
+            //          open_popup_login_window();
         }
     }
     return ACCESS_TOKEN;
 }
 
-function check_reauthenticate(e) {
+function check_reauthenticate(e, user) {
     if (e.body && JSON.parse(e.body).code === "InvalidAuthenticationToken") {
-        window.localStorage.removeItem("ACCESS_TOKEN");
-        window.open('/token', "token_window")
-        sleep(2000);
+        window.localStorage.removeItem(get_user_token_key(user));
+        open_popup_login_window();
     }
+}
+
+function open_popup_login_window() {
+    window.open('/token', "token_window")
+    sleep(2000);
+}
+
+function get_user_token_key(user) {
+    return "ACCESS_TOKEN-" + user.get_address();
 }
