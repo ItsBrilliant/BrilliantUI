@@ -73,9 +73,4 @@ export class Contact {
     }
 }
 
-export const person0 = Contact.create_contact({
-    'emailAddress': {
-        'address': 'dovbridger@itsbrilliant.com',
-        'name': 'Dov Bridger'
-    }
-})
+export const person0 = Contact.create_contact_from_address(window.localStorage.getItem("user") || "");

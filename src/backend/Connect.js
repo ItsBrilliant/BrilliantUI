@@ -89,5 +89,5 @@ function open_popup_login_window() {
 }
 
 function get_user_token_key(user) {
-    return "ACCESS_TOKEN-" + user.get_address();
+    return "ACCESS_TOKEN";
 }

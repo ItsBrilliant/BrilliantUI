@@ -1,8 +1,8 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Link, Redirect } from 'react-router-dom';
 import { Mail } from './mail/Mail.js'
 import './Home.css';
-import { get_all_mail, get_calendar, get_mailbox } from '../backend/Connect.js';
+import { get_all_mail, get_calendar } from '../backend/Connect.js';
 import { expand_threads } from '../data_objects/Thread.js';
 import { Calendar } from './calendar/Calendar.js';
 import { create_calendar_events } from '../utils.js';
@@ -25,7 +25,7 @@ export class Home extends React.Component {
         this.state = {
             emailThreads: {},
             calendarEvents: [],
-            search: ""
+            search: "",
         };
     }
     update_search_bar(value) {
@@ -34,19 +34,34 @@ export class Home extends React.Component {
 
     handle_login(user_address) {
         console.log("new user address" + user_address);
-        this.props.Login(change_user(user_address));
         this.setState({
             emailThreads: {},
-            calendarEvents: []
+            calendarEvents: [],
         });
+        this.change_user(user_address);
     }
 
     get_mailboxes() {
         get_all_mail((emails) => this.set_threads(emails), this.props.user);
     }
     componentDidMount() {
-        get_calendar((events) => this.set_calendar(events), this.props.user);
-        this.get_mailboxes();
+        this.load_user_data();
+    }
+    componentDidUpdate() {
+        this.load_user_data();
+    }
+    load_user_data() {
+        if (this.props.user.get_address()) {
+            get_calendar((events) => this.set_calendar(events), this.props.user);
+            this.get_mailboxes();
+        }
+    }
+    change_user(new_addresss) {
+        window.localStorage.removeItem("ACCESS_TOKEN");
+        window.localStorage.setItem("user", new_addresss);
+        Contact.clear_contacts();
+        const new_user = Contact.create_contact_from_address(new_addresss);
+        this.props.Login(new_user);
     }
 
     set_threads(emails) {
@@ -57,6 +72,7 @@ export class Home extends React.Component {
         this.setState({ calendarEvents: create_calendar_events(events) });
     }
     render() {
+        const user_address = this.props.user.get_address();
         return (
             <Router>
                 <div className='Home'>
@@ -67,6 +83,9 @@ export class Home extends React.Component {
                             <button className='filter_button'>Filter</button>
                         </div>
                         <Switch>
+                            <Route path='/' exact>
+                                {user_address ? null : <Redirect to="login" />}
+                            </Route>
                             <Route
                                 path='/mail' exact
                                 render={() =>
@@ -83,7 +102,7 @@ export class Home extends React.Component {
                             <Route
                                 path='/login' exact
                                 render={() =>
-                                    <LoginPage user_address={this.props.user.get_address()} on_login={(new_user) => this.handle_login(new_user)} />}>
+                                    <LoginPage user_address={user_address} on_login={(new_user_address) => this.handle_login(new_user_address)} />}>
                             </Route>
                         </Switch>
                     </div>
@@ -149,12 +168,6 @@ const SearchBar = (keyword, setKeyword) => {
             />
         </div>
     );
-}
-
-function change_user(new_addresss) {
-    Contact.clear_contacts();
-    const new_user = Contact.create_contact_from_address(new_addresss);
-    return new_user;
 }
 
 const mapStateToProps = state => ({
