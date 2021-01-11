@@ -29,12 +29,11 @@ export class Home extends React.Component {
     }
 
     get_mailboxes() {
-        get_mailbox((emails) => this.set_threads(emails), '/inbox_react');
-        get_mailbox((emails) => this.set_threads(emails), '/get_sent_react');
+        get_all_mail((emails) => this.set_threads(emails));
     }
     componentDidMount() {
         get_calendar((events) => this.set_calendar(events));
-        get_all_mail((emails) => this.set_threads(emails));
+        this.get_mailboxes();
     }
 
     set_threads(emails) {

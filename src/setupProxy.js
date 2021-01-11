@@ -11,21 +11,4 @@ module.exports = function (app) {
             },
         })
     );
-    app.use(
-        '/graph',
-        createProxyMiddleware({
-            target: 'http://graph.microsoft.com',
-            changeOrigin: true,
-            pathRewrite: {
-                '^/graph': ""
-            },
-        })
-    );
-    app.use(
-        '/.*',
-        createProxyMiddleware({
-            target: 'http:/login.microsoftonline.com',
-            changeOrigin: true,
-        })
-    );
 };

@@ -1,6 +1,6 @@
 import Axios from 'axios';
 import { Email } from '../data_objects/Email.js';
-import graph from './graph.js';
+import { graph } from './graph.js';
 import { person0 } from '../data_objects/Contact.js'
 Axios.defaults.xsrfCookieName = 'csrftoken';
 Axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
@@ -49,7 +49,6 @@ export async function get_calendar(callback_func) {
 }
 
 export async function send_email(email) {
-    //Axios.post('/sendmail_react', email).then(res => console.log(res));
     console.log("sending email");
     const res = await graph.sendMail(ACCESS_TOKEN, email);
     console.log(res)
@@ -67,6 +66,7 @@ async function get_access_token() {
         } catch (e) {
             console.log("Error getting token:");
             console.log(e);
+            console.log(e.response && e.response.data)
         }
     }
 }

@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
-
-var graph = require('@microsoft/microsoft-graph-client');
+import { callingPattern } from './graph_utils.js';
+var GRAPH = require('@microsoft/microsoft-graph-client');
 require('isomorphic-fetch');
 
-module.exports = {
+export const graph = {
   getUserDetails: async function (accessToken) {
     const client = getAuthenticatedClient(accessToken);
 
@@ -15,21 +15,24 @@ module.exports = {
 
   getEvents: async function (accessToken) {
     const client = getAuthenticatedClient(accessToken);
-    const events = await client
-      .api('/me/events')
-      .select('subject,organizer,start,end,location,attendees')
-      .orderby('createdDateTime DESC')
-      .get();
-    return events.value;
+    const events = await callingPattern(client, (client) =>
+      client.api('/me/events')
+        .top(1000)
+        .select('subject,organizer,start,end,location,attendees')
+        .orderby('createdDateTime DESC')
+        .get());
+    ;
+    return events;
   },
 
   getMail: async function (accessToken) {
     const client = getAuthenticatedClient(accessToken);
-    const emails = await client
-      .api('/me/messages')
-      .orderby('createdDateTime DESC')
-      .get();
-    return emails.value;
+    const emails = await callingPattern(client, (client) =>
+      client.api('/me/messages')
+        .top(1000)
+        .orderby('createdDateTime DESC')
+        .get());
+    return emails;
   },
 
   sendMail: async function (accessToken, email) {
@@ -42,7 +45,7 @@ module.exports = {
 
 function getAuthenticatedClient(accessToken) {
   // Initialize Graph client
-  const client = graph.Client.init({
+  const client = GRAPH.Client.init({
     // Use the provided access token to authenticate
     // requests
     authProvider: (done) => {
