@@ -25,7 +25,7 @@ export const graph = {
     return events;
   },
 
-  getMail: async function (accessToken) {
+  getMail: async function (accessToken, update_function) {
     const select_params = "subject,sender,body,toRecipients,ccRecipients,bccRecipients"
     const client = getAuthenticatedClient(accessToken);
     const emails = await callingPattern(client, (client) =>
@@ -33,7 +33,7 @@ export const graph = {
         .top(1000)
         //        .select(select_params)
         .orderby('createdDateTime DESC')
-        .get());
+        .get(), update_function);
     return emails;
   },
 

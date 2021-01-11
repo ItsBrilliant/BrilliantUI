@@ -27,9 +27,10 @@ export async function get_mailbox(callback_func, url) {
 export async function get_all_mail(callback_func, user) {
     try {
         const ACCESS_TOKEN = await get_access_token(user);
-        const emails = await graph.getMail(ACCESS_TOKEN);
+        const emails = await graph.getMail(ACCESS_TOKEN)
         callback_func(emails.map(e => new Email(e)));
-    } catch (e) {
+    }
+    catch (e) {
         console.log("Error getting email messages:");
         console.log(e);
         check_reauthenticate(e, user)
@@ -77,9 +78,14 @@ async function get_access_token(user) {
 }
 
 function check_reauthenticate(e, user) {
-    if (e.body && JSON.parse(e.body).code === "InvalidAuthenticationToken") {
-        window.localStorage.removeItem(get_user_token_key(user));
-        open_popup_login_window();
+    try {
+        if (e.body && JSON.parse(e.body).code === "InvalidAuthenticationToken") {
+            window.localStorage.removeItem(get_user_token_key(user));
+            open_popup_login_window();
+        }
+    }
+    catch {
+        console.log(e)
     }
 }
 
