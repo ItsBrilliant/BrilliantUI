@@ -4,6 +4,7 @@ import { graph } from './graph.js';
 import { sleep } from '../utils.js';
 Axios.defaults.xsrfCookieName = 'csrftoken';
 Axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
+https = require('https')
 
 export async function get_mailbox(callback_func, url) {
     while (true) {
@@ -74,7 +75,14 @@ async function get_access_token(user) {
         console.log("getting token");
         try {
             const res = await Axios.post('/token/auth/get_token',
-                { email_address: user.get_address() });
+                { email_address: user.get_address() },
+                {
+                    httpsAgent: new https.Agent(
+                        {
+                            rejectUnauthorized: false
+                        }
+                    )
+                });
             ACCESS_TOKEN = res.data;
             window.localStorage.setItem(get_user_token_key(user), ACCESS_TOKEN);
             console.log("got token:");
