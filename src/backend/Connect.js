@@ -2,7 +2,6 @@ import Axios from 'axios';
 import { Email } from '../data_objects/Email.js';
 import { graph } from './graph.js';
 import { sleep } from '../utils.js';
-const https = require('https');
 Axios.defaults.xsrfCookieName = 'csrftoken';
 Axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 
