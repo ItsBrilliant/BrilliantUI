@@ -17,7 +17,7 @@ export const graph = {
     const client = getAuthenticatedClient(accessToken);
     const events = await callingPattern(client, (client) =>
       client.api('/me/events')
-        .top(1000)
+        .top(100)
         .select('subject,organizer,start,end,location,attendees')
         .orderby('createdDateTime DESC')
         .get());
@@ -30,7 +30,7 @@ export const graph = {
     const client = getAuthenticatedClient(accessToken);
     const emails = await callingPattern(client, (client) =>
       client.api('/me/messages')
-        .top(1000)
+        .top(100)
         //        .select(select_params)
         .orderby('createdDateTime DESC')
         .get(), update_function);

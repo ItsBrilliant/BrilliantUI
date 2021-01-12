@@ -28,7 +28,7 @@ export async function get_all_mail(callback_func, user) {
     try {
         const ACCESS_TOKEN = await get_access_token(user);
         const emails = await graph.getMail(ACCESS_TOKEN)
-        callback_func(emails.map(e => new Email(e)));
+        callback_func(emails.map(e => new Email(e)), user);
     }
     catch (e) {
         console.log("Error getting email messages:");
@@ -41,7 +41,7 @@ export async function get_calendar(callback_func, user) {
     try {
         const ACCESS_TOKEN = await get_access_token(user);
         const events = await graph.getEvents(ACCESS_TOKEN);
-        callback_func(events);
+        callback_func(events, user);
     } catch (e) {
         console.log("Error getting events:");
         console.log(e);

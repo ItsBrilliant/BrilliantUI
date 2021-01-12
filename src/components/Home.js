@@ -34,26 +34,22 @@ export class Home extends React.Component {
 
     handle_login(user_address) {
         console.log("new user address" + user_address);
+        const new_user = this.change_user(user_address);
         this.setState({
             emailThreads: {},
             calendarEvents: [],
         });
-        this.change_user(user_address);
+        this.load_user_data(new_user)
     }
 
-    get_mailboxes() {
-        get_all_mail((emails) => this.set_threads(emails), this.props.user);
+    get_mailboxes(user) {
+        get_all_mail((emails, initial_user) => this.set_threads(emails, initial_user), user);
     }
-    componentDidMount() {
-        this.load_user_data();
-    }
-    componentDidUpdate() {
-        this.load_user_data();
-    }
-    load_user_data() {
-        if (this.props.user.get_address()) {
-            get_calendar((events) => this.set_calendar(events), this.props.user);
-            this.get_mailboxes();
+
+    load_user_data(user) {
+        if (user.get_address()) {
+            get_calendar((events, initial_user) => this.set_calendar(events, initial_user), user);
+            this.get_mailboxes(user);
         }
     }
     change_user(new_addresss) {
@@ -62,14 +58,16 @@ export class Home extends React.Component {
         Contact.clear_contacts();
         const new_user = Contact.create_contact_from_address(new_addresss);
         this.props.Login(new_user);
+        return new_user
     }
 
-    set_threads(emails) {
-        this.setState({ emailThreads: expand_threads(emails) });
-        //  this.setState({ selected_thread_id: Object.keys(this.emailThreads)[0] });
+    set_threads(emails, user) {
+        this.setState((state, props) =>
+            (props.user.equals(user) ? { emailThreads: expand_threads(emails) } : {}));
     }
-    set_calendar(events) {
-        this.setState({ calendarEvents: create_calendar_events(events) });
+    set_calendar(events, user) {
+        this.setState((state, props) =>
+            (props.user.equals(user) ? { calendarEvents: create_calendar_events(events) } : {}));
     }
     render() {
         const user_address = this.props.user.get_address();
@@ -90,7 +88,7 @@ export class Home extends React.Component {
                                 path='/mail' exact
                                 render={() =>
                                     <Mail emailThreads={this.state.emailThreads}
-                                        load_threads_function={this.get_mailboxes}
+                                        load_threads_function={() => this.get_mailboxes(this.props.user)}
                                         user={this.props.user}
                                     />}>
                             </Route>
