@@ -75,16 +75,7 @@ async function get_access_token(user) {
         console.log("getting token");
         try {
             const res = await Axios.post('/token/auth/get_token',
-                { email_address: user.get_address() },
-                {
-                    httpsAgent: new https.Agent(
-                        {
-                            strictSSL: false,
-                            rejectUnauthorized: false,
-                            ca: cert
-                        }
-                    )
-                });
+                { email_address: user.get_address() });
             ACCESS_TOKEN = res.data;
             window.localStorage.setItem(get_user_token_key(user), ACCESS_TOKEN);
             console.log("got token:");
