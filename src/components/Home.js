@@ -27,8 +27,15 @@ export class Home extends React.Component {
             emailThreads: {},
             calendarEvents: [],
             search: "",
-            mailFolders: {}
+            mailFolders: Home.generate_empty_folders()
         };
+    }
+    static generate_empty_folders() {
+        var mailFolders = {}
+        for (const folder of MAIL_FOLDERS) {
+            mailFolders[folder] = null;
+        }
+        return mailFolders;
     }
     update_search_bar(value) {
         this.setState({ search: value });
@@ -40,7 +47,7 @@ export class Home extends React.Component {
         this.setState({
             emailThreads: {},
             calendarEvents: [],
-            mailFolders: {}
+            mailFolders: Home.generate_empty_folders()
         });
         this.load_user_data(new_user)
     }
@@ -149,6 +156,7 @@ export class Home extends React.Component {
                                     <Mail emailThreads={this.state.emailThreads}
                                         load_threads_function={() => this.get_mailboxes(this.props.user)}
                                         user={this.props.user}
+                                        folders={this.state.mailFolders}
                                     />}>
                             </Route>
                             <Route

@@ -33,7 +33,9 @@ export class Mail extends Component {
                     handle_select={this.handleSelect}
                     selected_thread_id={this.state.selected_thread_id}
                     load_threads_function={this.props.load_threads_function}
-                    user={this.props.user} />
+                    user={this.props.user}
+                    folders={this.props.folders}
+                />
                 <CenterDivision thread={selected_thread} selected_task={this.state.selected_task} />
                 {RightDivision(selected_thread, this.handle_task_hover)}
             </div>

@@ -136,6 +136,10 @@ export class Email {
         return this.date;
     }
 
+    get_folder_id() {
+        return this.email['parentFolderId'];
+    }
+
     get_thread_id() {
         return this.email['conversationId']
     }

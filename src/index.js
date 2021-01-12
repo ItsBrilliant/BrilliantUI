@@ -20,8 +20,8 @@ ReactDOM.render(
 
   <React.StrictMode>
     <Provider store={store}>
-      <ConnectedHome />,
-    </Provider>,
+      <ConnectedHome />
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );

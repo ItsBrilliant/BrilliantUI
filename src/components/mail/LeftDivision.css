@@ -34,3 +34,20 @@
 .SimpleBar2 {
   height: 100%;
 }
+
+.MailFolders{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.MailFolders button {
+  background-color: var(--selected-thread-bg-color);
+  margin: 5px;
+  width: 50px;
+  color: var(--main-text-color)
+}
+
+.MailFolders button.selected {
+  color:white
+}
