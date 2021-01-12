@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route, Link, Redirect } from 'react-router-dom';
 import { Mail } from './mail/Mail.js'
 import './Home.css';
-import { get_all_mail, get_calendar } from '../backend/Connect.js';
+import { get_all_mail, get_calendar, get_mail_folders } from '../backend/Connect.js';
 import { expand_threads } from '../data_objects/Thread.js';
 import { Calendar } from './calendar/Calendar.js';
 import { create_calendar_events } from '../utils.js';
@@ -13,6 +13,7 @@ import { LoginPage } from './LoginPage.js';
 import { connect } from "react-redux";
 import { Login } from "../actions/login.js";
 import { Contact } from '../data_objects/Contact.js';
+import { MAIL_FOLDERS } from '../data_objects/Consts.js';
 
 export const SHOW_HTML = false;
 
@@ -26,6 +27,7 @@ export class Home extends React.Component {
             emailThreads: {},
             calendarEvents: [],
             search: "",
+            mailFolders: {}
         };
     }
     update_search_bar(value) {
@@ -38,6 +40,7 @@ export class Home extends React.Component {
         this.setState({
             emailThreads: {},
             calendarEvents: [],
+            mailFolders: {}
         });
         this.load_user_data(new_user)
     }
@@ -47,11 +50,13 @@ export class Home extends React.Component {
         get_all_mail((emails, initial_user) => this.set_threads(emails, initial_user), user);
     }
 
+
     load_user_data(user) {
         console.log("loading user data")
         if (user.get_address()) {
             console.log("getting calendar")
             get_calendar((events, initial_user) => this.set_calendar(events, initial_user), user);
+            get_mail_folders((folders, initial_user) => this.set_mail_folders(folders, initial_user), user);
             this.get_mailboxes(user);
         }
     }
@@ -62,6 +67,36 @@ export class Home extends React.Component {
         const new_user = Contact.create_contact_from_address(new_addresss);
         this.props.Login(new_user);
         return new_user
+    }
+    set_mail_folders(folders, initial_user) {
+        const update_function = (folders) => {
+            var my_folders = {}
+            for (const folder of folders) {
+                if (MAIL_FOLDERS.includes(folder['displayName'])) {
+                    my_folders[folder['displayName']] = folder['id'];
+                }
+            }
+            return my_folders;
+        }
+        this.update_user_data(folders, initial_user, 'mailFolders', update_function);
+    }
+
+    update_user_data(data, user, update_field, update_function) {
+        var same_user = false;
+        this.setState(
+            function (state, props) {
+                if (props.user.equals(user)) {
+                    same_user = true;
+                    const new_state = {}
+                    new_state[update_field] = update_function(data);
+                    return new_state;
+                }
+                else {
+                    return {};
+                }
+            })
+        console.log(update_field + ": same user is " + same_user);
+        return same_user;
     }
 
     set_threads(emails, user) {

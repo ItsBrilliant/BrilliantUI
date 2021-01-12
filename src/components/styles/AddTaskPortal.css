@@ -1,4 +1,4 @@
-@import url(c:\Dov\Personal\work\DD\react\BrilliantUi\src\components\Globals.css);
+@import '../Globals.css';
 .AddTaskPortal * {
   margin: 2px;
 }

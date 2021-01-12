@@ -25,6 +25,16 @@ export const graph = {
     return events;
   },
 
+  getMailFolders: async function (accessToken) {
+    const client = getAuthenticatedClient(accessToken);
+    const folders = await callingPattern(client, (client) =>
+      client.api('/me/mailFolders')
+        .top(100)
+        .get());
+    ;
+    return folders;
+  },
+
   getMail: async function (accessToken, update_function) {
     const select_params = "subject,sender,body,toRecipients,ccRecipients,bccRecipients"
     const client = getAuthenticatedClient(accessToken);

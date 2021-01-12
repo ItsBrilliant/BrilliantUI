@@ -50,6 +50,17 @@ export async function get_calendar(callback_func, user) {
     }
 }
 
+export async function get_mail_folders(callback_func, user) {
+    try {
+        const ACCESS_TOKEN = await get_access_token(user);
+        const folders = await graph.getMailFolders(ACCESS_TOKEN);
+        callback_func(folders, user);
+    } catch (e) {
+        console.log("Error getting mail folders:");
+        console.log(e);
+    }
+}
+
 export async function send_email(email, user) {
     const ACCESS_TOKEN = await get_access_token(user);
     console.log("sending email");
