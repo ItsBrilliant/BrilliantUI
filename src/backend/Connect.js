@@ -2,9 +2,10 @@ import Axios from 'axios';
 import { Email } from '../data_objects/Email.js';
 import { graph } from './graph.js';
 import { sleep } from '../utils.js';
+const https = require('https');
+const fs = require('fs')
 Axios.defaults.xsrfCookieName = 'csrftoken';
 Axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
-https = require('https')
 
 export async function get_mailbox(callback_func, url) {
     while (true) {
@@ -79,7 +80,9 @@ async function get_access_token(user) {
                 {
                     httpsAgent: new https.Agent(
                         {
-                            rejectUnauthorized: false
+                            strictSSL: false,
+                            rejectUnauthorized: false,
+                            ca: fs.readFileSync('../token_server/cert.pem')
                         }
                     )
                 });
@@ -111,7 +114,7 @@ function check_reauthenticate(e, user) {
 }
 
 function open_popup_login_window() {
-    window.open('/token', "token_window")
+    //  window.open('/token', "token_window")
     sleep(2000);
 }
 
