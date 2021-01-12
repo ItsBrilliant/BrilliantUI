@@ -120,6 +120,9 @@ export function create_mail_object(to, email_subject, email_content, content_typ
 
 export function create_calendar_events(events) {
     function convert_time_zone(d) {
+        if (!d.timeZone) {
+            return d;
+        }
         if (d.timeZone === 'UTC') {
             return new Date(d.dateTime + 'Z')
         }

@@ -7,7 +7,7 @@ import React, { Component } from 'react';
 export class Mail extends Component {
     constructor(props) {
         super(props);
-        console.log("Started Main");
+        console.log("Started Mail");
         this.state = {
             selected_thread_id: undefined,
             selected_task_index: -1

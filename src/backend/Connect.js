@@ -29,6 +29,8 @@ export async function get_all_mail(callback_func, user) {
         const ACCESS_TOKEN = await get_access_token(user);
         const emails = await graph.getMail(ACCESS_TOKEN)
         callback_func(emails.map(e => new Email(e)), user);
+        //      const update_func = (data => callback_func([new Email(data)], user))
+        await graph.getMail(ACCESS_TOKEN)
     }
     catch (e) {
         console.log("Error getting email messages:");

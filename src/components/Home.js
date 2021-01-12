@@ -43,11 +43,14 @@ export class Home extends React.Component {
     }
 
     get_mailboxes(user) {
+        console.log("getting all mail")
         get_all_mail((emails, initial_user) => this.set_threads(emails, initial_user), user);
     }
 
     load_user_data(user) {
+        console.log("loading user data")
         if (user.get_address()) {
+            console.log("getting calendar")
             get_calendar((events, initial_user) => this.set_calendar(events, initial_user), user);
             this.get_mailboxes(user);
         }
@@ -62,13 +65,34 @@ export class Home extends React.Component {
     }
 
     set_threads(emails, user) {
-        this.setState((state, props) =>
-            (props.user.equals(user) ? { emailThreads: expand_threads(emails) } : {}));
+        var same_user = false;
+        this.setState(
+            function (state, props) {
+                if (props.user.equals(user)) {
+                    same_user = true;
+                    return { emailThreads: expand_threads(emails) };
+                }
+                else {
+                    return {};
+                }
+            })
+        console.log("set_threads: same user is " + same_user);
+        return same_user;
     }
     set_calendar(events, user) {
-        this.setState((state, props) =>
-            (props.user.equals(user) ? { calendarEvents: create_calendar_events(events) } : {}));
+        var same_user = false
+        this.setState(function (state, props) {
+            if (props.user.equals(user)) {
+                same_user = true;
+                return { calendarEvents: create_calendar_events(events) };
+            } else {
+                return {};
+            }
+        })
+        console.log("set_calendar: same user is " + same_user);
+        return same_user
     }
+
     render() {
         const user_address = this.props.user.get_address();
         return (
