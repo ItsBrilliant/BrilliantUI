@@ -25,6 +25,13 @@ export class Email {
     get_attachments_names() {
         return Object.keys(this.attachments_dict);
     }
+
+    get_attachments() {
+        return this.get_attachments_names().map(name => ({
+            name: name,
+            id: this.attachments_dict[name]
+        }))
+    }
     get_attachemnt_id(name) {
         return this.attachments_dict[name];
     }

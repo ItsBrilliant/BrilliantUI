@@ -91,7 +91,7 @@ class EmailContainer extends React.Component {
                     add_task={email.add_task.bind(email)} />
                 <div className="mail_right_info">
                     {GroupIcon(contatcs)}
-                    {AttachedFiles(email.get_attachments_names())}
+                    {AttachedFiles(email.get_attachments())}
                 </div>
             </div>
         );
@@ -100,9 +100,9 @@ class EmailContainer extends React.Component {
 
 function AttachedFile(attachment) {
     return (
-        <div className='AttachedFile'>
+        <div className='AttachedFile' onClick={() => alert(attachment.id)}>
             {attachmentIcon()}
-            <p>{attachment}</p>
+            <p>{attachment.name}</p>
         </div>
     );
 }

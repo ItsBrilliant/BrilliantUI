@@ -25,6 +25,9 @@ export async function get_mailbox(callback_func, url) {
 }
 
 export async function append_email_attachments(emails, user) {
+    if (!emails) {
+        return;
+    }
     for (const email of emails) {
         if (email.get_has_attachments()) {
             try {
