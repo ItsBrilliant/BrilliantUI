@@ -91,7 +91,7 @@ class EmailContainer extends React.Component {
                     add_task={email.add_task.bind(email)} />
                 <div className="mail_right_info">
                     {GroupIcon(contatcs)}
-                    {AttachedFiles(email.attachments)}
+                    {AttachedFiles(email.get_attachments_names())}
                 </div>
             </div>
         );

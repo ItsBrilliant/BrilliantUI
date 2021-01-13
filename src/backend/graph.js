@@ -46,6 +46,13 @@ export const graph = {
         .get(), update_function);
     return emails;
   },
+  getAttachmentsList: async function (accessToken, email_id) {
+    const client = getAuthenticatedClient(accessToken);
+    const attachemnts_list = await client.api(`/me/messages/${email_id}/attachments`)
+      .top(100)
+      .get();
+    return attachemnts_list;
+  },
 
   sendMail: async function (accessToken, email) {
     const client = getAuthenticatedClient(accessToken);

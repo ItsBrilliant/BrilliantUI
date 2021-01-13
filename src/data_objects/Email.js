@@ -15,7 +15,18 @@ export class Email {
         this.date = new Date(this.email['sentDateTime']);
         this.add_request_document_task();
         this.add_request_meeting_task();
+        this.attachments_dict = {}
 
+    }
+
+    set_attachments_dict(attachments_dict) {
+        this.attachments_dict = attachments_dict;
+    }
+    get_attachments_names() {
+        return Object.keys(this.attachments_dict);
+    }
+    get_attachemnt_id(name) {
+        return this.attachments_dict[name];
     }
     add_request_document_task() {
         const document_request_detection = this.email['document_request_intention_detection'];

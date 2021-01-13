@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route, Link, Redirect } from 'react-router-dom';
 import { Mail } from './mail/Mail.js'
 import './Home.css';
-import { get_all_mail, get_calendar, get_mail_folders } from '../backend/Connect.js';
+import { get_all_mail, get_calendar, get_mail_folders, append_email_attachments } from '../backend/Connect.js';
 import { expand_threads } from '../data_objects/Thread.js';
 import { Calendar } from './calendar/Calendar.js';
 import { create_calendar_events } from '../utils.js';
@@ -52,9 +52,10 @@ export class Home extends React.Component {
         this.load_user_data(new_user)
     }
 
-    get_mailboxes(user) {
+    async get_mailboxes(user) {
         console.log("getting all mail")
-        get_all_mail((emails, initial_user) => this.set_threads(emails, initial_user), user);
+        const emails = await get_all_mail((emails, initial_user) => this.set_threads(emails, initial_user), user);
+        append_email_attachments(emails, user)
     }
 
 

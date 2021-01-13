@@ -24,13 +24,38 @@ export async function get_mailbox(callback_func, url) {
     }
 }
 
+export async function append_email_attachments(emails, user) {
+    for (const email of emails) {
+        if (email.get_has_attachments()) {
+            try {
+                const ACCESS_TOKEN = await get_access_token(user);
+                const attachments_list = await graph.getAttachmentsList(ACCESS_TOKEN, email.get_id())
+                const reducer = (acumulator, current) => {
+                    acumulator[current.name] = current.id;
+                    return acumulator;
+                }
+                email.set_attachments_dict(attachments_list.value.reduce(reducer, {}));
+            }
+            catch (e) {
+                handle_graph_error("Error getting email attachemnts list:", e, user);
+            }
+        }
+    }
+}
+
+function handle_graph_error(msg, e, user) {
+    console.log(msg);
+    console.log(e);
+    check_reauthenticate(e, user)
+}
+
 export async function get_all_mail(callback_func, user) {
     try {
         const ACCESS_TOKEN = await get_access_token(user);
         const emails = await graph.getMail(ACCESS_TOKEN)
-        callback_func(emails.map(e => new Email(e)), user);
-        //      const update_func = (data => callback_func([new Email(data)], user))
-        await graph.getMail(ACCESS_TOKEN)
+        const email_objects = emails.map(e => new Email(e))
+        callback_func(email_objects, user);
+        return email_objects;
     }
     catch (e) {
         console.log("Error getting email messages:");

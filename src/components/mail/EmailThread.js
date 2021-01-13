@@ -30,7 +30,7 @@ class EmailThread extends Component {
     }
     get_has_attachments() {
         for (const email of this.props.thread.get_emails()) {
-            if (email.attachments !== undefined && email.attachments.length > 0) {
+            if (email.get_attachments_names().length > 0) {
                 return true;
             }
         }
