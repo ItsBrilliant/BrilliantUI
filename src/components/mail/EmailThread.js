@@ -231,9 +231,17 @@ export class EmailTextArea extends Component {
     render() {
         const subject = this.props.subject;
         const content = this.props.is_html ? this.props.content : this.render_content(this.props.content);
+        const header = this.props.of_center_email ?
+            <div className="header">
+                <h4>{this.props.sender_name}</h4>
+                <div className="GroupIconWrapper">
+                    {GroupIcon(this.props.contacts)}
+                </div>
+            </div> : null;
+        // {this.get_email_options_button()}
         return (
             <div className={this.get_style()}>
-                {this.get_email_options_button()}
+                {header}
                 <h4>{subject + this.get_tags()}</h4>
                 <div className="span_text_area" onMouseUpCapture={this.props.of_center_email ?
                     (e) => this.setState({ add_task_icon: this.handle_mouse_up(e) }) :
@@ -275,9 +283,9 @@ export function TimeStamp(date) {
 }
 
 export function EmailStamp(icons, date, name) {
+    //            <h4>{name}</h4>
     return (
         <div className='emailStamp'>
-            <h4>{name}</h4>
             {GroupIcon(icons)}
             {TimeStamp(date)}
         </div>
@@ -285,8 +293,12 @@ export function EmailStamp(icons, date, name) {
 }
 
 export function GroupIcon(icons) {
+    var img_style = "threadIcon";
+    if (icons.length > 1) {
+        img_style = img_style + " multi"
+    }
     const MAX_ICONS = 3;
-    const merged = icons.slice(0, MAX_ICONS).map((icon) => <img className='threadIcon' src={icon}></img>);
+    const merged = icons.slice(0, MAX_ICONS).map((icon) => <img className={img_style} src={icon}></img>);
     var extra_icons = icons.length - MAX_ICONS;
     const plus = extra_icons > 0 ? <h1 className="threadIcon">{"+" + extra_icons}</h1> : null;
     return (

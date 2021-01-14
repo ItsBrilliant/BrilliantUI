@@ -23,8 +23,11 @@
   border-radius: 100%;
   height: 50px;
   width: 50px;
-  margin-bottom: 3px;
   margin: 2px;
+}
+
+.threadIcon.multi {
+  border: 2px solid black;
 }
 h1.threadIcon {
   font-size: larger;
@@ -40,7 +43,7 @@ h1.threadIcon {
     flex-direction: column;
     align-items: center;
     font-size: small;
-    margin: 5px;
+    margin: 2px;
     color: var(--main-text-color);
     justify-content: flex-start;
     overflow: hidden;
@@ -145,13 +148,25 @@ button {
   visibility: hidden;
 }
 
-.GroupIcon{
-  max-width: 100px;
-  margin-left: auto;
-  margin-right: auto;
-  justify-content: start;
+.email_text_area .header .GroupIconWrapper{
+  display: flex;
+  padding-right:10px;
+  padding-top: 10px;
+  flex-direction: row;
+  justify-content: flex-end;
+  flex-grow: 1;
+}
+
+.email_text_area .header .GroupIconWrapper .GroupIcon{
+  width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fit,  minmax(10px, max-content)) ;
+  justify-content: flex-end;
+  grid-template-columns: repeat(auto-fit, 30px);
+}
+
+.email_text_area .header{
+  display: flex;
+  justify-content:flex-end;
 }
 
 .TimeStamp p{

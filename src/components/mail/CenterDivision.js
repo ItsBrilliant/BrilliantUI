@@ -71,7 +71,7 @@ class EmailContainer extends React.Component {
     render() {
 
         const email = this.props.email;
-        const contatcs = email.get_receivers().map(receiver => receiver.image_link)
+        const contacts = email.get_receivers().map(receiver => receiver.image_link)
         const sender = email.get_sender()
         const is_html = SHOW_HTML && email.get_content_type() === 'html'
         const content = is_html ? email.get_html() : email.get_text();
@@ -80,6 +80,7 @@ class EmailContainer extends React.Component {
             <div className='EmailContainer'>
                 {stamp}
                 <EmailTextArea isUnread={!email.get_is_read()}
+                    sender_name={sender ? sender.get_name() : null}
                     content={content}
                     is_html={is_html}
                     subject={email.get_subject()}
@@ -88,9 +89,9 @@ class EmailContainer extends React.Component {
                     tags={email.get_tags()} id={email.get_id()}
                     tasks={email.get_tasks()}
                     selected_task={this.props.selected_task}
-                    add_task={email.add_task.bind(email)} />
+                    add_task={email.add_task.bind(email)}
+                    contacts={contacts} />
                 <div className="mail_right_info">
-                    {GroupIcon(contatcs)}
                     {AttachedFiles(email.get_attachments())}
                 </div>
             </div>
