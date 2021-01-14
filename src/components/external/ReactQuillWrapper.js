@@ -4,6 +4,9 @@
 import ReactQuill, { Quill } from 'react-quill';
 import '../../override_styles/quill.snow.css';
 import React from 'react';
+import { attributesToProps } from 'html-react-parser';
+import { ComposerAttachments } from './QuillUtils.js'
+
 var reactQuillRef = null;
 if (typeof React !== 'object') {
     alert('React not found. Did you run "npm install"?');
@@ -61,7 +64,8 @@ export default class Editor extends React.Component {
             enabled: true,
             readOnly: false,
             value: EMPTY_DELTA,
-            events: []
+            events: [],
+            files: []
         };
 
     }
@@ -116,6 +120,14 @@ export default class Editor extends React.Component {
         this.setState({ value: 'This is some <b>fine</b> example content' });
     }
 
+    set_files(files) {
+        this.setState((state, props) => { return { files: [...state.files, ...files] }; })
+    }
+
+    remove_file(file) {
+        this.setState(function (state, props) { return { files: state.files.filter(f => f != file) }; })
+    }
+
     bottom_toolbar() {
         return (
             <div id={"toolbar" + this.props.id} >
@@ -142,9 +154,12 @@ export default class Editor extends React.Component {
                 <button className="ql-image" />
                 <button className="ql-link" />
                 <div className="custom_buttons">
-                    <button className="ql-attach" >
-                        <img src="button_icons/files.svg"></img>
-                    </button>
+                    <span className='ql-attach'>
+                        <label for="file_upload" className="ql_attach">
+                            <img src="button_icons/files.svg" />
+                        </label>
+                        <input id="file_upload" type="file" multiple onChange={(e) => this.set_files(e.target.files)} />
+                    </span>
                     <button className="ql-send" >
                         <img src="button_icons/send.png"></img>
                     </button>
@@ -172,7 +187,10 @@ export default class Editor extends React.Component {
                     modules={get_modules(this.props.id)}
                 />
                 }
-                {this.bottom_toolbar()}
+                <ComposerAttachments files={Object.values(this.state.files)}
+                    on_delete={(file) => this.remove_file(file)}
+                />
+                { this.bottom_toolbar()}
             </div>
         );
     }
@@ -217,3 +235,4 @@ export default class Editor extends React.Component {
         );
     }
 }
+

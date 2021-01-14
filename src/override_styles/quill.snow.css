@@ -407,7 +407,8 @@
   display: table;
 }
 .ql-snow.ql-toolbar button,
-.ql-snow .ql-toolbar button {
+.ql-snow .ql-toolbar button,
+.custom_buttons span {
   background: none;
   border: none;
   cursor: pointer;
