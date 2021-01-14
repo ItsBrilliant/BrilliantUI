@@ -87,7 +87,7 @@ export function get_file_icon(extension) {
     return 'file_icons/' + icon_name;
 }
 
-export function create_mail_object(to, email_subject, email_content, content_type = "Text", cc = [], bcc = []) {
+export function create_mail_object(to, email_subject, email_content, content_type = "Text", cc = [], bcc = [], attachment_buffers = []) {
 
     function address_to_recipeint(recipeint_address) {
         const recipeint = {
@@ -98,11 +98,25 @@ export function create_mail_object(to, email_subject, email_content, content_typ
         return recipeint
     }
 
+    function file_buffer_to_attachment(file) {
+        var attachment =
+        {
+            name: file.name,
+            contentType: file.type,
+            contentBytes: btoa(file.buffer)
+        }
+        attachment["@odata.type"] = "#microsoft.graph.fileAttachment";
+        return attachment;
+
+    }
+
     const to_recipients = to.map((address) => address_to_recipeint(address));
     const cc_recipients = cc.map((address) => address_to_recipeint(address));
     const bcc_recipients = bcc.map((address) => address_to_recipeint(address));
+    const attachments = attachment_buffers.map(file =>
+        file_buffer_to_attachment(file));
 
-    const email = {
+    var email = {
         message: {
             subject: email_subject,
             body: {
@@ -114,6 +128,9 @@ export function create_mail_object(to, email_subject, email_content, content_typ
             bccRecipients: bcc_recipients
         },
         saveToSentItems: "true"
+    }
+    if (attachments) {
+        email.message.attachments = attachments;
     }
     return email;
 }

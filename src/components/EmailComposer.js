@@ -36,9 +36,26 @@ export function EmailComposer(props) {
     const [cc, set_cc] = useState([]);
     const [bcc, set_bcc] = useState([]);
     const [subject, set_subject] = useState("");
+    const [files, set_files] = useState([]);
+    const [file_buffers, set_buffers] = useState({})
     const handle_close = () => props.on_close(props.id);
-    const handle_send = (html) => { send(to, subject, html, cc, bcc); handle_close() };
+    const handle_send = (html) => { send(to, subject, html, cc, bcc, file_buffers, files); handle_close() };
+    function my_set_files(files) {
+        set_files(files);
+        upload_files(files, my_set_buffers);
+    }
+    function my_set_buffers(file, new_buffer) {
+        set_buffers(old_buffers => {
+            var new_buffers = old_buffers;
+            new_buffers[file.name] = new_buffer;
+            return new_buffers;
+        });
+    }
+    function remove_file(file) {
+        set_files(Object.values(files).filter(f => f !== file))
+        my_set_buffers(file, undefined)
 
+    }
     return (
         <Draggable handle=".EmailComposer" cancel=".EmailContent" axis="x" defaultPosition={{ x: 50 * props.id, y: 0 }}>
             <div className='EmailComposer'>
@@ -47,11 +64,17 @@ export function EmailComposer(props) {
                 <Recipients label='CC' items={cc} onChange={set_cc}></Recipients>
                 <Recipients label='BCC' items={bcc} onChange={set_bcc}></Recipients>
                 <Subject onChange={(e) => set_subject(e.target.value)}></Subject>
-                <EmailContent id={props.id} handle_send={handle_send}></EmailContent>
+                <EmailContent id={props.id} handle_send={handle_send}
+                    files={files}
+                    set_files={my_set_files}
+                    remove_file={remove_file}
+                ></EmailContent>
             </div>
         </Draggable>
     );
 }
+
+
 
 function Recipients(props) {
     return (
@@ -99,7 +122,11 @@ export function EmailContent(props) {
     return (
         <div className='EmailContent'>
             <h3>Content</h3>
-            <ReactQuillWrapper id={props.id} handle_send={props.handle_send} />
+            <ReactQuillWrapper id={props.id}
+                files={props.files}
+                set_files={props.set_files}
+                remove_file={props.remove_file}
+                handle_send={props.handle_send} />
         </div>
     );
 }
@@ -118,11 +145,31 @@ function ComposeHeader(props) {
     );
 }
 
-function send(to, subject, html_content, cc, bcc) {
+function send(to, subject, html_content, cc, bcc, file_buffers, files) {
     console.log("Sending mail:");
     console.log(html_content)
-    const email = create_mail_object(to, subject, html_content, 'html', cc, bcc);
+    const attachment_buffers = Object.values(files).map(f => {
+        return {
+            name: f.name,
+            type: f.type,
+            buffer: file_buffers[f.name]
+        }
+    });
+    const email = create_mail_object(to, subject, html_content, 'html', cc, bcc, attachment_buffers);
     send_email(email);
 }
 
+function upload_files(files, my_set_buffers) {
+    function prog(e) {
+        if (e.loaded && e.total) {
+            const percent = (e.loaded / e.total) * 100;
+            console.log(`Progress: ${Math.round(percent)}`);
+        }
+    }
+    for (const file of files) {
+        var reader = new FileReader()
+        reader.onload = (evt) => my_set_buffers(file, evt.target.result);
+        reader.readAsBinaryString(file);
+    }
+}
 

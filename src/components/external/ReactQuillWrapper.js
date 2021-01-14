@@ -65,7 +65,6 @@ export default class Editor extends React.Component {
             readOnly: false,
             value: EMPTY_DELTA,
             events: [],
-            files: []
         };
 
     }
@@ -120,14 +119,6 @@ export default class Editor extends React.Component {
         this.setState({ value: 'This is some <b>fine</b> example content' });
     }
 
-    set_files(files) {
-        this.setState((state, props) => { return { files: [...state.files, ...files] }; })
-    }
-
-    remove_file(file) {
-        this.setState(function (state, props) { return { files: state.files.filter(f => f != file) }; })
-    }
-
     bottom_toolbar() {
         return (
             <div id={"toolbar" + this.props.id} >
@@ -158,7 +149,7 @@ export default class Editor extends React.Component {
                         <label for="file_upload" className="ql_attach">
                             <img src="button_icons/files.svg" />
                         </label>
-                        <input id="file_upload" type="file" multiple onChange={(e) => this.set_files(e.target.files)} />
+                        <input id="file_upload" type="file" multiple onChange={(e) => this.props.set_files(e.target.files)} />
                     </span>
                     <button className="ql-send" >
                         <img src="button_icons/send.png"></img>
@@ -187,8 +178,8 @@ export default class Editor extends React.Component {
                     modules={get_modules(this.props.id)}
                 />
                 }
-                <ComposerAttachments files={Object.values(this.state.files)}
-                    on_delete={(file) => this.remove_file(file)}
+                <ComposerAttachments files={Object.values(this.props.files)}
+                    on_delete={this.props.remove_file}
                 />
                 { this.bottom_toolbar()}
             </div>
