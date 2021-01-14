@@ -102,7 +102,7 @@ export class Thread {
     get_attachments() {
         var attachments = [];
         for (const email of this.get_emails()) {
-            var current_attachments = email.get_attachments_names();
+            var current_attachments = email.get_attachments();
             if (current_attachments !== undefined) {
                 for (const attachment of current_attachments) {
                     attachments.push(attachment);

@@ -58,6 +58,13 @@ export const graph = {
     const client = getAuthenticatedClient(accessToken);
     const res = await client.api('/me/sendMail').post(email);
     return res;
+  },
+
+  downloadAttachment: async function (accessToken, email_id, attachment_id) {
+    const client = getAuthenticatedClient(accessToken);
+    const attachment_data = await client.api(`/me/messages/${email_id}/attachments/${attachment_id}`)
+      .get();
+    return attachment_data;
   }
 
 };

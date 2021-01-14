@@ -40,7 +40,9 @@ export class Home extends React.Component {
     update_search_bar(value) {
         this.setState({ search: value });
     }
-
+    componentDidMount() {
+        this.load_user_data(this.props.user)
+    }
     handle_login(user_address) {
         console.log("new user address" + user_address);
         const new_user = this.change_user(user_address);

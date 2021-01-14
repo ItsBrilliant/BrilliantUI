@@ -1,7 +1,8 @@
 import React from 'react';
 import './RightDivision.css';
 import { get_priority_style, get_file_icon, format_date } from '../../utils.js';
-
+import { download_attachment } from '../../backend/Connect.js';
+import { useSelector } from 'react-redux';
 
 export function RightDivision(thread, on_task_hover) {
     return (thread ?
@@ -71,7 +72,7 @@ function FileAttachments(attachments) {
     if (attachments.length === 0) {
         return null;
     }
-    const attachemnts_for_display = attachments.map(a => AttachmentDisplay(a))
+    const attachemnts_for_display = attachments.map(a => <AttachmentDisplay attachment={a} />);
     return (
         <div className="Container">
             <h4>Attached Files</h4>
@@ -82,13 +83,17 @@ function FileAttachments(attachments) {
     )
 }
 
-function AttachmentDisplay(file_name) {
-    const splitted = file_name.split('.')
-    var extension = splitted[splitted.length - 1]
-    const icon = get_file_icon(extension)
+function AttachmentDisplay(props) {
+    const user = useSelector(state => state.user);
+    const file_name = props.attachment.name;
+    const splitted = file_name.split('.');
+    var extension = splitted[splitted.length - 1];
+    const icon = get_file_icon(extension);
     return (
-        <div className='TitledImage'>
-            <img src={icon} title={file_name}></img>
+        <div className='TitledImage'
+            onClick={() => download_attachment(props.attachment.email_id, props.attachment.id, user)}
+        >
+            <img src={icon} title="download"></img>
             <p>{file_name}</p>
         </div>
     )

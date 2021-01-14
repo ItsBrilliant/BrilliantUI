@@ -2,6 +2,7 @@ import Axios from 'axios';
 import { Email } from '../data_objects/Email.js';
 import { graph } from './graph.js';
 import { sleep } from '../utils.js';
+import download from 'downloadjs'
 Axios.defaults.xsrfCookieName = 'csrftoken';
 Axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 
@@ -43,6 +44,19 @@ export async function append_email_attachments(emails, user) {
                 handle_graph_error("Error getting email attachemnts list:", e, user);
             }
         }
+    }
+}
+
+export async function download_attachment(email_id, attachment_id, user) {
+
+    try {
+        const ACCESS_TOKEN = await get_access_token(user);
+        const attachment_data = await graph.downloadAttachment(ACCESS_TOKEN, email_id, attachment_id)
+        await download(atob(attachment_data.contentBytes),
+            attachment_data.name);
+    }
+    catch (e) {
+        handle_graph_error("Error downloading email attachment:", e, user);
     }
 }
 

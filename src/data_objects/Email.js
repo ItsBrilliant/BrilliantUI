@@ -29,7 +29,8 @@ export class Email {
     get_attachments() {
         return this.get_attachments_names().map(name => ({
             name: name,
-            id: this.attachments_dict[name]
+            id: this.attachments_dict[name],
+            email_id: this.get_id()
         }))
     }
     get_attachemnt_id(name) {

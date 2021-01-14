@@ -6,6 +6,8 @@ import { AddTaskModal } from '../external/AddTaskModal.js';
 import { EmailReplyModal } from '../external/EmailReplyModal.js';
 import { GroupIcon } from './EmailThread.js'
 import { SHOW_HTML } from '../Home.js'
+import { download_attachment } from '../../backend/Connect.js';
+import { useSelector } from 'react-redux'
 
 export class CenterDivision extends React.Component {
     constructor(props) {
@@ -99,11 +101,15 @@ class EmailContainer extends React.Component {
     }
 }
 
-function AttachedFile(attachment) {
+function AttachedFile(props) {
+    const user = useSelector(state => state.user);
+    const attachment = props.attachment
     return (
-        <div className='AttachedFile' onClick={() => alert(attachment.id)}>
+        <div className='AttachedFile'
+            onClick={() => download_attachment(attachment.email_id, attachment.id, user)}>
             {attachmentIcon()}
-            <p>{attachment.name}</p>
+
+            <p>{attachment.name} <span class="tooltiptext">download</span></p>
         </div>
     );
 }
@@ -112,7 +118,7 @@ function AttachedFiles(attachments) {
     if (attachments === undefined || attachments.length == 0) {
         return null;
     } else {
-        var attached_files = attachments.map((attachment) => AttachedFile(attachment));
+        var attached_files = attachments.map((attachment) => <AttachedFile attachment={attachment} />);
         return (
             <div className="AttachedFiles">
                 {attached_files}

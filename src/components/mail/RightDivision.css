@@ -86,6 +86,7 @@ ul li:active{
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: flex-start;
+    cursor: pointer;
 }
 
 .TitledImage{

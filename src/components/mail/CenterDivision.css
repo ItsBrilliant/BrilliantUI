@@ -31,6 +31,22 @@
     align-items: center;
 }
 
+.AttachedFile:hover {
+    cursor: pointer;
+}
+
+.tooltiptext{
+    opacity: 0;
+    position: relative;
+    color: var(--link_hover_color);
+}
+
+.AttachedFile:hover .tooltiptext {
+    opacity: 1;
+    transition: opacity 0.5s ease;
+}
+
+
 .AttachedFile p {
     color: var(--main-text-color);
     vertical-align: top;
