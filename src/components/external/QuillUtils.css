@@ -6,24 +6,24 @@
     flex-wrap: wrap;
 }
 .ComposerAttachment .attachment_icon{
-    height: 60px;
-    width: 60px;
+    height: 100%;
+    width: 100%;
     grid-area: attachment_icon;
 }
 
 .ComposerAttachment{
+    height: 100%;
+    width: 100%;
     display: grid;
-    grid-template-columns: 80px 25px;
-    grid-template-rows: 20px 40px 20px;
+    grid-template-columns: 3fr 1fr;
+    grid-template-rows: 1fr 2fr 1fr;
     grid-template-areas: 
     "attachment_icon delete_button"
-    "attachment_icon ."
+    "attachment_icon progress"
     "file_name file_name";
-    margin: 5px;
     background-color: var(--email-container-background);
     border-radius: 5px;
     justify-content: flex-start;
-    padding:2px;
 }
 
 
@@ -36,16 +36,38 @@
 
 }
 
+.ComposerAttachment_outer{
+    height: 110px;
+    margin: 2px;
+    padding: 5px;
+    width: 100px;
+    display: inline-block;
+    padding:0;
+    margin: 5px;
+}
+
+.ComposerAttachment .progress{
+    grid-area: progress;
+    font-size: small;
+    text-align: left;
+}
+
 .ComposerAttachment .file_name{
     max-width: 100%;
     margin-top: 0px;
     grid-area: file_name;
     text-align: left;
-    margin-left: 2px;
     text-overflow:ellipsis;
     overflow: hidden;
     white-space: nowrap;
- 
+}
 
-
+.upload_progress {
+    position: relative;
+    top:-100%;
+    left:0;
+    height: 100%;
+    background-color: var(--link_hover_color);
+    pointer-events: none;
+    opacity: 0.2;
 }

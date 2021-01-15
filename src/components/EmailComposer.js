@@ -37,12 +37,21 @@ export function EmailComposer(props) {
     const [bcc, set_bcc] = useState([]);
     const [subject, set_subject] = useState("");
     const [files, set_files] = useState([]);
-    const [file_buffers, set_buffers] = useState({})
+    const [file_buffers, set_buffers] = useState({});
+    const [file_progress, set_progress] = useState({});
     const handle_close = () => props.on_close(props.id);
     const handle_send = (html) => { send(to, subject, html, cc, bcc, file_buffers, files); handle_close() };
     function my_set_files(files) {
-        set_files(files);
-        upload_files(files, my_set_buffers);
+        set_files((old_files) => [...old_files, ...files]);
+        upload_files(files, my_set_buffers, my_set_progress);
+    }
+
+    function my_set_progress(file, progress) {
+        set_progress(old_progresses => {
+            var new_progresses = Object.assign({}, old_progresses);
+            new_progresses[file.name] = Math.round(progress * 100);
+            return new_progresses
+        });
     }
     function my_set_buffers(file, new_buffer) {
         set_buffers(old_buffers => {
@@ -54,6 +63,7 @@ export function EmailComposer(props) {
     function remove_file(file) {
         set_files(Object.values(files).filter(f => f !== file))
         my_set_buffers(file, undefined)
+        my_set_progress(file, undefined)
 
     }
     return (
@@ -66,6 +76,7 @@ export function EmailComposer(props) {
                 <Subject onChange={(e) => set_subject(e.target.value)}></Subject>
                 <EmailContent id={props.id} handle_send={handle_send}
                     files={files}
+                    file_progress={file_progress}
                     set_files={my_set_files}
                     remove_file={remove_file}
                 ></EmailContent>
@@ -124,6 +135,7 @@ export function EmailContent(props) {
             <h3>Content</h3>
             <ReactQuillWrapper id={props.id}
                 files={props.files}
+                file_progress={props.file_progress}
                 set_files={props.set_files}
                 remove_file={props.remove_file}
                 handle_send={props.handle_send} />
@@ -159,16 +171,19 @@ function send(to, subject, html_content, cc, bcc, file_buffers, files) {
     send_email(email);
 }
 
-function upload_files(files, my_set_buffers) {
-    function prog(e) {
-        if (e.loaded && e.total) {
-            const percent = (e.loaded / e.total) * 100;
-            console.log(`Progress: ${Math.round(percent)}`);
-        }
-    }
+function upload_files(files, my_set_buffers, my_set_progress) {
+
     for (const file of files) {
         var reader = new FileReader()
-        reader.onload = (evt) => my_set_buffers(file, evt.target.result);
+        reader.onload = (evt) => {
+            my_set_buffers(file, evt.target.result);
+            my_set_progress(file, 1);
+        }
+        reader.onprogress = (evt) => {
+            if (evt.loaded && evt.total) {
+                my_set_progress(file, evt.loaded / evt.total);
+            }
+        }
         reader.readAsBinaryString(file);
     }
 }

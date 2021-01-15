@@ -180,6 +180,7 @@ export default class Editor extends React.Component {
                 }
                 <ComposerAttachments files={Object.values(this.props.files)}
                     on_delete={this.props.remove_file}
+                    file_progress={this.props.file_progress}
                 />
                 { this.bottom_toolbar()}
             </div>
