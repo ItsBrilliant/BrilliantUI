@@ -70,9 +70,9 @@ export function EmailComposer(props) {
         <Draggable handle=".EmailComposer" cancel=".EmailContent" axis="x" defaultPosition={{ x: 50 * props.id, y: 0 }}>
             <div className='EmailComposer'>
                 <ComposeHeader on_close={handle_close} user_address={props.user_address} />
-                <Recipients label='To' items={to} onChange={set_to}></Recipients>
-                <Recipients label='CC' items={cc} onChange={set_cc}></Recipients>
-                <Recipients label='BCC' items={bcc} onChange={set_bcc}></Recipients>
+                <Recipients id={props.id} label='To' items={to} onChange={set_to}></Recipients>
+                <Recipients id={props.id} label='CC' items={cc} onChange={set_cc}></Recipients>
+                <Recipients id={props.id} label='BCC' items={bcc} onChange={set_bcc}></Recipients>
                 <Subject onChange={(e) => set_subject(e.target.value)}></Subject>
                 <EmailContent id={props.id} handle_send={handle_send}
                     files={files}
@@ -92,8 +92,12 @@ function Recipients(props) {
         <div className='Recipients'>
             <label for={props.label}>{props.label}</label>
             <div className="input_container">
-                <EmailChips id={props.label} type='text' placeholder=''
-                    on_items_change={props.onChange} items={props.items} />
+                <EmailChips
+                    recipient_id={props.label}
+                    composer_id={props.id}
+                    type='text' placeholder=''
+                    on_items_change={props.onChange}
+                    items={props.items} />
             </div>
         </div>
     );

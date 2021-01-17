@@ -3,34 +3,54 @@ import { Contact } from '../../data_objects/Contact.js'
 import "./EmailChips.css";
 
 export class EmailChips extends React.Component {
-    state = {
-        value: "",
-        error: null,
-        options: []
-    };
-
+    constructor(props) {
+        super(props);
+        this.state = {
+            value: "",
+            error: null,
+            options: []
+        };
+        this.email_chip_input_id = `email_chip_input_${props.composer_id}_${props.recipient_id}`
+    }
     handleKeyDown = evt => {
         if (["Enter", "Tab", ","].includes(evt.key)) {
             evt.preventDefault();
-
             var value = this.state.value.trim();
 
-            if (value && this.isValid(value)) {
-                this.setState({
-                    value: ""
-                });
-                this.props.on_items_change([...this.props.items, value]);
+            if (value) {
+                if (this.isValid(value)) {
+                    this.setState({
+                        value: "",
+                        options: []
+                    });
+                    this.props.on_items_change([...this.props.items, value]);
+                } else {
+                    const old_options = this.state.options;
+                    if (old_options.length > 0) {
+                        this.setState({
+                            error: null,
+                            options: old_options.slice(0, 1),
+                            value: old_options[0]
+                        })
+                    } else {
+                        this.setState({
+                            value: value,
+                            options: []
+                        });
+                    }
+                }
             }
         }
     };
 
-    handleChange = evt => {
-        const options = Contact.get_filtered_contacts(evt.target.value);
-        var value = options.length === 1 && evt.target.value.length > this.state.value.length ? options[0] : evt.target.value;
-        if (value === 0) {
-            // If the text comes from li click it is found in innerText. Fix this later
-            value = evt.target.innerText;
-        }
+    handle_option_select(value) {
+        this.handleChange(value)
+        const chips_input_element = document.getElementById(this.email_chip_input_id);
+        chips_input_element.focus();
+    }
+
+    handleChange(value) {
+        const options = Contact.get_filtered_contacts(value);
         this.setState({
             value: value,
             error: null,
@@ -100,16 +120,16 @@ export class EmailChips extends React.Component {
                     </div>
                 ))}
 
-                <input autoComplete="off"
+                <input id={this.email_chip_input_id} autoComplete="off"
                     className={"input " + (this.state.error && " has-error")}
                     value={this.state.value}
                     placeholder=""
                     onKeyDown={this.handleKeyDown}
-                    onChange={this.handleChange}
+                    onChange={(e) => this.handleChange(e.target.value)}
                     onPaste={this.handlePaste}
                 />
                 <ul>
-                    {this.state.options.map(o => <li onClick={(e) => this.handleChange(e)}
+                    {this.state.options.map(o => <li onClick={(e) => this.handle_option_select(e.target.innerText)}
                         value={o}>{o}</li>)}
                 </ul>
 
