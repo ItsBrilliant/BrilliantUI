@@ -151,7 +151,7 @@ export default class Editor extends React.Component {
                         <label for={file_upload_id} className="ql_attach">
                             <img src="button_icons/files.svg" />
                         </label>
-                        <input id={file_upload_id} type="file" multiple onChange={(e) => this.props.set_files(e.target.files)} />
+                        <input id={file_upload_id} type="file" multiple onChange={this.props.set_files} />
                     </span>
                     <button className="ql-send" >
                         <img src="button_icons/send.png"></img>
@@ -161,7 +161,6 @@ export default class Editor extends React.Component {
         )
 
     }
-
     render() {
         const set_editor_hook = (el) => {
             if (el && el.getEditor()) { el.getEditor().handle_send = this.props.handle_send };
@@ -169,7 +168,7 @@ export default class Editor extends React.Component {
         return (
             <Fragment>
                 <SimpleBar className='SimpleBar'>
-                    <div>
+                    <div data-simplebar data-simplebar-auto-hide="false" id={'scrollable_content' + this.props.id}>
                         {this.state.enabled && <ReactQuill
                             ref={set_editor_hook}
                             theme={this.state.theme}
@@ -188,7 +187,7 @@ export default class Editor extends React.Component {
                         />
                     </div>
                 </SimpleBar>
-                { this.bottom_toolbar()}
+                {this.bottom_toolbar()}
             </Fragment>
         );
     }

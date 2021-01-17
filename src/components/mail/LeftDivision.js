@@ -129,7 +129,6 @@ function MailFolders(props) {
   const folder_buttons = relevant_folder_names.map(name => {
     const folder_id = props.folders[name]
     const style = props.selected_folder_id === folder_id && folder_id ? "selected" : "";
-    console.log(style);
     return (
       <button className={style} value={folder_id} onClick={(e) => props.on_select(e.target.value)}>
         {MAIL_FOLDERS_DISPLAY[MAIL_FOLDERS.indexOf(name)]}

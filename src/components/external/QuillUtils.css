@@ -3,6 +3,7 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    height: 90px;
 }
 .ComposerAttachment .attachment_icon{
     height: 100%;
@@ -11,8 +12,8 @@
 }
 
 .ComposerAttachment{
-    height: 99%;
-    width: 99%;
+    height: 100%;
+    width: 100%;
     display: grid;
     grid-template-columns: 3fr 1fr;
     grid-template-rows: 1fr 2fr 1fr;
@@ -36,7 +37,7 @@
 }
 
 .ComposerAttachment_outer{
-    height: 90px;
+    height: 100%;
     padding: 5px;
     width: 90px;
     display: inline-block;
@@ -73,7 +74,7 @@
 
 .EmailContent .quill, .ql-editor, .ql-container {
   background-color: var(--main-bg-color);
-  min-height: 100px;
+  min-height: 130px;
 }
 
 .EmailContent .SimpleBar {

@@ -41,9 +41,17 @@ export function EmailComposer(props) {
     const [file_progress, set_progress] = useState({});
     const handle_close = () => props.on_close(props.id);
     const handle_send = (html) => { send(to, subject, html, cc, bcc, file_buffers, files); handle_close() };
-    function my_set_files(files) {
-        set_files((old_files) => [...old_files, ...files]);
-        upload_files(files, my_set_buffers, my_set_progress);
+    function my_set_files(e) {
+        const new_files = [...e.target.files]
+        set_files((old_files) => [...old_files, ...new_files.filter(f => !old_files.map(of => of.name).includes(f.name))]);
+        upload_files(new_files, my_set_buffers, my_set_progress);
+        scroll_to_files();
+        document.getElementById(e.target.id).value = null;
+    }
+
+    function scroll_to_files() {
+        const simplebar = document.querySelector('#EmailContent' + props.id + ' .simplebar-content-wrapper')
+        simplebar.scrollBy({ top: 999, left: 0, behavior: 'smooth' });
     }
 
     function my_set_progress(file, progress) {
@@ -135,7 +143,7 @@ export function PriorityOptions(props) {
 
 export function EmailContent(props) {
     return (
-        <div className='EmailContent'>
+        <div id={"EmailContent" + props.id} className='EmailContent'>
             <h3>Content</h3>
             <ReactQuillWrapper id={props.id}
                 files={props.files}
