@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './EmailThread.css';
-import { format_date, getSelectionOffsetRelativeTo } from '../../utils.js';
+import { format_date, getSelectionOffsetRelativeTo, get_priority_style } from '../../utils.js';
 import { Menu } from '../external/Menues.js';
 import { AddTaskPortal } from '../AddTaskPortal.js';
 import { Task } from '../../data_objects/Task.js';
@@ -231,11 +231,14 @@ export class EmailTextArea extends Component {
     render() {
         const subject = this.props.subject;
         const content = this.props.is_html ? this.props.content : this.render_content(this.props.content);
+        const priority_style = get_priority_style(this.props.priority);
+
         const header = this.props.of_center_email ?
             <div className="header">
                 <h4>{this.props.sender_name}</h4>
                 <div className="GroupIconWrapper">
                     {GroupIcon(this.props.contacts)}
+                    <div className={"email_priority " + priority_style} />
                 </div>
             </div> : null;
         // {this.get_email_options_button()}
@@ -300,7 +303,7 @@ export function GroupIcon(icons) {
     const MAX_ICONS = 3;
     const merged = icons.slice(0, MAX_ICONS).map((icon) => <img className={img_style} src={icon}></img>);
     var extra_icons = icons.length - MAX_ICONS;
-    const plus = extra_icons > 0 ? <h1 className="threadIcon">{"+" + extra_icons}</h1> : null;
+    const plus = extra_icons > 0 ? <span className="extra_icon">{"+" + extra_icons}</span> : null;
     return (
         <div className="GroupIcon">{merged} {plus}</div>
     );

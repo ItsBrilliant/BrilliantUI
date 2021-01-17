@@ -107,6 +107,9 @@
     align-items: center;
 }
 
+.EmailComposer .EmailContent {
+    height: 150px;
+}
 .EmailComposer .header_label {
     margin-right: 10px;
     display: flex;
@@ -138,9 +141,4 @@ button:hover{
     color:white;
     font-size: larger;
     pointer-events: none;
-}
-
-.quill, .ql-editor, .ql-container {
-  min-height: 250px;
-  background-color: var(--main-bg-color);
 }

@@ -92,7 +92,9 @@ class EmailContainer extends React.Component {
                     tasks={email.get_tasks()}
                     selected_task={this.props.selected_task}
                     add_task={email.add_task.bind(email)}
-                    contacts={contacts} />
+                    contacts={contacts}
+                    priority={email.get_priority()}
+                />
                 <div className="mail_right_info">
                     {AttachedFiles(email.get_attachments())}
                 </div>

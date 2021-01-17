@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import { get_file_icon } from '../../utils.js';
 import './QuillUtils.css'
 
@@ -19,7 +20,7 @@ function ComposerAttachment(props) {
     const splitted = file_name.split('.');
     var extension = splitted[splitted.length - 1];
     const icon = get_file_icon(extension);
-    var progress_style = { width: `${props.progress}px` };
+    var progress_style = { width: `${props.progress}%` };
     //  if (props.progress === 100) {
     //     progress_style.backgroundColor = 'green';
     //  }

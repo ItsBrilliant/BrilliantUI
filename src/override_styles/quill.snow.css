@@ -947,10 +947,6 @@
   color: #06c;
 }
 
-.ql-container, .ql-snow, .ql-toolbar.ql-snow {
-    border: 1px solid var(--main-text-color);
-}
-
 /* Set content for font-families */
 .ql-font-arial,
 .ql-font span[data-value="arial"]::before {
