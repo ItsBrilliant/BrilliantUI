@@ -23,8 +23,8 @@ function Tasks(tasks, on_task_hover) {
     } else {
         return (
             <div className='Container'>
-                {TasksDisplayer(active_tasks, false, on_task_hover)}
-                {TasksDisplayer(finished_tasks, true, on_task_hover)}
+                <TasksDisplayer tasks={active_tasks} areDone={false} on_hover={on_task_hover} />
+                <TasksDisplayer tasks={finished_tasks} areDone={true} on_hover={on_task_hover} />
             </div>
         )
     }
@@ -32,14 +32,21 @@ function Tasks(tasks, on_task_hover) {
 
 }
 
-function TasksDisplayer(tasks, areDone, on_hover) {
-    if (tasks.length === 0) {
+function TasksDisplayer(props) {
+    const user = useSelector(state => state.user);
+    if (props.tasks.length === 0) {
         return null;
     }
-    const title = areDone ? "Finished Tasks" : "Priority Tasks"
-    const tasks_elements = tasks.map(task => <li onClick={() => on_hover(task)} className={get_priority_style(task.priority)}>
-        {task.text + " (due: " + format_date(task.deadline).date + ")"}
-    </li>)
+    const title = props.areDone ? "Finished Tasks" : "Priority Tasks"
+    const tasks_elements = props.tasks.map(task => {
+        const owner_name = user === task.owner ? "You" : task.owner.get_first_name();
+        return (
+            <li onClick={() => props.on_hover(task)} className={get_priority_style(task.priority)}>
+                <span className="task_owner">{owner_name}: </span>
+                {task.text + " (due: " + format_date(task.deadline).date + ")"}
+            </li>
+        );
+    })
     return (
         <div className='TasksDisplayer'>
             <h4>{title}</h4>

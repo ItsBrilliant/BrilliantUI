@@ -53,6 +53,10 @@ export class Contact {
         return this.recipient['emailAddress']['name'];
     }
 
+    get_first_name() {
+        return this.get_name().split(' ')[0];
+    }
+
     set_name(name) {
         this.recipient['emailAddress']['name'] = name;
     }

@@ -16,15 +16,20 @@
     padding-bottom: 1px;
 }
 
+.TasksDisplayer span.task_owner{
+    color:white;
+    display:inline;
+}
+
 .Tasks {
     background-color: var(--email-container-background);
 }
-ul {
+.TasksDisplayer ul {
     list-style: none;
     margin-top: 5px;
 }
 
-ul li::before{
+.TasksDisplayer ul li::before{
   content: "\2022";
   font-weight: bold;
   display: inline-block; 
@@ -32,26 +37,32 @@ ul li::before{
   margin-left: -1em;
 }
 
-ul li.Urgent::before{
+.TasksDisplayer ul li.Urgent::before{
   color:red;
 }
 
-ul li.Important::before{
+.TasksDisplayer ul li.Important::before{
   color:orange;
 }
 
-ul li.CanWait::before{
+.TasksDisplayer ul li.CanWait::before{
   color:green;
 }
 
-ul li:hover{
+.TasksDisplayer ul li:hover{
     cursor: pointer;
 }
 
-ul li:active{
+.TasksDisplayer ul li:active{
     background-color: rgb(34, 99, 157);
 }
+.TasksDisplayer ul{
+    padding: 10px;
+}
 
+.TasksDisplayer ul li{
+    color:rgb(107, 161, 219);
+}
 .Container{
     display: block;
     background-color: var(--email-container-background);
