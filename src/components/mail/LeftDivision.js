@@ -64,6 +64,7 @@ export class LeftDivision extends Component {
             this.state.sort_type,
             this.state.incoming,
             this.props.user,
+            this.props.folders,
             this.state.selected_folder_id)}
         </div>
       </div>
@@ -98,9 +99,12 @@ function filter_mail_folders(thread, folder_id) {
 }
 
 function ScrollableThreadContainer(emailThreads, handle_select, selected_thread_id, load_func,
-  group_type, sort_type, incoming, user, selected_folder_id) {
-  const folder_threads = Object.values(emailThreads).filter(t => filter_mail_folders(t, selected_folder_id));
-  const filtered_threads = filter_threads(incoming, folder_threads, user)
+  group_type, sort_type, incoming, user, folders, selected_folder_id) {
+  var filtered_threads = Object.values(emailThreads).filter(t => filter_mail_folders(t, selected_folder_id));
+  if (folders['Drafts'] !== selected_folder_id) {
+    filtered_threads = filter_threads(incoming, filtered_threads, user);
+  }
+
   var grouped_threads = group_by_function(filtered_threads, Thread.get_group_function(group_type));
   var sorted_group_keys = Object.keys(grouped_threads).sort(get_sort_function_by_type(group_type));
   for (let key of sorted_group_keys) {

@@ -36,7 +36,7 @@ export const graph = {
   },
 
   getMail: async function (accessToken, update_function) {
-    const select_params = "subject,sender,body,toRecipients,ccRecipients,bccRecipients"
+    //  const select_params = "subject,sender,body,toRecipients,ccRecipients,bccRecipients"
     const client = getAuthenticatedClient(accessToken);
     const emails = await callingPattern(client, (client) =>
       client.api('/me/messages')
