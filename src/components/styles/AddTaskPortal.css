@@ -140,6 +140,10 @@
 }
 
 .task_owner ul li::before {
-  content: none;
+  content: "";
+}
+
+.task_owner ul li:hover {
+  cursor: pointer;
 }
 /*# sourceMappingURL=AddTaskPortal.css.map */

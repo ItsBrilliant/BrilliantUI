@@ -38,17 +38,22 @@ function TasksDisplayer(props) {
         return null;
     }
     const title = props.areDone ? "Finished Tasks" : "Priority Tasks"
+    const done_style = props.areDone ? " done" : " not_done"
     const tasks_elements = props.tasks.map(task => {
         const owner_name = user === task.owner ? "You" : task.owner.get_first_name();
         return (
             <li onClick={() => props.on_hover(task)} className={get_priority_style(task.priority)}>
-                <span className="task_owner">{owner_name}: </span>
-                {task.text + " (due: " + format_date(task.deadline).date + ")"}
+                <span className={"task_status_button"}
+                    onClick={() => task.isDone = true}>
+                    <span className="inner">v</span>
+                </span>
+                <span className={"task_owner" + done_style}>{owner_name}:</span>
+                { task.text + " (due: " + format_date(task.deadline).date + ")"}
             </li>
         );
     })
     return (
-        <div className='TasksDisplayer'>
+        <div className={'TasksDisplayer' + done_style}>
             <h4>{title}</h4>
             <ul>{tasks_elements}</ul>
         </div>

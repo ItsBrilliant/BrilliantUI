@@ -76,8 +76,11 @@
         color: white;
         overflow-y: visible;
         z-index: 1000;
-        li::before{
-            content: none;
+        li::before {
+            content: "";
+        }
+        li:hover{
+            cursor: pointer;
         }
     }
 }

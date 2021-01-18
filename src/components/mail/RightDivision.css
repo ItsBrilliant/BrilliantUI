@@ -19,6 +19,8 @@
 .TasksDisplayer span.task_owner{
     color:white;
     display:inline;
+    height:fit-content;
+    margin-right: 0.2em;
 }
 
 .Tasks {
@@ -49,6 +51,10 @@
   color:green;
 }
 
+.TasksDisplayer.done ul li::before{
+  display: none;
+}
+
 .TasksDisplayer ul li:hover{
     cursor: pointer;
 }
@@ -61,8 +67,50 @@
 }
 
 .TasksDisplayer ul li{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+.TasksDisplayer.not_done ul li{
     color:rgb(107, 161, 219);
 }
+.TasksDisplayer ul li .task_status_button{
+    display: inline-block;
+    position: relative;
+    top: 3px;
+    border-radius: 100%;
+    height:12px;
+    width: 12px;
+    border: 1px solid var(--main-text-color);
+    align-self: flex-start;
+    text-align: center;
+    margin: 2px 3px 2px 0px;
+    padding: 0;
+    color: transparent;
+    font-weight: bold;
+}
+
+.TasksDisplayer ul li .task_status_button span.inner{
+    position: relative;
+    top:-6px;
+    color:var(--email-container-background);
+}
+
+.TasksDisplayer ul li .task_status_button:hover{
+    background-color: var(--main-text-color);
+    transition: all 0.5s ease;
+    color: var(--email-container-background);
+}
+
+.TasksDisplayer.done ul li .task_status_button{
+    background-color: var(--main-text-color);
+    color: var(--email-container-background);
+}
+
+.TasksDisplayer ul li .done{
+    color: var(--main-text-color) !important;
+}
+
 .Container{
     display: block;
     background-color: var(--email-container-background);

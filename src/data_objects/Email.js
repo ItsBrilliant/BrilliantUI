@@ -1,5 +1,5 @@
 import { Contact } from './Contact.js';
-import { CAN_WAIT, URGENT, IMPORTANT } from './Consts.js';
+import { CAN_WAIT, URGENT, IMPORTANT, PRIORITIES } from './Consts.js';
 import { rand_int, my_html_to_text } from '../utils.js';
 import { Task } from './Task.js';
 import parse from 'html-react-parser'
@@ -15,6 +15,7 @@ export class Email {
         this.date = new Date(this.email['sentDateTime']);
         this.add_request_document_task();
         this.add_request_meeting_task();
+        this.add_random_tasks();
         this.attachments_dict = {}
 
     }
@@ -36,6 +37,27 @@ export class Email {
     get_attachemnt_id(name) {
         return this.attachments_dict[name];
     }
+
+    add_random_tasks() {
+        const abc = "abcdefghijklmnopqrstuvwxyz"
+        var len = rand_int(3, 7);
+        var name = ""
+        const all_contacts = Object.values(Contact.contact_dict);
+        const random_contact = all_contacts[rand_int(0, all_contacts.length)]
+        const isDone = Math.random() < 0.3;
+        const priority = rand_int(0, 3);
+        if (Math.random() < 0.5) {
+            for (let i = 0; i < len; i++) {
+                let index = rand_int(0, 25);
+                name += abc[index]
+            }
+            var source_indexes = { start: rand_int(0, this.get_text().length - 1) }
+            source_indexes['end'] = rand_int(source_indexes.start + 1, this.get_text().length)
+            var task = new Task(name, new Date(), priority, isDone, source_indexes, random_contact)
+            this.tasks.push(task)
+        }
+    }
+
     add_request_document_task() {
         const document_request_detection = this.email['document_request_intention_detection'];
         if (!document_request_detection || document_request_detection.length === 0) {
