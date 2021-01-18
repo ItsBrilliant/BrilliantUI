@@ -59,9 +59,6 @@
     cursor: pointer;
 }
 
-.TasksDisplayer ul li:active{
-    background-color: rgb(34, 99, 157);
-}
 .TasksDisplayer ul{
     padding: 10px;
 }
@@ -119,7 +116,7 @@
     padding-top: 2px;
     padding-bottom: 20px;
     padding-left: 20px;
-    border-radius: 10%;
+    border-radius: 20px;
 }
 
 .ParticipantsIcons{
@@ -161,5 +158,6 @@ p.contact_initials{
     text-align: center;
 }
 
- 
-
+ .SimpleBar_RightDivision {
+     height: 100%;
+ }

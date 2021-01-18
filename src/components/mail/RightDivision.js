@@ -3,13 +3,16 @@ import './RightDivision.css';
 import { get_priority_style, get_file_icon, format_date } from '../../utils.js';
 import { download_attachment } from '../../backend/Connect.js';
 import { useSelector } from 'react-redux';
+import SimpleBar from 'simplebar-react';
 
 export function RightDivision(thread, on_task_hover) {
     return (thread ?
         <div className='RightDivision'>
-            {Tasks(thread.get_tasks(), on_task_hover)}
-            {Participants(thread.get_participants())}
-            {FileAttachments(thread.get_attachments())}
+            <SimpleBar className='SimpleBar_RightDivision'>
+                {Tasks(thread.get_tasks(), on_task_hover)}
+                {Participants(thread.get_participants())}
+                {FileAttachments(thread.get_attachments())}
+            </SimpleBar>
         </div> :
         null
     )
