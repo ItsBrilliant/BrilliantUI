@@ -93,14 +93,14 @@ export class EmailTextArea extends Component {
     handle_task_component_close() {
         this.setState({ add_task_component: null });
     }
-    handle_add_task(text, date, priority) {
+    handle_add_task(text, date, priority, owner) {
         this.handle_task_component_close();
         const task_args = this.state.task_args;
         const task_format_indexes = {
             start: task_args.selection_indexes[0],
             end: task_args.selection_indexes[1]
         }
-        const task = new Task(text, date, priority, false, task_format_indexes);
+        const task = new Task(text, date, priority, false, task_format_indexes, owner);
         this.props.add_task(task);
 
     }
@@ -112,7 +112,6 @@ export class EmailTextArea extends Component {
                 add_task_component: <AddTaskPortal style={position_style}
                     handle_ok={this.handle_add_task}
                     handle_close={this.handle_task_component_close}
-
                 />,
                 task_args: {
                     selection_indexes: selection_indexes,
