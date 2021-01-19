@@ -4,5 +4,5 @@ import { EmailComposerReducer } from './email_composer.js';
 
 export const CombinedReducers = combineReducers({
     user: LoginReducer,
-    email: EmailComposerReducer
+    email_composers: EmailComposerReducer
 })

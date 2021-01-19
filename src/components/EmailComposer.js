@@ -1,10 +1,10 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import ReactDOM from 'react-dom'
 import { Menu } from './external/Menues.js';
 import ReactQuillWrapper from './external/ReactQuillWrapper.js';
 import { EmailChips } from './external/EmailChips.js';
 import './EmailComposer.css';
-import { send_email } from '../backend/Connect.js';
+import { create_reply, send_email, update_and_send } from '../backend/Connect.js';
 import { create_mail_object, get_priority_style_by_name, sleep } from '../utils.js';
 import { person0 } from '../data_objects/Contact.js';
 import Draggable from 'react-draggable';
@@ -16,7 +16,7 @@ var SEND_WAS_CANCELED = { value: false }
 
 export function EmailComposers() {
 
-    const composer_names = useSelector(state => state.email);
+    const composers_state = useSelector(state => state.email_composers);
     const user_address = useSelector(state => state.user.get_address());
     const dispatch = useDispatch();
     const [focused, set_focus] = useState(-1);
@@ -42,13 +42,14 @@ export function EmailComposers() {
         return should_send;
     }
 
-    const composers = composer_names.map(n => (
+    const composers = composers_state.ids.map(n => (
         <div className={focused === n ? "on_top" : undefined} onClick={e => set_focus(n)}>
             <EmailComposer user_address={user_address}
                 on_close={handle_close}
-                id={composer_names.indexOf(n)}
+                id={composers_state.ids.indexOf(n)}
                 set_show_send_message={set_show_send_message}
                 send={my_send}
+                email_attributes={composers_state.attributes[n]}
             />
         </div>
     ));
@@ -65,6 +66,7 @@ export function EmailComposers() {
     );
 }
 export function EmailComposer(props) {
+    useEffect(process_attributes, []);
     const [to, set_to] = useState([]);
     const [cc, set_cc] = useState([]);
     const [bcc, set_bcc] = useState([]);
@@ -72,10 +74,15 @@ export function EmailComposer(props) {
     const [files, set_files] = useState([]);
     const [file_buffers, set_buffers] = useState({});
     const [file_progress, set_progress] = useState({});
-    const handle_close = () => props.on_close(props.id);
+    const handle_close = () => {
+        props.on_close(props.id);
+        if (props.email_attributes.cleanup) {
+            props.email_attributes.cleanup();
+        }
+    }
     const handle_send = (html) => {
         props.set_show_send_message(true);
-        props.send(to, subject, html, cc, bcc, file_buffers, files).then(res => {
+        props.send(to, subject, html, cc, bcc, file_buffers, files, props.email_attributes.email_id).then(res => {
             if (res) {
                 handle_close();
             }
@@ -113,6 +120,12 @@ export function EmailComposer(props) {
         my_set_buffers(file, undefined)
         my_set_progress(file, undefined)
 
+    }
+    function process_attributes() {
+        const attributes = props.email_attributes;
+        if (attributes.composer_type === 'reply') {
+            const message = create_reply(attributes.email_id);
+        }
     }
     return (
         <Draggable handle=".EmailComposer" cancel=".EmailContent" axis="x" defaultPosition={{ x: 50 * props.id, y: 0 }}>
@@ -209,7 +222,7 @@ function ComposeHeader(props) {
     );
 }
 
-function send(to, subject, html_content, cc, bcc, file_buffers, files) {
+function send(to, subject, html_content, cc, bcc, file_buffers, files, existing_id) {
     console.log("Sending mail:");
     console.log(html_content)
     const attachment_buffers = Object.values(files).map(f => {
@@ -221,7 +234,12 @@ function send(to, subject, html_content, cc, bcc, file_buffers, files) {
     });
     try {
         const email = create_mail_object(to, subject, html_content, 'html', cc, bcc, attachment_buffers);
-        send_email(email);
+        if (existing_id) {
+            update_and_send(existing_id, email)
+        } else {
+            send_email(email);
+        }
+
     } catch (err) {
         alert(err);
     }

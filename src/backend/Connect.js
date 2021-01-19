@@ -110,6 +110,31 @@ export async function send_email(email, user) {
     console.log(res)
 }
 
+export async function create_reply(reply_to_id, user) {
+    const ACCESS_TOKEN = await get_access_token(user);
+    console.log("creating reply to email");
+    const res = await graph.createReply(ACCESS_TOKEN, reply_to_id);
+    return res.body;
+}
+
+export async function update_and_send(email_id, email, user) {
+    const ACCESS_TOKEN = await get_access_token(user);
+    console.log("updating reply to email");
+    let res = await graph.updateMail(ACCESS_TOKEN, email, email_id);
+    console.log(res)
+    console.log("sending reply to email");
+    res = await graph.sendDraft(ACCESS_TOKEN, email_id);
+    console.log(res);
+}
+
+export async function send_draft(draft_id, user) {
+    const ACCESS_TOKEN = await get_access_token(user);
+    console.log("sending draft");
+    const res = await graph.sendDraft(ACCESS_TOKEN, draft_id);
+    console.log(res)
+}
+
+
 async function get_access_token(user) {
     var ACCESS_TOKEN = window.localStorage.getItem(get_user_token_key(user));
     if (!ACCESS_TOKEN) {

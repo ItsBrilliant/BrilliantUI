@@ -38,7 +38,7 @@ export class Contact {
         }
         const all_addresses = Object.keys(Contact.contact_dict);
         try {
-            return all_addresses.filter(a => a.search(sub_address) !== -1)
+            return all_addresses.filter(a => a.search(sub_address) !== -1).slice(0, max_num);
         } catch (err) {
             console.warn(err);
             return [];

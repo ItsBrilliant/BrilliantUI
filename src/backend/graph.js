@@ -60,6 +60,20 @@ export const graph = {
     return res;
   },
 
+  createReply: async function (accessToken, reply_to_id) {
+    return await standard_post(accessToken, `/me/messages/${reply_to_id}/createReply`);
+  },
+
+  updateMail: async function (accessToken, email, id) {
+    const client = getAuthenticatedClient(accessToken);
+    const res = await client.api(`/me/messages/${id}`).update(email);
+    return res;
+  },
+
+  sendDraft: async function (accessToken, id) {
+    return await standard_post(accessToken, `/me/messages/${id}/send`);
+  },
+
   downloadAttachment: async function (accessToken, email_id, attachment_id) {
     const client = getAuthenticatedClient(accessToken);
     const attachment_data = await client.api(`/me/messages/${email_id}/attachments/${attachment_id}`)
@@ -80,4 +94,11 @@ function getAuthenticatedClient(accessToken) {
   });
 
   return client;
+}
+
+function standard_post(accessToken, url, body) {
+  const client = getAuthenticatedClient(accessToken);
+  const result = client.api(url)
+    .post(body);
+  return result;
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { EmailTextArea, EmailStamp, attachmentIcon } from './EmailThread.js';
 import './CenterDivision.css';
 import SimpleBar from 'simplebar-react';
@@ -7,7 +7,8 @@ import { EmailReplyModal } from '../external/EmailReplyModal.js';
 import { GroupIcon } from './EmailThread.js'
 import { SHOW_HTML } from '../Home.js'
 import { download_attachment } from '../../backend/Connect.js';
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { Create } from '../../actions/email_composer.js';
 
 export class CenterDivision extends React.Component {
     constructor(props) {
@@ -54,15 +55,16 @@ export class CenterDivision extends React.Component {
                 close={this.reset} /> :
             <EmailReplyModal show={this.state.show_add_task} handle_ok={this.reset}
                 close={this.reset} />
-        const emails = this.props.thread.get_emails().map(
+        const thread_emails = this.props.thread.get_emails().reverse();
+        const emails = thread_emails.map(
             (email) => <EmailContainer key={email.get_id()} email={email} options_button={options_button}
-                selected_task={this.props.selected_task} />).reverse();
+                selected_task={this.props.selected_task} />)
         return (
             <div className='CenterDivision' >
                 <SimpleBar className="CenterSimpleBar">
                     <div>{emails}</div>
                 </SimpleBar>
-                <ReplyForm />
+                <NewReply email_id={thread_emails[thread_emails.length - 1].get_id()} />
                 {modal}
             </div>
         );
@@ -127,6 +129,29 @@ function AttachedFiles(attachments) {
             </div>
         );
     }
+}
+
+function NewReply(props) {
+    const dispatch = useDispatch();
+    const [is_open, set_is_open] = useState(false);
+    if (is_open) {
+        return null;
+    }
+    return (
+        <div className="ReplyForm">
+            <span
+                className="reply_button"
+                onClick={() => {
+                    set_is_open(true);
+                    dispatch(Create({
+                        email_id: props.email_id,
+                        cleanup: () => set_is_open(false),
+                        composer_type: 'reply'
+                    }));
+                }}
+            >Reply</span>
+        </div>
+    );
 }
 
 class ReplyForm extends React.Component {
