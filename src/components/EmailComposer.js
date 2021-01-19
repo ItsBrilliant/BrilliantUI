@@ -1,33 +1,68 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import ReactDOM from 'react-dom'
 import { Menu } from './external/Menues.js';
 import ReactQuillWrapper from './external/ReactQuillWrapper.js';
 import { EmailChips } from './external/EmailChips.js';
 import './EmailComposer.css';
 import { send_email } from '../backend/Connect.js';
-import { create_mail_object, get_priority_style_by_name } from '../utils.js';
+import { create_mail_object, get_priority_style_by_name, sleep } from '../utils.js';
 import { person0 } from '../data_objects/Contact.js';
 import Draggable from 'react-draggable';
 import { useSelector, useDispatch } from 'react-redux';
 import { Delete } from '../actions/email_composer.js'
 import { IMPORTANT } from '../data_objects/Consts.js';
 
+var SEND_WAS_CANCELED = { value: false }
 
 export function EmailComposers() {
+
     const composer_names = useSelector(state => state.email);
     const user_address = useSelector(state => state.user.get_address());
     const dispatch = useDispatch();
     const [focused, set_focus] = useState(-1);
+    const [send_was_canceled, set_send_cancelation] = useState(false);
+    const [show_send_message, set_show_send_message] = useState(false);
     const handle_close = (id) => {
         dispatch(Delete(id));
     };
+
+    const my_set_send_cancelation = (value) => {
+        SEND_WAS_CANCELED.value = value;
+        set_send_cancelation(value);
+    }
+
+    const my_send = async (...args) => {
+        await sleep(2500)
+        const should_send = !SEND_WAS_CANCELED.value
+        if (should_send) {
+            send(...args);
+        }
+        set_show_send_message(false);
+        my_set_send_cancelation(false);
+        return should_send;
+    }
+    function wake(was_canceled) {
+        console.log(was_canceled);
+    }
     const composers = composer_names.map(n => (
         <div className={focused === n ? "on_top" : undefined} onClick={e => set_focus(n)}>
-            <EmailComposer user_address={user_address} on_close={handle_close} id={composer_names.indexOf(n)} />
+            <EmailComposer user_address={user_address}
+                on_close={handle_close}
+                id={composer_names.indexOf(n)}
+                set_show_send_message={set_show_send_message}
+                send={my_send}
+            />
         </div>
     ));
     return ReactDOM.createPortal(
-        composers,
+        <Fragment>
+            <EmailSendMessage
+                visible={show_send_message}
+                on_undo={() => my_set_send_cancelation(true)}
+                was_canceled={send_was_canceled}
+            />
+            {composers}
+        </Fragment>,
         document.getElementById('email_composer')
     );
 }
@@ -40,7 +75,14 @@ export function EmailComposer(props) {
     const [file_buffers, set_buffers] = useState({});
     const [file_progress, set_progress] = useState({});
     const handle_close = () => props.on_close(props.id);
-    const handle_send = (html) => { send(to, subject, html, cc, bcc, file_buffers, files); handle_close() };
+    const handle_send = (html) => {
+        props.set_show_send_message(true);
+        props.send(to, subject, html, cc, bcc, file_buffers, files).then(res => {
+            if (res) {
+                handle_close();
+            }
+        });
+    };
     function my_set_files(e) {
         const new_files = [...e.target.files]
         set_files((old_files) => [...old_files, ...new_files.filter(f => !old_files.map(of => of.name).includes(f.name))]);
@@ -179,8 +221,12 @@ function send(to, subject, html_content, cc, bcc, file_buffers, files) {
             buffer: file_buffers[f.name]
         }
     });
-    const email = create_mail_object(to, subject, html_content, 'html', cc, bcc, attachment_buffers);
-    send_email(email);
+    try {
+        const email = create_mail_object(to, subject, html_content, 'html', cc, bcc, attachment_buffers);
+        send_email(email);
+    } catch (err) {
+        alert(err);
+    }
 }
 
 function upload_files(files, my_set_buffers, my_set_progress) {
@@ -199,4 +245,16 @@ function upload_files(files, my_set_buffers, my_set_progress) {
         reader.readAsBinaryString(file);
     }
 }
+
+function EmailSendMessage(props) {
+    const prompt = props.was_canceled ? "Canceled |" : " Sending email |"
+    const style = props.visible ? " visible" : "";
+    return (
+        <div className={"email_sent_message" + style}>
+            <span className="email_sent_label">{prompt}</span>
+            <span className="email_sent_undo" onClick={props.on_undo}>Undo</span>
+        </div>
+    );
+}
+
 

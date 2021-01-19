@@ -142,3 +142,33 @@ button:hover{
     font-size: larger;
     pointer-events: none;
 }
+
+.email_sent_message {
+    position: fixed;
+    left: 50vw;
+    top: 20px;
+    padding: 10px 15px;
+    border-radius: 10px;
+    background-color: green;
+    opacity: 0;
+    font-size: larger;
+}
+
+.email_sent_message.visible {
+    opacity: 1;
+    transition: opacity 0.7s ease;
+
+}
+
+.email_sent_label {
+    color: white;
+}
+
+.email_sent_undo {
+    color: black;
+    margin-left: 0.3em;
+}
+
+.email_sent_undo:hover {
+    cursor: pointer;
+}

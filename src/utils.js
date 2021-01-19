@@ -113,6 +113,9 @@ export function create_mail_object(to, email_subject, email_content, content_typ
     const to_recipients = to.map((address) => address_to_recipeint(address));
     const cc_recipients = cc.map((address) => address_to_recipeint(address));
     const bcc_recipients = bcc.map((address) => address_to_recipeint(address));
+    if (to_recipients.length + cc_recipients.length + bcc_recipients.length === 0) {
+        throw Error("Email has no recipients");
+    }
     const attachments = attachment_buffers.map(file =>
         file_buffer_to_attachment(file));
 

@@ -37,7 +37,12 @@ export class Contact {
             return []
         }
         const all_addresses = Object.keys(Contact.contact_dict);
-        return all_addresses.filter(a => a.search(sub_address) !== -1)
+        try {
+            return all_addresses.filter(a => a.search(sub_address) !== -1)
+        } catch (err) {
+            console.warn(err);
+            return [];
+        }
     }
 
     constructor(recipient_object, image_link) {
