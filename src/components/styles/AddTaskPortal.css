@@ -137,13 +137,12 @@
   color: white;
   overflow-y: visible;
   z-index: 1000;
-}
-
-.task_owner ul li::before {
-  content: "";
+  list-style-type: none;
+  padding: 3px;
 }
 
 .task_owner ul li:hover {
   cursor: pointer;
+  background-color: var(--email-text-area-bg);
 }
 /*# sourceMappingURL=AddTaskPortal.css.map */

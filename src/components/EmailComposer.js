@@ -41,9 +41,7 @@ export function EmailComposers() {
         my_set_send_cancelation(false);
         return should_send;
     }
-    function wake(was_canceled) {
-        console.log(was_canceled);
-    }
+
     const composers = composer_names.map(n => (
         <div className={focused === n ? "on_top" : undefined} onClick={e => set_focus(n)}>
             <EmailComposer user_address={user_address}

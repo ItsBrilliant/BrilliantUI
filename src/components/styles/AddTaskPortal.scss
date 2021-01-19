@@ -76,11 +76,11 @@
         color: white;
         overflow-y: visible;
         z-index: 1000;
-        li::before {
-            content: "";
-        }
+        list-style-type: none;
+        padding: 3px;
         li:hover{
             cursor: pointer;
+            background-color: var(--email-text-area-bg);
         }
     }
 }

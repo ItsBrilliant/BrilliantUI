@@ -299,7 +299,7 @@ export function GroupIcon(icons) {
     if (icons.length > 1) {
         img_style = img_style + " multi"
     }
-    const MAX_ICONS = 3;
+    const MAX_ICONS = 6;
     const merged = icons.slice(0, MAX_ICONS).map((icon) => <img className={img_style} src={icon}></img>);
     var extra_icons = icons.length - MAX_ICONS;
     const plus = extra_icons > 0 ? <span className="extra_icon">{"+" + extra_icons}</span> : null;

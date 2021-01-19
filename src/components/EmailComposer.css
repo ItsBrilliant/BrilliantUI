@@ -34,13 +34,9 @@
     outline: none;
 }
 
-.Recipients .input_container input{
-
-}
-
 .EmailComposer{
     position: absolute;
-    top: calc(100% - 462px);
+    top: calc(100% - 490px);
     left: 25%;
     background-color: var(--email-container-background);
     z-index: 100;
