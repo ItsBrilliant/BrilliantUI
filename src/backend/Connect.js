@@ -106,45 +106,71 @@ export async function get_mail_folders(callback_func, user) {
 export async function send_email(email, user) {
     const ACCESS_TOKEN = await get_access_token(user);
     console.log("sending email");
-    const res = await graph.sendMail(ACCESS_TOKEN, email);
-    console.log(res)
-}
-
-export async function create_reply(reply_to_id, user) {
-    const ACCESS_TOKEN = await get_access_token(user);
-    console.log("creating reply to email");
-    const res = await graph.createReply(ACCESS_TOKEN, reply_to_id);
-    return res;
+    try {
+        const res = await graph.sendMail(ACCESS_TOKEN, email);
+        console.log(res)
+    } catch (e) {
+        console.log(e);
+    }
 }
 
 export async function create_based_draft(based_on_id, draft_type) {
     const ACCESS_TOKEN = await get_access_token();
     console.log("creating draft of type " + draft_type);
-    if (draft_type === 'reply') {
-        const res = graph.createReply(ACCESS_TOKEN, based_on_id);
-    } if (draft_type === 'reply_all') {
-        const res = graph.createReplyall(ACCESS_TOKEN, based_on_id);
-    } if (draft_type === 'forward') {
-        const res = graph.createForward(ACCESS_TOKEN, based_on_id);
+    var res;
+    try {
+        if (draft_type === 'reply') {
+            res = await graph.createReply(ACCESS_TOKEN, based_on_id);
+        } else if (draft_type === 'reply_all') {
+            res = await graph.createReplyall(ACCESS_TOKEN, based_on_id);
+        } else if (draft_type === 'forward') {
+            res = await graph.createForward(ACCESS_TOKEN, based_on_id);
+        }
+    } catch (e) {
+        console.log(e);
+    }
+    if (!res) {
+        throw Error("Couldn't create draft of type " + draft_type);
     }
     return res;
 }
 
+export async function update_draft(email_id, email) {
+    const ACCESS_TOKEN = await get_access_token();
+    console.log("updating email");
+    var res;
+    try {
+        res = await graph.updateMail(ACCESS_TOKEN, email.message, email_id);
+        console.log(res);
+    } catch (e) {
+        console.log(e)
+    }
+
+}
 export async function update_and_send(email_id, email, user) {
     const ACCESS_TOKEN = await get_access_token(user);
     console.log("updating reply to email");
-    let res = await graph.updateMail(ACCESS_TOKEN, email, email_id);
-    console.log(res)
-    console.log("sending reply to email");
-    res = await graph.sendDraft(ACCESS_TOKEN, email_id);
-    console.log(res);
+    try {
+        let res = await graph.updateMail(ACCESS_TOKEN, email.message, email_id);
+        console.log(res)
+        console.log("sending reply to email");
+        res = await graph.sendDraft(ACCESS_TOKEN, email_id);
+        console.log(res);
+    } catch (e) {
+        console.log(e)
+    }
 }
 
 export async function send_draft(draft_id, user) {
     const ACCESS_TOKEN = await get_access_token(user);
     console.log("sending draft");
-    const res = await graph.sendDraft(ACCESS_TOKEN, draft_id);
-    console.log(res)
+    try {
+        const res = await graph.sendDraft(ACCESS_TOKEN, draft_id);
+        console.log(res)
+    } catch (e) {
+        console.log(e)
+    }
+
 }
 
 

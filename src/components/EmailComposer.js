@@ -4,7 +4,7 @@ import { Menu } from './external/Menues.js';
 import ReactQuillWrapper from './external/ReactQuillWrapper.js';
 import { EmailChips } from './external/EmailChips.js';
 import './EmailComposer.css';
-import { create_based_draft, send_email, update_and_send } from '../backend/Connect.js';
+import { create_based_draft, send_email, update_and_send, update_draft } from '../backend/Connect.js';
 import { create_mail_object, get_priority_style_by_name, sleep } from '../utils.js';
 import { build_email_from_composer, get_recipient_addresses_from_email } from './email_compuser_utils.js';
 import Draggable from 'react-draggable';
@@ -66,7 +66,7 @@ export function EmailComposers() {
         document.getElementById('email_composer')
     );
 }
-export function EmailComposer(props) {
+function EmailComposer(props) {
     const [to, set_to] = useState([]);
     const [cc, set_cc] = useState([]);
     const [bcc, set_bcc] = useState([]);
@@ -75,9 +75,9 @@ export function EmailComposer(props) {
     const [file_buffers, set_buffers] = useState({});
     const [file_progress, set_progress] = useState({});
     useEffect(() => process_attributes(props.email_attributes), []);
-    const handle_close = () => {
+    const handle_close = (email_was_sent) => {
         props.on_close(props.id);
-        process_cleanup_attributes();
+        process_cleanup_attributes(props.email_attributes, email_was_sent);
 
     }
     const handle_send = (html) => {
@@ -85,7 +85,7 @@ export function EmailComposer(props) {
         const email_id = props.email_attributes ? props.email_attributes.email_id : undefined
         props.send(to, subject, html, cc, bcc, file_buffers, files, email_id).then(res => {
             if (res) {
-                handle_close();
+                handle_close(true);
             }
         });
     };
@@ -126,50 +126,57 @@ export function EmailComposer(props) {
         if (!attributes) {
             return;
         }
-        if (['relpy', 'reply_all', 'forward'].includes(attributes.composer_type)) {
-            const message = await create_based_draft(attributes.email_id, attributes.composer_type);
-            var email_object = new Email(message);
-            const recipients = get_recipient_addresses_from_email(email_object)
-            const subject = email_object.get_subject();
-            set_to(recipients.to);
-            set_cc(recipients.cc);
-            set_bcc(recipients.bcc);
-            set_subject(subject);
+        try {
+            if (['reply', 'reply_all', 'forward'].includes(attributes.composer_type)) {
+                const message = await create_based_draft(attributes.email_id, attributes.composer_type);
+                var email_object = new Email(message);
+                const recipients = get_recipient_addresses_from_email(email_object)
+                const subject = email_object.get_subject();
+                set_to(recipients.to);
+                set_cc(recipients.cc);
+                set_bcc(recipients.bcc);
+                set_subject(subject);
+            }
+        } catch (e) {
+            console.log(e);
         }
     }
 
-    async function process_cleanup_attributes(attributes) {
-        if (!attributes) {
+    async function process_cleanup_attributes(attributes, email_was_sent) {
+        if (!attributes || attributes.composer_type !== 'reply') {
             return;
         }
-        // update draft
-
-        // deleaged cleanup function
-        if (attributes.cleanup) {
-            attributes.cleanup();
+        try {
+            const current_composer_email = build_email_from_composer(to, subject, "", cc, bcc, file_buffers, files);
+            if (!email_was_sent) {
+                // update draft
+                await update_draft(attributes.email_id, current_composer_email);
+            }
+            // deleaged cleanup function
+            if (attributes.cleanup) {
+                attributes.cleanup();
+            }
+        } catch (e) {
+            console.log(e);
         }
     }
-    try {
-        return (
-            <Draggable handle=".EmailComposer" cancel=".EmailContent" axis="x" defaultPosition={{ x: 50 * props.id, y: 0 }}>
-                <div className='EmailComposer'>
-                    <ComposeHeader on_close={handle_close} user_address={props.user_address} />
-                    <Recipients id={props.id} label='To' items={to} onChange={set_to}></Recipients>
-                    <Recipients id={props.id} label='CC' items={cc} onChange={set_cc}></Recipients>
-                    <Recipients id={props.id} label='BCC' items={bcc} onChange={set_bcc}></Recipients>
-                    <Subject value={subject} onChange={(e) => set_subject(e.target.value)}></Subject>
-                    <EmailContent id={props.id} handle_send={handle_send}
-                        files={files}
-                        file_progress={file_progress}
-                        set_files={my_set_files}
-                        remove_file={remove_file}
-                    ></EmailContent>
-                </div>
-            </Draggable>
-        );
-    } catch (e) {
-        console.log(e);
-    }
+    return (
+        <Draggable handle=".EmailComposer" cancel=".EmailContent" axis="x" defaultPosition={{ x: 50 * props.id, y: 0 }}>
+            <div className='EmailComposer'>
+                <ComposeHeader on_close={(e) => handle_close(false)} user_address={props.user_address} />
+                <Recipients id={props.id} label='To' items={to} onChange={set_to}></Recipients>
+                <Recipients id={props.id} label='CC' items={cc} onChange={set_cc}></Recipients>
+                <Recipients id={props.id} label='BCC' items={bcc} onChange={set_bcc}></Recipients>
+                <Subject value={subject} onChange={(e) => set_subject(e.target.value)}></Subject>
+                <EmailContent id={props.id} handle_send={handle_send}
+                    files={files}
+                    file_progress={file_progress}
+                    set_files={my_set_files}
+                    remove_file={remove_file}
+                ></EmailContent>
+            </div>
+        </Draggable>
+    );
 }
 
 
