@@ -97,14 +97,15 @@ class EmailContainer extends React.Component {
                     contacts={contacts}
                     priority={email.get_priority()}
                 />
-                <div className="mail_right_info">
-                    {AttachedFiles(email.get_attachments())}
-                </div>
+
             </div>
         );
     }
 }
-
+// Used to be to the right of the email_text_area
+//   <div className="mail_right_info">
+//      {AttachedFiles(email.get_attachments())}
+// </div>
 function AttachedFile(props) {
     const user = useSelector(state => state.user);
     const attachment = props.attachment
