@@ -66,8 +66,23 @@
     padding: 2px;
     display: flex;
     flex-direction: row;
+    align-items: center;
 
 
+}
+
+.ReplyForm .reply_button{
+    color:var(--main-text-color);
+    background-color: var(--email-container-background);
+    outline: none;
+    padding-top: 10px 0 0 5px;
+    flex-grow: 1;
+    margin-left: 5px;
+    align-self: center;
+    border: none;
+}
+.ReplyForm .reply_button:hover{
+    cursor: text;
 }
 
 .ReplyForm input[type='text'] {
