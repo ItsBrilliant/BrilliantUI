@@ -4,13 +4,14 @@ import { Menu } from './external/Menues.js';
 import ReactQuillWrapper from './external/ReactQuillWrapper.js';
 import { EmailChips } from './external/EmailChips.js';
 import './EmailComposer.css';
-import { create_reply, send_email, update_and_send } from '../backend/Connect.js';
+import { create_based_draft, send_email, update_and_send } from '../backend/Connect.js';
 import { create_mail_object, get_priority_style_by_name, sleep } from '../utils.js';
-import { person0 } from '../data_objects/Contact.js';
+import { build_email_from_composer, get_recipient_addresses_from_email } from './email_compuser_utils.js';
 import Draggable from 'react-draggable';
 import { useSelector, useDispatch } from 'react-redux';
 import { Delete } from '../actions/email_composer.js'
 import { IMPORTANT } from '../data_objects/Consts.js';
+import { Email } from '../data_objects/Email.js';
 
 var SEND_WAS_CANCELED = { value: false }
 
@@ -66,7 +67,6 @@ export function EmailComposers() {
     );
 }
 export function EmailComposer(props) {
-    useEffect(process_attributes, []);
     const [to, set_to] = useState([]);
     const [cc, set_cc] = useState([]);
     const [bcc, set_bcc] = useState([]);
@@ -74,15 +74,16 @@ export function EmailComposer(props) {
     const [files, set_files] = useState([]);
     const [file_buffers, set_buffers] = useState({});
     const [file_progress, set_progress] = useState({});
+    useEffect(() => process_attributes(props.email_attributes), []);
     const handle_close = () => {
         props.on_close(props.id);
-        if (props.email_attributes.cleanup) {
-            props.email_attributes.cleanup();
-        }
+        process_cleanup_attributes();
+
     }
     const handle_send = (html) => {
         props.set_show_send_message(true);
-        props.send(to, subject, html, cc, bcc, file_buffers, files, props.email_attributes.email_id).then(res => {
+        const email_id = props.email_attributes ? props.email_attributes.email_id : undefined
+        props.send(to, subject, html, cc, bcc, file_buffers, files, email_id).then(res => {
             if (res) {
                 handle_close();
             }
@@ -121,29 +122,54 @@ export function EmailComposer(props) {
         my_set_progress(file, undefined)
 
     }
-    function process_attributes() {
-        const attributes = props.email_attributes;
-        if (attributes.composer_type === 'reply') {
-            const message = create_reply(attributes.email_id);
+    async function process_attributes(attributes) {
+        if (!attributes) {
+            return;
+        }
+        if (['relpy', 'reply_all', 'forward'].includes(attributes.composer_type)) {
+            const message = await create_based_draft(attributes.email_id, attributes.composer_type);
+            var email_object = new Email(message);
+            const recipients = get_recipient_addresses_from_email(email_object)
+            const subject = email_object.get_subject();
+            set_to(recipients.to);
+            set_cc(recipients.cc);
+            set_bcc(recipients.bcc);
+            set_subject(subject);
         }
     }
-    return (
-        <Draggable handle=".EmailComposer" cancel=".EmailContent" axis="x" defaultPosition={{ x: 50 * props.id, y: 0 }}>
-            <div className='EmailComposer'>
-                <ComposeHeader on_close={handle_close} user_address={props.user_address} />
-                <Recipients id={props.id} label='To' items={to} onChange={set_to}></Recipients>
-                <Recipients id={props.id} label='CC' items={cc} onChange={set_cc}></Recipients>
-                <Recipients id={props.id} label='BCC' items={bcc} onChange={set_bcc}></Recipients>
-                <Subject onChange={(e) => set_subject(e.target.value)}></Subject>
-                <EmailContent id={props.id} handle_send={handle_send}
-                    files={files}
-                    file_progress={file_progress}
-                    set_files={my_set_files}
-                    remove_file={remove_file}
-                ></EmailContent>
-            </div>
-        </Draggable>
-    );
+
+    async function process_cleanup_attributes(attributes) {
+        if (!attributes) {
+            return;
+        }
+        // update draft
+
+        // deleaged cleanup function
+        if (attributes.cleanup) {
+            attributes.cleanup();
+        }
+    }
+    try {
+        return (
+            <Draggable handle=".EmailComposer" cancel=".EmailContent" axis="x" defaultPosition={{ x: 50 * props.id, y: 0 }}>
+                <div className='EmailComposer'>
+                    <ComposeHeader on_close={handle_close} user_address={props.user_address} />
+                    <Recipients id={props.id} label='To' items={to} onChange={set_to}></Recipients>
+                    <Recipients id={props.id} label='CC' items={cc} onChange={set_cc}></Recipients>
+                    <Recipients id={props.id} label='BCC' items={bcc} onChange={set_bcc}></Recipients>
+                    <Subject value={subject} onChange={(e) => set_subject(e.target.value)}></Subject>
+                    <EmailContent id={props.id} handle_send={handle_send}
+                        files={files}
+                        file_progress={file_progress}
+                        set_files={my_set_files}
+                        remove_file={remove_file}
+                    ></EmailContent>
+                </div>
+            </Draggable>
+        );
+    } catch (e) {
+        console.log(e);
+    }
 }
 
 
@@ -171,7 +197,7 @@ function Subject(props) {
                 <h3>Subject</h3>
                 {<PriorityOptions default_selection={IMPORTANT} />}
             </div>
-            <input type='text' placeholder='' onChange={props.onChange}></input>
+            <input type='text' value={props.value} placeholder='' onChange={props.onChange}></input>
         </div>
     );
 }
@@ -223,17 +249,8 @@ function ComposeHeader(props) {
 }
 
 function send(to, subject, html_content, cc, bcc, file_buffers, files, existing_id) {
-    console.log("Sending mail:");
-    console.log(html_content)
-    const attachment_buffers = Object.values(files).map(f => {
-        return {
-            name: f.name,
-            type: f.type,
-            buffer: file_buffers[f.name]
-        }
-    });
     try {
-        const email = create_mail_object(to, subject, html_content, 'html', cc, bcc, attachment_buffers);
+        const email = build_email_from_composer(to, subject, html_content, cc, bcc, file_buffers, files);
         if (existing_id) {
             update_and_send(existing_id, email)
         } else {
@@ -272,5 +289,4 @@ function EmailSendMessage(props) {
         </div>
     );
 }
-
 

@@ -191,3 +191,4 @@ export function my_html_to_text(html) {
     var text_no_xml_comment = text.replaceAll(re, "")
     return text_no_xml_comment.trim();
 }
+

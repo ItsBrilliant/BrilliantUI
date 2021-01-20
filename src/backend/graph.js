@@ -61,7 +61,15 @@ export const graph = {
   },
 
   createReply: async function (accessToken, reply_to_id) {
-    return await standard_post(accessToken, `/me/messages/${reply_to_id}/createReply`);
+    return standard_post(accessToken, `/me/messages/${reply_to_id}/createReply`);
+  },
+
+  createReplyAll: async function (accessToken, reply_to_id) {
+    return standard_post(accessToken, `/me/messages/${reply_to_id}/createReplyAll`);
+  },
+
+  createForward: async function (accessToken, forward_id) {
+    return standard_post(accessToken, `/me/messages/${forward_id}/forward`);
   },
 
   updateMail: async function (accessToken, email, id) {

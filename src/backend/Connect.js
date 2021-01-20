@@ -114,7 +114,20 @@ export async function create_reply(reply_to_id, user) {
     const ACCESS_TOKEN = await get_access_token(user);
     console.log("creating reply to email");
     const res = await graph.createReply(ACCESS_TOKEN, reply_to_id);
-    return res.body;
+    return res;
+}
+
+export async function create_based_draft(based_on_id, draft_type) {
+    const ACCESS_TOKEN = await get_access_token();
+    console.log("creating draft of type " + draft_type);
+    if (draft_type === 'reply') {
+        const res = graph.createReply(ACCESS_TOKEN, based_on_id);
+    } if (draft_type === 'reply_all') {
+        const res = graph.createReplyall(ACCESS_TOKEN, based_on_id);
+    } if (draft_type === 'forward') {
+        const res = graph.createForward(ACCESS_TOKEN, based_on_id);
+    }
+    return res;
 }
 
 export async function update_and_send(email_id, email, user) {

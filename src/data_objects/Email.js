@@ -15,7 +15,9 @@ export class Email {
         this.date = new Date(this.email['sentDateTime']);
         this.add_request_document_task();
         this.add_request_meeting_task();
-        this.add_random_tasks();
+        if (!email_json.isDraft) {
+            this.add_random_tasks();
+        }
         this.attachments_dict = {}
 
     }
