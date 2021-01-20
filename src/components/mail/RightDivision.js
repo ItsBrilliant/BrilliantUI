@@ -40,7 +40,7 @@ function TasksDisplayer(props) {
     if (props.tasks.length === 0) {
         return null;
     }
-    const title = props.areDone ? "Finished Tasks" : "Priority Tasks"
+    const title = props.areDone ? "Done" : "Priority Tasks"
     const done_style = props.areDone ? " done" : " not_done"
     const tasks_elements = props.tasks.map(task => {
         const owner_name = user === task.owner ? "You" : task.owner.get_first_name();
@@ -51,7 +51,7 @@ function TasksDisplayer(props) {
                     <span className="inner">v</span>
                 </span>
                 <span className={"task_owner" + done_style}>{owner_name}:</span>
-                { task.text + " (due: " + format_date(task.deadline).date + ")"}
+                <span className="task_text">{task.text + " (due: " + format_date(task.deadline).date + ")"}</span>
             </li>
         );
     })

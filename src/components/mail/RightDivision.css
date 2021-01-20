@@ -23,19 +23,37 @@
     margin-right: 0.2em;
 }
 
+.TasksDisplayer span.task_text{
+    color:white;
+    display:inline;
+    height:fit-content;
+    margin-right: 0.2em;
+    color:rgb(107, 161, 219);
+    overflow: hidden;
+    word-wrap: break-word;
+
+}
+
+.TasksDisplayer.done span.task_text{
+    color:var(--main-text-color)
+
+}
+
 .Tasks {
     background-color: var(--email-container-background);
 }
 .TasksDisplayer ul {
     list-style: none;
     margin-top: 5px;
+    font-size: 14px;
 }
 
 .TasksDisplayer ul li::before{
   content: "\2022";
   font-weight: bold;
+  font-size: medium;
   display: inline-block; 
-  width: 1em;
+  width: 8px;
   margin-left: -1em;
 }
 
@@ -60,28 +78,23 @@
 }
 
 .TasksDisplayer ul{
-    padding: 10px;
+    padding: 5px;
 }
 
 .TasksDisplayer ul li{
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
+    padding: 2px 5px;
 }
-.TasksDisplayer.not_done ul li{
-    color:rgb(107, 161, 219);
-}
+
 .TasksDisplayer ul li .task_status_button{
     display: inline-block;
     position: relative;
-    top: 3px;
+    top: 5px;
     border-radius: 100%;
-    height:12px;
+    height: 12px;
     width: 12px;
     border: 1px solid var(--main-text-color);
-    align-self: flex-start;
     text-align: center;
-    margin: 2px 3px 2px 0px;
+    margin: 2px;
     padding: 0;
     color: transparent;
     font-weight: bold;
