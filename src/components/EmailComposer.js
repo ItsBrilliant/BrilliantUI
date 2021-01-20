@@ -67,6 +67,7 @@ export function EmailComposers() {
     );
 }
 function EmailComposer(props) {
+    const [dest_id, set_dest_id] = useState(undefined);
     const [to, set_to] = useState([]);
     const [cc, set_cc] = useState([]);
     const [bcc, set_bcc] = useState([]);
@@ -82,8 +83,7 @@ function EmailComposer(props) {
     }
     const handle_send = (html) => {
         props.set_show_send_message(true);
-        const email_id = props.email_attributes ? props.email_attributes.email_id : undefined
-        props.send(to, subject, html, cc, bcc, file_buffers, files, email_id).then(res => {
+        props.send(to, subject, html, cc, bcc, file_buffers, files, dest_id).then(res => {
             if (res) {
                 handle_close(true);
             }
@@ -136,6 +136,7 @@ function EmailComposer(props) {
                 set_cc(recipients.cc);
                 set_bcc(recipients.bcc);
                 set_subject(subject);
+                set_dest_id(email_object.get_id());
             }
         } catch (e) {
             console.log(e);
@@ -150,7 +151,7 @@ function EmailComposer(props) {
             const current_composer_email = build_email_from_composer(to, subject, "", cc, bcc, file_buffers, files);
             if (!email_was_sent) {
                 // update draft
-                await update_draft(attributes.email_id, current_composer_email);
+                await update_draft(dest_id, current_composer_email);
             }
             // deleaged cleanup function
             if (attributes.cleanup) {
