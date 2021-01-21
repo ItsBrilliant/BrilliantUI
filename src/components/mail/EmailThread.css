@@ -35,6 +35,7 @@
 img.threadIcon {
   border: 2px solid black;
 }
+
 .EmailContainer .email_text_area span.extra_icon {
   font-size: medium;
   background-color: rgba(59, 106, 124, 0.856);
@@ -52,12 +53,11 @@ img.threadIcon {
     flex-direction: column;
     align-items: center;
     font-size: small;
-    margin: 2px;
+    margin: 5px;
     color: var(--main-text-color);
     justify-content: flex-start;
     overflow: hidden;
     font-size: medium;
-    width:100px;
     line-height: 1;
 }
 

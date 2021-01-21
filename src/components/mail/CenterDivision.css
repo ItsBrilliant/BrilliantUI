@@ -1,9 +1,14 @@
 @import "../Globals.css";
 
 .CenterDivision{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
     background-color: var(--email-container-background);
     height: 100%;
     width: 55%;
+    padding: 10px;
+
 }
 
 .EmailContainer{
@@ -11,7 +16,7 @@
     display:flex;
     flex-direction: row;
     padding: 0px;
-    margin: 20px 5px;
+    margin: 30px 5px;
     overflow-wrap: break-word;
     overflow-y: visible;
 }
