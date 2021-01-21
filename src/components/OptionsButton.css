@@ -1,0 +1,38 @@
+@import "./Globals.css";
+
+.OptionsButton {
+    background-color: transparent;
+    width: fit-content;
+    padding: 2px;
+    display: inline-flex;
+    align-items: flex-start;
+}
+
+.OptionsButton .options_button_icon{
+    background-color: transparent;
+    color: wheat;
+    transform:rotateZ(90deg);
+    font-size: larger;
+    font-weight: bold;
+}
+
+.OptionsButton ul.options_list {
+    background-color: var(--brighter-bg);
+    color: white;
+    margin: 0;
+    z-index: 100;
+    border-radius: 10px;
+}
+
+.OptionsButton ul.options_list {
+    list-style: none;
+    padding: 5px;
+}
+.OptionsButton ul.options_list li{
+    margin: 3px;
+}
+
+.OptionsButton ul li:hover{
+    background-color: var(--link_hover_color);
+    cursor: pointer;
+}

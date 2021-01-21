@@ -162,7 +162,7 @@ function EmailComposer(props) {
         }
     }
     return (
-        <Draggable handle=".EmailComposer" cancel=".EmailContent" axis="x" defaultPosition={{ x: 50 * props.id, y: 0 }}>
+        <Draggable handle=".EmailComposer" cancel=".EmailContent" defaultPosition={{ x: 50 * props.id, y: 0 }}>
             <div className='EmailComposer'>
                 <ComposeHeader on_close={(e) => handle_close(false)} user_address={props.user_address} />
                 <Recipients id={props.id} label='To' items={to} onChange={set_to}></Recipients>

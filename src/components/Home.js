@@ -14,6 +14,9 @@ import { connect } from "react-redux";
 import { Login } from "../actions/login.js";
 import { Contact } from '../data_objects/Contact.js';
 import { MAIL_FOLDERS } from '../data_objects/Consts.js';
+import OptionsButton from './OptionsButton.js';
+const names = ["Set as task", "Change priority", "Add tag", "Export", "Mark as read", "Delete"]
+const OPTIONS = names.map(n => { return { name: n, action: () => alert("clicked") } })
 
 export const SHOW_HTML = false;
 
@@ -172,6 +175,11 @@ export class Home extends React.Component {
                                 render={() =>
                                     <LoginPage user_address={user_address} on_login={(new_user_address) => this.handle_login(new_user_address)} />}>
                             </Route>
+                            <Route
+                                path='/build' exact
+                                render={() => <OptionsButton options={OPTIONS} />}
+                            >
+                            </Route>
                         </Switch>
                     </div>
                 </div>
@@ -184,7 +192,7 @@ export class Home extends React.Component {
 function Nav() {
     const dispatch = useDispatch();
     const logo = { icon: "button_icons/logo.svg", link: '/' }
-    const brilliant_mode = { icon: "button_icons/brilliant.svg", link: '/compose' }
+    const brilliant_mode = { icon: "button_icons/brilliant.svg", link: '/build' }
     const accounts = { icon: "button_icons/accounts.svg", link: '/' }
     const mail = { icon: "button_icons/mail.svg", link: '/mail' }
     const layout = { icon: "button_icons/layout.svg", link: '/' }
