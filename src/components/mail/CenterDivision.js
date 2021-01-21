@@ -4,11 +4,10 @@ import './CenterDivision.css';
 import SimpleBar from 'simplebar-react';
 import { AddTaskModal } from '../external/AddTaskModal.js';
 import { EmailReplyModal } from '../external/EmailReplyModal.js';
-import { GroupIcon } from './EmailThread.js'
-import { SHOW_HTML } from '../Home.js'
 import { download_attachment } from '../../backend/Connect.js';
 import { useSelector, useDispatch } from 'react-redux'
 import { Create } from '../../actions/email_composer.js';
+import EmailContainer from './EmailContainer.js';
 
 export class CenterDivision extends React.Component {
     constructor(props) {
@@ -56,9 +55,13 @@ export class CenterDivision extends React.Component {
             <EmailReplyModal show={this.state.show_add_task} handle_ok={this.reset}
                 close={this.reset} />
         const thread_emails = this.props.thread.get_emails().reverse();
-        const emails = thread_emails.map(
-            (email) => <EmailContainer key={email.get_id()} email={email} options_button={options_button}
-                selected_task={this.props.selected_task} />)
+        const emails = thread_emails.map((email) =>
+            <EmailContainer
+                key={email.get_id()}
+                email={email}
+                options_button={options_button}
+                selected_task={this.props.selected_task}
+            />);
         return (
             <div className='CenterDivision' >
                 <SimpleBar className="CenterSimpleBar">
@@ -71,41 +74,7 @@ export class CenterDivision extends React.Component {
     }
 }
 
-class EmailContainer extends React.Component {
-    render() {
 
-        const email = this.props.email;
-        const contacts = email.get_receivers().map(receiver => receiver.image_link)
-        const sender = email.get_sender()
-        const is_html = SHOW_HTML && email.get_content_type() === 'html'
-        const content = is_html ? email.get_html() : email.get_text();
-        const stamp = sender ? EmailStamp([sender.image_link], email.date, sender.get_name()) : null
-        return (
-            <div className='EmailContainer'>
-                {stamp}
-                <EmailTextArea isUnread={!email.get_is_read()}
-                    sender_name={sender ? sender.get_name() : null}
-                    content={content}
-                    is_html={is_html}
-                    subject={email.get_subject()}
-                    of_center_email={true}
-                    options_button={this.props.options_button}
-                    tags={email.get_tags()} id={email.get_id()}
-                    tasks={email.get_tasks()}
-                    selected_task={this.props.selected_task}
-                    add_task={email.add_task.bind(email)}
-                    contacts={contacts}
-                    priority={email.get_priority()}
-                />
-
-            </div>
-        );
-    }
-}
-// Used to be to the right of the email_text_area
-//   <div className="mail_right_info">
-//      {AttachedFiles(email.get_attachments())}
-// </div>
 function AttachedFile(props) {
     const user = useSelector(state => state.user);
     const attachment = props.attachment
