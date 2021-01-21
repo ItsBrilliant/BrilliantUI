@@ -6,6 +6,10 @@
     padding: 2px;
     display: inline-flex;
     align-items: flex-start;
+    max-width: 20px;
+    max-height: 20px;
+    overflow: visible;
+    margin: 2px;
 }
 
 .OptionsButton .options_button_icon{
@@ -16,23 +20,25 @@
     font-weight: bold;
 }
 
-.OptionsButton ul.options_list {
+#messages_to_user ul.options_list {
     background-color: var(--brighter-bg);
     color: white;
     margin: 0;
-    z-index: 100;
     border-radius: 10px;
+
 }
 
-.OptionsButton ul.options_list {
+#messages_to_user  ul.options_list {
     list-style: none;
     padding: 5px;
 }
-.OptionsButton ul.options_list li{
-    margin: 3px;
+#messages_to_user  ul.options_list li{
+    margin-bottom: 5px;
+    padding: 10px;
+    border-radius: 10px;
 }
 
-.OptionsButton ul li:hover{
+#messages_to_user  ul li:hover{
     background-color: var(--link_hover_color);
     cursor: pointer;
 }

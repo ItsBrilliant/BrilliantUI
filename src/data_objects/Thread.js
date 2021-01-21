@@ -42,7 +42,13 @@ export class Thread {
         }
         return count;
     }
+    set_priority(priority) {
+        this.priority = priority;
+    }
     get_priority() {
+        if (this.priority) {
+            return this.priority;
+        }
         var highest_priority = CAN_WAIT;
         for (const email of this.get_emails()) {
             const priority = email.get_priority();
@@ -141,4 +147,14 @@ export function expand_threads(emails) {
         Thread.threads[thread_id].add_email(email)
     }
     return Thread.threads
+}
+
+export function mark_all_read(id) {
+    for (const email of Thread.threads[id].get_emails()) {
+        email.set_is_read(true);
+    }
+}
+
+export function get_thread(id) {
+    return Thread.threads[id];
 }

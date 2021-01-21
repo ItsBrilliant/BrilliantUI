@@ -27,6 +27,7 @@
   margin: 0;
   height: calc(100% - 85px);
   width: 100%;
+  overflow-x: visible;
 
 }
 

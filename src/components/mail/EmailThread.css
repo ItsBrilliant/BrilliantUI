@@ -19,7 +19,7 @@
   width: 75%;
 }
 
-.thread_button .threadIcon, .EmailContainer .threadIcon {
+.emailThread .threadIcon, .EmailContainer .threadIcon {
   border-radius: 100%;
   height: 50px;
   width: 50px;
@@ -62,28 +62,28 @@ img.threadIcon {
 }
 
 .attachment {
+  margin: 5px;
   height: 40px;
   width: 40px;
 }
+.emailThread:hover{
+  cursor: pointer;
 
+}
 
 .emailThread{
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   border-radius: 20px;
-  width: 100%;
-  overflow-x: hidden;
+  max-width: 100%;
+  overflow-x: visible;
+  background-color: transparent;
+  margin: 5px;
+  padding: 5px;
+  font-size: medium;
+  font-weight: normal;
 
-}
-
-.thread_button{
-      background-color: transparent;
-      margin-top: 5px;
-      margin: 5px;
-      font-size: medium;
-      font-weight: normal;
-      border: none;
 }
 
 
@@ -95,9 +95,10 @@ img.threadIcon {
 
 .thread_labels {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: flex-start;
-  align-items: center;
+  align-items: flex-start;
+  flex-wrap: nowrap;
   
 }
 
@@ -108,10 +109,14 @@ img.threadIcon {
   padding: 1px;
   color: black;
   background-color: lightblue;
-  margin: 5px;
+  margin-top: 5px;
   text-align: center;
   font-weight: bold;
   font-size: medium;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
 }
 
 .unread h4 {
