@@ -46,7 +46,7 @@ export class Thread {
         this.priority = priority;
     }
     get_priority() {
-        if (this.priority) {
+        if (this.priority !== undefined) {
             return this.priority;
         }
         var highest_priority = CAN_WAIT;

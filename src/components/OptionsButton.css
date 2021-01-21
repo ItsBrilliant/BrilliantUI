@@ -14,12 +14,15 @@
 
 .OptionsButton .options_button_icon{
     background-color: transparent;
-    color: wheat;
     transform:rotateZ(90deg);
+    color: var(--main-text-color);
     font-size: larger;
     font-weight: bold;
 }
 
+.unread .OptionsButton .options_button_icon{
+    color: var(--unread-text-color);
+}
 #messages_to_user ul.options_list {
     background-color: var(--brighter-bg);
     color: white;

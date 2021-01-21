@@ -4,7 +4,7 @@
 .LeftDivision {
     height: 100%;
     width: 25%;
-    min-width:300px;
+    min-width:360px;
     background-color: var(--main-bg-color);
 }
 

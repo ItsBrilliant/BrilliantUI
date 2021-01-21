@@ -122,9 +122,10 @@ img.threadIcon {
 .unread h4 {
   color: white;
 }
-.unread * {
+.unread.email_text_area, .unread .TimeStamp{
   color: var(--unread-text-color);
 }
+
 
 button {
   outline: none;

@@ -19,6 +19,10 @@ class EmailThread extends Component {
         if (this.props.is_selected) {
             style = style + ' selected_thread';
         }
+
+        if (this.has_unread()) {
+            style = style + ' unread';
+        }
         return style
         //return this.props.is_selected ? 'emailThread selected_thread' : 'emailThread';
     }
