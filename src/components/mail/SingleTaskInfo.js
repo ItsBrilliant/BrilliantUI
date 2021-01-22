@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import { DEFAULT_HIGHLIGHTS } from '../../data_objects/Consts.js'
 import SimpleBar from 'simplebar-react'
 import './SingleTaskInfo.css'
-import { useSelector } from 'react-redux'
+import { AttachmentDisplay } from './FileAttachments.js'
 import { EmailThread } from './EmailThread.js'
 
 export default function SingleTaskInfo(props) {
@@ -17,7 +17,7 @@ export default function SingleTaskInfo(props) {
                     initiator={props.sender}
                     owner={props.owner} />
                 <Highlights highlights={DEFAULT_HIGHLIGHTS} />
-                <RelevantResources resources={props.attachments} />
+                <RelevantResources resources={props.thread.get_attachments()} />
                 <SourceConversation thread={props.thread} />
             </SimpleBar>
         </div>
@@ -52,35 +52,21 @@ function People(props) {
 }
 
 function Highlights(props) {
-    return (
-        <div>
-            Highlights
-        </div>
-    )
+    const highlights =
+        <ul> {props.highlights.map(h => <li>{h}</li>)}</ul>
+
+    return <TitledComponent title="Highlights" component={highlights} />
 }
 
 function RelevantResources(props) {
-    return (
-        <div>
-            RelevantResources
-        </div>
-    )
+    const attachemnts_for_display = props.resources.map(a => <AttachmentDisplay attachment={a} />);
+    return <TitledComponent title="Relevant Resources" component={attachemnts_for_display} />
 }
 
 function SourceConversation(props) {
     const email_thread_component = <EmailThread id={props.thread.get_id()} thread={props.thread} is_selected={false}
         handle_select={() => { }} priority={null} />
     return <TitledComponent title="Source Conversation" component={email_thread_component} />
-}
-
-function SourceConversation1(props) {
-    return (
-        <div className="SourceConversation">
-            <h4>Source Conversation</h4>
-            <EmailThread id={props.thread.get_id()} thread={props.thread} is_selected={false}
-                handle_select={() => { }} priority={null} />
-        </div>
-    )
 }
 
 function TitledComponent(props) {
