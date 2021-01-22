@@ -15,4 +15,7 @@ export class Task {
     get_owner() {
         return this.owner;
     }
+    get_text() {
+        return this.text;
+    }
 }

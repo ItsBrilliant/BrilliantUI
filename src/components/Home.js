@@ -14,9 +14,10 @@ import { connect } from "react-redux";
 import { Login } from "../actions/login.js";
 import { Contact } from '../data_objects/Contact.js';
 import { MAIL_FOLDERS } from '../data_objects/Consts.js';
-import OptionsButton from './OptionsButton.js';
-const names = ["Set as task", "Change priority", "Add tag", "Export", "Mark as read", "Delete"]
-const OPTIONS = names.map(n => { return { name: n, action: () => alert("clicked") } })
+import SingleTaskInfo from './mail/SingleTaskInfo.js';
+import { Task } from '../data_objects/Task.js';
+
+const TASK = new Task("Review three attached documents", new Date(), 0, false, undefined, undefined)
 
 export const SHOW_HTML = false;
 
@@ -177,7 +178,7 @@ export class Home extends React.Component {
                             </Route>
                             <Route
                                 path='/build' exact
-                                render={() => <OptionsButton options={OPTIONS} />}
+                                render={() => <SingleTaskInfo task={TASK} />}
                             >
                             </Route>
                         </Switch>
