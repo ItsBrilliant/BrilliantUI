@@ -1,13 +1,15 @@
-import React, { Component } from 'react';
-import './EmailThread.css';
-import { Menu } from '../external/Menues.js';
-import { AddTaskPortal } from '../AddTaskPortal.js';
-import { Task } from '../../data_objects/Task.js';
-import { URGENT } from '../../data_objects/Consts.js';
-import OptionsButton from '../OptionsButton.js';
+import React, { Component } from 'react'
+import './EmailThread.css'
+import { Menu } from '../external/Menues.js'
+import { AddTaskPortal } from '../AddTaskPortal.js'
+import { Task } from '../../data_objects/Task.js'
+import { URGENT } from '../../data_objects/Consts.js'
+import OptionsButton from '../OptionsButton.js'
 import { mark_all_read, get_thread } from '../../data_objects/Thread.js'
-import EmailTextArea from './EmailTextArea.js';
-import { EmailStamp } from './EmailStamp.js';
+import EmailTextArea from './EmailTextArea.js'
+import { EmailStamp } from './EmailStamp.js'
+import { useSelector, useDispatch } from 'react-redux'
+import { Delete } from '../../actions/email_threads'
 
 class EmailThread extends Component {
 
@@ -77,25 +79,30 @@ class EmailThread extends Component {
                     content={selected_email.get_text()}
                     subject={selected_email.get_subject()}
                     tags={selected_email.get_tags()} />
-                {ThreadLabels(num_tasks, has_attatchments, this.props.priority, this.props.id)}
+                <ThreadLabels
+                    num_tasks={num_tasks}
+                    has_attatchments={has_attatchments}
+                    priority={this.props.priority}
+                    thread_id={this.props.id}
+                />
             </div>
         )
     }
 }
 
-function ThreadLabels(num_threads, has_attachments, priority, thread_id) {
+function ThreadLabels(props) {
+    const thread = useSelector(state => state.email_threads[props.thread_id]);
+    const dispatch = useDispatch()
     const option_names = ["Set as task", "Change priority", "Add tag", "Export", "Mark as read", "Delete"];
     const options = option_names.map(n => { return { name: n } });
-    // options.filter(o => o.name === 'Delete')[0].action = () => delete_thread(thread_id);
-    options.filter(o => o.name === 'Mark as read')[0].action = () => mark_all_read(thread_id);
-    const thread = get_thread(thread_id);
-    const new_priority = (thread.get_priority() + 1) % 3
-    options.filter(o => o.name === "Change priority")[0].action = () => thread.set_priority(new_priority);
+    options.filter(o => o.name === 'Delete')[0].action = () => dispatch(Delete(props.thread_id));
+    options.filter(o => o.name === 'Mark as read')[0].action = () => thread.mark_all_read();
+    options.filter(o => o.name === "Change priority")[0].action = () => thread.set_priority((thread.get_priority() + 1) % 3);
     return (
         <div className='thread_labels'>
-            <div className={'num_threads_label ' + priority}>
-                {num_threads}
-                {has_attachments ? attachmentIcon() : null}
+            <div className={'num_tasks_label ' + props.priority}>
+                {props.num_tasks}
+                {props.has_attachments ? attachmentIcon() : null}
             </div>
             <OptionsButton options={options}></OptionsButton>
         </div>

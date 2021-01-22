@@ -15,10 +15,14 @@ export const EmailThreadsReducer = (state = {}, action) => {
 
     else if (action.type === "DELETE") {
         var new_state = {};
-        for (const thread_id in Object.keys(state).filter(id => id != action.thread_id)) {
+        for (const thread_id of Object.keys(state).filter(id => id != action.thread_id)) {
             new_state[thread_id] = state[thread_id];
         }
         return new_state;
+    }
+
+    else if (action.type === "RESET") {
+        return {};
     }
 
     else {

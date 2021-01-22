@@ -12,6 +12,7 @@ import { useDispatch } from 'react-redux';
 import { LoginPage } from './LoginPage.js';
 import { connect } from "react-redux";
 import { Login } from "../actions/login.js";
+import { Expand, Reset } from "../actions/email_threads.js";
 import { Contact } from '../data_objects/Contact.js';
 import { MAIL_FOLDERS } from '../data_objects/Consts.js';
 import SingleTaskInfo from './mail/SingleTaskInfo.js';
@@ -28,7 +29,6 @@ export class Home extends React.Component {
         this.update_search_bar = this.update_search_bar.bind(this);
         this.get_mailboxes = this.get_mailboxes.bind(this)
         this.state = {
-            emailThreads: {},
             calendarEvents: [],
             search: "",
             mailFolders: Home.generate_empty_folders()
@@ -50,8 +50,8 @@ export class Home extends React.Component {
     handle_login(user_address) {
         console.log("new user address" + user_address);
         const new_user = this.change_user(user_address);
+        this.props.Reset()
         this.setState({
-            emailThreads: {},
             calendarEvents: [],
             mailFolders: Home.generate_empty_folders()
         });
@@ -115,16 +115,12 @@ export class Home extends React.Component {
 
     set_threads(emails, user) {
         var same_user = false;
-        this.setState(
-            function (state, props) {
-                if (props.user.equals(user)) {
-                    same_user = true;
-                    return { emailThreads: expand_threads(emails) };
-                }
-                else {
-                    return {};
-                }
-            })
+        if (this.props.user.equals(user)) {
+            this.props.Expand(emails)
+            same_user = true;
+        } else {
+            this.props.Reset()
+        }
         console.log("set_threads: same user is " + same_user);
         return same_user;
     }
@@ -160,7 +156,7 @@ export class Home extends React.Component {
                             <Route
                                 path='/mail' exact
                                 render={() =>
-                                    <Mail emailThreads={this.state.emailThreads}
+                                    <Mail emailThreads={this.props.emailThreads}
                                         load_threads_function={() => this.get_mailboxes(this.props.user)}
                                         user={this.props.user}
                                         folders={this.state.mailFolders}
@@ -248,11 +244,14 @@ const SearchBar = (keyword, setKeyword) => {
 }
 
 const mapStateToProps = state => ({
-    user: state.user
+    user: state.user,
+    emailThreads: state.email_threads
 });
 
 const mapDispatchToProps = {
-    Login
+    Login,
+    Expand,
+    Reset
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

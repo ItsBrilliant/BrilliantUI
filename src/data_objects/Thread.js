@@ -127,6 +127,11 @@ export class Thread {
         }
         return newest_date;
     }
+    mark_all_read() {
+        for (const email of this.get_emails()) {
+            email.set_is_read(true);
+        }
+    }
 }
 
 Thread.group_functions[PRIORITY_KEY] = (thread) => thread.get_priority();
@@ -147,14 +152,4 @@ export function expand_threads(emails) {
         Thread.threads[thread_id].add_email(email)
     }
     return Thread.threads
-}
-
-export function mark_all_read(id) {
-    for (const email of Thread.threads[id].get_emails()) {
-        email.set_is_read(true);
-    }
-}
-
-export function get_thread(id) {
-    return Thread.threads[id];
 }

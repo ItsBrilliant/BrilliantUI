@@ -11,3 +11,9 @@ export const Delete = (id) => {
         thread_id: id
     };
 }
+
+export const Reset = () => {
+    return {
+        type: "RESET"
+    };
+}
