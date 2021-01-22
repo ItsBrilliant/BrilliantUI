@@ -4,12 +4,13 @@ import { get_priority_style, get_file_icon, format_date } from '../../utils.js';
 import { download_attachment } from '../../backend/Connect.js';
 import { useSelector } from 'react-redux';
 import SimpleBar from 'simplebar-react';
+import SingleTaskInfo from './SingleTaskInfo.js'
 
 export function RightDivision(thread, on_task_hover) {
     return (thread ?
         <div className='RightDivision'>
             <SimpleBar className='SimpleBar_RightDivision'>
-                {Tasks(thread.get_tasks(), on_task_hover)}
+                {Tasks(thread.get_tasks(), on_task_hover, thread)}
                 {Participants(thread.get_participants())}
                 {FileAttachments(thread.get_attachments())}
             </SimpleBar>
@@ -18,7 +19,7 @@ export function RightDivision(thread, on_task_hover) {
     )
 }
 
-function Tasks(tasks, on_task_hover) {
+function Tasks(tasks, on_task_hover, thread) {
     const finished_tasks = tasks.filter(task => task.isDone);
     const active_tasks = tasks.filter(task => !task.isDone);
     if (finished_tasks.length === 0 && active_tasks.length === 0) {
@@ -26,6 +27,7 @@ function Tasks(tasks, on_task_hover) {
     } else {
         return (
             <div className='Container'>
+                <SingleTaskInfo thread={thread} task={tasks[0]} />
                 <TasksDisplayer tasks={active_tasks} areDone={false} on_hover={on_task_hover} />
                 <TasksDisplayer tasks={finished_tasks} areDone={true} on_hover={on_task_hover} />
             </div>
@@ -75,7 +77,7 @@ function Participants(contacts) {
 
     return (
         <div className="Container">
-            <h4>People in the Conversation</h4>
+            <h5>People in the Conversation</h5>
             <div className='ParticipantsIcons'>
                 {icons}
             </div>

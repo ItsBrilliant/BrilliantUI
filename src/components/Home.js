@@ -174,7 +174,7 @@ export class Home extends React.Component {
                             </Route>
                             <Route
                                 path='/build' exact
-                                render={() => <SingleTaskInfo task={TASK} />}
+                                render={() => <h1>Build</h1>}
                             >
                             </Route>
                         </Switch>

@@ -18,7 +18,7 @@ class EmailThread extends Component {
     }
 
     get_style() {
-        var style = 'emailThread';
+        var style = 'EmailThread';
         if (this.props.is_selected) {
             style = style + ' selected_thread';
         }
@@ -27,7 +27,7 @@ class EmailThread extends Component {
             style = style + ' unread';
         }
         return style
-        //return this.props.is_selected ? 'emailThread selected_thread' : 'emailThread';
+        //return this.props.is_selected ? 'EmailThread selected_thread' : 'EmailThread';
     }
 
     get_receiver_icons() {

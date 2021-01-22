@@ -1,6 +1,6 @@
 @import "../Globals.css";
 
-.emailThread .threadIcon, .EmailContainer .threadIcon {
+.EmailThread .threadIcon, .EmailContainer .threadIcon {
   border-radius: 100%;
   height: 50px;
   width: 50px;
@@ -35,12 +35,12 @@ img.threadIcon {
   height: 40px;
   width: 40px;
 }
-.emailThread:hover{
+.EmailThread:hover{
   cursor: pointer;
 
 }
 
-.emailThread{
+.EmailThread{
   display: flex;
   flex-direction: row;
   justify-content: space-between;

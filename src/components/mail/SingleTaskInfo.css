@@ -5,6 +5,11 @@
     height: calc(100% - 60px);
     width: 40%;
     color: var(--main-text-color);
+    position: fixed;
+    left: 35%;
+    top:0;
+    z-index: 100;
+    border: 1px solid red;
 }
 
 
@@ -14,7 +19,37 @@
     justify-content: flex-start;
     align-items: center;
     flex-wrap: nowrap;
-    height: 100%;
+    height:100%;
+    width:100%;
+    overflow-x: hidden;
 
 }
+
+.SingleTaskInfo .simplebar{
+    height:100%;
+    width:100%;
+}
+
+.SingleTaskInfo {
+    padding: 15px;
+}
+.SingleTaskInfo .TitledComponent {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 100%;
+    padding: 5px;
+}
+
+.SingleTaskInfo .TitledComponent .title{
+    align-self: flex-start;
+}
+.SingleTaskInfo .TitledComponent .general_component{
+    align-self: center;
+    background-color: var(--main-bg-color);
+    width: 100%;
+    border-radius: 8px;
+    margin: 3px;
+}
+
 
