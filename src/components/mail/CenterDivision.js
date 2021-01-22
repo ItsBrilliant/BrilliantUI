@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { EmailTextArea, EmailStamp, attachmentIcon } from './EmailThread.js';
+import { attachmentIcon } from './EmailThread.js';
 import './CenterDivision.css';
 import SimpleBar from 'simplebar-react';
 import { AddTaskModal } from '../external/AddTaskModal.js';
@@ -65,7 +65,7 @@ export class CenterDivision extends React.Component {
         return (
             <div className='CenterDivision' >
                 <SimpleBar className="CenterSimpleBar">
-                    <div>{emails}</div>
+                    {emails}
                 </SimpleBar>
                 <NewReply email_id={thread_emails[thread_emails.length - 1].get_id()} />
                 {modal}
@@ -75,31 +75,6 @@ export class CenterDivision extends React.Component {
 }
 
 
-function AttachedFile(props) {
-    const user = useSelector(state => state.user);
-    const attachment = props.attachment
-    return (
-        <div className='AttachedFile'
-            onClick={() => download_attachment(attachment.email_id, attachment.id, user)}>
-            {attachmentIcon()}
-
-            <p>{attachment.name} <span class="tooltiptext">download</span></p>
-        </div>
-    );
-}
-
-function AttachedFiles(attachments) {
-    if (attachments === undefined || attachments.length == 0) {
-        return null;
-    } else {
-        var attached_files = attachments.map((attachment) => <AttachedFile attachment={attachment} />);
-        return (
-            <div className="AttachedFiles">
-                {attached_files}
-            </div>
-        );
-    }
-}
 
 function NewReply(props) {
     const dispatch = useDispatch();
@@ -164,6 +139,33 @@ class ReplyForm extends React.Component {
 
                 />
             </form>
+        );
+    }
+}
+
+// attachments per email, Not in uses
+function AttachedFile(props) {
+    const user = useSelector(state => state.user);
+    const attachment = props.attachment
+    return (
+        <div className='AttachedFile'
+            onClick={() => download_attachment(attachment.email_id, attachment.id, user)}>
+            {attachmentIcon()}
+
+            <p>{attachment.name} <span class="tooltiptext">download</span></p>
+        </div>
+    );
+}
+
+function AttachedFiles(attachments) {
+    if (attachments === undefined || attachments.length == 0) {
+        return null;
+    } else {
+        var attached_files = attachments.map((attachment) => <AttachedFile attachment={attachment} />);
+        return (
+            <div className="AttachedFiles">
+                {attached_files}
+            </div>
         );
     }
 }

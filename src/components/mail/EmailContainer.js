@@ -3,6 +3,7 @@ import EmailTextArea from './EmailTextArea.js';
 import { useSelector } from 'react-redux';
 import { SHOW_HTML } from '../Home.js';
 import { EmailStamp } from './EmailStamp.js';
+import "./EmailContainer.css";
 export default function EmailContainer(props) {
     const user = useSelector(state => state.user)
     const email = props.email;

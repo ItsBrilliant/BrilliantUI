@@ -1,0 +1,18 @@
+.EmailContainer{
+    background-color: var(--email-container-background);
+    display:flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-grow: 1;
+    padding: 0px;
+    margin: 20px 0px;
+}
+
+.EmailContainer .email_text_area{
+    background-color:  var(--email-text-area-bg);
+    padding-left: 15px;
+    padding-right: 15px;
+    border-radius: 30px;
+    overflow: visible;
+
+}
