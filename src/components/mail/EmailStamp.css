@@ -1,0 +1,20 @@
+@import "../Globals.css";
+
+.emailStamp{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: small;
+    margin: 5px;
+    color: var(--main-text-color);
+    justify-content: flex-start;
+    overflow: hidden;
+    font-size: medium;
+    line-height: 1;
+}
+
+.TimeStamp p{
+  margin: 2px;
+  padding: 0px;
+  font-size: 13px;
+}

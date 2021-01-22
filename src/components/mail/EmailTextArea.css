@@ -1,0 +1,90 @@
+@import "../Globals.css";
+
+.email_text_area {
+  color: rgb(120,133,161);
+  text-align: left;
+  height: 105px;
+  line-height: 1.5;
+  overflow: hidden;
+  padding-bottom: 10px;
+  margin-left: 5px;
+  font-size: medium;
+  width: 70%;
+  text-overflow: ellipsis;
+}
+
+
+.adjust_height_to_text{
+  height: auto;
+  width: 75%;
+}
+.email_text_area .header .GroupIconWrapper .email_priority.Urgent {
+  background-color: red;
+}
+
+.email_text_area .header .GroupIconWrapper .email_priority.Important {
+  background-color: orange;
+}
+
+.email_text_area .header .GroupIconWrapper .email_priority.CanWait {
+  background-color: green;
+}
+
+.EmailOptionsButton{
+  position: relative;
+  left: 85%;
+  top: 10px;
+  background: transparent;
+}
+
+.EmailOptionsButton * div {
+  width: 70px;
+}
+
+.EmailOptionsButton * .Dropdown-control {
+  background-color: transparent;
+  text-align: right;
+}
+
+.EmailOptionsButton *.Dropdown-arrow {
+  visibility: hidden;
+}
+
+.email_text_area .header .GroupIconWrapper{
+  display: flex;
+  padding-right:2px;
+  padding-top: 10px;
+  flex-direction: row;
+  justify-content: flex-end;
+  flex-grow: 1;
+}
+
+.email_text_area .header .GroupIconWrapper .GroupIcon{
+  width: 100%;
+  display: grid;
+  justify-content: flex-end;
+  grid-template-columns: repeat(auto-fit, 30px);
+}
+
+.email_text_area .header{
+  display: flex;
+  justify-content:flex-end;
+}
+
+.task_source {
+  background-color: rgba(48, 110, 160, 0.3);
+}
+
+.selected_task{
+  background-color: rgb(34, 99, 157);
+  color: rgb(11, 3, 4);
+}
+
+.email_text_area .header .GroupIconWrapper .email_priority {
+  height:8px;
+  width:8px;
+  border-radius: 100%;
+  background-color: lightblue;
+  align-self: center;
+  margin: 0 0 0 25px;
+}

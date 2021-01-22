@@ -5,6 +5,7 @@ import { Task } from '../../data_objects/Task.js';
 import { URGENT } from '../../data_objects/Consts.js';
 import { getSelectionOffsetRelativeTo, get_priority_style } from '../../utils.js';
 import { GroupIcon } from './EmailStamp.js';
+import "./EmailTextArea.css";
 
 export default class EmailTextArea extends Component {
     constructor(props) {

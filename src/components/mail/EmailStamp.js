@@ -1,5 +1,6 @@
 import { format_date } from '../../utils.js';
 import React from 'react';
+import './EmailStamp.css';
 
 export function TimeStamp(date) {
     const formatted_date = format_date(date)
