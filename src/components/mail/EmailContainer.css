@@ -6,6 +6,8 @@
     flex-grow: 1;
     padding: 0px;
     margin: 20px 0px;
+    overflow-wrap: break-word;
+    overflow-y: visible;
 }
 
 .EmailContainer .email_text_area{
