@@ -71,3 +71,47 @@
     color:white;
 }
 
+.TopButtons .Menu {
+    background-color: transparent;
+    border: none;
+}
+.TopButtons .Dropdown-control {
+  position: relative;
+  overflow: hidden;
+  min-width: 120px;
+  border-radius: 2px;
+  box-sizing: border-box;
+  background-color: rgb(107, 161, 219);
+  color: black;
+  padding: 2px 30px 2px 5px;
+  margin: 5px;
+  transition: all 200ms ease;
+}
+
+.TopButtons .Dropdown-arrow-wrapper{
+    color: black;
+}
+
+
+.TopButtons {
+    width: 100%;
+    display:flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+.TopButtons .Dropdown-menu {
+  background-color: rgb(107, 161, 219);
+  border-radius: 2px;
+  border:none;
+}
+
+.TopButtons .Dropdown-menu .Dropdown-option {
+  color: white;
+}
+.TopButtons .Dropdown-menu .Dropdown-option:hover {
+      background-color: var(--email-text-area-bg);
+}
+
+.TopButtons .Dropdown-menu .Dropdown-option.is-selected {
+  color: white;
+}

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 import { DEFAULT_HIGHLIGHTS } from '../../data_objects/Consts.js'
 import SimpleBar from 'simplebar-react'
@@ -6,12 +6,14 @@ import './SingleTaskInfo.css'
 import { AttachmentDisplay } from './FileAttachments.js'
 import { EmailThread } from './EmailThread.js'
 import { GroupIcon } from './EmailStamp.js'
+import { Menu } from '../external/Menues.js'
+import OptionsButton from '../OptionsButton.js'
 
 export default function SingleTaskInfo(props) {
     const task_info =
         <div className="SingleTaskInfo">
             <SimpleBar className="simplebar">
-                <TopButtons />
+                <TopButtons task={props.task} />
                 <h4>{props.task.get_text()}</h4>
                 <QuickReply to={props.sender} />
                 <People watching={props.thread.get_participants()}
@@ -28,9 +30,16 @@ export default function SingleTaskInfo(props) {
 }
 
 function TopButtons(props) {
+    const [task_status, setStatus] = useState(props.task.isDone ? "Done" : "To do")
+    const option_button_names = ["Quick Reply", "Set In Calendar", "Add To Topic", "Go To Source", "Mark As Done"];
+    var options_buttons = option_button_names.map(n => { return { name: n } });
+    options_buttons.filter(n => n.name === "Mark As Done")[0].action = e => setStatus("Done");
+    const task_options = ['To do', 'In progress', 'Pending', 'Done'];
     return (
-        <div>
-            TopButtons
+        <div className="TopButtons">
+            <Menu options={task_options} label='' value={task_status} onChange={
+                e => setStatus(e.value)} />
+            <OptionsButton options={options_buttons} />
         </div>
     )
 }
