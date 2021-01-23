@@ -139,38 +139,13 @@
     justify-content: flex-start;
 }
 
-.ParticipantsIcons img {
+ .SimpleBar_RightDivision {
+     height: 100%;
+ }
+
+ .ParticipantsIcons img {
     height: 50px;
     width: 50px;
     border-radius: 100%;
     margin: 10px;
 }
-
-.AttachmentsDisplay img {
-    height: 50px;
-    width: 50px;
-}
-.AttachmentsDisplay {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    cursor: pointer;
-}
-
-.TitledImage{
-    margin: 3px 10px;
-}
-
-.AttachmentsDisplay p{
-    margin-top: 0;
-    padding: 0px;
-}
-p.contact_initials{
-    margin-bottom: 0;
-    text-align: center;
-}
-
- .SimpleBar_RightDivision {
-     height: 100%;
- }

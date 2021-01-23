@@ -81,7 +81,7 @@ class EmailThread extends Component {
                     tags={selected_email.get_tags()} />
                 <ThreadLabels
                     num_tasks={num_tasks}
-                    has_attatchments={has_attatchments}
+                    has_attachments={has_attatchments}
                     priority={this.props.priority}
                     thread_id={this.props.id}
                 />

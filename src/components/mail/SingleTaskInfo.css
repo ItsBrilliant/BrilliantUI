@@ -7,9 +7,10 @@
     color: var(--main-text-color);
     position: fixed;
     left: 35%;
-    top:0;
+    top:60px;
     z-index: 100;
     border: 1px solid red;
+
 }
 
 
@@ -29,15 +30,12 @@
     width:100%;
 }
 
-.SingleTaskInfo {
-    padding: 15px;
-}
 .SingleTaskInfo .TitledComponent {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    width: 100%;
-    padding: 5px;
+    width: 90%;
+
 }
 
 .SingleTaskInfo .TitledComponent .title{
@@ -51,4 +49,25 @@
     margin: 3px;
 }
 
+.SingleTaskInfo .People {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.SingleTaskInfo .People span {
+    display:flex;
+    flex-direction: row;
+    margin: 0;
+    align-items: center;
+}
+
+.SingleTaskInfo .People span p {
+    margin: 2px;
+    padding: 0;
+}
+
+.SingleTaskInfo .People span p.owner_name {
+    color:white;
+}
 

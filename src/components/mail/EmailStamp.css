@@ -18,3 +18,16 @@
   padding: 0px;
   font-size: 13px;
 }
+
+.GroupIcon img {
+    height: 50px;
+    width: 50px;
+    border-radius: 100%;
+}
+
+.GroupIcon{
+  display: grid;
+  justify-content: center;
+  margin: 10px;
+}
+

@@ -5,6 +5,7 @@ import SimpleBar from 'simplebar-react'
 import './SingleTaskInfo.css'
 import { AttachmentDisplay } from './FileAttachments.js'
 import { EmailThread } from './EmailThread.js'
+import { GroupIcon } from './EmailStamp.js'
 
 export default function SingleTaskInfo(props) {
     const task_info =
@@ -13,9 +14,8 @@ export default function SingleTaskInfo(props) {
                 <TopButtons />
                 <h4>{props.task.get_text()}</h4>
                 <QuickReply to={props.sender} />
-                <People watching={props.participants}
-                    initiator={props.sender}
-                    owner={props.owner} />
+                <People watching={props.thread.get_participants()}
+                    owner={props.task.get_owner()} />
                 <Highlights highlights={DEFAULT_HIGHLIGHTS} />
                 <RelevantResources resources={props.thread.get_attachments()} />
                 <SourceConversation thread={props.thread} />
@@ -44,11 +44,27 @@ function QuickReply(props) {
 }
 
 function People(props) {
-    return (
-        <div>
-            People
+    const watching =
+        <span>
+            <div><p> Watching</p></div>
+            {GroupIcon(props.watching, 6, 30, 15)}
+        </span>
+
+    const owner =
+        <span>
+            {GroupIcon([props.owner], 1, 50, 0)}
+            <div>
+                <p className="owner_name">{props.owner.get_name()}</p>
+                <p>Owner</p>
+            </div>
+        </span>
+
+    const people_componenet =
+        <div className="People">
+            {owner}
+            {watching}
         </div>
-    )
+    return <TitledComponent title="People" component={people_componenet} />
 }
 
 function Highlights(props) {

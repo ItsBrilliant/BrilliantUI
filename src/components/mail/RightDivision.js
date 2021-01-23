@@ -1,6 +1,6 @@
 import React from 'react';
 import './RightDivision.css';
-import { get_priority_style, get_file_icon, format_date } from '../../utils.js';
+import { get_priority_style, format_date } from '../../utils.js';
 import { useSelector } from 'react-redux';
 import SimpleBar from 'simplebar-react';
 import SingleTaskInfo from './SingleTaskInfo.js'
