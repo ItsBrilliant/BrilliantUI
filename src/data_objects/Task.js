@@ -1,4 +1,6 @@
 
+import { format_date } from '../utils.js'
+
 export class Task {
     constructor(text, deadline, priority, isDone, source_indexes = [], owner) {
         this.text = text;
@@ -17,5 +19,11 @@ export class Task {
     }
     get_text() {
         return this.text;
+    }
+    get_priority() {
+        return this.priority;
+    }
+    get_formatted_deadline() {
+        return format_date(this.deadline)
     }
 }

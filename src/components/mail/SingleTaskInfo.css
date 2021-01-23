@@ -2,19 +2,26 @@
 
 .SingleTaskInfo{
     background-color: var(--email-text-area-bg);
-    height: calc(100% - 60px);
+    height: 100vh;
     width: 40%;
     color: var(--main-text-color);
     position: fixed;
     left: 35%;
-    top:60px;
+    top: 0;
     z-index: 100;
     border: 1px solid red;
+}
+.SingleTaskInfo .scrollable {
+    height: calc(100% - 170px);
+    margin:0;
 
 }
 
-
-.SingleTaskInfo .simplebar-content{
+.SingleTaskInfo .header {
+    margin:0;
+        padding-bottom: 0;
+}
+.SingleTaskInfo .scrollable .simplebar-content{
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -25,9 +32,17 @@
 
 }
 
-.SingleTaskInfo .simplebar{
+.SingleTaskInfo .scrollable  .simplebar{
     height:100%;
     width:100%;
+}
+
+.SingleTaskInfo .task_text{
+    color: white;
+    text-align: left;
+    padding:10px;
+    margin:2px;
+    border-bottom: 2px solid black;
 }
 
 .SingleTaskInfo .TitledComponent {
@@ -46,7 +61,16 @@
     background-color: var(--main-bg-color);
     width: 100%;
     border-radius: 8px;
-    margin: 3px;
+    box-sizing: border-box;
+    padding: 5px;
+}
+
+.SingleTaskInfo .TitledComponent .general_component .RelevantResources {
+    padding-top: 10px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+    flex-wrap: wrap;
 }
 
 .SingleTaskInfo .People {
@@ -75,43 +99,52 @@
     background-color: transparent;
     border: none;
 }
-.TopButtons .Dropdown-control {
-  position: relative;
-  overflow: hidden;
+.task_status .Dropdown-control {
   min-width: 120px;
   border-radius: 2px;
-  box-sizing: border-box;
   background-color: rgb(107, 161, 219);
   color: black;
   padding: 2px 30px 2px 5px;
   margin: 5px;
-  transition: all 200ms ease;
 }
-
-.TopButtons .Dropdown-arrow-wrapper{
-    color: black;
-}
-
 
 .TopButtons {
     width: 100%;
     display:flex;
     flex-direction: row;
     justify-content: flex-start;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 10px;
 }
-.TopButtons .Dropdown-menu {
+.task_status .Dropdown-menu {
   background-color: rgb(107, 161, 219);
   border-radius: 2px;
   border:none;
 }
 
-.TopButtons .Dropdown-menu .Dropdown-option {
+
+.task_status .Dropdown-menu .Dropdown-option {
   color: white;
 }
-.TopButtons .Dropdown-menu .Dropdown-option:hover {
+.task_status .Dropdown-menu .Dropdown-option:hover {
       background-color: var(--email-text-area-bg);
 }
 
-.TopButtons .Dropdown-menu .Dropdown-option.is-selected {
+.task_status .Dropdown-menu .Dropdown-option.is-selected {
   color: white;
+}
+
+.task_priority .Dropdown-control {
+  min-width: 100px;
+    background-color: transparent;
+}
+.task_priority .Dropdown-menu {
+background-color: var(--main-bg-color);
+  border-radius: 2px;
+  border:none;
+}
+
+.TopButtons .task_priority {
+    margin-left: auto;
 }

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ReactDOM, { unstable_renderSubtreeIntoContainer } from 'react-dom'
-import { PriorityOptions } from './EmailComposer.js';
+import PriorityOptions from './PriorityOptions.js';
 import { useSelector } from 'react-redux';
 import './styles/AddTaskPortal.css';
 import { IMPORTANT, PRIORITIES } from '../data_objects/Consts.js';

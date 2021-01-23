@@ -12,6 +12,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Delete } from '../actions/email_composer.js'
 import { IMPORTANT } from '../data_objects/Consts.js';
 import { Email } from '../data_objects/Email.js';
+import PriorityOptions from './PriorityOptions.js'
 
 var SEND_WAS_CANCELED = { value: false }
 
@@ -207,23 +208,6 @@ function Subject(props) {
             </div>
             <input type='text' value={props.value} placeholder='' onChange={props.onChange}></input>
         </div>
-    );
-}
-
-export function PriorityOptions(props) {
-    const options = ['Urgent', 'Important', 'Can Wait', 'No Priority'];
-    const [selected, set_selected] = useState(options[props.default_selection]);
-    const style_class = get_priority_style_by_name(selected);
-    return (
-        <Menu value={selected} options={options} style_class={style_class}
-            onChange={(sel) => {
-                set_selected(sel.value)
-                if (props && props.onChange) {
-                    props.onChange(sel.value);
-                }
-            }
-            }
-        />
     );
 }
 

@@ -8,20 +8,25 @@ import { EmailThread } from './EmailThread.js'
 import { GroupIcon } from './EmailStamp.js'
 import { Menu } from '../external/Menues.js'
 import OptionsButton from '../OptionsButton.js'
+import PriorityOptions from '../PriorityOptions.js'
 
 export default function SingleTaskInfo(props) {
     const task_info =
         <div className="SingleTaskInfo">
-            <SimpleBar className="simplebar">
+            <div className="header">
                 <TopButtons task={props.task} />
-                <h4>{props.task.get_text()}</h4>
-                <QuickReply to={props.sender} />
-                <People watching={props.thread.get_participants()}
-                    owner={props.task.get_owner()} />
-                <Highlights highlights={DEFAULT_HIGHLIGHTS} />
-                <RelevantResources resources={props.thread.get_attachments()} />
-                <SourceConversation thread={props.thread} />
-            </SimpleBar>
+                <h1 className="task_text">{props.task.get_text()}</h1>
+            </div>
+            <div className="scrollable">
+                <SimpleBar className="simplebar">
+                    <QuickReply to={props.sender} />
+                    <People watching={props.thread.get_participants()}
+                        owner={props.task.get_owner()} />
+                    <Highlights highlights={DEFAULT_HIGHLIGHTS} />
+                    <RelevantResources resources={props.thread.get_attachments()} />
+                    <SourceConversation thread={props.thread} />
+                </SimpleBar>
+            </div>
         </div>
     return ReactDOM.createPortal(
         task_info,
@@ -30,6 +35,7 @@ export default function SingleTaskInfo(props) {
 }
 
 function TopButtons(props) {
+    const [priority, setPriority] = useState(props.task.get_priority())
     const [task_status, setStatus] = useState(props.task.isDone ? "Done" : "To do")
     const option_button_names = ["Quick Reply", "Set In Calendar", "Add To Topic", "Go To Source", "Mark As Done"];
     var options_buttons = option_button_names.map(n => { return { name: n } });
@@ -37,9 +43,15 @@ function TopButtons(props) {
     const task_options = ['To do', 'In progress', 'Pending', 'Done'];
     return (
         <div className="TopButtons">
-            <Menu options={task_options} label='' value={task_status} onChange={
-                e => setStatus(e.value)} />
+            <div className="task_status">
+                <Menu options={task_options} label='' value={task_status} onChange={
+                    e => setStatus(e.value)} />
+            </div>
             <OptionsButton options={options_buttons} />
+            <div className="task_priority">
+                <PriorityOptions default_selection={priority} onChange={setPriority} />
+            </div>
+            <span>{props.task.get_formatted_deadline().date}</span>
         </div>
     )
 }
@@ -84,7 +96,14 @@ function Highlights(props) {
 }
 
 function RelevantResources(props) {
-    const attachemnts_for_display = props.resources.map(a => <AttachmentDisplay attachment={a} />);
+    if (props.resources.length === 0) {
+        return null;
+    }
+    const attachemnts_for_display =
+        <div className="RelevantResources">
+            {props.resources.map(a => <AttachmentDisplay attachment={a} />)}
+        </div>
+
     return <TitledComponent title="Relevant Resources" component={attachemnts_for_display} />
 }
 
