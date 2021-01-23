@@ -165,7 +165,7 @@ export default class EmailTextArea extends Component {
             <div className="header">
                 <h4>{this.props.sender_name}</h4>
                 <div className="GroupIconWrapper">
-                    {GroupIcon(this.props.contacts)}
+                    {GroupIcon(this.props.contacts, 6, 40, 30)}
                     <div className={"email_priority " + priority_style} />
                 </div>
             </div> : null;

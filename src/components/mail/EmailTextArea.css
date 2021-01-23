@@ -50,6 +50,7 @@
   visibility: hidden;
 }
 
+
 .email_text_area .header .GroupIconWrapper{
   display: flex;
   padding-right:2px;
@@ -59,16 +60,10 @@
   flex-grow: 1;
 }
 
-.email_text_area .header .GroupIconWrapper .GroupIcon{
-  width: 100%;
-  display: grid;
-  justify-content: flex-end;
-  grid-template-columns: repeat(auto-fit, 30px);
-}
-
 .email_text_area .header{
   display: flex;
   justify-content:flex-end;
+  align-items: center;
 }
 
 .task_source {
@@ -86,5 +81,4 @@
   border-radius: 100%;
   background-color: lightblue;
   align-self: center;
-  margin: 0 0 0 25px;
 }

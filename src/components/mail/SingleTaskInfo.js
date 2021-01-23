@@ -47,12 +47,12 @@ function People(props) {
     const watching =
         <span>
             <div><p> Watching</p></div>
-            {GroupIcon(props.watching, 6, 30, 15)}
+            {GroupIcon(props.watching, 6, 30, 22)}
         </span>
 
     const owner =
         <span>
-            {GroupIcon([props.owner], 1, 50, 0)}
+            {GroupIcon([props.owner], 1, 50)}
             <div>
                 <p className="owner_name">{props.owner.get_name()}</p>
                 <p>Owner</p>

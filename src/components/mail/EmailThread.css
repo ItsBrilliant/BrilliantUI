@@ -17,18 +17,6 @@ img.threadIcon {
   border: 2px solid black;
 }
 
-.EmailContainer .email_text_area span.extra_icon {
-  font-size: medium;
-  background-color: rgba(59, 106, 124, 0.856);
-  position: relative;
-  left: 8px;
-  height: fit-content;
-  border-radius: 100%;
-  margin: 0;
-  padding: 0;
-  text-align: center;
-  color: rgba(255, 255, 255, 0.704)
-}
 
 .attachment {
   margin: 5px;

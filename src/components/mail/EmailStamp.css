@@ -31,3 +31,22 @@
   margin: 10px;
 }
 
+.extra_icon {
+  display: inline-block;
+  font-size: medium;
+  background-color: rgba(59, 106, 124, 0.856);
+  height: max-content;
+  width: max-content;
+  border-radius: 100%;
+  margin: 0;
+  padding: 3px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.704)
+}
+
+img.threadIcon {
+  border: 1px solid black;
+}
+
+
+
