@@ -60,8 +60,9 @@ export class Home extends React.Component {
 
     async get_mailboxes(user) {
         console.log("getting all mail")
-        const emails = await get_all_mail((emails, initial_user) => this.set_threads(emails, initial_user), user);
-        append_email_attachments(emails, user)
+        await get_all_mail((emails, initial_user) => this.set_threads(emails, initial_user), user);
+        //const emails =
+        //      append_email_attachments(emails, user)
     }
 
 

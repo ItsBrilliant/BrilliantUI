@@ -93,8 +93,9 @@ export class Email {
             }
             const start_index = parseInt(task_detection[i][0])
             const text_length = parseInt(task_detection[i][1])
+            const priority = parseInt((100 - probability) / 33)
             var task_text = `auto task (${Math.round(probability)}%)`;
-            var task = new Task(task_text, new Date(), IMPORTANT, false, { start: start_index, end: start_index + text_length })
+            var task = new Task(task_text, new Date(), priority, false, { start: start_index, end: start_index + text_length })
             this.add_task(task);
         }
     }
