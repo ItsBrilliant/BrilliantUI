@@ -6,6 +6,7 @@ import parse from 'html-react-parser'
 
 const REQUEST_DOCUMENT_PROBABILITY_THRESHOLD = 90;
 const REQUEST_MEETING_PROBABILITY_THRESHOLD = 50;
+const GENERAL_TASK_DETECTION_THRESHOLD = 50;
 export class Email {
 
     constructor(email_json, tags, tasks) {
@@ -13,10 +14,11 @@ export class Email {
         this.tags = tags === undefined ? [] : tags;
         this.tasks = tasks === undefined ? [] : tasks;
         this.date = new Date(this.email['sentDateTime']);
-        this.add_request_document_task();
-        this.add_request_meeting_task();
         if (!email_json.isDraft) {
-            this.add_random_tasks();
+            //        this.add_random_tasks();
+            //        this.add_request_document_task();
+            //          this.add_request_meeting_task();
+            this.add_general_task_detection();
         }
         this.attachments_dict = {}
 
@@ -61,7 +63,7 @@ export class Email {
     }
 
     add_request_document_task() {
-        const document_request_detection = this.email['document_request_intention_detection'];
+        const document_request_detection = this.email['document_request'];
         if (!document_request_detection || document_request_detection.length === 0) {
             return;
         }
@@ -79,8 +81,26 @@ export class Email {
 
     }
 
+    add_general_task_detection() {
+        const task_detection = this.email['task_detection'];
+        if (!task_detection || task_detection.length === 0) {
+            return;
+        }
+        for (let i = 0; i < task_detection.length; i++) {
+            const probability = parseFloat(task_detection[i][2])
+            if (probability < GENERAL_TASK_DETECTION_THRESHOLD) {
+                continue;
+            }
+            const start_index = parseInt(task_detection[i][0])
+            const text_length = parseInt(task_detection[i][1])
+            var task_text = `auto task (${Math.round(probability)}%)`;
+            var task = new Task(task_text, new Date(), IMPORTANT, false, { start: start_index, end: start_index + text_length })
+            this.add_task(task);
+        }
+    }
+
     add_request_meeting_task() {
-        const meeting_scheduler = this.email['meeting_scheduler'];
+        const meeting_scheduler = this.email['meeting_request'];
         if (!meeting_scheduler || meeting_scheduler.length === 0) {
             return;
         }

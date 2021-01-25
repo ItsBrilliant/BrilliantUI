@@ -1,5 +1,6 @@
 
 import { format_date } from '../utils.js'
+import { Contact } from './Contact.js'
 
 export class Task {
     constructor(text, deadline, priority, isDone, source_indexes = [], owner) {
@@ -8,7 +9,7 @@ export class Task {
         this.priority = priority;
         this.isDone = isDone;
         this.source_indexes = source_indexes
-        this.owner = owner;
+        this.owner = owner ? owner : Contact.CURRENT_USER;
     }
     get_source_indexes() {
         return this.source_indexes;

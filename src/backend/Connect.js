@@ -66,7 +66,7 @@ function handle_graph_error(msg, e, user) {
     check_reauthenticate(e, user)
 }
 
-export async function get_all_mail(callback_func, user) {
+export async function get_all_mail_old(callback_func, user) {
     try {
         const ACCESS_TOKEN = await get_access_token(user);
         const emails = await graph.getMail(ACCESS_TOKEN)
@@ -80,6 +80,21 @@ export async function get_all_mail(callback_func, user) {
         check_reauthenticate(e, user)
     }
 }
+
+export async function get_all_mail(callback_func, user) {
+    try {
+        const emails = await Axios.get('server/inbox_react')
+        const email_objects = emails.data.map(e => new Email(e))
+        callback_func(email_objects, user);
+        return email_objects;
+    }
+    catch (e) {
+        console.log("Error getting email messages:");
+        console.log(e);
+        check_reauthenticate(e, user)
+    }
+}
+
 
 export async function get_calendar(callback_func, user) {
     try {
