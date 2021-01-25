@@ -1,16 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './RightDivision.css';
 import { get_priority_style, format_date } from '../../utils.js';
 import { useSelector } from 'react-redux';
 import SimpleBar from 'simplebar-react';
-import SingleTaskInfo from './SingleTaskInfo.js'
+import TaskInfoWrapper from './SingleTaskInfo.js'
 import { FileAttachments } from './FileAttachments.js'
 
-export function RightDivision(thread, on_task_hover) {
+export function RightDivision(thread, on_task_click) {
     return (thread ?
         <div className='RightDivision'>
             <SimpleBar className='SimpleBar_RightDivision'>
-                {Tasks(thread.get_tasks(), on_task_hover, thread)}
+                <Tasks tasks={thread.get_tasks()} on_task_click={on_task_click} thread={thread} />
                 {Participants(thread.get_participants())}
                 {FileAttachments(thread.get_attachments())}
             </SimpleBar>
@@ -19,17 +19,28 @@ export function RightDivision(thread, on_task_hover) {
     )
 }
 
-function Tasks(tasks, on_task_hover, thread) {
-    const finished_tasks = tasks.filter(task => task.isDone);
-    const active_tasks = tasks.filter(task => !task.isDone);
+function Tasks(props) {
+    //Old function used to highlight
+    const on_task_click = props.on_task_click;
+    const [info_visible, set_visible] = useState(false);
+    const [task_for_info, set_task] = useState(props.tasks[0]);
+    const finished_tasks = props.tasks.filter(task => task.isDone);
+    const active_tasks = props.tasks.filter(task => !task.isDone);
+    const my_set_task_info = (task) => {
+        set_task(task);
+        set_visible(true);
+    }
     if (finished_tasks.length === 0 && active_tasks.length === 0) {
         return null;
     } else {
         return (
             <div className='Container'>
-                <SingleTaskInfo thread={thread} task={tasks[0]} />
-                <TasksDisplayer tasks={active_tasks} areDone={false} on_hover={on_task_hover} />
-                <TasksDisplayer tasks={finished_tasks} areDone={true} on_hover={on_task_hover} />
+                <TaskInfoWrapper thread={props.thread}
+                    task={task_for_info}
+                    visible={info_visible}
+                    close={() => set_visible(false)} />
+                <TasksDisplayer tasks={active_tasks} areDone={false} on_click={my_set_task_info} />
+                <TasksDisplayer tasks={finished_tasks} areDone={true} on_click={my_set_task_info} />
             </div>
         )
     }
@@ -47,7 +58,7 @@ function TasksDisplayer(props) {
     const tasks_elements = props.tasks.map(task => {
         const owner_name = user === task.owner ? "You" : task.owner.get_first_name();
         return (
-            <li onClick={() => props.on_hover(task)} className={get_priority_style(task.priority)}>
+            <li onClick={() => props.on_click(task)} className={get_priority_style(task.priority)}>
                 <span className={"task_status_button"}
                     onClick={() => task.isDone = true}>
                     <span className="inner">v</span>

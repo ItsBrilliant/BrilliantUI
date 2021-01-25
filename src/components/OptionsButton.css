@@ -42,7 +42,7 @@
     border-radius: 10px;
 }
 
-#messages_to_user  ul li:hover{
+#messages_to_user  ul.options_list li:hover{
     background-color: var(--link_hover_color);
     cursor: pointer;
 }

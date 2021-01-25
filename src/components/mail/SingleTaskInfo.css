@@ -1,15 +1,25 @@
 @import "../Globals.css";
 
+.TaskInfoWrapper{
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    background-color: transparent;
+    z-index: 10;
+    position: fixed;
+    left: 0;
+    top: 0;
+}
+
+.invisible_close{
+    width: 60%;
+    background-color: transparent;
+}
 .SingleTaskInfo{
     background-color: var(--email-text-area-bg);
-    height: 100vh;
     width: 40%;
     color: var(--main-text-color);
-    position: fixed;
-    left: 135%;
-    top: 0;
-    z-index: 100;
-    border: 1px solid red;
+
 }
 .SingleTaskInfo .scrollable {
     height: calc(100% - 170px);

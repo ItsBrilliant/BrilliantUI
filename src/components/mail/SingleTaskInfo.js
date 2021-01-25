@@ -10,8 +10,8 @@ import { Menu } from '../external/Menues.js'
 import OptionsButton from '../OptionsButton.js'
 import PriorityOptions from '../PriorityOptions.js'
 
-export default function SingleTaskInfo(props) {
-    const task_info =
+function SingleTaskInfo(props) {
+    return (
         <div className="SingleTaskInfo">
             <div className="header">
                 <TopButtons task={props.task} />
@@ -28,8 +28,18 @@ export default function SingleTaskInfo(props) {
                 </SimpleBar>
             </div>
         </div>
+    );
+}
+
+export default function TaskInfoWrapper(props) {
+    if (!props.visible) {
+        return null;
+    }
     return ReactDOM.createPortal(
-        task_info,
+        <div className="TaskInfoWrapper">
+            <div className="invisible_close" onClick={props.close} />
+            <SingleTaskInfo {...props} />
+        </div>,
         document.getElementById('messages_to_user')
     );
 }
