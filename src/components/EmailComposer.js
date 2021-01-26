@@ -67,7 +67,7 @@ export function EmailComposers() {
         document.getElementById('email_composer')
     );
 }
-function EmailComposer(props) {
+export function EmailComposer(props) {
     const [dest_id, set_dest_id] = useState(undefined);
     const [to, set_to] = useState([]);
     const [cc, set_cc] = useState([]);
@@ -79,7 +79,7 @@ function EmailComposer(props) {
     useEffect(() => process_attributes(props.email_attributes), []);
     const handle_close = (email_was_sent) => {
         props.on_close(props.id);
-        process_cleanup_attributes(props.email_attributes, email_was_sent);
+        process_cleanup_attributes(props.email_attributes, email_was_sent, props.id);
 
     }
     const handle_send = (html) => {
@@ -90,18 +90,6 @@ function EmailComposer(props) {
             }
         });
     };
-    function my_set_files(e) {
-        const new_files = [...e.target.files]
-        set_files((old_files) => [...old_files, ...new_files.filter(f => !old_files.map(of => of.name).includes(f.name))]);
-        upload_files(new_files, my_set_buffers, my_set_progress);
-        scroll_to_files();
-        document.getElementById(e.target.id).value = null;
-    }
-
-    function scroll_to_files() {
-        const simplebar = document.querySelector('#EmailContent' + props.id + ' .simplebar-content-wrapper')
-        simplebar.scrollBy({ top: 999, left: 0, behavior: 'smooth' });
-    }
 
     function my_set_progress(file, progress) {
         set_progress(old_progresses => {
@@ -144,12 +132,12 @@ function EmailComposer(props) {
         }
     }
 
-    async function process_cleanup_attributes(attributes, email_was_sent) {
+    async function process_cleanup_attributes(attributes, email_was_sent, composer_id) {
         if (!attributes || attributes.composer_type !== 'reply') {
             return;
         }
         try {
-            const current_composer_email = build_email_from_composer(to, subject, "", cc, bcc, file_buffers, files);
+            const current_composer_email = build_email_from_composer(to, subject, get_html_from_composer(composer_id), cc, bcc, file_buffers, files);
             if (!email_was_sent) {
                 // update draft
                 await update_draft(dest_id, current_composer_email);
@@ -162,23 +150,33 @@ function EmailComposer(props) {
             console.log(e);
         }
     }
-    return (
-        <Draggable handle=".EmailComposer" cancel=".EmailContent" defaultPosition={{ x: 50 * props.id, y: 0 }}>
+    const email_content =
+        <EmailContent id={props.id} handle_send={handle_send}
+            files={files}
+            file_progress={file_progress}
+            set_files={(e) => my_set_files(e, set_files, my_set_buffers, my_set_progress, props.id)}
+            remove_file={remove_file}
+        />
+    if (props.only_content) {
+        return (
             <div className='EmailComposer'>
-                <ComposeHeader on_close={(e) => handle_close(false)} user_address={props.user_address} />
-                <Recipients id={props.id} label='To' items={to} onChange={set_to}></Recipients>
-                <Recipients id={props.id} label='CC' items={cc} onChange={set_cc}></Recipients>
-                <Recipients id={props.id} label='BCC' items={bcc} onChange={set_bcc}></Recipients>
-                <Subject value={subject} onChange={(e) => set_subject(e.target.value)}></Subject>
-                <EmailContent id={props.id} handle_send={handle_send}
-                    files={files}
-                    file_progress={file_progress}
-                    set_files={my_set_files}
-                    remove_file={remove_file}
-                ></EmailContent>
+                {email_content}
             </div>
-        </Draggable>
-    );
+        );
+    } else {
+        return (
+            <Draggable handle=".EmailComposer" cancel=".EmailContent" defaultPosition={{ x: 50 * props.id, y: 0 }}>
+                <div className='EmailComposer'>
+                    <ComposeHeader on_close={(e) => handle_close(false)} user_address={props.user_address} />
+                    <Recipients id={props.id} label='To' items={to} onChange={set_to}></Recipients>
+                    <Recipients id={props.id} label='CC' items={cc} onChange={set_cc}></Recipients>
+                    <Recipients id={props.id} label='BCC' items={bcc} onChange={set_bcc}></Recipients>
+                    <Subject value={subject} onChange={(e) => set_subject(e.target.value)}></Subject>
+                    {email_content}
+                </div>
+            </Draggable>
+        );
+    }
 }
 
 
@@ -254,6 +252,18 @@ function send(to, subject, html_content, cc, bcc, file_buffers, files, existing_
     }
 }
 
+export function my_set_files(e, set_files, my_set_buffers, my_set_progress, id) {
+    const new_files = [...e.target.files]
+    set_files((old_files) => [...old_files, ...new_files.filter(f => !old_files.map(of => of.name).includes(f.name))]);
+    upload_files(new_files, my_set_buffers, my_set_progress);
+    scroll_to_files(id);
+    document.getElementById(e.target.id).value = null;
+}
+
+function scroll_to_files(id) {
+    const simplebar = document.querySelector('#EmailContent' + id + ' .simplebar-content-wrapper')
+    simplebar.scrollBy({ top: 999, left: 0, behavior: 'smooth' });
+}
 function upload_files(files, my_set_buffers, my_set_progress) {
 
     for (const file of files) {
@@ -271,7 +281,12 @@ function upload_files(files, my_set_buffers, my_set_progress) {
     }
 }
 
-function EmailSendMessage(props) {
+function get_html_from_composer(id) {
+    const editor = document.querySelector("#EmailContent" + id + " .ql-editor");
+    return editor ? editor.innerHTML : ""
+}
+
+export function EmailSendMessage(props) {
     const prompt = props.was_canceled ? "Canceled |" : " Sending email |"
     const style = props.visible ? " visible" : "";
     return (

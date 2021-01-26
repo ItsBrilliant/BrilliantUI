@@ -9,6 +9,7 @@ import { GroupIcon } from './EmailStamp.js'
 import { Menu } from '../external/Menues.js'
 import OptionsButton from '../OptionsButton.js'
 import PriorityOptions from '../PriorityOptions.js'
+import { EmailComposer } from '../EmailComposer.js'
 
 function SingleTaskInfo(props) {
     return (
@@ -67,11 +68,14 @@ function TopButtons(props) {
 }
 
 function QuickReply(props) {
-    return (
-        <div>
-            QuickReply
-        </div>
-    )
+    const quick_reply_component =
+        <EmailComposer only_content={true}
+            on_close={undefined}
+            id={-1}
+            send={undefined}
+            email_attributes={undefined}
+        />
+    return <TitledComponent title="Quick Reply" component={quick_reply_component} class_name={"quick_reply"} />
 }
 
 function People(props) {

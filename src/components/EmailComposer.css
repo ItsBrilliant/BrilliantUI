@@ -2,11 +2,16 @@
 
 .EmailComposer {
     color: var(--main-text-color);
-    width: 550px;
-    padding: 10px;
-    height: 580;
-    margin: 10px;
+    background-color: var(--email-container-background);
     border: 1px solid rgb(107, 161, 219);
+    padding: 10px;
+    margin: 10px;
+    position: absolute;
+    top: calc(100% - 490px);
+    left: 30%;
+    width: 550px;
+    height: 580;
+    z-index: 100;
 }
 
 .Recipients {
@@ -32,14 +37,6 @@
     color: var(--main-text-color);
     display: flex;
     outline: none;
-}
-
-.EmailComposer{
-    position: absolute;
-    top: calc(100% - 490px);
-    left: 30%;
-    background-color: var(--email-container-background);
-    z-index: 100;
 }
 
 .on_top .EmailComposer{

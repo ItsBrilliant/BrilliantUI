@@ -89,6 +89,43 @@
     justify-content: space-between;
 }
 
+.SingleTaskInfo .TitledComponent .general_component .EmailComposer{
+    position: static;
+    background-color: var(--email-container-background);
+    z-index: 1;
+    height: 200px;
+    width: 100%;
+    margin:0;
+}
+
+.SingleTaskInfo .TitledComponent .general_component .EmailComposer #scrollable_content-1 {
+    width:100%;
+    padding:0;
+    margin: 0;
+}
+
+.SingleTaskInfo .TitledComponent .general_component .EmailComposer #toolbar-1 {
+    display: flex;
+    justify-content: space-between;
+    margin: 0;
+    padding: 0;
+    background-color: rgb(83, 92, 123);
+}
+
+.SingleTaskInfo .TitledComponent .general_component .EmailComposer #toolbar-1 .custom_buttons {
+    margin: 0;
+    background-color: rgb(83, 92, 123);
+}
+.SingleTaskInfo .TitledComponent .general_component .EmailComposer #toolbar-1 .custom_buttons *{
+    background-color: transparent;
+}
+.SingleTaskInfo .TitledComponent .general_component.quick_reply{
+    display:flex;
+    justify-content: center;
+    padding:0;
+    margin: 0;
+}
+
 .SingleTaskInfo .general_component.People {
         border-radius: 50px;
 }
