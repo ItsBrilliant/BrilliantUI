@@ -163,7 +163,7 @@ export async function update_draft(email_id, email) {
         res = await graph.updateMail(ACCESS_TOKEN, email.message, email_id);
         console.log(res);
     } catch (e) {
-        console.log(e)
+        console.log(e);
     }
 
 }

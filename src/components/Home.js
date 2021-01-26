@@ -199,7 +199,7 @@ function Nav() {
     const people = { icon: "button_icons/people.svg", link: '/' }
     const task = { icon: "button_icons/task.svg", link: '/' }
     const user_account = { icon: "person_images/0.jpg", link: '/login' }
-    mail.additional = <div className="plus"><button onClick={() => dispatch(Create())}>+</button></div>
+    mail.additional = <div className="plus"><button onClick={() => dispatch(Create({ composer_type: "new" }))}>+</button></div>
     return (
         <div className='Nav'>
             {NavCluster([logo])}

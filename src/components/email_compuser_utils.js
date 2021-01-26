@@ -27,6 +27,6 @@ export function build_email_from_composer(to, subject, html_content, cc, bcc, fi
         const email = create_mail_object(to, subject, html_content, 'html', cc, bcc, attachment_buffers);
         return email;
     } catch (err) {
-        alert(err);
+        console.log("error constructing email object: " + err)
     }
 }

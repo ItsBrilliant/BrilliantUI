@@ -74,7 +74,14 @@ export const graph = {
 
   updateMail: async function (accessToken, email, id) {
     const client = getAuthenticatedClient(accessToken);
-    const res = await client.api(`/me/messages/${id}`).update(email);
+    if (id) {
+      //update existing draft
+      const res = await client.api(`/me/messages/${id}`).update(email);
+    } else {
+      //create new draft
+      const res = await client.api('/me/messages/').post(email);
+    }
+
     return res;
   },
 

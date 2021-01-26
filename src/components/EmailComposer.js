@@ -1,11 +1,10 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import ReactDOM from 'react-dom'
-import { Menu } from './external/Menues.js';
 import ReactQuillWrapper from './external/ReactQuillWrapper.js';
 import { EmailChips } from './external/EmailChips.js';
 import './EmailComposer.css';
 import { create_based_draft, send_email, update_and_send, update_draft } from '../backend/Connect.js';
-import { create_mail_object, get_priority_style_by_name, sleep } from '../utils.js';
+import { sleep } from '../utils.js';
 import { build_email_from_composer, get_recipient_addresses_from_email } from './email_compuser_utils.js';
 import Draggable from 'react-draggable';
 import { useSelector, useDispatch } from 'react-redux';
@@ -133,14 +132,20 @@ export function EmailComposer(props) {
     }
 
     async function process_cleanup_attributes(attributes, email_was_sent, composer_id) {
-        if (!attributes || attributes.composer_type !== 'reply') {
+        if (!attributes) {
             return;
         }
         try {
-            const current_composer_email = build_email_from_composer(to, subject, get_html_from_composer(composer_id), cc, bcc, file_buffers, files);
             if (!email_was_sent) {
-                // update draft
-                await update_draft(dest_id, current_composer_email);
+                const html_content = get_html_from_composer(composer_id);
+                console.log("composer exited and email wasn't sent");
+                if (need_to_save_draft(to, subject, html_content, cc, bcc)) {
+                    const current_composer_email = build_email_from_composer(to, subject, html_content, cc, bcc, file_buffers, files);
+                    console.log("saving draft");
+                    await update_draft(dest_id, current_composer_email);
+                } else {
+                    console.log("no need to save draft")
+                }
             }
             // deleaged cleanup function
             if (attributes.cleanup) {
@@ -297,3 +302,12 @@ export function EmailSendMessage(props) {
     );
 }
 
+function need_to_save_draft(to, subject, html_content, cc, bcc) {
+    for (const r of [to, cc, bcc]) {
+        if (r.length > 0) {
+            return true;
+        }
+    }
+    // 11 is the length of an empty message
+    return subject || html_content.length > 11
+}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './RightDivision.css';
 import { get_priority_style, format_date } from '../../utils.js';
 import { useSelector } from 'react-redux';
@@ -21,14 +21,28 @@ export function RightDivision(thread, on_task_click) {
 
 function Tasks(props) {
     //Old function used to highlight
+    useEffect(
+        () => {
+            rerender_tasks(props.tasks);
+        }, [props.tasks]);
     const on_task_click = props.on_task_click;
     const [info_visible, set_visible] = useState(false);
     const [task_for_info, set_task] = useState(props.tasks[0]);
-    const finished_tasks = props.tasks.filter(task => task.isDone);
-    const active_tasks = props.tasks.filter(task => !task.isDone);
+    const [finished_tasks, set_finished] = useState(props.tasks.filter(task => task.isDone));
+    const [active_tasks, set_active] = useState(props.tasks.filter(task => !task.isDone));
     const my_set_task_info = (task) => {
         set_task(task);
         set_visible(true);
+    }
+    const my_update_finished_task = (task) => {
+        task.isDone = true;
+        set_finished([...finished_tasks, task])
+        set_active(active_tasks.filter(t => t !== task))
+    }
+
+    const rerender_tasks = (tasks) => {
+        set_finished(props.tasks.filter(task => task.isDone));
+        set_active(props.tasks.filter(task => !task.isDone));
     }
     if (finished_tasks.length === 0 && active_tasks.length === 0) {
         return null;
@@ -39,7 +53,7 @@ function Tasks(props) {
                     task={task_for_info}
                     visible={info_visible}
                     close={() => set_visible(false)} />
-                <TasksDisplayer tasks={active_tasks} areDone={false} on_click={my_set_task_info} />
+                <TasksDisplayer tasks={active_tasks} areDone={false} on_status_click={my_update_finished_task} on_click={my_set_task_info} />
                 <TasksDisplayer tasks={finished_tasks} areDone={true} on_click={my_set_task_info} />
             </div>
         )
@@ -58,13 +72,13 @@ function TasksDisplayer(props) {
     const tasks_elements = props.tasks.map(task => {
         const owner_name = user === task.owner ? "You" : task.owner.get_first_name();
         return (
-            <li onClick={() => props.on_click(task)} className={get_priority_style(task.priority)}>
+            <li className={get_priority_style(task.priority)}>
                 <span className={"task_status_button"}
-                    onClick={() => task.isDone = true}>
+                    onClick={() => { if (props.on_status_click) { props.on_status_click(task); } }}>
                     <span className="inner">v</span>
                 </span>
                 <span className={"task_owner" + done_style}>{owner_name}:</span>
-                <span className="task_text">{task.text + " (due: " + format_date(task.deadline).date + ")"}</span>
+                <span onClick={() => props.on_click(task)} className="task_text">{task.text + " (due: " + format_date(task.deadline).date + ")"}</span>
             </li>
         );
     })
