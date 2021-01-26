@@ -95,7 +95,7 @@ function People(props) {
             {owner}
             {watching}
         </div>
-    return <TitledComponent title="People" component={people_componenet} />
+    return <TitledComponent title="People" component={people_componenet} class_name="People" />
 }
 
 function Highlights(props) {
@@ -124,10 +124,14 @@ function SourceConversation(props) {
 }
 
 function TitledComponent(props) {
+    let general_class_name = "general_component";
+    if (props.class_name) {
+        general_class_name += " " + props.class_name;
+    }
     return (
         <div className="TitledComponent">
             <h4 className="title">{props.title}</h4>
-            <div className="general_component">
+            <div className={general_class_name} >
                 {props.component}
             </div>
         </div>

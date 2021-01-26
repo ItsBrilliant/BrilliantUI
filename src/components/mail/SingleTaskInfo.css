@@ -13,7 +13,7 @@
 
 .invisible_close{
     width: 60%;
-    background-color: transparent;
+    background-color: rgba(0,0,0,0.4);
 }
 .SingleTaskInfo{
     background-color: var(--email-text-area-bg);
@@ -83,12 +83,15 @@
     flex-wrap: wrap;
 }
 
-.SingleTaskInfo .People {
+.SingleTaskInfo .general_component.People .People {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
 
+.SingleTaskInfo .general_component.People {
+        border-radius: 50px;
+}
 .SingleTaskInfo .People span {
     display:flex;
     flex-direction: row;
