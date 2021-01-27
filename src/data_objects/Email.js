@@ -1,5 +1,5 @@
 import { Contact } from './Contact.js';
-import { CAN_WAIT, URGENT, IMPORTANT } from './Consts.js';
+import { CAN_WAIT, URGENT, IMPORTANT, NO_PRIORITY } from './Consts.js';
 import { rand_int, my_html_to_text } from '../utils.js';
 import { Task } from './Task.js';
 import parse from 'html-react-parser'
@@ -152,15 +152,18 @@ export class Email {
 
     // Get priority based on the priority of unfinished tasks
     get_priority() {
-        const priorities = this.tasks.map(task => parseInt(task.isDone ? CAN_WAIT : task.priority));
+        const priorities = this.tasks.map(task => parseInt(task.isDone ? NO_PRIORITY : task.priority));
         if (priorities.includes(URGENT)) {
             return URGENT;
         }
         else if (priorities.includes(IMPORTANT)) {
             return IMPORTANT;
         }
-        else {
+        else if (priorities.includes(CAN_WAIT)) {
             return CAN_WAIT;
+        }
+        else {
+            return NO_PRIORITY;
         }
     }
     get_tasks() {

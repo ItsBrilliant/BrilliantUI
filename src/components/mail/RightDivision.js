@@ -78,10 +78,11 @@ function TasksDisplayer(props) {
                     <span className="inner">v</span>
                 </span>
                 <span className={"task_owner" + done_style}>{owner_name}:</span>
-                <span onClick={() => props.on_click(task)} className="task_text">{task.text + " (due: " + format_date(task.deadline).date + ")"}</span>
+                <span onClick={() => props.on_click(task)} className="task_text">{task.text}</span>
             </li>
         );
     })
+    //show deadline ->      + " (due: " + format_date(task.deadline).date + ")"
     return (
         <div className={'TasksDisplayer' + done_style}>
             <h4>{title}</h4>
