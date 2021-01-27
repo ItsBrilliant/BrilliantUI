@@ -80,7 +80,7 @@ export class Email {
         }
 
     }
-
+    //**************************************************************************************** */
     add_general_task_detection() {
         const task_detection = this.email['task_detection'];
         if (!task_detection || task_detection.length === 0) {
@@ -96,10 +96,14 @@ export class Email {
             const priority = parseInt((100 - probability) / 33)
             var task_text = `auto task (${Math.round(probability)}%)`;
             var task = new Task(task_text, new Date(), priority, false, { start: start_index, end: start_index + text_length })
+            const initiator = this.get_sender();
+            if (initiator) {
+                task.set_initiator(initiator);
+            }
             this.add_task(task);
         }
     }
-
+    //**************************************************************************************** */
     add_request_meeting_task() {
         const meeting_scheduler = this.email['meeting_request'];
         if (!meeting_scheduler || meeting_scheduler.length === 0) {

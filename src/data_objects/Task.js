@@ -11,11 +11,18 @@ export class Task {
         this.isDone = isDone;
         this.source_indexes = source_indexes
         this.owner = owner ? owner : Contact.CURRENT_USER;
+        this.initiator = Contact.CURRENT_USER;
     }
     get_source_indexes() {
         return this.source_indexes;
     }
 
+    set_initiator(initiator) {
+        this.initiator = initiator;
+    }
+    get_initiator() {
+        return this.initiator;
+    }
     get_owner() {
         return this.owner;
     }
