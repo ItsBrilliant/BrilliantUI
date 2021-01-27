@@ -96,10 +96,6 @@ export class Email {
             const priority = parseInt((100 - probability) / 33)
             var task_text = `auto task (${Math.round(probability)}%)`;
             var task = new Task(task_text, new Date(), priority, false, { start: start_index, end: start_index + text_length })
-            const initiator = this.get_sender();
-            if (initiator) {
-                task.set_initiator(initiator);
-            }
             this.add_task(task);
         }
     }
@@ -170,6 +166,10 @@ export class Email {
         return this.tasks;
     }
     add_task(task) {
+        const initiator = this.get_sender();
+        if (initiator) {
+            task.set_initiator(initiator);
+        }
         this.tasks = [...this.tasks, task];
     }
 

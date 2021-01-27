@@ -97,7 +97,9 @@
     width: 100%;
     margin:0;
 }
-
+.SingleTaskInfo .TitledComponent .general_component .EmailComposer .EmailContent .content_title{
+    color:white;
+}
 .SingleTaskInfo .TitledComponent .general_component .EmailComposer #scrollable_content-1 {
     width:100%;
     padding:0;

@@ -20,7 +20,7 @@ function SingleTaskInfo(props) {
             </div>
             <div className="scrollable">
                 <SimpleBar className="simplebar">
-                    <QuickReply to={props.sender} />
+                    <QuickReply to={props.task.get_initiator()} />
                     <People watching={props.thread.get_participants()}
                         owner={props.task.get_owner()} />
                     <Highlights highlights={DEFAULT_HIGHLIGHTS} />
@@ -82,6 +82,7 @@ function QuickReply(props) {
             id={-1}
             send={undefined}
             email_attributes={undefined}
+            content_title={props.to.get_name()}
         />
     return <TitledComponent title="Quick Reply" component={quick_reply_component} class_name={"quick_reply"} />
 }

@@ -161,6 +161,7 @@ export function EmailComposer(props) {
             file_progress={file_progress}
             set_files={(e) => my_set_files(e, set_files, my_set_buffers, my_set_progress, props.id)}
             remove_file={remove_file}
+            title={props.content_title}
         />
     if (props.only_content) {
         return (
@@ -218,7 +219,7 @@ function Subject(props) {
 export function EmailContent(props) {
     return (
         <div id={"EmailContent" + props.id} className='EmailContent'>
-            <h3>Content</h3>
+            <h3 className="content_title">{props.title ? props.title : "Content"}</h3>
             <ReactQuillWrapper id={props.id}
                 files={props.files}
                 file_progress={props.file_progress}
