@@ -33,6 +33,7 @@ export function EmailComposers() {
     }
 
     const my_send = async (...args) => {
+        set_show_send_message(true)
         await sleep(2500)
         const should_send = !SEND_WAS_CANCELED.value
         if (should_send) {
@@ -46,9 +47,8 @@ export function EmailComposers() {
     const composers = composers_state.ids.map(n => (
         <div className={focused === n ? "on_top" : undefined} onClick={e => set_focus(n)}>
             <EmailComposer user_address={user_address}
-                on_close={handle_close}
+                on_close={() => handle_close(composers_state.ids.indexOf(n))}
                 id={composers_state.ids.indexOf(n)}
-                set_show_send_message={set_show_send_message}
                 send={my_send}
                 email_attributes={composers_state.attributes[n]}
             />
@@ -77,12 +77,13 @@ export function EmailComposer(props) {
     const [file_progress, set_progress] = useState({});
     useEffect(() => process_attributes(props.email_attributes), []);
     const handle_close = (email_was_sent) => {
-        props.on_close(props.id);
+        if (props.on_close) {
+            props.on_close();
+        }
         process_cleanup_attributes(props.email_attributes, email_was_sent, props.id);
 
     }
     const handle_send = (html) => {
-        props.set_show_send_message(true);
         props.send(to, subject, html, cc, bcc, file_buffers, files, dest_id).then(res => {
             if (res) {
                 handle_close(true);
@@ -128,6 +129,9 @@ export function EmailComposer(props) {
             }
         } catch (e) {
             console.log(e);
+        }
+        if (attributes.composer_type === 'quick_reply') {
+            set_dest_id(attributes.email_id);
         }
     }
 

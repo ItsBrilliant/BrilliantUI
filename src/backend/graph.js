@@ -90,6 +90,10 @@ export const graph = {
     return await standard_post(accessToken, `/me/messages/${id}/send`);
   },
 
+  sendReply: async function (accessToken, id, email) {
+    return await standard_post(accessToken, `/me/messages/${id}/reply`, email);
+  },
+
   downloadAttachment: async function (accessToken, email_id, attachment_id) {
     const client = getAuthenticatedClient(accessToken);
     const attachment_data = await client.api(`/me/messages/${email_id}/attachments/${attachment_id}`)

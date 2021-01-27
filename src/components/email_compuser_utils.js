@@ -1,3 +1,4 @@
+import { send_reply } from '../backend/Connect.js';
 import { Contact } from '../data_objects/Contact.js';
 import { create_mail_object } from '../utils.js'
 export function recipient_to_address(recipient) {
@@ -29,4 +30,11 @@ export function build_email_from_composer(to, subject, html_content, cc, bcc, fi
     } catch (err) {
         console.log("error constructing email object: " + err)
     }
+}
+
+export async function send_quick_reply(to, subject, html, cc, bcc, file_buffers, files, dest_id) {
+    const email = build_email_from_composer(to, subject, html, cc, bcc, file_buffers, files);
+    await send_reply(email, dest_id);
+    // mail was sent (true)
+    return true
 }

@@ -10,6 +10,7 @@ import { Menu } from '../external/Menues.js'
 import OptionsButton from '../OptionsButton.js'
 import PriorityOptions from '../PriorityOptions.js'
 import { EmailComposer } from '../EmailComposer.js'
+import { send_quick_reply } from '../email_compuser_utils.js'
 
 function SingleTaskInfo(props) {
     return (
@@ -20,7 +21,7 @@ function SingleTaskInfo(props) {
             </div>
             <div className="scrollable">
                 <SimpleBar className="simplebar">
-                    <QuickReply to={props.task.get_initiator()} />
+                    <QuickReply to={props.task.get_initiator()} email_id={props.task.email_id} />
                     <People watching={props.thread.get_participants()}
                         owner={props.task.get_owner()} />
                     <Highlights highlights={DEFAULT_HIGHLIGHTS} />
@@ -76,13 +77,18 @@ function TopButtons(props) {
 }
 
 function QuickReply(props) {
+    const email_attributes = {
+        email_id: props.email_id,
+        composer_type: 'quick_reply'
+    }
     const quick_reply_component =
         <EmailComposer only_content={true}
             on_close={undefined}
             id={-1}
             send={undefined}
-            email_attributes={undefined}
+            email_attributes={email_attributes}
             content_title={props.to.get_name()}
+            send={send_quick_reply}
         />
     return <TitledComponent title="Quick Reply" component={quick_reply_component} class_name={"quick_reply"} />
 }

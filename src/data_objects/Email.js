@@ -170,6 +170,7 @@ export class Email {
         if (initiator) {
             task.set_initiator(initiator);
         }
+        task.email_id = this.get_id();
         this.tasks = [...this.tasks, task];
     }
 

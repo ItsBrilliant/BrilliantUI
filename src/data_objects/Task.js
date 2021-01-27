@@ -12,6 +12,7 @@ export class Task {
         this.source_indexes = source_indexes
         this.owner = owner ? owner : Contact.CURRENT_USER;
         this.initiator = Contact.CURRENT_USER;
+        this.email_id = undefined;
     }
     get_source_indexes() {
         return this.source_indexes;

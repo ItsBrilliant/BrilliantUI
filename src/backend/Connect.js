@@ -193,6 +193,18 @@ export async function send_draft(draft_id, user) {
 
 }
 
+export async function send_reply(email, reply_id) {
+    const ACCESS_TOKEN = await get_access_token();
+    console.log("sending quick reply");
+    try {
+        const res = await graph.sendReply(ACCESS_TOKEN, reply_id, email);
+        console.log(res)
+    } catch (e) {
+        console.log(e)
+    }
+
+}
+
 
 async function get_access_token(user) {
     var ACCESS_TOKEN = window.localStorage.getItem(get_user_token_key(user));

@@ -121,20 +121,29 @@ export function create_mail_object(to, email_subject, email_content, content_typ
 
     var email = {
         message: {
-            subject: email_subject,
             body: {
                 contentType: content_type,
                 content: email_content
             },
-            toRecipients: to_recipients,
-            ccRecipients: cc_recipients,
-            bccRecipients: bcc_recipients
         },
         saveToSentItems: "true"
     }
     if (attachments) {
         email.message.attachments = attachments;
     }
+    if (to_recipients.length > 0) {
+        email.message.toRecipients = to_recipients;
+    }
+    if (cc_recipients.length > 0) {
+        email.message.toRecipients = cc_recipients;
+    }
+    if (bcc_recipients.length > 0) {
+        email.message.toRecipients = bcc_recipients;
+    }
+    if (email_subject) {
+        email.message.subject = email_subject;
+    }
+
     return email;
 }
 
