@@ -13,7 +13,7 @@
 
 .invisible_close{
     width: 60%;
-    background-color: rgba(0,0,0,0.4);
+    background-color: rgba(0,0,0,0.55);
 }
 .SingleTaskInfo{
     background-color: var(--email-text-area-bg);
@@ -29,7 +29,7 @@
 
 .SingleTaskInfo .header {
     margin:0;
-        padding-bottom: 0;
+    padding-bottom: 0;
 }
 .SingleTaskInfo .scrollable .simplebar-content{
     display: flex;

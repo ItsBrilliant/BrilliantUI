@@ -50,17 +50,25 @@ function TopButtons(props) {
     const [task_status, setStatus] = useState(props.task.isDone ? "Done" : "To do")
     const option_button_names = ["Quick Reply", "Set In Calendar", "Add To Topic", "Go To Source", "Mark As Done"];
     var options_buttons = option_button_names.map(n => { return { name: n } });
-    options_buttons.filter(n => n.name === "Mark As Done")[0].action = e => setStatus("Done");
+    options_buttons.filter(n => n.name === "Mark As Done")[0].action = e => my_set_status("Done");
     const task_options = ['To do', 'In progress', 'Pending', 'Done'];
+    const my_set_status = (value) => {
+        setStatus(value);
+        props.task.set_status(value);
+    }
+    const my_set_priority = (value) => {
+        setPriority(value);
+        props.task.set_priority(value);
+    }
     return (
         <div className="TopButtons">
             <div className="task_status">
                 <Menu options={task_options} label='' value={task_status} onChange={
-                    e => setStatus(e.value)} />
+                    e => my_set_status(e.value)} />
             </div>
             <OptionsButton options={options_buttons} />
             <div className="task_priority">
-                <PriorityOptions default_selection={priority} onChange={setPriority} />
+                <PriorityOptions default_selection={priority} onChange={my_set_priority} />
             </div>
             <span>{props.task.get_formatted_deadline().date}</span>
         </div>

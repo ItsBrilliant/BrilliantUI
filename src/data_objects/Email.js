@@ -6,7 +6,7 @@ import parse from 'html-react-parser'
 
 const REQUEST_DOCUMENT_PROBABILITY_THRESHOLD = 90;
 const REQUEST_MEETING_PROBABILITY_THRESHOLD = 50;
-const GENERAL_TASK_DETECTION_THRESHOLD = 50;
+const GENERAL_TASK_DETECTION_THRESHOLD = 20;
 export class Email {
 
     constructor(email_json, tags, tasks) {
