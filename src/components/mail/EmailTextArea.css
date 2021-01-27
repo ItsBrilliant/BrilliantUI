@@ -9,7 +9,7 @@
   padding-bottom: 10px;
   margin-left: 5px;
   font-size: medium;
-  width: 70%;
+  width: 80%;
   text-overflow: ellipsis;
 }
 
@@ -66,8 +66,20 @@
   align-items: center;
 }
 
-.task_source {
+.task_source .Deactivate {
   background-color: rgba(48, 110, 160, 0.3);
+}
+
+.task_source.Urgent{
+  color: red;
+}
+
+.task_source.Important{
+  color: orange;
+}
+
+.task_source.CanWait{
+  color: green;
 }
 
 .selected_task{

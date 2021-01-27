@@ -138,9 +138,12 @@ export default class EmailTextArea extends Component {
         for (let i = 0; i < tasks.length; i++) {
             const start = tasks[i].get_source_indexes().start
             const end = tasks[i].get_source_indexes().end
-            var style = 'task_source'
+            var style = 'task_source';
+            if (!tasks[i].isDone) {
+                style += ' ' + get_priority_style(tasks[i].get_priority())
+            }
             if (tasks[i] === this.props.selected_task) {
-                style += ' selected_task'
+                style += ''//' selected_task'
             }
             sections.push(
                 <span className={style}>

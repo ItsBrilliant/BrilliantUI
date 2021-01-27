@@ -6,7 +6,7 @@ import parse from 'html-react-parser'
 
 const REQUEST_DOCUMENT_PROBABILITY_THRESHOLD = 90;
 const REQUEST_MEETING_PROBABILITY_THRESHOLD = 50;
-const GENERAL_TASK_DETECTION_THRESHOLD = 20;
+const GENERAL_TASK_DETECTION_THRESHOLD = 70;
 export class Email {
 
     constructor(email_json, tags, tasks) {
@@ -93,7 +93,12 @@ export class Email {
             }
             const start_index = parseInt(task_detection[i][0])
             const text_length = parseInt(task_detection[i][1])
-            const priority = parseInt((100 - probability) / 33)
+            var priority = URGENT;
+            if (probability < 75) {
+                priority = CAN_WAIT;
+            } else if (probability < 83) {
+                priority = IMPORTANT;
+            }
             var task_text = `auto task (${Math.round(probability)}%)`;
             var task = new Task(task_text, new Date(), priority, false, { start: start_index, end: start_index + text_length })
             this.add_task(task);
