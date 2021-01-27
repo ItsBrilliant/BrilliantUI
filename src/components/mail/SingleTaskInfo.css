@@ -119,6 +119,13 @@
     flex-direction: row;
     justify-content: flex-end;
 }
+
+.SingleTaskInfo .TitledComponent .general_component .EmailComposer #toolbar-1 .ql-font,
+.SingleTaskInfo .TitledComponent .general_component .EmailComposer #toolbar-1 .ql-picker-label
+{
+    color: rgb(204, 204, 204);
+}
+
 .SingleTaskInfo .TitledComponent .general_component .EmailComposer #toolbar-1 .custom_buttons *{
     background-color: transparent;
 }

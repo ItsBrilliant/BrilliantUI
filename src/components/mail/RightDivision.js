@@ -20,11 +20,11 @@ export function RightDivision(thread, on_task_click) {
 }
 
 function Tasks(props) {
-    //Old function used to highlight
     useEffect(
         () => {
             rerender_tasks(props.tasks);
         }, [props.tasks]);
+    //Old function used to highlight
     const on_task_click = props.on_task_click;
     const [info_visible, set_visible] = useState(false);
     const [task_for_info, set_task] = useState(props.tasks[0]);

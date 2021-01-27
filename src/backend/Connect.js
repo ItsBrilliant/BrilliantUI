@@ -82,8 +82,8 @@ export async function get_all_mail_old(callback_func, user) {
 }
 
 export async function get_all_mail(callback_func, user) {
-    var chunk = 3;
-    var limit = 100;
+    var chunk = 5;
+    var limit = 10;
     for (let current = 0; current < limit; current += chunk) {
         try {
             const emails = await Axios.get('server/inbox_react', { params: { skip: current, top: chunk } })

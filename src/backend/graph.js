@@ -74,6 +74,7 @@ export const graph = {
 
   updateMail: async function (accessToken, email, id) {
     const client = getAuthenticatedClient(accessToken);
+    var res;
     if (id) {
       //update existing draft
       const res = await client.api(`/me/messages/${id}`).update(email);
