@@ -82,7 +82,7 @@ export async function get_all_mail_old(callback_func, user) {
 }
 
 export async function get_all_mail(callback_func, user) {
-    var chunk = 5;
+    var chunk = 2;
     var limit = 100;
     for (let current = 0; current < limit; current += chunk) {
         try {

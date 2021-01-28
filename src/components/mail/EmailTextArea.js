@@ -160,7 +160,7 @@ export default class EmailTextArea extends Component {
         return sections;
     }
     render() {
-        const subject = this.props.subject;
+        const subject = this.props.subject ? this.props.subject : "(no subject)";
         const content = this.props.is_html ? this.props.content : this.render_content(this.props.content);
         const priority_style = get_priority_style(this.props.priority);
 
