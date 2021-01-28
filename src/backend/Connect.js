@@ -22,7 +22,7 @@ export async function append_email_attachments(emails, user) {
                 email.set_attachments_dict(attachments_list.data.reduce(reducer, {}));
             }
             catch (e) {
-                handle_graph_error("Error getting email attachemnts list:", e, user);
+                console.log("Error getting email attachemnts list:" + e);
             }
         }
     }
@@ -39,14 +39,8 @@ export async function download_attachment(email_id, attachment_id, user) {
         await download(atob(attachment_data.contentBytes), attachment_data.name);
     }
     catch (e) {
-        handle_graph_error("Error downloading email attachment:", e, user);
+        console.log(e);
     }
-}
-
-function handle_graph_error(msg, e, user) {
-    console.log(msg);
-    console.log(e);
-    check_reauthenticate(e, user)
 }
 
 export async function get_all_mail(callback_func, user) {
@@ -54,7 +48,7 @@ export async function get_all_mail(callback_func, user) {
     var limit = 50;
     for (let current = 0; current < limit; current += chunk) {
         try {
-            const emails = await Axios.get('api/inbox_react', { params: { skip: current, top: chunk } })
+            const emails = await Axios.get('api/inbox', { params: { skip: current, top: chunk } })
             const email_objects = emails.data.map(e => new Email(e))
             callback_func(email_objects, user);
             append_email_attachments(email_objects, user)
@@ -71,7 +65,7 @@ export async function get_all_mail(callback_func, user) {
 
 export async function get_calendar(callback_func, user) {
     try {
-        const events = await Axios.get('api/calendar_react', { params: { top: 100 } })
+        const events = await Axios.get('api/calendar', { params: { top: 100 } })
         callback_func(events.data, user);
     } catch (e) {
         console.log("Error getting events:");
@@ -81,7 +75,7 @@ export async function get_calendar(callback_func, user) {
 
 export async function get_mail_folders(callback_func, user) {
     try {
-        const folders = await Axios.get('api/mail_folders_react');
+        const folders = await Axios.get('api/mail_folders');
         callback_func(folders.data, user);
     } catch (e) {
         console.log("Error getting mail folders:");
@@ -90,10 +84,9 @@ export async function get_mail_folders(callback_func, user) {
 }
 
 export async function send_email(email, user) {
-    const ACCESS_TOKEN = await get_access_token(user);
     console.log("sending email");
     try {
-        const res = await graph.sendMail(ACCESS_TOKEN, email);
+        const res = await Axios.post('api/send_mail', { email: email });
         console.log(res)
     } catch (e) {
         console.log(e);
@@ -101,32 +94,36 @@ export async function send_email(email, user) {
 }
 
 export async function create_based_draft(based_on_id, draft_type) {
-    const ACCESS_TOKEN = await get_access_token();
     console.log("creating draft of type " + draft_type);
+    const params = {
+        email_id: based_on_id,
+        draft_type: draft_type
+    };
     var res;
     try {
-        if (draft_type === 'reply') {
-            res = await graph.createReply(ACCESS_TOKEN, based_on_id);
-        } else if (draft_type === 'reply_all') {
-            res = await graph.createReplyall(ACCESS_TOKEN, based_on_id);
-        } else if (draft_type === 'forward') {
-            res = await graph.createForward(ACCESS_TOKEN, based_on_id);
-        }
+        res = await Axios.post('api/handle_draft', params)
     } catch (e) {
         console.log(e);
     }
     if (!res) {
         throw Error("Couldn't create draft of type " + draft_type);
     }
-    return res;
+    return res.data;
 }
 
 export async function update_draft(email_id, email) {
-    const ACCESS_TOKEN = await get_access_token();
     console.log("updating email");
     var res;
+    var params = {
+        draft_type: "new",
+        email: email.message
+    }
+    if (email_id) {
+        params.email_id = email_id
+        params.draft_type = 'update'
+    }
     try {
-        res = await graph.updateMail(ACCESS_TOKEN, email.message, email_id);
+        res = await Axios.post('api/handle_draft', params);
         console.log(res);
     } catch (e) {
         console.log(e);
@@ -134,13 +131,11 @@ export async function update_draft(email_id, email) {
 
 }
 export async function update_and_send(email_id, email, user) {
-    const ACCESS_TOKEN = await get_access_token(user);
     console.log("updating reply to email");
     try {
-        let res = await graph.updateMail(ACCESS_TOKEN, email.message, email_id);
-        console.log(res)
+        await update_draft(email_id, email)
         console.log("sending reply to email");
-        res = await graph.sendDraft(ACCESS_TOKEN, email_id);
+        let res = await send_draft(email_id);
         console.log(res);
     } catch (e) {
         console.log(e)
@@ -148,10 +143,9 @@ export async function update_and_send(email_id, email, user) {
 }
 
 export async function send_draft(draft_id, user) {
-    const ACCESS_TOKEN = await get_access_token(user);
     console.log("sending draft");
     try {
-        const res = await graph.sendDraft(ACCESS_TOKEN, draft_id);
+        const res = await Axios.post('api/handle_draft', { email_id: draft_id, draft_type: "send" });
         console.log(res)
     } catch (e) {
         console.log(e)
@@ -160,57 +154,11 @@ export async function send_draft(draft_id, user) {
 }
 
 export async function send_reply(email, reply_id) {
-    const ACCESS_TOKEN = await get_access_token();
     console.log("sending quick reply");
     try {
-        const res = await graph.sendReply(ACCESS_TOKEN, reply_id, email);
+        const res = await Axios.post('api/send_mail', { email: email, reply_id: reply_id });
         console.log(res)
     } catch (e) {
         console.log(e)
     }
-
-}
-
-
-async function get_access_token(user) {
-    var ACCESS_TOKEN = window.localStorage.getItem(get_user_token_key(user));
-    if (!ACCESS_TOKEN) {
-        console.log("getting token");
-        try {
-            const res = await Axios.post('/token/auth/get_token',
-                { email_address: user.get_address() });
-            ACCESS_TOKEN = res.data;
-            window.localStorage.setItem(get_user_token_key(user), ACCESS_TOKEN);
-            console.log("got token:");
-            console.log(res);
-        } catch (e) {
-            console.log("Error getting token:");
-            console.log(e);
-            // Set an invalid token
-            ACCESS_TOKEN = "e123"
-            //          open_popup_login_window();
-        }
-    }
-    return ACCESS_TOKEN;
-}
-
-function check_reauthenticate(e, user) {
-    try {
-        if (e.body && JSON.parse(e.body).code === "InvalidAuthenticationToken") {
-            window.localStorage.removeItem(get_user_token_key(user));
-            open_popup_login_window();
-        }
-    }
-    catch {
-        console.log(e)
-    }
-}
-
-function open_popup_login_window() {
-    window.open('/token', "token_window")
-    sleep(2000);
-}
-
-function get_user_token_key(user) {
-    return "ACCESS_TOKEN";
 }
