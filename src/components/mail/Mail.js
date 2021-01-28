@@ -3,6 +3,7 @@ import { CenterDivision } from './CenterDivision.js';
 import { RightDivision } from './RightDivision.js';
 import './Mail.css';
 import React, { Component } from 'react';
+import { UnorderedCollection } from 'http-errors';
 
 export class Mail extends Component {
     constructor(props) {
@@ -10,12 +11,18 @@ export class Mail extends Component {
         console.log("Started Mail");
         this.state = {
             selected_thread_id: undefined,
-            selected_task_index: -1
+            selected_task_index: -1,
+            selected_folder: "Inbox"
         }
         this.handleSelect = this.handleSelect.bind(this);
         this.handle_task_hover = this.handle_task_hover.bind(this);
-    }
+        this.set_selected_folder = this.set_selected_folder.bind(this);
 
+    }
+    set_selected_folder(name) {
+        this.setState({ selected_folder: name });
+        this.handleSelect(undefined)
+    }
     handleSelect(id) {
         this.setState({ selected_thread_id: id });
     }
@@ -35,8 +42,12 @@ export class Mail extends Component {
                     load_threads_function={this.props.load_threads_function}
                     user={this.props.user}
                     folders={this.props.folders}
+                    set_selected_folder={this.set_selected_folder}
+                    selected_folder={this.state.selected_folder}
                 />
-                <CenterDivision thread={selected_thread} selected_task={this.state.selected_task} />
+                <CenterDivision thread={selected_thread}
+                    selected_folder={this.state.selected_folder}
+                    selected_task={this.state.selected_task} />
                 {RightDivision(selected_thread, this.handle_task_hover)}
             </div>
         )

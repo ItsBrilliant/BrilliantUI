@@ -45,16 +45,16 @@ export class CenterDivision extends React.Component {
     }
     render() {
         if (!this.props.thread) { return null; }
+        const thread_emails = this.props.thread.get_emails()
+            .reverse() // Drafts are shown only in Draft folder and vice versa
+            .filter(e => e.is_draft() === (this.props.selected_folder === 'Drafts'));
+        if (thread_emails.length == 0) {
+            return null;
+        }
         const options_button = {
             selected_value: this.state.selected_value,
             onChange: this.handle_option_button_click,
         }
-        const modal = this.state.selected_value == 'Add Task' ?
-            <AddTaskModal show={this.state.show_add_task} handle_ok={this.add_task}
-                close={this.reset} /> :
-            <EmailReplyModal show={this.state.show_add_task} handle_ok={this.reset}
-                close={this.reset} />
-        const thread_emails = this.props.thread.get_emails().reverse();
         const emails = thread_emails.map((email) =>
             <EmailContainer
                 key={email.get_id()}
@@ -68,7 +68,6 @@ export class CenterDivision extends React.Component {
                     {emails}
                 </SimpleBar>
                 <NewReply email_id={thread_emails[thread_emails.length - 1].get_id()} />
-                {modal}
             </div>
         );
     }

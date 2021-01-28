@@ -76,8 +76,6 @@ export class Home extends React.Component {
         }
     }
     change_user(new_addresss) {
-        window.localStorage.removeItem("ACCESS_TOKEN");
-        window.localStorage.setItem("user", new_addresss);
         Contact.clear_contacts();
         const new_user = Contact.create_contact_from_address(new_addresss);
         this.props.Login(new_user);

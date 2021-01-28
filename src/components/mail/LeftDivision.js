@@ -17,12 +17,11 @@ export class LeftDivision extends Component {
       group_type: PRIORITY_KEY,
       sort_type: TIME_KEY,
       incoming: "Incoming",
-      selected_folder_id: null
     }
     this.handleGrouping = this.handleGrouping.bind(this);
     this.handleSorting = this.handleSorting.bind(this);
     this.handleIncoming = this.handleIncoming.bind(this);
-    this.set_selected_folder_id = this.set_selected_folder_id.bind(this);
+
   }
 
   handleGrouping(selected) {
@@ -34,16 +33,13 @@ export class LeftDivision extends Component {
   handleIncoming(selected) {
     this.setState({ incoming: selected.value });
   }
-  set_selected_folder_id(id) {
-    this.setState({ selected_folder_id: id });
-  }
 
   render() {
     return (
       <div className="LeftDivision">
         <MailFolders folders={this.props.folders}
-          on_select={this.set_selected_folder_id}
-          selected_folder_id={this.state.selected_folder_id}
+          on_select={this.props.set_selected_folder}
+          selected_folder={this.props.selected_folder}
         />
         <Menues
           incoming_value={this.state.incoming}
@@ -65,7 +61,7 @@ export class LeftDivision extends Component {
             this.state.incoming,
             this.props.user,
             this.props.folders,
-            this.state.selected_folder_id)}
+            this.props.selected_folder)}
         </div>
       </div>
     );
@@ -88,20 +84,22 @@ function filter_threads(incoming, threads, user) {
 }
 
 function filter_mail_folders(thread, folder_id) {
-  if (folder_id === null) {
-    return true;
-  }
   const emails = thread.get_emails();
   if (emails.length === 0) {
     return false;
   }
-  return emails[0].get_folder_id() === folder_id;
+  for (const email of emails) {
+    if (email.get_folder_id() == folder_id) {
+      return true;
+    }
+  }
+  return false;
 }
 
 function ScrollableThreadContainer(emailThreads, handle_select, selected_thread_id, load_func,
-  group_type, sort_type, incoming, user, folders, selected_folder_id) {
-  var filtered_threads = Object.values(emailThreads).filter(t => filter_mail_folders(t, selected_folder_id));
-  if (folders['Drafts'] !== selected_folder_id) {
+  group_type, sort_type, incoming, user, folders, selected_folder) {
+  var filtered_threads = Object.values(emailThreads).filter(t => filter_mail_folders(t, folders[selected_folder]));
+  if (selected_folder !== 'Drafts') {
     filtered_threads = filter_threads(incoming, filtered_threads, user);
   }
 
@@ -131,10 +129,9 @@ function ScrollableThreadContainer(emailThreads, handle_select, selected_thread_
 function MailFolders(props) {
   const relevant_folder_names = MAIL_FOLDERS.filter(folder => Object.keys(props.folders).includes(folder));
   const folder_buttons = relevant_folder_names.map(name => {
-    const folder_id = props.folders[name]
-    const style = props.selected_folder_id === folder_id && folder_id ? "selected" : "";
+    const style = props.selected_folder === name ? "selected" : "";
     return (
-      <button className={style} value={folder_id} onClick={(e) => props.on_select(e.target.value)}>
+      <button className={style} value={name} onClick={(e) => props.on_select(e.target.value)}>
         {MAIL_FOLDERS_DISPLAY[MAIL_FOLDERS.indexOf(name)]}
       </button>);
   }

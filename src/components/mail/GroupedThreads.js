@@ -44,7 +44,8 @@ class GroupedThreads extends Component {
         const title = this.create_title()
         const threads = this.props.emailThreads.map((thread) =>
             <EmailThread key={thread.get_id()} id={thread.get_id()} thread={thread} is_selected={thread.get_id() === this.props.selected_thread_id}
-                handle_select={this.props.handle_select} priority={this.get_priority_style(thread.get_priority())} />);
+                handle_select={this.props.handle_select}
+                priority={this.get_priority_style(thread.get_priority())} />);
         return (
             <div className='GroupedThreads'>
                 <button className={this.get_group_key_style()}>{title}</button>

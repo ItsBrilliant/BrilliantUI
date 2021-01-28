@@ -8,9 +8,9 @@ export const MAIL_FOLDERS = ['Inbox', 'Drafts', 'Junk Email', 'Deleted Items']
 export const MAIL_FOLDERS_DISPLAY = ['Inbox', 'Draft', 'Spam', 'Bin']
 
 export const DEFAULT_HIGHLIGHTS = [
-    'Ben is looking forward to your meeting today',
-    'There is an attachment that needs to be reviewd before the meeting',
-    'The first meeting is a benchmarking meeting']
+    'The first highlight of the email',
+    'The second hlighlight of the email',
+    'The third highlight of the email']
 
 export const TIME_KEY = 'Time';
 export const PRIORITY_KEY = 'Priority';

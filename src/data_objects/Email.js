@@ -229,6 +229,10 @@ export class Email {
         this.email['isRead'] = is_read;
     }
 
+    is_draft() {
+        return this.email['isDraft'];
+    }
+
     get_content() {
         return this.email['body']['content'];
     }
