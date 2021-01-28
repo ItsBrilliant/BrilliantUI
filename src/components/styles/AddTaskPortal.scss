@@ -37,6 +37,10 @@
         font-size: small;
         height: 100%;
     }
+    button.delete {
+        background-color: transparent;
+        font-size: larger;
+    }
 }
 
 .TaskContent {
@@ -48,10 +52,35 @@
         width: 90%;
         
     }
+}
+
+.task_owner {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    height: 50px;
     img {
         height: 30px;
         width: 30px;
         border-radius: 100%;
         margin: 5px;
+    }
+    input {
+            color: white;
+            flex-grow: 1;
+    }
+    ul {
+        background-color: var(--email-container-background);
+        align-self: flex-start;
+        color: white;
+        overflow-y: visible;
+        z-index: 1000;
+        list-style-type: none;
+        padding: 3px;
+        li:hover{
+            cursor: pointer;
+            background-color: var(--email-text-area-bg);
+        }
     }
 }

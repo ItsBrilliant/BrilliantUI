@@ -87,7 +87,7 @@ export function get_file_icon(extension) {
     return 'file_icons/' + icon_name;
 }
 
-export function create_mail_object(to, email_subject, email_content, content_type = "Text", cc = [], bcc = []) {
+export function create_mail_object(to, email_subject, email_content, content_type = "Text", cc = [], bcc = [], attachment_buffers = []) {
 
     function address_to_recipeint(recipeint_address) {
         const recipeint = {
@@ -98,28 +98,60 @@ export function create_mail_object(to, email_subject, email_content, content_typ
         return recipeint
     }
 
+    function file_buffer_to_attachment(file) {
+        var attachment =
+        {
+            name: file.name,
+            contentType: file.type,
+            contentBytes: btoa(file.buffer)
+        }
+        attachment["@odata.type"] = "#microsoft.graph.fileAttachment";
+        return attachment;
+
+    }
+
     const to_recipients = to.map((address) => address_to_recipeint(address));
     const cc_recipients = cc.map((address) => address_to_recipeint(address));
     const bcc_recipients = bcc.map((address) => address_to_recipeint(address));
+    if (to_recipients.length + cc_recipients.length + bcc_recipients.length === 0) {
+        console.log("Email has no recipients");
+    }
+    const attachments = attachment_buffers.map(file =>
+        file_buffer_to_attachment(file));
 
-    const email = {
+    var email = {
         message: {
-            subject: email_subject,
             body: {
                 contentType: content_type,
                 content: email_content
             },
-            toRecipients: to_recipients,
-            ccRecipients: cc_recipients,
-            bccRecipients: bcc_recipients
         },
         saveToSentItems: "true"
     }
+    if (attachments) {
+        email.message.attachments = attachments;
+    }
+    if (to_recipients.length > 0) {
+        email.message.toRecipients = to_recipients;
+    }
+    if (cc_recipients.length > 0) {
+        email.message.toRecipients = cc_recipients;
+    }
+    if (bcc_recipients.length > 0) {
+        email.message.toRecipients = bcc_recipients;
+    }
+    if (email_subject) {
+        email.message.subject = email_subject;
+    }
+
     return email;
 }
 
 export function create_calendar_events(events) {
     function convert_time_zone(d) {
+        if (!d.timeZone) {
+            return d;
+        }
         if (d.timeZone === 'UTC') {
             return new Date(d.dateTime + 'Z')
         }
@@ -128,6 +160,7 @@ export function create_calendar_events(events) {
         }
     }
     for (let event of events) {
+        event['location'] = event['location']['displayName']
         event['start'] = convert_time_zone(event['start'])
         event['end'] = convert_time_zone(event['end'])
     }
@@ -158,3 +191,13 @@ export function getSelectionOffsetRelativeTo(parentElement, currentNode, offset 
 
     return getSelectionOffsetRelativeTo(parentElement, currentNode.parentNode, offset);
 }
+
+export function my_html_to_text(html) {
+    var temp = document.createElement("div");
+    temp.innerHTML = html;
+    var text = temp.textContent || temp.innerText || "";
+    var re = new RegExp("<!--[\\s\\S]*?-->", 'g')
+    var text_no_xml_comment = text.replaceAll(re, "")
+    return text_no_xml_comment.trim();
+}
+

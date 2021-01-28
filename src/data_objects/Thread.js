@@ -21,7 +21,7 @@ export class Thread {
     static get_filter_function(property, required_value) {
         if (property === 'sender') {
             // Check if sender of the tread is the right value
-            return (sender) => sender.equals(required_value);
+            return (sender) => sender && sender.equals(required_value);
         } else if (property === 'receivers') {
             // Check if ONE of the recievers is the right value
             return function (receivers) {
@@ -42,7 +42,13 @@ export class Thread {
         }
         return count;
     }
+    set_priority(priority) {
+        this.priority = priority;
+    }
     get_priority() {
+        if (this.priority !== undefined) {
+            return this.priority;
+        }
         var highest_priority = CAN_WAIT;
         for (const email of this.get_emails()) {
             const priority = email.get_priority();
@@ -88,7 +94,10 @@ export class Thread {
     get_participants() {
         var participants = new Set()
         for (const email of this.get_emails()) {
-            participants.add(email.get_sender());
+            const sender = email.get_sender();
+            if (sender) {
+                participants.add(sender);
+            }
             for (const receiver of email.get_receivers().concat(email.get_ccs().concat(email.get_bccs()))) {
                 participants.add(receiver);
             }
@@ -99,7 +108,7 @@ export class Thread {
     get_attachments() {
         var attachments = [];
         for (const email of this.get_emails()) {
-            var current_attachments = email.attachments;
+            var current_attachments = email.get_attachments();
             if (current_attachments !== undefined) {
                 for (const attachment of current_attachments) {
                     attachments.push(attachment);
@@ -117,6 +126,11 @@ export class Thread {
             }
         }
         return newest_date;
+    }
+    mark_all_read() {
+        for (const email of this.get_emails()) {
+            email.set_is_read(true);
+        }
     }
 }
 

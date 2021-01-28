@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux';
 import { LoginReducer } from './login.js';
 import { EmailComposerReducer } from './email_composer.js';
+import { EmailThreadsReducer } from './email_threads.js';
 
 export const CombinedReducers = combineReducers({
     user: LoginReducer,
-    email: EmailComposerReducer
+    email_composers: EmailComposerReducer,
+    email_threads: EmailThreadsReducer
 })

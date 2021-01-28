@@ -1,0 +1,54 @@
+@import "./Globals.css";
+.LoginPage{
+    position: relative;
+    margin: 50px;
+    padding: 5px;
+    border: 1px solid var(--link_hover_color);
+    width:700px;
+        font-size: xx-large;
+    background-color: var(--email-container-background);
+
+}
+
+.LoginPage h3{
+    color: var(--main-text-color);
+    margin: 10px;
+    text-align: center;
+}
+
+.LoginPage input {
+    font-size: xx-large;
+    margin: 10px 2px;
+    width: calc(100% - 100px);
+         color: rgb(214, 214, 214);
+    background-color: var(--selected-thread-bg-color);
+
+}
+
+ .LoginPage label{
+    font-size: xx-large;
+    color: var(--main-text-color);
+
+ }
+
+  .LoginPage button {
+      font-size: large;
+      width: 200px;
+      color:rgb(0, 166, 207);
+      padding: 5px;
+      font-weight: bold;
+  }
+
+  .login_page_buttons button.in{
+        background-color: rgb(0, 71, 36);
+  }
+
+.login_page_buttons button.out{
+        background-color: rgb(53, 0, 0);
+  }
+  .login_page_buttons{
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      margin: 10px;
+  }

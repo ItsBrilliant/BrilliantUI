@@ -1,0 +1,212 @@
+@import "../Globals.css";
+
+.TaskInfoWrapper{
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    background-color: transparent;
+    z-index: 10;
+    position: fixed;
+    left: 0;
+    top: 0;
+}
+
+.invisible_close{
+    width: 60%;
+    background-color: rgba(0,0,0,0.55);
+}
+.SingleTaskInfo{
+    background-color: var(--email-text-area-bg);
+    width: 40%;
+    color: var(--main-text-color);
+
+}
+.SingleTaskInfo .scrollable {
+    height: calc(100% - 170px);
+    margin:0;
+
+}
+
+.SingleTaskInfo .header {
+    margin:0;
+    padding-bottom: 0;
+}
+.SingleTaskInfo .scrollable .simplebar-content{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: nowrap;
+    height:100%;
+    width:100%;
+
+}
+
+.SingleTaskInfo .scrollable  .simplebar{
+    height:100%;
+    width:100%;
+}
+
+.SingleTaskInfo .task_text{
+    color: white;
+    text-align: left;
+    padding:10px;
+    margin:2px;
+    border-bottom: 2px solid black;
+}
+
+.SingleTaskInfo .TitledComponent {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 90%;
+
+}
+
+.SingleTaskInfo .TitledComponent .title{
+    align-self: flex-start;
+}
+.SingleTaskInfo .TitledComponent .general_component{
+    align-self: center;
+    background-color: var(--main-bg-color);
+    width: 100%;
+    border-radius: 8px;
+    box-sizing: border-box;
+    padding: 5px;
+}
+
+.SingleTaskInfo .TitledComponent .general_component .RelevantResources {
+    padding-top: 10px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+    flex-wrap: wrap;
+}
+
+.SingleTaskInfo .general_component.People .People {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.SingleTaskInfo .TitledComponent .general_component .EmailComposer{
+    position: static;
+    background-color: var(--email-container-background);
+    z-index: 1;
+    height: 200px;
+    width: 100%;
+    margin:0;
+}
+.SingleTaskInfo .TitledComponent .general_component .EmailComposer .EmailContent .content_title{
+    color:white;
+}
+.SingleTaskInfo .TitledComponent .general_component .EmailComposer #scrollable_content-1 {
+    width:100%;
+    padding:0;
+    margin: 0;
+}
+
+.SingleTaskInfo .TitledComponent .general_component .EmailComposer #toolbar-1 {
+    display: flex;
+    justify-content: space-between;
+    margin: 0;
+    padding: 0;
+    background-color: rgb(83, 92, 123);
+}
+
+.SingleTaskInfo .TitledComponent .general_component .EmailComposer #toolbar-1 .custom_buttons {
+    margin: 0;
+    background-color: rgb(83, 92, 123);
+    display:flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.SingleTaskInfo .TitledComponent .general_component .EmailComposer #toolbar-1 .ql-font,
+.SingleTaskInfo .TitledComponent .general_component .EmailComposer #toolbar-1 .ql-picker-label
+{
+    color: rgb(204, 204, 204);
+}
+
+.SingleTaskInfo .TitledComponent .general_component .EmailComposer #toolbar-1 .custom_buttons *{
+    background-color: transparent;
+}
+.SingleTaskInfo .TitledComponent .general_component.quick_reply{
+    display:flex;
+    justify-content: center;
+    padding:0;
+    width:100%;
+}
+
+.SingleTaskInfo .general_component.People {
+        border-radius: 50px;
+}
+.SingleTaskInfo .People span {
+    display:flex;
+    flex-direction: row;
+    margin: 0;
+    align-items: center;
+}
+
+.SingleTaskInfo .People span p {
+    margin: 2px;
+    padding: 0;
+}
+
+.SingleTaskInfo .People span p.owner_name {
+    color:white;
+}
+
+.TopButtons .Menu {
+    background-color: transparent;
+    border: none;
+}
+.task_status .Dropdown-control {
+  min-width: 120px;
+  border-radius: 2px;
+  background-color: rgb(107, 161, 219);
+  color: black;
+  padding: 2px 30px 2px 5px;
+  margin: 5px;
+}
+
+.TopButtons {
+    width: 100%;
+    display:flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 10px;
+}
+.task_status .Dropdown-menu {
+  background-color: rgb(107, 161, 219);
+  border-radius: 2px;
+  border:none;
+}
+
+
+.task_status .Dropdown-menu .Dropdown-option {
+  color: white;
+}
+.task_status .Dropdown-menu .Dropdown-option:hover {
+      background-color: var(--email-text-area-bg);
+}
+
+.task_status .Dropdown-menu .Dropdown-option.is-selected {
+  color: white;
+}
+
+.task_priority .Dropdown-control {
+  min-width: 100px;
+    background-color: transparent;
+}
+.task_priority .Dropdown-menu {
+background-color: var(--main-bg-color);
+  border-radius: 2px;
+  border:none;
+}
+
+.TopButtons .task_priority {
+    margin-left: auto;
+}

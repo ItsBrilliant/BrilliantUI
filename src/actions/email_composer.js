@@ -1,6 +1,7 @@
-export const Create = () => {
+export const Create = (attributes) => {
     return {
-        type: "CREATE"
+        type: "CREATE",
+        attributes: attributes
     };
 }
 

@@ -1,29 +1,60 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './RightDivision.css';
-import { get_priority_style, get_file_icon, format_date } from '../../utils.js';
+import { get_priority_style, format_date } from '../../utils.js';
+import { useSelector } from 'react-redux';
+import SimpleBar from 'simplebar-react';
+import TaskInfoWrapper from './SingleTaskInfo.js'
+import { FileAttachments } from './FileAttachments.js'
 
-
-export function RightDivision(thread, on_task_hover) {
+export function RightDivision(thread, on_task_click) {
     return (thread ?
         <div className='RightDivision'>
-            {Tasks(thread.get_tasks(), on_task_hover)}
-            {Participants(thread.get_participants())}
-            {FileAttachments(thread.get_attachments())}
+            <SimpleBar className='SimpleBar_RightDivision'>
+                <Tasks tasks={thread.get_tasks()} on_task_click={on_task_click} thread={thread} />
+                {Participants(thread.get_participants())}
+                {FileAttachments(thread.get_attachments())}
+            </SimpleBar>
         </div> :
         null
     )
 }
 
-function Tasks(tasks, on_task_hover) {
-    const finished_tasks = tasks.filter(task => task.isDone);
-    const active_tasks = tasks.filter(task => !task.isDone);
+function Tasks(props) {
+    useEffect(
+        () => {
+            rerender_tasks(props.tasks);
+        }, [props.tasks]);
+    //Old function used to highlight
+    const on_task_click = props.on_task_click;
+    const [info_visible, set_visible] = useState(false);
+    const [task_for_info, set_task] = useState(props.tasks[0]);
+    const [finished_tasks, set_finished] = useState(props.tasks.filter(task => task.isDone));
+    const [active_tasks, set_active] = useState(props.tasks.filter(task => !task.isDone));
+    const my_set_task_info = (task) => {
+        set_task(task);
+        set_visible(true);
+    }
+    const my_update_finished_task = (task) => {
+        task.isDone = true;
+        set_finished([...finished_tasks, task])
+        set_active(active_tasks.filter(t => t !== task))
+    }
+
+    const rerender_tasks = (tasks) => {
+        set_finished(props.tasks.filter(task => task.isDone));
+        set_active(props.tasks.filter(task => !task.isDone));
+    }
     if (finished_tasks.length === 0 && active_tasks.length === 0) {
         return null;
     } else {
         return (
             <div className='Container'>
-                {TasksDisplayer(active_tasks, false, on_task_hover)}
-                {TasksDisplayer(finished_tasks, true, on_task_hover)}
+                <TaskInfoWrapper thread={props.thread}
+                    task={task_for_info}
+                    visible={info_visible}
+                    close={() => set_visible(false)} />
+                <TasksDisplayer tasks={active_tasks} areDone={false} on_status_click={my_update_finished_task} on_click={my_set_task_info} />
+                <TasksDisplayer tasks={finished_tasks} areDone={true} on_click={my_set_task_info} />
             </div>
         )
     }
@@ -31,16 +62,29 @@ function Tasks(tasks, on_task_hover) {
 
 }
 
-function TasksDisplayer(tasks, areDone, on_hover) {
-    if (tasks.length === 0) {
+function TasksDisplayer(props) {
+    const user = useSelector(state => state.user);
+    if (props.tasks.length === 0) {
         return null;
     }
-    const title = areDone ? "Finished Tasks" : "Priority Tasks"
-    const tasks_elements = tasks.map(task => <li onClick={() => on_hover(task)} className={get_priority_style(task.priority)}>
-        {task.text + " (due: " + format_date(task.deadline).date + ")"}
-    </li>)
+    const title = props.areDone ? "Done" : "Priority Tasks"
+    const done_style = props.areDone ? " done" : " not_done"
+    const tasks_elements = props.tasks.map(task => {
+        const owner_name = user === task.owner ? "You" : task.owner.get_first_name();
+        return (
+            <li className={get_priority_style(task.priority)}>
+                <span className={"task_status_button"}
+                    onClick={() => { if (props.on_status_click) { props.on_status_click(task); } }}>
+                    <span className="inner">v</span>
+                </span>
+                <span className={"task_owner" + done_style}>{owner_name}:</span>
+                <span onClick={() => props.on_click(task)} className="task_text">{task.text}</span>
+            </li>
+        );
+    })
+    //show deadline ->      + " (due: " + format_date(task.deadline).date + ")"
     return (
-        <div className='TasksDisplayer'>
+        <div className={'TasksDisplayer' + done_style}>
             <h4>{title}</h4>
             <ul>{tasks_elements}</ul>
         </div>
@@ -48,45 +92,21 @@ function TasksDisplayer(tasks, areDone, on_hover) {
 }
 
 function Participants(contacts) {
+    if (contacts.includes(null)) {
+        console.log("found null contact");
+    }
     const icons = contacts.map(contact =>
         <div>
-            <p className="contact_initials">{contact.get_initials()}</p>
+            <p className="contact_initials">{contact ? contact.get_initials() : ""}</p>
             <img src={contact.image_link} />
         </div>)
 
     return (
         <div className="Container">
-            <h4>People in the Conversation</h4>
+            <h5>People in the Conversation</h5>
             <div className='ParticipantsIcons'>
                 {icons}
             </div>
         </div>
     );
-}
-
-function FileAttachments(attachments) {
-    if (attachments.length === 0) {
-        return null;
-    }
-    const attachemnts_for_display = attachments.map(a => AttachmentDisplay(a))
-    return (
-        <div className="Container">
-            <h4>Attached Files</h4>
-            <div className='AttachmentsDisplay'>
-                {attachemnts_for_display}
-            </div>
-        </div>
-    )
-}
-
-function AttachmentDisplay(file_name) {
-    const splitted = file_name.split('.')
-    var extension = splitted[splitted.length - 1]
-    const icon = get_file_icon(extension)
-    return (
-        <div className='TitledImage'>
-            <img src={icon} title={file_name}></img>
-            <p>{file_name}</p>
-        </div>
-    )
 }

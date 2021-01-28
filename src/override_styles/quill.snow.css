@@ -407,7 +407,8 @@
   display: table;
 }
 .ql-snow.ql-toolbar button,
-.ql-snow .ql-toolbar button {
+.ql-snow .ql-toolbar button,
+.custom_buttons span {
   background: none;
   border: none;
   cursor: pointer;
@@ -944,10 +945,6 @@
 }
 .ql-snow a {
   color: #06c;
-}
-
-.ql-container, .ql-snow, .ql-toolbar.ql-snow {
-    border: 1px solid var(--main-text-color);
 }
 
 /* Set content for font-families */

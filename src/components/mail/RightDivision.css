@@ -16,40 +16,109 @@
     padding-bottom: 1px;
 }
 
+.TasksDisplayer span.task_owner{
+    color:white;
+    display:inline;
+    height:fit-content;
+    margin-right: 0.2em;
+}
+
+.TasksDisplayer span.task_text{
+    color:white;
+    display:inline;
+    height:fit-content;
+    margin-right: 0.2em;
+    color:rgb(107, 161, 219);
+    overflow: hidden;
+    word-wrap: break-word;
+
+}
+
+.TasksDisplayer.done span.task_text{
+    color:var(--main-text-color)
+
+}
+
 .Tasks {
     background-color: var(--email-container-background);
 }
-ul {
+.TasksDisplayer ul {
     list-style: none;
     margin-top: 5px;
+    font-size: 14px;
 }
 
-ul li::before{
+.TasksDisplayer ul li::before{
   content: "\2022";
   font-weight: bold;
+  font-size: medium;
   display: inline-block; 
-  width: 1em;
+  width: 8px;
   margin-left: -1em;
 }
 
-ul li.Urgent::before{
+.TasksDisplayer ul li.Urgent::before{
   color:red;
 }
 
-ul li.Important::before{
+.TasksDisplayer ul li.Important::before{
   color:orange;
 }
 
-ul li.CanWait::before{
+.TasksDisplayer ul li.CanWait::before{
   color:green;
 }
 
-ul li:hover{
+.TasksDisplayer.done ul li::before{
+  display: none;
+}
+
+.TasksDisplayer ul li:hover{
     cursor: pointer;
 }
 
-ul li:active{
-    background-color: rgb(34, 99, 157);
+.TasksDisplayer ul{
+    padding: 5px;
+}
+
+.TasksDisplayer ul li{
+    padding: 2px 5px;
+}
+
+.TasksDisplayer ul li .task_status_button{
+    display: inline-block;
+    position: relative;
+    top: 5px;
+    border-radius: 100%;
+    height: 12px;
+    width: 12px;
+    border: 1px solid var(--main-text-color);
+    text-align: center;
+    margin: 2px;
+    padding: 0;
+    color: transparent;
+    font-weight: bold;
+}
+
+.TasksDisplayer ul li .task_status_button span.inner{
+    position: relative;
+    top:-6px;
+    color:var(--email-container-background);
+}
+
+.TasksDisplayer ul li .task_status_button:hover{
+    background-color: var(--main-text-color);
+    transition: all 0.5s ease;
+    color: var(--email-container-background);
+}
+
+.TasksDisplayer.done ul li .task_status_button{
+    background-color: var(--main-text-color);
+    color: var(--email-container-background);
+}
+
+.TasksDisplayer ul li .done{
+    color: var(--main-text-color) !important;
 }
 
 .Container{
@@ -60,7 +129,7 @@ ul li:active{
     padding-top: 2px;
     padding-bottom: 20px;
     padding-left: 20px;
-    border-radius: 10%;
+    border-radius: 20px;
 }
 
 .ParticipantsIcons{
@@ -70,36 +139,13 @@ ul li:active{
     justify-content: flex-start;
 }
 
-.ParticipantsIcons img {
+ .SimpleBar_RightDivision {
+     height: 100%;
+ }
+
+ .ParticipantsIcons img {
     height: 50px;
     width: 50px;
     border-radius: 100%;
     margin: 10px;
 }
-
-.AttachmentsDisplay img {
-    height: 50px;
-    width: 50px;
-}
-.AttachmentsDisplay {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-}
-
-.TitledImage{
-    margin: 3px 10px;
-}
-
-.AttachmentsDisplay p{
-    margin-top: 0;
-    padding: 0px;
-}
-p.contact_initials{
-    margin-bottom: 0;
-    text-align: center;
-}
-
- 
-

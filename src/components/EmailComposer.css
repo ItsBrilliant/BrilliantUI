@@ -2,11 +2,16 @@
 
 .EmailComposer {
     color: var(--main-text-color);
-    width: 550px;
-    padding: 10px;
-    height: 580;
-    margin: 10px;
+    background-color: var(--email-container-background);
     border: 1px solid rgb(107, 161, 219);
+    padding: 10px;
+    margin: 10px;
+    position: absolute;
+    top: calc(100% - 490px);
+    left: 30%;
+    width: 550px;
+    height: 580;
+    z-index: 100;
 }
 
 .Recipients {
@@ -32,18 +37,6 @@
     color: var(--main-text-color);
     display: flex;
     outline: none;
-}
-
-.Recipients .input_container input{
-
-}
-
-.EmailComposer{
-    position: absolute;
-    top: 10%;
-    left: 25%;
-    background-color: var(--email-container-background);
-    z-index: 100;
 }
 
 .on_top .EmailComposer{
@@ -100,30 +93,33 @@
   color: green;
 }
 
-.header {
+.EmailComposer .header {
     margin: 0 0 5px 0;
     display: flex;
     flex-direction: row;
     align-items: center;
 }
 
-.header_label {
+.EmailComposer .EmailContent {
+    height: 130px;
+}
+.EmailComposer .header_label {
     margin-right: 10px;
     display: flex;
     align-items: center;
 }
 
-.header_label img {
+.EmailComposer .header_label img {
     margin-right: 10px;
     height: 20px;
     width: 20px;
 }
 
-.header_label #from_label {
+.EmailComposer .header_label #from_label {
     font-size: larger;
 }
 
-button.delete {
+.EmailComposer button.delete {
     margin-left: auto;
     background-color: transparent;
     color: var(--main-text-color);
@@ -140,7 +136,32 @@ button:hover{
     pointer-events: none;
 }
 
-.quill, .ql-editor, .ql-container {
-  min-height: 250px;
-  background-color: var(--main-bg-color);
+.email_sent_message {
+    position: fixed;
+    left: 50vw;
+    top: 20px;
+    padding: 10px 15px;
+    border-radius: 10px;
+    background-color: green;
+    opacity: 0;
+    font-size: larger;
+}
+
+.email_sent_message.visible {
+    opacity: 1;
+    transition: opacity 0.7s ease;
+
+}
+
+.email_sent_label {
+    color: white;
+}
+
+.email_sent_undo {
+    color: black;
+    margin-left: 0.3em;
+}
+
+.email_sent_undo:hover {
+    cursor: pointer;
 }

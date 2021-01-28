@@ -2,12 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-import { Home } from './components/Home.js';
+import ConnectedHome from './components/Home.js';
 import { CombinedReducers } from './reducers/combined_reducers.js';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import { Login } from './actions/login';
-import { Delete, Create } from './actions/email_composer.js';
 import { person0 } from './data_objects/Contact.js';
 
 const store = createStore(
@@ -21,8 +20,8 @@ ReactDOM.render(
 
   <React.StrictMode>
     <Provider store={store}>
-      <Home />,
-    </Provider>,
+      <ConnectedHome />
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );

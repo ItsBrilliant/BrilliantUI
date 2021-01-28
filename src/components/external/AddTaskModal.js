@@ -4,7 +4,7 @@ import { CAN_WAIT, URGENT } from "../../data_objects/Consts.js";
 import MyModal from './Modal.js';
 import { Fragment } from 'react';
 import { Task } from '../../data_objects/Task.js'
-import { PriorityOptions } from '../EmailComposer.js';
+import PriorityOptions from '../PriorityOptions.js';
 
 export class AddTaskModal extends Component {
     constructor(props) {

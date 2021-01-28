@@ -50,6 +50,11 @@
   height: 100%;
 }
 
+.FooterButtons button.delete {
+  background-color: transparent;
+  font-size: larger;
+}
+
 .TaskContent {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -94,10 +99,50 @@
   width: 90%;
 }
 
-.TaskContent img {
+.task_owner {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  height: 50px;
+}
+
+.task_owner img {
   height: 30px;
   width: 30px;
   border-radius: 100%;
   margin: 5px;
+}
+
+.task_owner input {
+  color: white;
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+}
+
+.task_owner ul {
+  background-color: var(--email-container-background);
+  -ms-flex-item-align: start;
+      align-self: flex-start;
+  color: white;
+  overflow-y: visible;
+  z-index: 1000;
+  list-style-type: none;
+  padding: 3px;
+}
+
+.task_owner ul li:hover {
+  cursor: pointer;
+  background-color: var(--email-text-area-bg);
 }
 /*# sourceMappingURL=AddTaskPortal.css.map */

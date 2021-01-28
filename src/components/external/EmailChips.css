@@ -45,7 +45,7 @@ input.has-error {
   padding: 0 4px 0 1rem;
   display: inline-flex;
   align-items: center;
-  margin: 0 0.3rem 0.3rem 0;
+  margin: 0 0.3rem 3px 0;
 }
 
 .tag-item > .button {
@@ -65,17 +65,13 @@ input.has-error {
   justify-content: center;
 }
 
-.Recipients li::before {
-  content: none;
-  margin: 0;
-}
-
 .Recipients ul li {
   background-color: var(--email-container-background);
   color:cornsilk;
 }
 .Recipients ul li:hover {
-  background-color: var(--link_hover_color);
+  background-color: var(--email-text-area-bg);
+  cursor: pointer;
 }
 
 .Recipients ul {
@@ -85,5 +81,6 @@ input.has-error {
   position: relative;
   left: 0;
   margin: 0;
+  list-style-type: none;
 }
 

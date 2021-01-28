@@ -1,76 +1,41 @@
 @import "../Globals.css";
 
-.email_text_area {
-  color: rgb(120,133,161);
-  text-align: left;
-  height: 105px;
-  line-height: 1.5;
-  overflow: hidden;
-  padding-bottom: 10px;
-  margin-left: 5px;
-  font-size: medium;
-  width: 70%;
-  text-overflow: ellipsis;
-}
-
-
-.adjust_height_to_text{
-  height: auto;
-  width: 75%;
-}
-
-.threadIcon {
+.EmailThread .threadIcon, .EmailContainer .threadIcon {
   border-radius: 100%;
   height: 50px;
   width: 50px;
-  margin-bottom: 3px;
   margin: 2px;
+
 }
-h1.threadIcon {
-  font-size: larger;
-  background-color: rgba(59, 106, 124, 0.856);
-  position: relative;
-  left: 15px;
-  width:30px;
-  height: 30px;
-  color: rgba(255, 255, 255, 0.704)
-}
-.emailStamp{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-size: small;
-    margin: 5px;
-    color: var(--main-text-color);
-    justify-content: flex-start;
-    overflow: hidden;
-    font-size: medium;
-    width:100px;
-    line-height: 1;
+
+.EmailContainer .email_text_area .threadIcon {
+    height: 40px;
+    width: 40px;
 }
 
 .attachment {
+  margin: 5px;
   height: 40px;
   width: 40px;
 }
-
-
-.emailThread{
-  display: flex;
-  flex-direction: row;
-  border-radius: 20px;
-  width: 100%;
-  overflow-x: hidden;
+.EmailThread:hover{
+  cursor: pointer;
 
 }
 
-.thread_button{
-      background-color: transparent;
-      margin-top: 5px;
-      margin: 5px;
-      font-size: medium;
-      font-weight: normal;
-      border: none;
+.EmailThread{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-radius: 20px;
+  max-width: 100%;
+  overflow-x: visible;
+  background-color: transparent;
+  margin: 5px;
+  padding: 5px;
+  font-size: medium;
+  font-weight: normal;
+
 }
 
 
@@ -82,90 +47,39 @@ h1.threadIcon {
 
 .thread_labels {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: flex-start;
-  align-items: center;
+  align-items: flex-start;
+  flex-wrap: nowrap;
   
 }
 
-.num_threads_label{
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
+.num_tasks_label{
+  width: 20px;
+  height: 20px;
+  border-radius: 100%;
   padding: 1px;
   color: black;
-  background-color: rgb(58,129,207);
-  margin: 5px;
+  background-color: lightblue;
+  margin-top: 5px;
   text-align: center;
   font-weight: bold;
-  font-size: large;
+  font-size: medium;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
 }
 
 .unread h4 {
   color: white;
 }
-.unread * {
+.unread.email_text_area, .unread .TimeStamp{
   color: var(--unread-text-color);
 }
+
 
 button {
   outline: none;
   font-weight: normal;
 }
-
-.num_threads_label .Urgent {
-  background-color: red;
-}
-
-.num_threads_label .Important {
-  background-color: orange;
-}
-
-.num_threads_label .CanWait {
-  background-color: green;
-}
-
-.EmailOptionsButton{
-  position: relative;
-  left: 85%;
-  top: 10px;
-  background: transparent;
-}
-
-.EmailOptionsButton * div {
-  width: 70px;
-}
-
-.EmailOptionsButton * .Dropdown-control {
-  background-color: transparent;
-  text-align: right;
-}
-
-.EmailOptionsButton *.Dropdown-arrow {
-  visibility: hidden;
-}
-
-.GroupIcon{
-  max-width: 100px;
-  margin-left: auto;
-  margin-right: auto;
-  justify-content: start;
-  display: grid;
-  grid-template-columns: repeat(auto-fit,  minmax(10px, max-content)) ;
-}
-
-.TimeStamp p{
-  margin: 2px;
-  padding: 0px;
-  font-size: 13px;
-}
-
-.task_source {
-  background-color: rgba(48, 110, 160, 0.3);
-}
-
-.selected_task{
-  background-color: rgb(34, 99, 157);
-  color: rgb(11, 3, 4);
-}
-

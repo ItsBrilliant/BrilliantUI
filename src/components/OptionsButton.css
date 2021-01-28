@@ -1,0 +1,48 @@
+@import "./Globals.css";
+
+.OptionsButton {
+    background-color: transparent;
+    width: fit-content;
+    padding: 2px;
+    display: inline-flex;
+    align-items: flex-start;
+    max-width: 20px;
+    max-height: 20px;
+    overflow: visible;
+    margin: 2px;
+}
+
+.OptionsButton .options_button_icon{
+    background-color: transparent;
+    transform:rotateZ(90deg);
+    color: var(--main-text-color);
+    font-size: larger;
+    font-weight: bold;
+}
+
+.unread .OptionsButton .options_button_icon{
+    color: var(--unread-text-color);
+}
+#messages_to_user ul.options_list {
+    background-color: var(--brighter-bg);
+    color: white;
+    margin: 0;
+    border-radius: 10px;
+    z-index: 100;
+
+}
+
+#messages_to_user  ul.options_list {
+    list-style: none;
+    padding: 5px;
+}
+#messages_to_user  ul.options_list li{
+    margin-bottom: 5px;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+#messages_to_user  ul.options_list li:hover{
+    background-color: var(--link_hover_color);
+    cursor: pointer;
+}

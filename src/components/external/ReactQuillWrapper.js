@@ -3,7 +3,10 @@
 /* global ReactQuill */
 import ReactQuill, { Quill } from 'react-quill';
 import '../../override_styles/quill.snow.css';
-import React from 'react';
+import React, { Fragment } from 'react';
+import SimpleBar from 'simplebar-react';
+import { ComposerAttachments } from './QuillUtils.js'
+
 var reactQuillRef = null;
 if (typeof React !== 'object') {
     alert('React not found. Did you run "npm install"?');
@@ -61,7 +64,7 @@ export default class Editor extends React.Component {
             enabled: true,
             readOnly: false,
             value: EMPTY_DELTA,
-            events: []
+            events: [],
         };
 
     }
@@ -117,8 +120,10 @@ export default class Editor extends React.Component {
     }
 
     bottom_toolbar() {
+        const toolbar_id = "toolbar" + this.props.id;
+        const file_upload_id = "file_upload" + this.props.id;
         return (
-            <div id={"toolbar" + this.props.id} >
+            <div id={toolbar_id} >
                 <select class="ql-font">
                     <option value="sans-serif">Sans-Serif</option>
                     <option value="comic-sans">Comic Sans</option>
@@ -142,9 +147,12 @@ export default class Editor extends React.Component {
                 <button className="ql-image" />
                 <button className="ql-link" />
                 <div className="custom_buttons">
-                    <button className="ql-attach" >
-                        <img src="button_icons/files.svg"></img>
-                    </button>
+                    <span className='ql-attach'>
+                        <label for={file_upload_id} className="ql_attach">
+                            <img src="button_icons/files.svg" />
+                        </label>
+                        <input id={file_upload_id} type="file" multiple onChange={this.props.set_files} />
+                    </span>
                     <button className="ql-send" >
                         <img src="button_icons/send.png"></img>
                     </button>
@@ -153,27 +161,34 @@ export default class Editor extends React.Component {
         )
 
     }
-
     render() {
         const set_editor_hook = (el) => {
             if (el && el.getEditor()) { el.getEditor().handle_send = this.props.handle_send };
         }
         return (
-            <div>
-                {this.state.enabled && <ReactQuill
-                    ref={set_editor_hook}
-                    theme={this.state.theme}
-                    value={this.state.value}
-                    readOnly={this.state.readOnly}
-                    onChange={this.onEditorChange}
-                    onChangeSelection={this.onEditorChangeSelection}
-                    onFocus={this.onEditorFocus}
-                    onBlur={this.onEditorBlur}
-                    modules={get_modules(this.props.id)}
-                />
-                }
+            <Fragment>
+                <SimpleBar className='SimpleBar'>
+                    <div data-simplebar data-simplebar-auto-hide="false" id={'scrollable_content' + this.props.id}>
+                        {this.state.enabled && <ReactQuill
+                            ref={set_editor_hook}
+                            theme={this.state.theme}
+                            value={this.state.value}
+                            readOnly={this.state.readOnly}
+                            onChange={this.onEditorChange}
+                            onChangeSelection={this.onEditorChangeSelection}
+                            onFocus={this.onEditorFocus}
+                            onBlur={this.onEditorBlur}
+                            modules={get_modules(this.props.id)}
+                        />
+                        }
+                        <ComposerAttachments files={Object.values(this.props.files)}
+                            on_delete={this.props.remove_file}
+                            file_progress={this.props.file_progress}
+                        />
+                    </div>
+                </SimpleBar>
                 {this.bottom_toolbar()}
-            </div>
+            </Fragment>
         );
     }
 
@@ -217,3 +232,4 @@ export default class Editor extends React.Component {
         );
     }
 }
+
