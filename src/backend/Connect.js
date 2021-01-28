@@ -6,24 +6,6 @@ import download from 'downloadjs'
 Axios.defaults.xsrfCookieName = 'csrftoken';
 Axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 
-export async function get_mailbox(callback_func, url) {
-    while (true) {
-        try {
-            var res = await Axios.get(url);
-            console.log(res)
-            const emails = res.data.emails;
-            callback_func(emails.map(e => new Email(e)));
-            if (res.data.done) {
-                break;
-            }
-        }
-        catch (error) {
-            console.log('unable to load emails');
-            console.log(error);
-            return;
-        }
-    }
-}
 
 export async function append_email_attachments(emails, user) {
     if (!emails) {
@@ -66,27 +48,12 @@ function handle_graph_error(msg, e, user) {
     check_reauthenticate(e, user)
 }
 
-export async function get_all_mail_old(callback_func, user) {
-    try {
-        const ACCESS_TOKEN = await get_access_token(user);
-        const emails = await graph.getMail(ACCESS_TOKEN)
-        const email_objects = emails.map(e => new Email(e))
-        callback_func(email_objects, user);
-        return email_objects;
-    }
-    catch (e) {
-        console.log("Error getting email messages:");
-        console.log(e);
-        check_reauthenticate(e, user)
-    }
-}
-
 export async function get_all_mail(callback_func, user) {
     var chunk = 2;
-    var limit = 100;
+    var limit = 50;
     for (let current = 0; current < limit; current += chunk) {
         try {
-            const emails = await Axios.get('server/inbox_react', { params: { skip: current, top: chunk } })
+            const emails = await Axios.get('api/inbox_react', { params: { skip: current, top: chunk } })
             const email_objects = emails.data.map(e => new Email(e))
             callback_func(email_objects, user);
             append_email_attachments(email_objects, user)
@@ -103,9 +70,8 @@ export async function get_all_mail(callback_func, user) {
 
 export async function get_calendar(callback_func, user) {
     try {
-        const ACCESS_TOKEN = await get_access_token(user);
-        const events = await graph.getEvents(ACCESS_TOKEN);
-        callback_func(events, user);
+        const events = await Axios.get('api/calendar_react', { params: { top: 100 } })
+        callback_func(events.data, user);
     } catch (e) {
         console.log("Error getting events:");
         console.log(e);
@@ -114,9 +80,8 @@ export async function get_calendar(callback_func, user) {
 
 export async function get_mail_folders(callback_func, user) {
     try {
-        const ACCESS_TOKEN = await get_access_token(user);
-        const folders = await graph.getMailFolders(ACCESS_TOKEN);
-        callback_func(folders, user);
+        const folders = await Axios.get('api/mail_folders_react');
+        callback_func(folders.data, user);
     } catch (e) {
         console.log("Error getting mail folders:");
         console.log(e);
