@@ -14,13 +14,12 @@ export async function append_email_attachments(emails, user) {
     for (const email of emails) {
         if (email.get_has_attachments()) {
             try {
-                const ACCESS_TOKEN = await get_access_token(user);
-                const attachments_list = await graph.getAttachmentsList(ACCESS_TOKEN, email.get_id())
+                const attachments_list = await Axios.get('api/list_attachments', { params: { email_id: email.get_id() } })
                 const reducer = (acumulator, current) => {
                     acumulator[current.name] = current.id;
                     return acumulator;
                 }
-                email.set_attachments_dict(attachments_list.value.reduce(reducer, {}));
+                email.set_attachments_dict(attachments_list.data.reduce(reducer, {}));
             }
             catch (e) {
                 handle_graph_error("Error getting email attachemnts list:", e, user);
@@ -30,12 +29,14 @@ export async function append_email_attachments(emails, user) {
 }
 
 export async function download_attachment(email_id, attachment_id, user) {
-
+    const params = {
+        email_id: email_id,
+        attachment_id: attachment_id
+    }
     try {
-        const ACCESS_TOKEN = await get_access_token(user);
-        const attachment_data = await graph.downloadAttachment(ACCESS_TOKEN, email_id, attachment_id)
-        await download(atob(attachment_data.contentBytes),
-            attachment_data.name);
+        let attachment_data = await Axios.get('api/download_attachment', { params: params });
+        attachment_data = attachment_data.data;
+        await download(atob(attachment_data.contentBytes), attachment_data.name);
     }
     catch (e) {
         handle_graph_error("Error downloading email attachment:", e, user);
