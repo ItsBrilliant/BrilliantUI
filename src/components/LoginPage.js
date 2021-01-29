@@ -1,25 +1,31 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import './LoginPage.css';
 
 export function LoginPage(props) {
-    const [user, setUser] = useState(props.user_address);
-    const history = useHistory();
-    const handle_click = (user) => {
-        props.on_login(user);
-        history.push('/');
+    let history = useHistory();
+    const handle_click = (is_login) => {
+        if (is_login) {
+            history.push('/external_login');
+        } else {
+            history.push('external_logout')
+        }
     }
+    const header = props.user_address ? "Logged in as:" : "Please Login"
+    const email_labels = props.user_address ?
+        <label id='user_email'>{props.user_address}</label> :
+        null;
+    const action_button = props.user_address ?
+        <button className="out" onClick={() => handle_click(false)}>Log out</button> :
+        <button className="in" onClick={() => handle_click(true)}>Log in</button>
 
     return (
         <div className="LoginPage">
-            <h3>Login</h3>
-            <label for="user_email"> Email: </label>
-            <input id='user_email' value={user}
-                onChange={(e) => setUser(e.target.value)}></input>
+            <h3>{header}</h3>
+            {email_labels}
             <div className="login_page_buttons">
-                <button className="in" onClick={() => handle_click(user)}>Log in</button>
-                <button className="out" onClick={() => handle_click("")}>Log out</button>
+                {action_button}
             </div>
         </div>
     );

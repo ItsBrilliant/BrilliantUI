@@ -2,11 +2,14 @@
 .LoginPage{
     position: relative;
     margin: 50px;
-    padding: 5px;
+    padding: 20px;
     border: 1px solid var(--link_hover_color);
-    width:700px;
-        font-size: xx-large;
+    width: fit-content;
+    font-size: xx-large;
     background-color: var(--email-container-background);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
 }
 
@@ -14,22 +17,16 @@
     color: var(--main-text-color);
     margin: 10px;
     text-align: center;
+
 }
 
-.LoginPage input {
+.LoginPage label#user_email {
     font-size: xx-large;
     margin: 10px 2px;
-    width: calc(100% - 100px);
-         color: rgb(214, 214, 214);
-    background-color: var(--selected-thread-bg-color);
+    color: rgb(214, 214, 214);
+    text-align: center;
 
 }
-
- .LoginPage label{
-    font-size: xx-large;
-    color: var(--main-text-color);
-
- }
 
   .LoginPage button {
       font-size: large;

@@ -84,5 +84,5 @@ export class Contact {
     }
 }
 
-export const person0 = Contact.create_contact_from_address(window.localStorage.getItem("user") || "");
+export const person0 = Contact.create_contact_from_address("");
 

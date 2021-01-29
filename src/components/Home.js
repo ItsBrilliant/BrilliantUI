@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route, Link, Redirect } from 'react-router-dom';
+import { Router, Switch, Route, Link, Redirect } from 'react-router-dom';
 import { Mail } from './mail/Mail.js'
 import './Home.css';
 import { get_all_mail, get_calendar, get_mail_folders, append_email_attachments } from '../backend/Connect.js';
@@ -15,10 +15,9 @@ import { Login } from "../actions/login.js";
 import { Expand, Reset } from "../actions/email_threads.js";
 import { Contact } from '../data_objects/Contact.js';
 import { MAIL_FOLDERS } from '../data_objects/Consts.js';
-import SingleTaskInfo from './mail/SingleTaskInfo.js';
-import { Task } from '../data_objects/Task.js';
+import axios from 'axios';
 
-const TASK = new Task("Review three attached documents", new Date(), 0, false, undefined, undefined)
+const history = require("history").createBrowserHistory();
 
 export const SHOW_HTML = false;
 
@@ -45,8 +44,11 @@ export class Home extends React.Component {
         this.setState({ search: value });
     }
     componentDidMount() {
-        this.load_user_data(this.props.user)
+        axios.get('api/me').then(res =>
+            this.handle_login(res.data)
+        );
     }
+
     handle_login(user_address) {
         console.log("new user address" + user_address);
         const new_user = this.change_user(user_address);
@@ -67,8 +69,8 @@ export class Home extends React.Component {
 
 
     load_user_data(user) {
-        console.log("loading user data")
         if (user.get_address()) {
+            console.log("loading user data")
             console.log("getting calendar")
             get_calendar((events, initial_user) => this.set_calendar(events, initial_user), user);
             get_mail_folders((folders, initial_user) => this.set_mail_folders(folders, initial_user), user);
@@ -140,7 +142,7 @@ export class Home extends React.Component {
     render() {
         const user_address = this.props.user.get_address();
         return (
-            <Router>
+            <Router history={history} forceRefresh={true}>
                 <div className='Home'>
                     <Nav />
                     <div id="not_nav" className='not_nav'>
@@ -149,9 +151,20 @@ export class Home extends React.Component {
                             <button className='filter_button'>Filter</button>
                         </div>
                         <Switch>
-                            <Route path='/' exact>
-                                {user_address ? null : <Redirect to="login" />}
+                            <Route
+                                path='/login' exact
+                                render={() =>
+                                    <LoginPage user_address={user_address} on_login={(new_user_address) => this.handle_login(new_user_address)} />}>
                             </Route>
+                            <Route path='/external_login' exact component={() => {
+                                window.location.href = 'api/';
+                                return null;
+                            }} />
+                            <Route path='/external_logout' exact component={() => {
+                                window.location.href = 'api/signout';
+                                return null;
+                            }} />
+                            {user_address ? null : <Redirect to='/login' />}
                             <Route
                                 path='/mail' exact
                                 render={() =>
@@ -165,11 +178,6 @@ export class Home extends React.Component {
                                 path='/calendar' exact
                                 render={() =>
                                     <Calendar events={this.state.calendarEvents} />}>
-                            </Route>
-                            <Route
-                                path='/login' exact
-                                render={() =>
-                                    <LoginPage user_address={user_address} on_login={(new_user_address) => this.handle_login(new_user_address)} />}>
                             </Route>
                             <Route
                                 path='/build' exact

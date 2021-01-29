@@ -14,7 +14,7 @@ const store = createStore(
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
 
-store.dispatch(Login(person0));
+//store.dispatch(Login(person0));
 
 ReactDOM.render(
 
