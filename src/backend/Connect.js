@@ -93,43 +93,56 @@ export async function send_email(email, user) {
     }
 }
 
-export async function create_based_draft(based_on_id, draft_type) {
-    console.log("creating draft of type " + draft_type);
+export async function create_based_draft(based_on_id, action_type) {
+    console.log("creating draft of type " + action_type);
     const params = {
         email_id: based_on_id,
-        draft_type: draft_type
+        action_type: action_type
     };
     var res;
     try {
-        res = await Axios.post('api/handle_draft', params)
+        res = await Axios.post('api/email_action', params)
     } catch (e) {
         console.log(e);
     }
     if (!res) {
-        throw Error("Couldn't create draft of type " + draft_type);
+        throw Error("Couldn't create draft of type " + action_type);
     }
     return res.data;
 }
+
 
 export async function update_draft(email_id, email) {
     console.log("updating email");
     var res;
     var params = {
-        draft_type: "new",
+        action_type: "new",
         email: email.message
     }
     if (email_id) {
         params.email_id = email_id
-        params.draft_type = 'update'
+        params.action_type = 'update'
     }
     try {
-        res = await Axios.post('api/handle_draft', params);
+        res = await Axios.post('api/email_action', params);
         console.log(res);
     } catch (e) {
         console.log(e);
     }
 
 }
+
+export async function delete_email(email_id) {
+    try {
+        console.log("deleting email");
+        let res = await Axios.post('api/email_action', { action_type: 'delete', email_id: email_id });
+        console.log(res);
+    } catch (e) {
+        console.log("Error deleting email");
+        console.log(e);
+    }
+}
+
 export async function update_and_send(email_id, email, user) {
     console.log("updating reply to email");
     try {
@@ -145,7 +158,7 @@ export async function update_and_send(email_id, email, user) {
 export async function send_draft(draft_id, user) {
     console.log("sending draft");
     try {
-        const res = await Axios.post('api/handle_draft', { email_id: draft_id, draft_type: "send" });
+        const res = await Axios.post('api/email_action', { email_id: draft_id, action_type: "send" });
         console.log(res)
     } catch (e) {
         console.log(e)

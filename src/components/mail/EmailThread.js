@@ -95,7 +95,9 @@ function ThreadLabels(props) {
     const dispatch = useDispatch()
     const option_names = ["Set as task", "Change priority", "Add tag", "Export", "Mark as read", "Delete"];
     const options = option_names.map(n => { return { name: n } });
-    options.filter(o => o.name === 'Delete')[0].action = () => dispatch(Delete(props.thread_id));
+    options.filter(o => o.name === 'Delete')[0].action = () => {
+        thread.delete_all(); dispatch(Delete(props.thread_id));
+    }
     options.filter(o => o.name === 'Mark as read')[0].action = () => thread.mark_all_read();
     options.filter(o => o.name === "Change priority")[0].action = () => thread.set_priority((thread.get_priority() + 1) % 3);
     return (
