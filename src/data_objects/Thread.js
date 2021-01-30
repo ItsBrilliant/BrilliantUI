@@ -1,5 +1,6 @@
-import { TIME_KEY, PRIORITY_KEY, CAN_WAIT } from "./Consts";
+import { TIME_KEY, PRIORITY_KEY, CAN_WAIT } from "./Consts.js";
 import { Email } from './Email.js'
+import { mark_read } from '../backend/utils.js'
 
 export class Thread {
     constructor(id, emails) {
@@ -130,6 +131,7 @@ export class Thread {
     mark_all_read() {
         for (const email of this.get_emails()) {
             email.set_is_read(true);
+            mark_read(email.get_id());
         }
     }
 }
