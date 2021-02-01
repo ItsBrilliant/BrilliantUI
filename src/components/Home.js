@@ -2,8 +2,7 @@ import React from 'react';
 import { Router, Switch, Route, Link, Redirect } from 'react-router-dom';
 import { Mail } from './mail/Mail.js'
 import './Home.css';
-import { get_all_mail, get_calendar, get_mail_folders, append_email_attachments } from '../backend/Connect.js';
-import { expand_threads } from '../data_objects/Thread.js';
+import { get_all_mail, get_calendar, get_mail_folders } from '../backend/Connect.js';
 import { Calendar } from './calendar/Calendar.js';
 import { create_calendar_events } from '../utils.js';
 import { EmailComposers } from './EmailComposer.js';
@@ -157,7 +156,7 @@ export class Home extends React.Component {
                                     <LoginPage user_address={user_address} on_login={(new_user_address) => this.handle_login(new_user_address)} />}>
                             </Route>
                             <Route path='/external_login' exact component={() => {
-                                window.location.href = 'api/';
+                                window.location.href = 'api';
                                 return null;
                             }} />
                             <Route path='/external_logout' exact component={() => {

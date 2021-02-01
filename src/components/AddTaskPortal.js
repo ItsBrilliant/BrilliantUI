@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import ReactDOM, { unstable_renderSubtreeIntoContainer } from 'react-dom'
+import ReactDOM from 'react-dom'
 import PriorityOptions from './PriorityOptions.js';
 import { useSelector } from 'react-redux';
 import './styles/AddTaskPortal.css';
@@ -30,7 +30,7 @@ export function AddTaskPortal(props) {
 function TaskContent(props) {
     const [edited_owner_value, set_owner_value] = useState(props.owner.get_address());
     const owner_options = Contact.get_filtered_contacts(edited_owner_value);
-    const owner_selection_list = owner_options[0] == edited_owner_value ? null :
+    const owner_selection_list = owner_options[0] === edited_owner_value ? null :
         <ul className="owner_selection_list">
             {owner_options.map(o => <li onClick={(e) => {
                 props.setOwner(Contact.create_contact_from_address(e.target.innerText));

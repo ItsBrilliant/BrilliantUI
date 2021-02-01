@@ -72,7 +72,7 @@ export class Contact {
         return this.image_link;
     }
     equals(other) {
-        return this.get_address() == other.get_address();
+        return this.get_address() === other.get_address();
     }
 
     get_initials() {

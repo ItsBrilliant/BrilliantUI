@@ -75,12 +75,12 @@ export function EmailComposer(props) {
     const [files, set_files] = useState([]);
     const [file_buffers, set_buffers] = useState({});
     const [file_progress, set_progress] = useState({});
-    useEffect(() => process_attributes(props.email_attributes), []);
+    useEffect(() => process_attributes(), []);
     const handle_close = (email_was_sent) => {
         if (props.on_close) {
             props.on_close();
         }
-        process_cleanup_attributes(props.email_attributes, email_was_sent, props.id);
+        process_cleanup_attributes(email_was_sent, props.id);
 
     }
     const handle_send = (html) => {
@@ -111,7 +111,8 @@ export function EmailComposer(props) {
         my_set_progress(file, undefined)
 
     }
-    async function process_attributes(attributes) {
+    async function process_attributes() {
+        const attributes = props.email_attributes;
         if (!attributes) {
             return;
         }
@@ -135,7 +136,8 @@ export function EmailComposer(props) {
         }
     }
 
-    async function process_cleanup_attributes(attributes, email_was_sent, composer_id) {
+    async function process_cleanup_attributes(email_was_sent, composer_id) {
+        const attributes = props.email_attributes;
         if (!attributes) {
             return;
         }

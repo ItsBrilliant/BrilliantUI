@@ -33,7 +33,7 @@ class GroupedThreads extends Component {
         }
     }
     get_group_key_style() {
-        if (this.props.group_key_type == PRIORITY_KEY) {
+        if (this.props.group_key_type === PRIORITY_KEY) {
             return "group_button " + this.get_priority_style(this.props.group_key);
         }
 

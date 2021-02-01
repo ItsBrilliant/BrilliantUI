@@ -1,4 +1,3 @@
-import { connect } from "react-redux"
 import { update_draft } from './Connect.js';
 export function mark_read(email_id) {
     const email =

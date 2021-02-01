@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { attachmentIcon } from './EmailThread.js';
 import './CenterDivision.css';
 import SimpleBar from 'simplebar-react';
-import { AddTaskModal } from '../external/AddTaskModal.js';
-import { EmailReplyModal } from '../external/EmailReplyModal.js';
 import { download_attachment } from '../../backend/Connect.js';
 import { useSelector, useDispatch } from 'react-redux'
 import { Create } from '../../actions/email_composer.js';

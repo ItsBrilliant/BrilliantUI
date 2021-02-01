@@ -1,5 +1,5 @@
 import { format_date } from '../../utils.js';
-import React, { Fragment } from 'react';
+import React from 'react';
 import './EmailStamp.css';
 import { Contact } from '../../data_objects/Contact.js';
 

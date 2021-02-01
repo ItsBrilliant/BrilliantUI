@@ -126,7 +126,7 @@ export default class EmailTextArea extends Component {
     }
     // Insert task highligts
     render_content(text) {
-        if (!this.props.tasks || this.props.tasks.length == 0) {
+        if (!this.props.tasks || this.props.tasks.length === 0) {
             return <span>{text}</span>
         }
         var sections = []

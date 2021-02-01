@@ -1,8 +1,8 @@
 
 import { Thread } from '../data_objects/Thread.js'
 export const EmailThreadsReducer = (state = {}, action) => {
-    var new_state = Object.assign({}, state);
     if (action.type === "EXPAND") {
+        var new_state = Object.assign({}, state);
         for (const email of action.emails) {
             const thread_id = email.get_thread_id();
             if (new_state[thread_id] === undefined) {
@@ -15,7 +15,7 @@ export const EmailThreadsReducer = (state = {}, action) => {
 
     else if (action.type === "DELETE") {
         var new_state = {};
-        for (const thread_id of Object.keys(state).filter(id => id != action.thread_id)) {
+        for (const thread_id of Object.keys(state).filter(id => id !== action.thread_id)) {
             new_state[thread_id] = state[thread_id];
         }
         return new_state;

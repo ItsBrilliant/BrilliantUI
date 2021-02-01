@@ -1,4 +1,3 @@
-import { Fragment } from 'react';
 import { get_file_icon } from '../../utils.js';
 import './QuillUtils.css'
 

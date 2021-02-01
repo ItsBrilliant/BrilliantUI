@@ -83,9 +83,7 @@ function QuickReply(props) {
     }
     const quick_reply_component =
         <EmailComposer only_content={true}
-            on_close={undefined}
             id={-1}
-            send={undefined}
             email_attributes={email_attributes}
             content_title={props.to.get_name()}
             send={send_quick_reply}

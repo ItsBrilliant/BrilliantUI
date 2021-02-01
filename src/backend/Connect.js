@@ -1,7 +1,5 @@
 import Axios from 'axios';
 import { Email } from '../data_objects/Email.js';
-import { graph } from './graph.js';
-import { sleep } from '../utils.js';
 import download from 'downloadjs'
 Axios.defaults.xsrfCookieName = 'csrftoken';
 Axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
@@ -132,7 +130,7 @@ export async function update_draft(email_id, email) {
 
 }
 
-export async function delete_email(email_id) {
+export async function delete_email(email_id, folder_id) {
     try {
         console.log("deleting email");
         let res = await Axios.post('api/email_action', { action_type: 'delete', email_id: email_id });
