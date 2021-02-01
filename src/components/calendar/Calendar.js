@@ -3,11 +3,11 @@ import './Calendar.css';
 import * as React from 'react';
 import { ScheduleComponent, Day, Week, WorkWeek, Month, Agenda, Inject, ViewsDirective, ViewDirective } from '@syncfusion/ej2-react-schedule';
 import { DataManager, Query, JsonAdaptor } from '@syncfusion/ej2-data'
-import { MsgrahpAdaptor } from './CalendarConnect.js'
+import { MsgrahpAdaptor, onPopupOpen } from './CalendarConnect.js'
+import UpcomingMeetings from './UpcomingMeetings';
+import CalendarTasks from './CalendarTasks'
+import SimpleBar from 'simplebar-react';
 
-const done = (e) => console.log("fail: " + e);
-const fail = (e) => console.log("fail: " + e);
-const always = (e) => console.log("always: " + e);
 export class Calendar extends React.Component {
     constructor(props) {
         super(props)
@@ -28,16 +28,27 @@ export class Calendar extends React.Component {
 
         return (
             <div className='Calendar'>
-                <ScheduleComponent height="auto" width="auto" eventSettings={{ dataSource: new DataManager({ json: this.bound_events, adaptor: new MsgrahpAdaptor }) }}
-                    timeScale={{ enable: true, interval: 60, slotCount: 2 }}
-                    startHour='07:00' endHour='21:00'>
-                    <ViewsDirective>
-                        <ViewDirective option='Day'></ViewDirective>
-                        <ViewDirective option='Week'></ViewDirective>
-                        <ViewDirective option='Month'></ViewDirective>
-                    </ViewsDirective>
-                    <Inject services={[Day, Week, Month]} />
-                </ScheduleComponent>
+                <div className='scheduler'>
+                    <SimpleBar className="simple_bar">
+                        <ScheduleComponent height="auto" width="auto" eventSettings={{ dataSource: new DataManager({ json: this.bound_events, adaptor: new MsgrahpAdaptor }) }}
+                            timeScale={{ enable: true, interval: 60, slotCount: 2 }}
+                            startHour='07:00' endHour='21:00'
+                            popupOpen={onPopupOpen}
+                        >
+                            <ViewsDirective>
+                                <ViewDirective option='Day'></ViewDirective>
+                                <ViewDirective option='Week'></ViewDirective>
+                                <ViewDirective option='Month'></ViewDirective>
+                            </ViewsDirective>
+                            <Inject services={[Day, Week, Month]} />
+                        </ScheduleComponent>
+                    </SimpleBar>
+                </div>
+
+                <div className="calendar_right_division">
+                    <CalendarTasks />
+                    <UpcomingMeetings />
+                </div>
             </div>
         );
     }

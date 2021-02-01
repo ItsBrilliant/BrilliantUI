@@ -16,7 +16,7 @@
 .Menu {
     display: flex;
     flex-direction: row;
-    align-items: top;
+    align-items: center;
     margin: 0px 0px 0px 5px;
     color: white;
     overflow-x: clip;
@@ -30,7 +30,7 @@
 .Menu span{
     color: white;
     margin-right: 4px;
-    font-size: medium;
+    font-size: 1em;
 
 }
 

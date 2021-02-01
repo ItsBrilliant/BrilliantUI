@@ -9,12 +9,38 @@
 @import "../../../node_modules/@syncfusion/ej2-popups/styles/material-dark.css";
 @import "../../../src/override_styles/ej2-react-schedule.css";
 
+.Calendar * {
+    box-sizing: border-box;
+}
 .Calendar{
-    margin-left: 20px;
+    padding:10px;
     height: calc(100% - 60px);
-    overflow: scroll;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
 }
 
-.abc987{
-    background-color: red;
+.scheduler {
+    width: 75%;
+    height: 100%;
+    overflow: hidden;
+
+
+}
+
+.Calendar .simple_bar {
+    height:100%;
+}
+
+.calendar_right_division{
+    width: 25%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 0 15px;
+}
+
+.calendar_right_division > *{
+    border-radius: 10px;
+    padding: 5px;
 }

@@ -1,0 +1,40 @@
+@import '../Globals.css';
+.CalendarTasks * {
+    box-sizing: border-box;
+}
+.CalendarTasks {
+    height: 80%;
+    width: 100%;
+    background-color: var(--email-container-background);
+    margin-bottom: 20px;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.CalendarTasks .header {
+    display: flex;
+    height: 30px;
+    align-items: center;
+}
+
+.CalendarTasks .header * {
+    margin: 2px;
+}
+
+.CalendarTasks .header .tasks_header{
+    color: white;
+}
+.CalendarTasks .header .Menu{
+    margin-left: auto;
+    width: fit-content;
+    font-size: 14px;
+
+} 
+s
+.CalendarTasks .header .Dropdown-menu{
+    min-width: 80px;
+}
+
+.CalendarTasks .header .Dropdown-control{
+    min-width: 80px;
+}
