@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import './RightDivision.css';
 import { get_priority_style, format_date } from '../../utils.js';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import SimpleBar from 'simplebar-react';
 import TaskInfoWrapper from './SingleTaskInfo.js'
 import { FileAttachments } from './FileAttachments.js'
+import { Update } from '../../actions/tasks'
+import { Task } from '../../data_objects/Task'
 
 export function RightDivision(props) {
     const tasks = useSelector(state => Object.values(state.tasks))
@@ -22,36 +24,28 @@ export function RightDivision(props) {
 }
 
 function Tasks(props) {
-    useEffect(
-        () => {
-            rerender_tasks(props.tasks);
-        }, [props.tasks]);
+    const dispatch = useDispatch();
+    const task_updater = (task) => dispatch(Update(task));
+
     //Old function used to highlight
     const on_task_click = props.on_task_click;
-    const [task_for_info, set_task] = useState(null);
-    const [finished_tasks, set_finished] = useState(props.tasks.filter(task => task.isDone));
-    const [active_tasks, set_active] = useState(props.tasks.filter(task => !task.isDone));
-
+    const [task_id_for_info, set_task_id] = useState(null);
+    const finished_tasks = props.tasks.filter(task => task.isDone);
+    const active_tasks = props.tasks.filter(task => !task.isDone);
     const my_update_finished_task = (task) => {
-        task.isDone = true;
-        set_finished([...finished_tasks, task])
-        set_active(active_tasks.filter(t => t !== task))
+        Task.update_task(task_updater, task, 'set_status', ["Done"]);
     }
 
-    const rerender_tasks = (tasks) => {
-        set_finished(props.tasks.filter(task => task.isDone));
-        set_active(props.tasks.filter(task => !task.isDone));
-    }
     if (finished_tasks.length === 0 && active_tasks.length === 0) {
         return null;
     } else {
         return (
             <div className='Container'>
                 <TaskInfoWrapper thread={props.thread}
-                    task={task_for_info}
-                    close={() => set_task(null)} />
-                <TasksDisplayer tasks={active_tasks} areDone={false} on_status_click={my_update_finished_task} on_click={set_task} />
-                <TasksDisplayer tasks={finished_tasks} areDone={true} on_click={set_task} />
+                    task_id={task_id_for_info}
+                    close={() => set_task_id(null)} />
+                <TasksDisplayer tasks={active_tasks} areDone={false} on_status_click={my_update_finished_task} on_click={set_task_id} />
+                <TasksDisplayer tasks={finished_tasks} areDone={true} on_click={set_task_id} />
             </div>
         )
     }
@@ -75,7 +69,7 @@ function TasksDisplayer(props) {
                     <span className="inner">v</span>
                 </span>
                 <span className={"task_owner" + done_style}>{owner_name}:</span>
-                <span onClick={() => props.on_click(task)} className="task_text">{task.text}</span>
+                <span onClick={() => props.on_click(task.get_id())} className="task_text">{task.text}</span>
             </li>
         );
     })

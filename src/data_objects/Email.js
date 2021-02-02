@@ -74,31 +74,7 @@ export class Email {
         }
 
     }
-    //**************************************************************************************** */
-    add_general_task_detection() {
-        const [task_detection, id] = this.email['task_detection'];
-        if (!task_detection || task_detection.length === 0) {
-            return;
-        }
-        for (let i = 0; i < task_detection.length; i++) {
-            const probability = parseFloat(task_detection[i][2])
-            if (probability < GENERAL_TASK_DETECTION_THRESHOLD) {
-                continue;
-            }
-            const start_index = parseInt(task_detection[i][0])
-            const text_length = parseInt(task_detection[i][1])
-            var priority = URGENT;
-            if (probability < 75) {
-                priority = CAN_WAIT;
-            } else if (probability < 83) {
-                priority = IMPORTANT;
-            }
-            var task_text = `auto task (${Math.round(probability)}%)`;
-            var task = new Task(task_text, new Date(), priority, false, { start: start_index, end: start_index + text_length }, undefined, id)
-            this.add_task(task);
-        }
-    }
-    //**************************************************************************************** */
+
     add_request_meeting_task() {
         const meeting_scheduler = this.email['meeting_request'];
         if (!meeting_scheduler || meeting_scheduler.length === 0) {

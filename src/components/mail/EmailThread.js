@@ -3,10 +3,10 @@ import './EmailThread.css'
 import OptionsButton from '../OptionsButton.js'
 import EmailTextArea from './EmailTextArea.js'
 import { EmailStamp } from './EmailStamp.js'
-import { useSelector, useDispatch, connect } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { Delete } from '../../actions/email_threads'
 
-class EmailThread extends Component {
+export default class EmailThread extends Component {
 
     get_selected_email() {
         return this.props.thread.get_emails()[0];
@@ -60,7 +60,6 @@ class EmailThread extends Component {
         return count;
     }
     render() {
-        const num_tasks = this.props.tasks.filter(t => t.get_thread_id() === this.props.thread.get_id()).length;
         //const num_unread_emails = this.get_num_unread()
         //        const receiver_icons = this.get_receiver_icons();
         const selected_email = this.get_selected_email();
@@ -75,7 +74,6 @@ class EmailThread extends Component {
                     subject={selected_email.get_subject()}
                     tags={selected_email.get_tags()} />
                 <ThreadLabels
-                    num_tasks={num_tasks}
                     has_attachments={has_attatchments}
                     priority={this.props.priority}
                     thread_id={this.props.id}
@@ -87,9 +85,10 @@ class EmailThread extends Component {
 }
 
 function ThreadLabels(props) {
+    const dispatch = useDispatch()
     const thread = useSelector(state => state.email_threads[props.thread_id]);
     const tasks = useSelector(state => Object.values(state.tasks));
-    const dispatch = useDispatch()
+    const num_tasks = tasks.filter(t => (!t.isDone) && (t.get_thread_id() === props.thread_id)).length;
     const option_names = ["Set as task", "Change priority", "Add tag", "Export", "Mark as read", "Delete"];
     const options = option_names.map(n => { return { name: n } });
     options.filter(o => o.name === 'Delete')[0].action = () => {
@@ -100,7 +99,7 @@ function ThreadLabels(props) {
     return (
         <div className='thread_labels'>
             <div className={'num_tasks_label ' + props.priority}>
-                {props.num_tasks}
+                {num_tasks}
                 {props.has_attachments ? attachmentIcon() : null}
             </div>
             <OptionsButton options={options} offset={props.options_offset}></OptionsButton>
@@ -111,11 +110,3 @@ function ThreadLabels(props) {
 export function attachmentIcon() {
     return <img className='attachment' src='file_icons/attachment.png' />
 }
-
-const mapStateToProps = state => ({
-    tasks: Object.values(state.tasks),
-});
-
-const mapDispatchToProps = {};
-
-export default connect(mapStateToProps, mapDispatchToProps)(EmailThread);

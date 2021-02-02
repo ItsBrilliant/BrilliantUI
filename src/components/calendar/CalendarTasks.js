@@ -11,11 +11,11 @@ import TaskInfoWrapper from '../mail/SingleTaskInfo'
 
 export default function CalendarTasks() {
     const [sort_type, set_sort] = useState("Priority")
-    const [selected_task, set_task] = useState(null)
-    let tasks = useSelector(state => Object.values(state.tasks));
-    tasks = tasks.sort((a, b) => a.priority - b.priority);
+    const [selected_task_id, set_task_id] = useState(null)
+    const tasks_dict = useSelector(state => state.tasks);
+    const tasks = Object.values(tasks_dict).sort((a, b) => a.priority - b.priority);
     const threads = useSelector(state => state.email_threads);
-    const selected_thread = selected_task ? threads[selected_task.get_thread_id()] : null
+    const selected_thread = selected_task_id ? threads[tasks_dict[selected_task_id].get_thread_id()] : null
     const task_components = tasks.map(task => {
         const thread = threads[task.get_thread_id()];
         let participants = thread ? thread.get_participants() : [];
@@ -29,7 +29,7 @@ export default function CalendarTasks() {
                 watching={participants}
                 title={task.text}
                 deadline={format_date(task.deadline).date}
-                on_select={set_task}
+                on_select={set_task_id}
             />);
     })
     return (
@@ -47,8 +47,8 @@ export default function CalendarTasks() {
                 </SimpleBar>
             </div>
             <TaskInfoWrapper thread={selected_thread}
-                task={selected_task}
-                close={() => set_task(null)} />
+                task_id={selected_task_id}
+                close={() => set_task_id(null)} />
         </div>
     )
 }
@@ -70,7 +70,7 @@ function CalendarTask(props) {
     const priority_style = get_priority_style(props.priority);
     return (
         <div className="CalendarTask">
-            <span className="title" onClick={() => props.on_select(props.task)}>{props.title}</span>
+            <span className="title" onClick={() => props.on_select(props.task.get_id())}>{props.title}</span>
             <span className={"priority " + priority_style}></span>
             <span className="deadline">{props.deadline}</span>
             <span className="options"><OptionsButton options={button_options} offset={{ top: 0, left: -150 }} /></span>

@@ -11,7 +11,7 @@ import OptionsButton from '../OptionsButton.js'
 import PriorityOptions from '../PriorityOptions.js'
 import { EmailComposer } from '../EmailComposer.js'
 import { send_quick_reply } from '../email_compuser_utils.js'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Update } from '../../actions/tasks'
 import { Task } from '../../data_objects/Task'
 
@@ -37,13 +37,14 @@ function SingleTaskInfo(props) {
 }
 
 export default function TaskInfoWrapper(props) {
-    if (!props.task) {
+    const task = useSelector(state => state.tasks[props.task_id]);
+    if (!props.task_id || !props.thread) {
         return null;
     }
     return ReactDOM.createPortal(
         <div className="TaskInfoWrapper">
             <div className="invisible_close" onClick={props.close} />
-            <SingleTaskInfo {...props} />
+            <SingleTaskInfo task={task}{...props} />
         </div>,
         document.getElementById('messages_to_user')
     );
@@ -51,6 +52,7 @@ export default function TaskInfoWrapper(props) {
 
 function TopButtons(props) {
     const dispatch = useDispatch();
+    const task_updater = (task) => dispatch(Update(task));
     const [priority, setPriority] = useState(props.task.get_priority())
     const [task_status, setStatus] = useState(props.task.isDone ? "Done" : "To do")
     const option_button_names = ["Quick Reply", "Set In Calendar", "Add To Topic", "Go To Source", "Mark As Done"];
@@ -59,12 +61,12 @@ function TopButtons(props) {
     const task_options = ['To do', 'In progress', 'Pending', 'Done'];
     const my_set_status = (value) => {
         setStatus(value);
-        Task.update_task((task) => dispatch(Update(task)), props.task, 'set_status', [value]);
-        //props.task.set_status(value);
+        Task.update_task(task_updater, props.task, 'set_status', [value]);
     }
     const my_set_priority = (value) => {
         setPriority(value);
-        props.task.set_priority(value);
+        Task.update_task(task_updater, props.task, 'set_priority', [value]);
+
     }
     return (
         <div className="TopButtons">
