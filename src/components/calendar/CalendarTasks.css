@@ -3,38 +3,45 @@
     box-sizing: border-box;
 }
 .CalendarTasks {
-    height: 80%;
+    height: 75%;
     width: 100%;
     background-color: var(--email-container-background);
     margin-bottom: 20px;
-    border-radius: 10px;
-    padding: 5px;
 }
 
-.CalendarTasks .header {
+.calendar_right_division  .header {
     display: flex;
     height: 30px;
-    align-items: center;
+    align-items: flex-start;
+    padding-right: 0;
 }
 
-.CalendarTasks .header * {
+.calendar_right_division  .header * {
     margin: 2px;
 }
 
-.CalendarTasks .header .tasks_header{
-    color: white;
+.CalendarTasks .header .header_button {
+    background-color: var(--email-text-area-bg);
+    color: var(--main-text-color);
 }
-.CalendarTasks .header .Menu{
+
+.calendar_right_division  .header .header_title{
+    color: white;
+    font-size: 18px;
+}
+.calendar_right_division .header .Menu{
     margin-left: auto;
+    margin-right: 0;
     width: fit-content;
-    font-size: 14px;
+    font-size: 12px;
 
 } 
 s
 .CalendarTasks .header .Dropdown-menu{
-    min-width: 80px;
+    min-width: max-content;
 }
 
-.CalendarTasks .header .Dropdown-control{
-    min-width: 80px;
+.calendar_right_division .header .Dropdown-control{
+    min-width: max-content;
+    background-color: transparent;
 }

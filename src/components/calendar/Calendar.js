@@ -11,8 +11,6 @@ import SimpleBar from 'simplebar-react';
 export class Calendar extends React.Component {
     constructor(props) {
         super(props)
-        this.bound_events = this.adjust_date_field(props.events);
-
     }
     adjust_date_field(events) {
         return events.map(event => {
@@ -20,17 +18,16 @@ export class Calendar extends React.Component {
             for (const key of Object.keys(event_adjustment_mapping)) {
                 new_event[event_adjustment_mapping[key]] = event[key]
             }
-            new_event['CssClass'] = "abc987";
             return new_event;
         })
     }
     render() {
-
+        var events = this.adjust_date_field(this.props.events);
         return (
             <div className='Calendar'>
                 <div className='scheduler'>
                     <SimpleBar className="simple_bar">
-                        <ScheduleComponent height="auto" width="auto" eventSettings={{ dataSource: new DataManager({ json: this.bound_events, adaptor: new MsgrahpAdaptor }) }}
+                        <ScheduleComponent height="auto" width="auto" eventSettings={{ dataSource: new DataManager({ json: events, adaptor: new MsgrahpAdaptor }) }}
                             timeScale={{ enable: true, interval: 60, slotCount: 2 }}
                             startHour='07:00' endHour='21:00'
                             popupOpen={onPopupOpen}
@@ -47,7 +44,7 @@ export class Calendar extends React.Component {
 
                 <div className="calendar_right_division">
                     <CalendarTasks />
-                    <UpcomingMeetings />
+                    <UpcomingMeetings meetings={this.props.events} />
                 </div>
             </div>
         );

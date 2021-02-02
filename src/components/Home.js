@@ -124,19 +124,12 @@ export class Home extends React.Component {
         console.log("set_threads: same user is " + same_user);
         return same_user;
     }
-    set_calendar(events, user) {
-        var same_user = false
-        this.setState(function (state, props) {
-            if (props.user.equals(user)) {
-                same_user = true;
-                return { calendarEvents: create_calendar_events(events) };
-            } else {
-                return {};
-            }
-        })
-        console.log("set_calendar: same user is " + same_user);
-        return same_user
+
+    set_calendar(events, initial_user) {
+        const update_function = function (events) { return create_calendar_events(events) }
+        this.update_user_data(events, initial_user, 'calendarEvents', update_function);
     }
+
 
     render() {
         const user_address = this.props.user.get_address();

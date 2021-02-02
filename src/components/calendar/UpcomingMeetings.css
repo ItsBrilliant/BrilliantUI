@@ -2,6 +2,37 @@
 
 .UpcomingMeetings {
     width: 100%;
-    height: 20%;
+    height: 25%;
     background-color: var(--email-container-background);
+    color: white;
+
 }
+.UpcomingMeetings .meetings {
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 17px;
+    margin-bottom: 0;
+}
+.UpcomingMeetings .meetings_wrapper{
+    overflow: hidden;
+    width:100%;
+    padding-bottom: 0;
+    margin: 0;
+}
+
+.UpcomingMeetings .MeetingIcon{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: max-content;
+    margin-right: 10px;
+}
+
+.UpcomingMeetings .MeetingIcon .meeting_time{
+    font-size: 12px;
+}
+
+.UpcomingMeetings .simple_bar{
+    width:100%;
+}
+
