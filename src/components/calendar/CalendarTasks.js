@@ -6,20 +6,29 @@ import { format_date, get_priority_style } from '../../utils'
 import { GroupIcon } from '../mail/EmailStamp'
 import { Contact } from '../../data_objects/Contact'
 import SimpleBar from 'simplebar-react'
+import { useSelector } from 'react-redux'
+import TaskInfoWrapper from '../mail/SingleTaskInfo'
 
 export default function CalendarTasks() {
     const [sort_type, set_sort] = useState("Priority")
-    const numbers = [0, 1, 2, 3]
-    const tasks = numbers.map(n => <CalendarTask
-        priority={n}
-        owner={Contact.create_contact_from_address("dovbridger@itsbrilliant.com")}
-        watching={[
-            Contact.create_contact_from_address("dovbridger@hotmail.com"),
-            Contact.create_contact_from_address("tablefloorchair23@gmail.com")
-        ]}
-        title={"the title of the task, a very long task to be exact"}
-        deadline={format_date(new Date()).date}
-    />)
+    const [selected_task, set_task] = useState(null)
+    let tasks = useSelector(state => Object.values(state.tasks));
+    tasks = tasks.sort((a, b) => a.priority - b.priority);
+    const threads = useSelector(state => state.email_threads);
+    const task_components = tasks.map(task => {
+        const thread = threads[task.get_thread_id()];
+        let participants = thread ? thread.get_participants() : [];
+        participants = participants.filter(p => p !== task.owner)
+        return (
+            <CalendarTask key={task.get_id()}
+                priority={task.priority}
+                owner={task.owner}
+                watching={participants}
+                title={task.text}
+                deadline={format_date(task.deadline).date
+                }
+            />);
+    })
     return (
 
         <div className="CalendarTasks">
@@ -31,7 +40,7 @@ export default function CalendarTasks() {
             />
             <div className="calendar_tasks_wrapper">
                 <SimpleBar className="simple_bar">
-                    {tasks}
+                    {task_components}
                 </SimpleBar>
             </div>
         </div>

@@ -15,7 +15,7 @@ export const EmailThreadsReducer = (state = {}, action) => {
 
     else if (action.type === "DELETE") {
         var new_state = {};
-        for (const thread_id of Object.keys(state).filter(id => id !== action.thread_id)) {
+        for (const thread_id of Object.keys(state).filter(id => id !== action.id)) {
             new_state[thread_id] = state[thread_id];
         }
         return new_state;
@@ -28,16 +28,4 @@ export const EmailThreadsReducer = (state = {}, action) => {
     else {
         return state;
     }
-}
-
-
-export function expand_threads(emails) {
-    for (const email of emails) {
-        const thread_id = email.get_thread_id()
-        if (Thread.threads[thread_id] === undefined) {
-            Thread.threads[thread_id] = new Thread(thread_id, [])
-        }
-        Thread.threads[thread_id].add_email(email)
-    }
-    return Thread.threads
 }

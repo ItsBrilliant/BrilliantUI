@@ -176,6 +176,7 @@ export class Email {
             task.set_initiator(initiator);
         }
         task.email_id = this.get_id();
+        task.thread_id = this.get_thread_id();
         this.tasks = [...this.tasks, task];
     }
 

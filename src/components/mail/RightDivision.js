@@ -26,14 +26,10 @@ function Tasks(props) {
         }, [props.tasks]);
     //Old function used to highlight
     const on_task_click = props.on_task_click;
-    const [info_visible, set_visible] = useState(false);
-    const [task_for_info, set_task] = useState(props.tasks[0]);
+    const [task_for_info, set_task] = useState(null);
     const [finished_tasks, set_finished] = useState(props.tasks.filter(task => task.isDone));
     const [active_tasks, set_active] = useState(props.tasks.filter(task => !task.isDone));
-    const my_set_task_info = (task) => {
-        set_task(task);
-        set_visible(true);
-    }
+
     const my_update_finished_task = (task) => {
         task.isDone = true;
         set_finished([...finished_tasks, task])
@@ -51,10 +47,9 @@ function Tasks(props) {
             <div className='Container'>
                 <TaskInfoWrapper thread={props.thread}
                     task={task_for_info}
-                    visible={info_visible}
-                    close={() => set_visible(false)} />
-                <TasksDisplayer tasks={active_tasks} areDone={false} on_status_click={my_update_finished_task} on_click={my_set_task_info} />
-                <TasksDisplayer tasks={finished_tasks} areDone={true} on_click={my_set_task_info} />
+                    close={() => set_task(null)} />
+                <TasksDisplayer tasks={active_tasks} areDone={false} on_status_click={my_update_finished_task} on_click={set_task} />
+                <TasksDisplayer tasks={finished_tasks} areDone={true} on_click={set_task} />
             </div>
         )
     }

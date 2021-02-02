@@ -11,6 +11,7 @@ import { useDispatch } from 'react-redux';
 import { LoginPage } from './LoginPage.js';
 import { connect } from "react-redux";
 import { Login } from "../actions/login.js";
+import { Update } from "../actions/tasks.js";
 import { Expand, Reset } from "../actions/email_threads.js";
 import { Contact } from '../data_objects/Contact.js';
 import { MAIL_FOLDERS } from '../data_objects/Consts.js';
@@ -117,6 +118,11 @@ export class Home extends React.Component {
         var same_user = false;
         if (this.props.user.equals(user)) {
             this.props.Expand(emails)
+            for (const email of emails) {
+                for (const task of email.get_tasks()) {
+                    this.props.Update(task)
+                }
+            }
             same_user = true;
         } else {
             this.props.Reset()
@@ -250,7 +256,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
     Login,
     Expand,
-    Reset
+    Reset,
+    Update
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

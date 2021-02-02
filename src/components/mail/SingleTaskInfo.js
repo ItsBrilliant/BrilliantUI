@@ -34,7 +34,7 @@ function SingleTaskInfo(props) {
 }
 
 export default function TaskInfoWrapper(props) {
-    if (!props.visible) {
+    if (!props.task) {
         return null;
     }
     return ReactDOM.createPortal(

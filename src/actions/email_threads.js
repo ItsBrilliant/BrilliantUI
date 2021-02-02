@@ -8,7 +8,7 @@ export const Expand = (emails) => {
 export const Delete = (id) => {
     return {
         type: "DELETE",
-        thread_id: id
+        id: id
     };
 }
 
@@ -17,3 +17,4 @@ export const Reset = () => {
         type: "RESET"
     };
 }
+

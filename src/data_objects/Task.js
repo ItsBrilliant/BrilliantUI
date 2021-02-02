@@ -2,9 +2,11 @@
 import { format_date } from '../utils.js'
 import { Contact } from './Contact.js'
 import { PRIORITIES } from './Consts.js'
+import { v4 } from 'uuid';
 
 export class Task {
     constructor(text, deadline, priority, isDone, source_indexes = [], owner) {
+        this.id = v4();
         this.text = text;
         this.deadline = new Date(deadline);
         this.priority = priority;
@@ -50,5 +52,11 @@ export class Task {
     }
     get_formatted_deadline() {
         return format_date(this.deadline)
+    }
+    get_id() {
+        return this.id;
+    }
+    get_thread_id() {
+        return this.thread_id;
     }
 }
