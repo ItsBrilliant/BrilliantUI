@@ -65,6 +65,9 @@ s
     font-size: large;
     margin: 0;
 }
+.CalendarTasks .CalendarTask .title:hover{
+    cursor: pointer;
+} 
 
 .CalendarTasks .CalendarTask *{ 
     align-self: center;

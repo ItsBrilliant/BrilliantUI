@@ -11,6 +11,9 @@ import OptionsButton from '../OptionsButton.js'
 import PriorityOptions from '../PriorityOptions.js'
 import { EmailComposer } from '../EmailComposer.js'
 import { send_quick_reply } from '../email_compuser_utils.js'
+import { useDispatch } from 'react-redux'
+import { Update } from '../../actions/tasks'
+import { Task } from '../../data_objects/Task'
 
 function SingleTaskInfo(props) {
     return (
@@ -47,6 +50,7 @@ export default function TaskInfoWrapper(props) {
 }
 
 function TopButtons(props) {
+    const dispatch = useDispatch();
     const [priority, setPriority] = useState(props.task.get_priority())
     const [task_status, setStatus] = useState(props.task.isDone ? "Done" : "To do")
     const option_button_names = ["Quick Reply", "Set In Calendar", "Add To Topic", "Go To Source", "Mark As Done"];
@@ -55,7 +59,8 @@ function TopButtons(props) {
     const task_options = ['To do', 'In progress', 'Pending', 'Done'];
     const my_set_status = (value) => {
         setStatus(value);
-        props.task.set_status(value);
+        Task.update_task((task) => dispatch(Update(task)), props.task, 'set_status', [value]);
+        //props.task.set_status(value);
     }
     const my_set_priority = (value) => {
         setPriority(value);

@@ -59,4 +59,10 @@ export class Task {
     get_thread_id() {
         return this.thread_id;
     }
+
+    static update_task(dispatcher, task, function_name, args) {
+        let new_task = Object.assign(Object.create(task), task);
+        new_task[function_name](...args);
+        dispatcher(new_task);
+    }
 }
