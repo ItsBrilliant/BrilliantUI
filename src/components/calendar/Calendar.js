@@ -44,7 +44,7 @@ export class Calendar extends React.Component {
 
                 <div className="calendar_right_division">
                     <CalendarTasks />
-                    <UpcomingMeetings meetings={this.props.events} />
+                    <UpcomingMeetings meetings={this.props.events.filter(e => e.start > Date.now())} />
                 </div>
             </div>
         );

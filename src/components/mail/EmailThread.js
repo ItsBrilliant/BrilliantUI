@@ -79,6 +79,7 @@ class EmailThread extends Component {
                     has_attachments={has_attatchments}
                     priority={this.props.priority}
                     thread_id={this.props.id}
+                    options_offset={this.props.options_offset}
                 />
             </div>
         )
@@ -101,7 +102,7 @@ function ThreadLabels(props) {
                 {props.num_tasks}
                 {props.has_attachments ? attachmentIcon() : null}
             </div>
-            <OptionsButton options={options}></OptionsButton>
+            <OptionsButton options={options} offset={props.options_offset}></OptionsButton>
         </div>
     )
 }

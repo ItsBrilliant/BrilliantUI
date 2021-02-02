@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import './CalendarTasks.css'
 import { Menu } from '../external/Menues'
+import OptionsButton from '../OptionsButton'
 
 export default function CalendarTasks() {
     const [sort_type, set_sort] = useState("Priority")
@@ -23,6 +24,18 @@ export function Header(props) {
             <span className="header_title">{props.title}</span>
             {button}
             <Menu options={props.sort_options} label='Sort: ' value={props.sort_type} onChange={props.handle_sorting} />
+        </div>
+    )
+}
+
+function CalendarTask(props) {
+    return (
+        <div className="CalendarTask">
+            <span className="title">{props.title}</span>
+            <span className={"priority " + props.priority}></span>
+            <span className="deadline"></span>
+            <span className="options"><OptionsButton /></span>
+
         </div>
     )
 }

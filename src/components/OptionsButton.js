@@ -21,7 +21,7 @@ export default function OptionsButton(props) {
                 }
             }}
         >{o.name}</li>)
-    const options_list = visible ? <OptionsList evt={evt} options={options} /> : null;
+    const options_list = visible ? <OptionsList evt={evt} options={options} offset={props.offset} /> : null;
 
     return (
         <div className="OptionsButton">
@@ -32,11 +32,12 @@ export default function OptionsButton(props) {
 }
 
 function OptionsList(props) {
+    const custom_offset = props.offset ? props.offset : { top: 0, left: 0 }
     const top_offset = Math.min(props.evt.pageY - 15, window.visualViewport.height - 300);
     const style = {
         position: "fixed",
-        top: top_offset,
-        left: props.evt.pageX + 25
+        top: top_offset + custom_offset.top,
+        left: props.evt.pageX + custom_offset.left
     }
     return ReactDOM.createPortal(
         <ul className="options_list" style={style} > {props.options}</ul>,

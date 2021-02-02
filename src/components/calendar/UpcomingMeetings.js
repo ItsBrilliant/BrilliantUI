@@ -2,13 +2,17 @@ import React, { useState } from 'react'
 import { Header } from './CalendarTasks'
 import { GroupIcon } from '../mail/EmailStamp'
 import { Contact } from '../../data_objects/Contact'
-import { format_date } from '../../utils'
+import { format_date, get_sort_function_by_type } from '../../utils'
 import './UpcomingMeetings.css'
 import SimpleBar from 'simplebar-react';
+import { TIME_KEY } from '../../data_objects/Consts'
+
 
 export default function UpcomingMeetings(props) {
     const [sort_type, set_sort] = useState("Recent")
-    const meetings = props.meetings.map(m =>
+    const sort_function = get_sort_function_by_type(TIME_KEY)
+    const sorted_meetings = props.meetings.sort((a, b) => sort_function(a.start, b.start)).reverse()
+    const meetings = sorted_meetings.map(m =>
         <MeetingIcon
             key={m.id}
             meeting={m} />

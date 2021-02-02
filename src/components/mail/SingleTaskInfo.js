@@ -67,7 +67,7 @@ function TopButtons(props) {
                 <Menu options={task_options} label='' value={task_status} onChange={
                     e => my_set_status(e.value)} />
             </div>
-            <OptionsButton options={options_buttons} />
+            <OptionsButton options={options_buttons} offset={{ top: 0, left: 15 }} />
             <div className="task_priority">
                 <PriorityOptions default_selection={priority} onChange={my_set_priority} />
             </div>
@@ -137,7 +137,7 @@ function RelevantResources(props) {
 
 function SourceConversation(props) {
     const email_thread_component = <EmailThread id={props.thread.get_id()} thread={props.thread} is_selected={false}
-        handle_select={() => { }} priority={null} />
+        handle_select={() => { }} priority={null} options_offset={{ top: 0, left: -160 }} />
     return <TitledComponent title="Source Conversation" component={email_thread_component} />
 }
 
