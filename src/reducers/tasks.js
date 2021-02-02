@@ -4,8 +4,7 @@ export const TasksReducer = (state = {}, action) => {
     if (action.type === "UPDATE") {
         let updated_task = {};
         updated_task[action.task.get_id()] = action.task
-        var new_state = Object.assign({}, state);
-        new_state[action.task.get_id()] = action.task;
+        var new_state = Object.assign(state, updated_task);
         return new_state;
     }
 

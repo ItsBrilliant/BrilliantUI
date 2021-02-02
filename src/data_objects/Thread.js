@@ -37,7 +37,7 @@ export class Thread {
         }
     }
 
-    get_num_tasks() {
+    get_num_tasks_deprecated() {
         let count = 0;
         for (const email of this.get_emails()) {
             count = count + email.get_num_tasks();
@@ -47,13 +47,13 @@ export class Thread {
     set_priority(priority) {
         this.priority = priority;
     }
-    get_priority() {
+    get_priority(tasks = []) {
         if (this.priority !== undefined) {
             return this.priority;
         }
         var highest_priority = CAN_WAIT;
         for (const email of this.get_emails()) {
-            const priority = email.get_priority();
+            const priority = Email.get_priority(tasks, email.get_id());
             if (highest_priority > priority) {
                 highest_priority = priority;
             }
@@ -81,7 +81,7 @@ export class Thread {
         this.emails_dict[email.get_id()] = email;
     }
 
-    get_tasks() {
+    get_tasks_deprecated() {
         var tasks = []
         for (const email of this.get_emails()) {
             if (email.tasks !== undefined) {
@@ -143,14 +143,23 @@ export class Thread {
     }
 }
 
-Thread.group_functions[PRIORITY_KEY] = (thread) => thread.get_priority();
-Thread.group_functions[TIME_KEY] = (thread) => {
-    let d = thread.get_date();
-    return new Date(d.getYear(), d.getMonth(), d.getDate());
+Thread.group_functions[PRIORITY_KEY] = function (tasks) {
+    return (thread) => thread.get_priority(tasks);
 }
 
-Thread.sort_functions[PRIORITY_KEY] = (a, b) => a.get_priority() - b.get_priority();
-Thread.sort_functions[TIME_KEY] = (a, b) => b.get_date().valueOf() - a.get_date().valueOf();
+Thread.group_functions[TIME_KEY] = function () {
+    return (thread) => {
+        let d = thread.get_date();
+        return new Date(d.getYear(), d.getMonth(), d.getDate());
+    }
+}
+
+Thread.sort_functions[PRIORITY_KEY] = function (tasks) {
+    return (a, b) => a.get_priority(tasks) - b.get_priority(tasks);
+}
+Thread.sort_functions[TIME_KEY] = function () {
+    return (a, b) => b.get_date().valueOf() - a.get_date().valueOf();
+}
 
 export function expand_threads(emails) {
     for (const email of emails) {

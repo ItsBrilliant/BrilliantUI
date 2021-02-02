@@ -15,6 +15,7 @@ import { Update } from "../actions/tasks.js";
 import { Expand, Reset } from "../actions/email_threads.js";
 import { Contact } from '../data_objects/Contact.js';
 import { MAIL_FOLDERS } from '../data_objects/Consts.js';
+import { Task } from '../data_objects/Task'
 import axios from 'axios';
 
 const history = require("history").createBrowserHistory();
@@ -119,9 +120,7 @@ export class Home extends React.Component {
         if (this.props.user.equals(user)) {
             this.props.Expand(emails)
             for (const email of emails) {
-                for (const task of email.get_tasks()) {
-                    this.props.Update(task)
-                }
+                Task.add_general_task_detection(this.props.Update, email);
             }
             same_user = true;
         } else {

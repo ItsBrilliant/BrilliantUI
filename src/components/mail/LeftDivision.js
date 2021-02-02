@@ -7,6 +7,7 @@ import './LeftDivision.css';
 import { TIME_KEY, PRIORITY_KEY, MAIL_FOLDERS, MAIL_FOLDERS_DISPLAY } from '../../data_objects/Consts.js';
 import { Component } from 'react';
 import { Thread } from '../../data_objects/Thread.js';
+import { useSelector } from 'react-redux'
 
 
 
@@ -51,17 +52,17 @@ export class LeftDivision extends Component {
 
         />
         <div className='ScrollableThreadContainer' >
-          {ScrollableThreadContainer(
-            this.props.emailThreads,
-            this.props.handle_select,
-            this.props.selected_thread_id,
-            this.props.load_threads_function,
-            this.state.group_type,
-            this.state.sort_type,
-            this.state.incoming,
-            this.props.user,
-            this.props.folders,
-            this.props.selected_folder)}
+          <ScrollableThreadContainer
+            emailThreads={this.props.emailThreads}
+            handle_select={this.props.handle_select}
+            selected_thread_id={this.props.selected_thread_id}
+            load_func={this.props.load_threads_function}
+            group_type={this.state.group_type}
+            sort_type={this.state.sort_type}
+            incoming={this.state.incoming}
+            user={this.props.user}
+            folders={this.props.folders}
+            selected_folder={this.props.selected_folder} />
         </div>
       </div>
     );
@@ -96,31 +97,34 @@ function filter_mail_folders(thread, folder_id) {
   return false;
 }
 
-function ScrollableThreadContainer(emailThreads, handle_select, selected_thread_id, load_func,
-  group_type, sort_type, incoming, user, folders, selected_folder) {
-  var filtered_threads = Object.values(emailThreads).filter(t => filter_mail_folders(t, folders[selected_folder]));
-  if (selected_folder !== 'Drafts') {
-    filtered_threads = filter_threads(incoming, filtered_threads, user);
+function ScrollableThreadContainer(props) {
+  const tasks = useSelector(state => Object.values(state.tasks));
+  // emailThreads, handle_select, selected_thread_id, load_func,
+  // group_type, sort_type, incoming, user, folders, selected_folder) {
+  var filtered_threads = Object.values(props.emailThreads).filter(t => filter_mail_folders(t, props.folders[props.selected_folder]));
+  if (props.selected_folder !== 'Drafts') {
+    filtered_threads = filter_threads(props.incoming, filtered_threads, props.user);
   }
 
-  var grouped_threads = group_by_function(filtered_threads, Thread.get_group_function(group_type));
-  var sorted_group_keys = Object.keys(grouped_threads).sort(get_sort_function_by_type(group_type));
+  var grouped_threads = group_by_function(filtered_threads, Thread.get_group_function(props.group_type)(tasks));
+  var sorted_group_keys = Object.keys(grouped_threads).sort(get_sort_function_by_type(props.group_type));
   for (let key of sorted_group_keys) {
-    grouped_threads[key].sort(Thread.get_sort_function(sort_type));
+    grouped_threads[key].sort(Thread.get_sort_function(props.sort_type)(tasks));
   }
   var groupings = sorted_group_keys.map((key) =>
     <GroupedThreads
       emailThreads={grouped_threads[key]}
       group_key={key}
-      group_key_type={group_type}
-      selected_thread_id={selected_thread_id}
-      handle_select={handle_select} />)
+      group_key_type={props.group_type}
+      selected_thread_id={props.selected_thread_id}
+      handle_select={props.handle_select}
+      tasks={tasks} />)
 
   return (
     <SimpleBar className='SimpleBar2'>
       <div>
         {groupings}
-        <button className='load_more_button' onClick={load_func}>Load more</button>
+        <button className='load_more_button' onClick={props.load_func}>Load more</button>
       </div>
     </SimpleBar>
   );

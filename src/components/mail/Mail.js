@@ -1,5 +1,5 @@
 import { LeftDivision } from './LeftDivision.js';
-import { CenterDivision } from './CenterDivision.js';
+import CenterDivision from './CenterDivision.js';
 import { RightDivision } from './RightDivision.js';
 import './Mail.css';
 import React, { Component } from 'react';
@@ -48,7 +48,7 @@ export class Mail extends Component {
                 <CenterDivision thread={selected_thread}
                     selected_folder={this.state.selected_folder}
                     selected_task={this.state.selected_task} />
-                {RightDivision(selected_thread, this.handle_task_hover)}
+                <RightDivision thread={selected_thread} />
             </div>
         )
     }

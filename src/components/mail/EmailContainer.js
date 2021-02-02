@@ -1,12 +1,19 @@
 import React, { Fragment } from 'react';
 import EmailTextArea from './EmailTextArea.js';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { SHOW_HTML } from '../Home.js';
 import { EmailStamp } from './EmailStamp.js';
+import { Task } from '../../data_objects/Task'
+import { Email } from '../../data_objects/Email'
+import { Update } from '../../actions/tasks'
 import "./EmailContainer.css";
+
 export default function EmailContainer(props) {
+    const dispatch = useDispatch();
+    const task_updater = (task) => dispatch(Update(task))
     const user = useSelector(state => state.user)
     const email = props.email;
+    const tasks = useSelector(state => Object.values(state.tasks)).filter(t => t.email_id === email.get_id());
     const contacts = email.get_receivers().map(receiver => receiver.image_link)
     var sender = email.get_sender()
     if (!sender) {
@@ -24,11 +31,11 @@ export default function EmailContainer(props) {
             of_center_email={true}
             options_button={props.options_button}
             tags={email.get_tags()} id={email.get_id()}
-            tasks={email.get_tasks()}
+            tasks={tasks}
             selected_task={props.selected_task}
-            add_task={email.add_task.bind(email)}
+            add_task={Task.insert_task.bind(null, task_updater, email)}
             contacts={contacts}
-            priority={email.get_priority()}
+            priority={Email.get_priority(tasks, email.get_id())}
         />
     const result = (sender === user ?
         <Fragment>{email_text_area} {stamp}</Fragment> :

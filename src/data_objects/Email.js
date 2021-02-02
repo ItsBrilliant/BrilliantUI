@@ -14,12 +14,6 @@ export class Email {
         this.tags = tags === undefined ? [] : tags;
         this.tasks = tasks === undefined ? [] : tasks;
         this.date = new Date(this.email['sentDateTime']);
-        if (!email_json.isDraft) {
-            //        this.add_random_tasks();
-            //        this.add_request_document_task();
-            //          this.add_request_meeting_task();
-            this.add_general_task_detection();
-        }
         this.attachments_dict = {}
 
     }
@@ -82,7 +76,7 @@ export class Email {
     }
     //**************************************************************************************** */
     add_general_task_detection() {
-        const task_detection = this.email['task_detection'];
+        const [task_detection, id] = this.email['task_detection'];
         if (!task_detection || task_detection.length === 0) {
             return;
         }
@@ -100,7 +94,7 @@ export class Email {
                 priority = IMPORTANT;
             }
             var task_text = `auto task (${Math.round(probability)}%)`;
-            var task = new Task(task_text, new Date(), priority, false, { start: start_index, end: start_index + text_length })
+            var task = new Task(task_text, new Date(), priority, false, { start: start_index, end: start_index + text_length }, undefined, id)
             this.add_task(task);
         }
     }
@@ -152,8 +146,9 @@ export class Email {
     }
 
     // Get priority based on the priority of unfinished tasks
-    get_priority() {
-        const priorities = this.tasks.map(task => parseInt(task.isDone ? NO_PRIORITY : task.priority));
+    static get_priority(tasks, email_id) {
+        tasks = tasks.filter(t => t.get_email_id() === email_id)
+        const priorities = tasks.map(task => parseInt(task.isDone ? NO_PRIORITY : task.priority));
         if (priorities.includes(URGENT)) {
             return URGENT;
         }
@@ -196,6 +191,14 @@ export class Email {
     }
     get_recipients() {
         return this.email['toRecipients'].map((c) => Contact.create_contact(c));
+    }
+
+    get_detection(type) {
+        if (Object.keys(this.email).includes(type)) {
+            return this.email[type]
+        } else {
+            return [];
+        }
     }
 
     get_ccs() {

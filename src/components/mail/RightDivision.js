@@ -6,11 +6,13 @@ import SimpleBar from 'simplebar-react';
 import TaskInfoWrapper from './SingleTaskInfo.js'
 import { FileAttachments } from './FileAttachments.js'
 
-export function RightDivision(thread, on_task_click) {
+export function RightDivision(props) {
+    const tasks = useSelector(state => Object.values(state.tasks))
+    const thread = props.thread;
     return (thread ?
         <div className='RightDivision'>
             <SimpleBar className='SimpleBar_RightDivision'>
-                <Tasks tasks={thread.get_tasks()} on_task_click={on_task_click} thread={thread} />
+                <Tasks tasks={tasks.filter(t => t.get_thread_id() === thread.get_id())} thread={thread} />
                 {Participants(thread.get_participants())}
                 {FileAttachments(thread.get_attachments())}
             </SimpleBar>

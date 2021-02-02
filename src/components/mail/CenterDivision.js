@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { attachmentIcon } from './EmailThread.js';
 import './CenterDivision.css';
 import SimpleBar from 'simplebar-react';
-import { download_attachment } from '../../backend/Connect.js';
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch, connect } from 'react-redux'
 import { Create } from '../../actions/email_composer.js';
 import EmailContainer from './EmailContainer.js';
+import { Update } from '../../actions/tasks'
+import { Task } from '../../data_objects/Task'
+
 
 export class CenterDivision extends React.Component {
     constructor(props) {
@@ -27,7 +28,7 @@ export class CenterDivision extends React.Component {
     }
     add_task(task) {
         this.setState({ show_add_task: false, selected_value: null });
-        this.props.thread.get_email(this.state.email_id).add_task(task)
+        Task.insert_task(this.props.Update, this.props.thread.get_email(this.state.email_id), task)
     }
     handle_option_button_click(e, email_id) {
         if (e.value === 'Delete') {
@@ -140,29 +141,12 @@ class ReplyForm extends React.Component {
     }
 }
 
-// attachments per email, Not in uses
-function AttachedFile(props) {
-    const user = useSelector(state => state.user);
-    const attachment = props.attachment
-    return (
-        <div className='AttachedFile'
-            onClick={() => download_attachment(attachment.email_id, attachment.id, user)}>
-            {attachmentIcon()}
+const mapStateToProps = state => ({
+    tasks: Object.values(state.tasks)
+});
 
-            <p>{attachment.name} <span class="tooltiptext">download</span></p>
-        </div>
-    );
-}
+const mapDispatchToProps = {
+    Update
+};
 
-function AttachedFiles(attachments) {
-    if (attachments === undefined || attachments.length == 0) {
-        return null;
-    } else {
-        var attached_files = attachments.map((attachment) => <AttachedFile attachment={attachment} />);
-        return (
-            <div className="AttachedFiles">
-                {attached_files}
-            </div>
-        );
-    }
-}
+export default connect(mapStateToProps, mapDispatchToProps)(CenterDivision);

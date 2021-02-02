@@ -3,7 +3,7 @@ import './EmailThread.css'
 import OptionsButton from '../OptionsButton.js'
 import EmailTextArea from './EmailTextArea.js'
 import { EmailStamp } from './EmailStamp.js'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch, connect } from 'react-redux'
 import { Delete } from '../../actions/email_threads'
 
 class EmailThread extends Component {
@@ -60,7 +60,7 @@ class EmailThread extends Component {
         return count;
     }
     render() {
-        const num_tasks = this.props.thread.get_num_tasks()
+        const num_tasks = this.props.tasks.filter(t => t.get_thread_id() === this.props.thread.get_id()).length;
         //const num_unread_emails = this.get_num_unread()
         //        const receiver_icons = this.get_receiver_icons();
         const selected_email = this.get_selected_email();
@@ -88,6 +88,7 @@ class EmailThread extends Component {
 
 function ThreadLabels(props) {
     const thread = useSelector(state => state.email_threads[props.thread_id]);
+    const tasks = useSelector(state => Object.values(state.tasks));
     const dispatch = useDispatch()
     const option_names = ["Set as task", "Change priority", "Add tag", "Export", "Mark as read", "Delete"];
     const options = option_names.map(n => { return { name: n } });
@@ -95,7 +96,7 @@ function ThreadLabels(props) {
         thread.delete_all(); dispatch(Delete(props.thread_id));
     }
     options.filter(o => o.name === 'Mark as read')[0].action = () => thread.mark_all_read();
-    options.filter(o => o.name === "Change priority")[0].action = () => thread.set_priority((thread.get_priority() + 1) % 3);
+    options.filter(o => o.name === "Change priority")[0].action = () => thread.set_priority((thread.get_priority(tasks) + 1) % 3);
     return (
         <div className='thread_labels'>
             <div className={'num_tasks_label ' + props.priority}>
@@ -111,4 +112,10 @@ export function attachmentIcon() {
     return <img className='attachment' src='file_icons/attachment.png' />
 }
 
-export { EmailThread };
+const mapStateToProps = state => ({
+    tasks: Object.values(state.tasks),
+});
+
+const mapDispatchToProps = {};
+
+export default connect(mapStateToProps, mapDispatchToProps)(EmailThread);
