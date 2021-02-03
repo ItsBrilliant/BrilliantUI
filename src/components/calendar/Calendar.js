@@ -3,10 +3,12 @@ import './Calendar.css';
 import * as React from 'react';
 import { ScheduleComponent, Day, Week, WorkWeek, Month, Agenda, Inject, ViewsDirective, ViewDirective } from '@syncfusion/ej2-react-schedule';
 import { DataManager, Query, JsonAdaptor } from '@syncfusion/ej2-data'
-import { MsgrahpAdaptor, onPopupOpen } from './CalendarConnect.js'
+import { MsgrahpAdaptor, onPopupOpen, place_priority } from './CalendarConnect.js'
 import UpcomingMeetings from './UpcomingMeetings';
 import CalendarTasks from './CalendarTasks'
 import SimpleBar from 'simplebar-react';
+import { rand_int, get_priority_style } from '../../utils';
+import './script.js'
 
 export class Calendar extends React.Component {
     constructor(props) {
@@ -21,6 +23,7 @@ export class Calendar extends React.Component {
             return new_event;
         })
     }
+
     render() {
         var events = this.adjust_date_field(this.props.events);
         return (
@@ -31,6 +34,7 @@ export class Calendar extends React.Component {
                             timeScale={{ enable: true, interval: 60, slotCount: 2 }}
                             startHour='07:00' endHour='21:00'
                             popupOpen={onPopupOpen}
+                            appointmentTemplateId="#appTemplate"
                         >
                             <ViewsDirective>
                                 <ViewDirective option='Day'></ViewDirective>
@@ -57,5 +61,16 @@ const event_adjustment_mapping = {
     subject: "Subject",
     isAllDay: "IsAllDay",
     id: "Id",
-    location: "Location"
+    location: "Location",
+    priority: "priority"
+}
+
+function cellTemplate(props) {
+    if (props.type === "workCells") {
+        return (<div className="templatewrap" dangerouslySetInnerHTML={{ __html: "<p>bbbbbb</p>" }}></div>);
+    }
+    if (props.type === "monthCells") {
+        return (<div className="templatewrap" dangerouslySetInnerHTML={{ __html: "<p>aaaaaa</p>" }}></div>);
+    }
+    return (<div></div>);
 }

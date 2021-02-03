@@ -147,7 +147,7 @@ export function create_mail_object(to, email_subject, email_content, content_typ
     return email;
 }
 
-export function create_calendar_events(events) {
+export function create_calendar_events(events, tasks) {
     function convert_time_zone(d) {
         if (!d.timeZone) {
             return d;
@@ -159,12 +159,37 @@ export function create_calendar_events(events) {
             return new Date(d.dateTime)
         }
     }
+
     for (let event of events) {
         event['location'] = event['location']['displayName']
         event['start'] = convert_time_zone(event['start'])
         event['end'] = convert_time_zone(event['end'])
+        event['priority'] = get_priority_style(rand_int(0, 2));
     }
+
     return events
+}
+
+export function add_meetings_from_tasks(tasks, existing_meetings) {
+    const existing_ids = existing_meetings.map(m => m.task_id);
+    var events = [];
+    for (const task of tasks.filter(t => t.meeting && !existing_ids.includes(t.id))) {
+        var start = task.meeting.times[0];
+        var end = new Date(start);
+        var duration = task.meeting.durations[0] ? task.meeting.durations[0].seconds : 3600
+        end.setSeconds(end.getSeconds() + duration);
+        var new_event =
+        {
+            location: "",
+            start: task.meeting.times[0],
+            end: end,
+            priority: task.priority,
+            subject: "Suggested Meeting",
+            task_id: task.id
+        }
+        events.push(new_event);
+    }
+    return events;
 }
 
 export function sleep(ms) {

@@ -44,3 +44,25 @@
     border-radius: 10px;
     padding: 5px 5px 0 5px;
 }
+
+.e-schedule .e-vertical-view .e-day-wrapper .e-appointment {
+    background-color: white;
+    color: blue;
+
+}
+.e-schedule .e-vertical-view .e-day-wrapper .e-appointment.Urgent * {
+    color: red;
+}
+
+.e-schedule .e-vertical-view .e-day-wrapper .e-appointment.Important * {
+    color: orange;
+}
+
+.e-schedule .e-vertical-view .e-day-wrapper .e-appointment.CanWait *{
+    color: green;
+}
+
+.e-schedule .e-vertical-view .e-day-wrapper .e-appointment.suggested *{
+    background-color: darkblue;
+    color: white;
+}

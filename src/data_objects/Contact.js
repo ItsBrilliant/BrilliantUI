@@ -6,6 +6,9 @@ export class Contact {
         Contact.contact_dict = {};
     }
     static create_contact(recipient_object, image_link) {
+        if (!recipient_object) {
+            return Contact.CURRENT_USER;
+        }
         const address = recipient_object['emailAddress']['address']
         var existing_contact = Contact.contact_dict[address]
         if (existing_contact) {

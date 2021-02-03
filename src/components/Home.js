@@ -4,7 +4,7 @@ import { Mail } from './mail/Mail.js'
 import './Home.css';
 import { get_all_mail, get_calendar, get_mail_folders } from '../backend/Connect.js';
 import { Calendar } from './calendar/Calendar.js';
-import { create_calendar_events } from '../utils.js';
+import { create_calendar_events, add_meetings_from_tasks } from '../utils.js';
 import { EmailComposers } from './EmailComposer.js';
 import { Create } from '../actions/email_composer.js';
 import { useDispatch } from 'react-redux';
@@ -131,6 +131,11 @@ export class Home extends React.Component {
         } else {
             this.props.Reset()
         }
+        this.setState((state, props) => {
+            const task_meetings = add_meetings_from_tasks(props.tasks, state.calendarEvents);
+            console.log("Adding " + task_meetings.length + " task meetings");
+            return { calendarEvents: [...state.calendarEvents, ...task_meetings] }
+        })
         console.log("set_threads: same user is " + same_user);
         return same_user;
     }
@@ -254,7 +259,8 @@ const SearchBar = (keyword, setKeyword) => {
 
 const mapStateToProps = state => ({
     user: state.user,
-    emailThreads: state.email_threads
+    emailThreads: state.email_threads,
+    tasks: Object.values(state.tasks)
 });
 
 const mapDispatchToProps = {

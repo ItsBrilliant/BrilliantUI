@@ -119,12 +119,15 @@ export class Task {
             var times = []
             var durations = []
             for (var slot of Object.values(slots)) {
-                slot = slot[0];
                 if (slot.Type === "Duration") {
-                    durations.push({ data: slot.Data.value, unit: slot.Data.unit });
+                    durations.push({
+                        data: slot.Data.value,
+                        unit: slot.Data.unit,
+                        seconds: slot.Data.normalized.value
+                    });
                 }
                 else if (slot.Type === "Time") {
-                    times.push(new Date(slot.Data.value))
+                    times.push(new Date(slot.Data[0].value))
                 }
 
             }
@@ -138,7 +141,9 @@ export class Task {
             const duration_text = durations.length > 0 ? " Duration: " + durations[0].data + " " + durations[0].unit : "";
             const task_text = `Setup Meeting(${Math.round(probability)}%);` + time_text + duration_text
             var task = new Task(task_text, new Date(), priority, false, { start: start_index, end: start_index + text_length }, undefined, id)
-            task['meeting'] = { durations: durations, times: times };
+            if (times.length > 0) {
+                task['meeting'] = { durations: durations, times: times };
+            }
             Task.insert_task(dispatcher, email, task);
         }
     }
