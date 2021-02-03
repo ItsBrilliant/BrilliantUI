@@ -5,6 +5,7 @@ import { PRIORITIES, URGENT, IMPORTANT, CAN_WAIT } from './Consts.js'
 import { v4 } from 'uuid';
 
 const GENERAL_TASK_DETECTION_THRESHOLD = 70;
+const REQUEST_MEETING_PROBABILITY_THRESHOLD = 70;
 
 export class Task {
     constructor(text, deadline, priority, isDone, source_indexes = [], owner, id) {
@@ -98,6 +99,46 @@ export class Task {
             }
             var task_text = `auto task (${Math.round(probability)}%)`;
             var task = new Task(task_text, new Date(), priority, false, { start: start_index, end: start_index + text_length }, undefined, id)
+            Task.insert_task(dispatcher, email, task);
+        }
+    }
+
+    static add_request_meeting_task(dispatcher, email) {
+        const [meeting_scheduler, id] = email.get_detection('meeting_request');
+        if (email.is_draft() || !meeting_scheduler || meeting_scheduler.length === 0) {
+            return;
+        }
+        for (let i = 0; i < meeting_scheduler.length; i++) {
+            const probability = parseFloat(meeting_scheduler[i][2])
+            if (probability < REQUEST_MEETING_PROBABILITY_THRESHOLD) {
+                continue;
+            }
+            const start_index = parseInt(meeting_scheduler[i][0])
+            const text_length = parseInt(meeting_scheduler[i][1])
+            const slots = meeting_scheduler[i].slice(3,);
+            var times = []
+            var durations = []
+            for (var slot of Object.values(slots)) {
+                slot = slot[0];
+                if (slot.Type === "Duration") {
+                    durations.push({ data: slot.Data.value, unit: slot.Data.unit });
+                }
+                else if (slot.Type === "Time") {
+                    times.push(new Date(slot.Data.value))
+                }
+
+            }
+            var priority = URGENT;
+            if (probability < 75) {
+                priority = CAN_WAIT;
+            } else if (probability < 83) {
+                priority = IMPORTANT;
+            }
+            const time_text = times.length > 0 ? " When: " + format_date(times[0]).date + " " + format_date(times[0]).time + "; " : "";
+            const duration_text = durations.length > 0 ? " Duration: " + durations[0].data + " " + durations[0].unit : "";
+            const task_text = `Setup Meeting(${Math.round(probability)}%);` + time_text + duration_text
+            var task = new Task(task_text, new Date(), priority, false, { start: start_index, end: start_index + text_length }, undefined, id)
+            task['meeting'] = { durations: durations, times: times };
             Task.insert_task(dispatcher, email, task);
         }
     }

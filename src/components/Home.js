@@ -120,7 +120,12 @@ export class Home extends React.Component {
         if (this.props.user.equals(user)) {
             this.props.Expand(emails)
             for (const email of emails) {
-                Task.add_general_task_detection(this.props.Update, email);
+                try {
+                    Task.add_general_task_detection(this.props.Update, email);
+                    Task.add_request_meeting_task(this.props.Update, email);
+                } catch (e) {
+                    console.log("Error in task processing: " + e)
+                }
             }
             same_user = true;
         } else {
