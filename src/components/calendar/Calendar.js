@@ -24,6 +24,10 @@ export class Calendar extends React.Component {
         })
     }
 
+    // componentDidUpdate() {
+    //       place_priority(this.props.events);
+    //   }
+
     render() {
         var events = this.adjust_date_field(this.props.events);
         return (
@@ -32,9 +36,10 @@ export class Calendar extends React.Component {
                     <SimpleBar className="simple_bar">
                         <ScheduleComponent height="auto" width="auto" eventSettings={{ dataSource: new DataManager({ json: events, adaptor: new MsgrahpAdaptor }) }}
                             timeScale={{ enable: true, interval: 60, slotCount: 2 }}
-                            startHour='07:00' endHour='21:00'
-                            popupOpen={onPopupOpen}
+                            startHour='06:00' endHour='24:00'
+                            popupOpen={null}
                             appointmentTemplateId="#appTemplate"
+                            renderCompleted={() => place_priority(this.props.events)}
                         >
                             <ViewsDirective>
                                 <ViewDirective option='Day'></ViewDirective>

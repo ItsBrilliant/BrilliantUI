@@ -121,7 +121,8 @@ export class Home extends React.Component {
             this.props.Expand(emails)
             for (const email of emails) {
                 try {
-                    Task.add_general_task_detection(this.props.Update, email);
+                    // Adding both at the same time could cause highlighted text overpap problem
+                    // Task.add_general_task_detection(this.props.Update, email);
                     Task.add_request_meeting_task(this.props.Update, email);
                 } catch (e) {
                     console.log("Error in task processing: " + e)

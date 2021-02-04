@@ -164,7 +164,7 @@ export function create_calendar_events(events, tasks) {
         event['location'] = event['location']['displayName']
         event['start'] = convert_time_zone(event['start'])
         event['end'] = convert_time_zone(event['end'])
-        event['priority'] = get_priority_style(rand_int(0, 2));
+        event['priority'] = get_priority_style(rand_int(0, 3));
     }
 
     return events
@@ -180,10 +180,11 @@ export function add_meetings_from_tasks(tasks, existing_meetings) {
         end.setSeconds(end.getSeconds() + duration);
         var new_event =
         {
+            id: task.id,
             location: "",
             start: task.meeting.times[0],
             end: end,
-            priority: task.priority,
+            priority: "suggested",
             subject: "Suggested Meeting",
             task_id: task.id
         }

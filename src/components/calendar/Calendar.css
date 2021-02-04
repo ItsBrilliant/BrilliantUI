@@ -47,22 +47,40 @@
 
 .e-schedule .e-vertical-view .e-day-wrapper .e-appointment {
     background-color: white;
-    color: blue;
+    font-weight: bold;
 
 }
+.e-schedule .e-vertical-view .e-day-wrapper .e-appointment.Urgent{
+    background-color: rgb(247, 213, 213)
+}
+
 .e-schedule .e-vertical-view .e-day-wrapper .e-appointment.Urgent * {
     color: red;
 }
 
+.e-schedule .e-vertical-view .e-day-wrapper .e-appointment.Important  {
+    background-color: rgb(255, 235, 197);
+}
+
 .e-schedule .e-vertical-view .e-day-wrapper .e-appointment.Important * {
-    color: orange;
+    color: rgb(185, 122, 3);
+}
+
+.e-schedule .e-vertical-view .e-day-wrapper .e-appointment.CanWait {
+    background-color: rgb(187, 250, 187);
 }
 
 .e-schedule .e-vertical-view .e-day-wrapper .e-appointment.CanWait *{
-    color: green;
+    color: green
 }
 
-.e-schedule .e-vertical-view .e-day-wrapper .e-appointment.suggested *{
-    background-color: darkblue;
+.e-schedule .e-vertical-view .e-day-wrapper .e-appointment.suggested {
+    background: repeating-linear-gradient(
+  45deg,
+  #606dbc,
+  #606dbc 10px,
+  #465298 10px,
+  #465298 20px
+);
     color: white;
 }

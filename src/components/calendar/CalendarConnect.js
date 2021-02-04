@@ -16,7 +16,7 @@ export class MsgrahpAdaptor extends JsonAdaptor {
 export function place_priority(events) {
     let appointments = Array.from(document.querySelectorAll("div.e-appointment"));
     for (const event of events) {
-        let a = appointments.filter(x => x.dataset.id.slice(12) === event.Id);
+        let a = appointments.filter(x => x.dataset.id.slice(12) === event.id);
         if (a[0]) {
             a[0].classList.add(event['priority']);
         }
