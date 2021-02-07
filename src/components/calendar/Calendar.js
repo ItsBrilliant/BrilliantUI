@@ -3,7 +3,7 @@ import './Calendar.css';
 import * as React from 'react';
 import { ScheduleComponent, Day, Week, WorkWeek, Month, Agenda, Inject, ViewsDirective, ViewDirective } from '@syncfusion/ej2-react-schedule';
 import { DataManager, Query, JsonAdaptor } from '@syncfusion/ej2-data'
-import { MsgrahpAdaptor, onPopupOpen, onPopupOpen_template, place_priority, adjust_fields } from './CalendarConnect.js'
+import { MsgrahpAdaptor, onPopupOpen, onPopupOpen_template, place_priority, adjust_fields, editorTemplate } from './CalendarConnect.js'
 import UpcomingMeetings from './UpcomingMeetings';
 import CalendarTasks from './CalendarTasks'
 import SimpleBar from 'simplebar-react';
@@ -37,8 +37,8 @@ export class Calendar extends React.Component {
                             startHour='06:00' endHour='24:00'
                             popupOpen={onPopupOpen}
                             renderCompleted={() => place_priority(this.props.events)}
-                        //       allowDragAndDrop={true}
-                        //        editorTemplate={() => <div><input classNmae="e-field" name="dov"></input></div>}
+                            allowDragAndDrop={true}
+                            editorTemplate={editorTemplate}
                         >
                             <ViewsDirective>
                                 <ViewDirective option='Day'></ViewDirective>
@@ -54,7 +54,7 @@ export class Calendar extends React.Component {
                     <CalendarTasks />
                     <UpcomingMeetings meetings={this.props.events.filter(e => e.start > Date.now())} />
                 </div>
-            </div>
+            </div >
         );
     }
 }

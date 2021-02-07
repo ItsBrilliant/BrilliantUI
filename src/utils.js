@@ -156,7 +156,6 @@ export function create_calendar_events(events, tasks) {
         event['start'] = convert_time_to_scheduler(event['start'])
         event['end'] = convert_time_to_scheduler(event['end'])
         event['priority'] = get_priority_style(rand_int(0, 3));
-        console.log(event)
         event['participants'] = graph_attendees ? graph_attendees.map(a => a ? a.emailAddress.address : "") : [];
         event['participants'] = event['participants'].filter(a => a !== "").join(',');
     }

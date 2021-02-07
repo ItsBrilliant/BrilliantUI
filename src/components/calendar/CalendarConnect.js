@@ -1,29 +1,34 @@
 import { JsonAdaptor } from '@syncfusion/ej2-data'
 import { createElement } from '@syncfusion/ej2-base';
 import { DropDownList } from '@syncfusion/ej2-dropdowns';
+import { DateTimePickerComponent } from '@syncfusion/ej2-react-calendars';
+import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
 import { EmailChips } from '../external/EmailChips'
 import ReactDOM from 'react-dom'
-import React, { useState } from 'react'
-import { event_action } from '../../backend/Connect'
+import React, { Fragment, useState } from 'react'
+import { event_action, delete_event } from '../../backend/Connect'
 import { address_to_recipeint, convert_time_to_graph } from '../../utils';
 export class MsgrahpAdaptor extends JsonAdaptor {
-    async insert() {
+    insert() {
         console.log("my insert called")
         const event = build_event(arguments[1]);
-        let res = await event_action(event);
-        arguments[1] = res.data;
         var schedule_event = super.insert.apply(this, arguments);
-        console.log(schedule_event)
+        event_action(event).then(res => arguments[1].id = res.data.id);
         return schedule_event;
     }
 
     update() {
         console.log("my update called")
-        //calling base class processResponse function
+        const event = build_event(arguments[2]);
         let original = super.update.apply(this, arguments);
-        //Adding serial number
-        console.log(arguments)
-        console.log(original)
+        event_action(event, event.id).then(res => arguments[2].id = res.data.id);
+        return original;
+    }
+
+    remove() {
+        console.log("my remove called")
+        let original = super.remove.apply(this, arguments);
+        delete_event(arguments[2].id);
         return original;
     }
 }
@@ -40,37 +45,27 @@ export function place_priority(events) {
 
 export function onPopupOpen(args) {
     if (args.type === 'Editor') {
-        if (!args.element.querySelector('.custom-field-row')) {
-            let row = createElement('div', { className: 'custom-field-row' });
-            let formElement = args.element.querySelector('.e-schedule-form');
-            formElement.firstChild.insertBefore(row, formElement.firstChild.firstChild);
-            let container = createElement('div', { className: 'custom-field-container' });
-            let inputEle = createElement('input', {
-                className: 'e-field invisible', attrs: { name: 'participants' }
-            });
-            const set_data = (participants) => inputEle.setAttribute('value', participants);
-            ReactDOM.render(<ChipsWrapper data={args.data} set_items={set_data} />, container);
-            container.appendChild(inputEle);
-            row.appendChild(container);
-            inputEle.setAttribute('name', 'participants');
-        } else {
-            args.element.querySelector('input.e-field.invisible').setAttribute('value', args.data.participants);
-        }
+        console.log("editor popup");
     }
 }
 
 function ChipsWrapper(props) {
-    const [internal_items, internal_set_items] = useState([])
-    const items = props.data.participants ? props.data.participants.split(',') : internal_items;
+    const [participants, set_participants] = useState(props.data);
+    const items = participants ? participants.split(',') : [];
     const my_set_items = (items) => {
-        internal_set_items(items);
         const str_items = items.join(",");
-        props.set_items(str_items);
+        set_participants(str_items);
     }
-    return <EmailChips
-        on_items_change={my_set_items}
-        items={items} />
+    return (
+        <Fragment>
+            <input id="participants" className="e-field e-input" value={participants} type="text" name="participants" style={{ display: 'none' }} />
+            <EmailChips
+                on_items_change={my_set_items}
+                items={items} />
+        </Fragment>
+    );
 }
+
 
 export function onPopupOpen_template(args) {
     if (args.type === 'Editor') {
@@ -139,6 +134,7 @@ export function adjust_fields(events, reverse = false) {
 export function build_event(schedule_event) {
     var event = {};
     event.subject = schedule_event.subject;
+    event.id = schedule_event.priority === "suggested" ? undefined : schedule_event.id;
     event.start = convert_time_to_graph(schedule_event.start, schedule_event.StartTimeazne)
     event.end = convert_time_to_graph(schedule_event.end, schedule_event.EndTimezone)
     event.location = { displayName: schedule_event.location }
@@ -153,4 +149,33 @@ export function build_event(schedule_event) {
     }
     event.allowNewTimeProposals = true;
     return event;
+}
+
+export function editorTemplate(props) {
+    console.log("editorTemplate");
+    console.log(props);
+    return (props !== undefined ?
+        <table className="custom-event-editor" style={{ width: '100%', cellpadding: '5' }}><tbody>
+            <tr>
+                <td className="e-textlabel">Attendees</td><td colSpan={4}>
+                    <ChipsWrapper data={props.participants} />
+                </td>
+            </tr>
+            <tr><td className="e-textlabel">Subject</td><td colSpan={4}>
+                <input id="subject" className="e-field e-input" type="text" name="subject" style={{ width: '100%' }} />
+            </td></tr>
+            <tr><td className="e-textlabel">Description</td><td colSpan={4}>
+                <input id="description" placeholder='' className="e-field e-input" name="description" style={{ width: '100%' }} />
+            </td></tr>
+            <tr><td className="e-textlabel">Location</td><td colSpan={4}>
+                <input id="location" placeholder='' className="e-field e-input" name="location" style={{ width: '100%' }} />
+            </td></tr>
+            <tr><td className="e-textlabel">From</td><td colSpan={4}>
+                <DateTimePickerComponent format='dd/MM/yy hh:mm a' id="start" data-name="start" value={new Date(props.startTime)} className="e-field"></DateTimePickerComponent>
+            </td></tr>
+            <tr><td className="e-textlabel">To</td><td colSpan={4}>
+                <DateTimePickerComponent format='dd/MM/yy hh:mm a' id="end" data-name="end" value={new Date(props.endTime)} className="e-field"></DateTimePickerComponent>
+            </td></tr></tbody>
+        </table> :
+        <div></div>);
 }

@@ -194,3 +194,14 @@ export async function event_action(event, event_id) {
         console.log(e);
     }
 }
+
+export async function delete_event(event_id) {
+
+    try {
+        const res = await Axios.post('api/event_action', { action_type: "delete", event_id: event_id });
+        console.log(res);
+        return res;
+    } catch (e) {
+        console.log(e);
+    }
+}

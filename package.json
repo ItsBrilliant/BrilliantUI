@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@microsoft/microsoft-graph-client": "^2.0.0",
+    "@syncfusion/ej2-react-calendars": "^18.4.41",
+    "@syncfusion/ej2-react-dropdowns": "^18.4.41",
     "@syncfusion/ej2-react-schedule": "^18.4.30",
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.2.2",
