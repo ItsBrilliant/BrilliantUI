@@ -87,16 +87,17 @@ export function get_file_icon(extension) {
     return 'file_icons/' + icon_name;
 }
 
-export function create_mail_object(to, email_subject, email_content, content_type = "Text", cc = [], bcc = [], attachment_buffers = []) {
 
-    function address_to_recipeint(recipeint_address) {
-        const recipeint = {
-            emailAddress: {
-                address: recipeint_address
-            }
+export function address_to_recipeint(recipeint_address) {
+    const recipeint = {
+        emailAddress: {
+            address: recipeint_address
         }
-        return recipeint
     }
+    return recipeint
+}
+
+export function create_mail_object(to, email_subject, email_content, content_type = "Text", cc = [], bcc = [], attachment_buffers = []) {
 
     function file_buffer_to_attachment(file) {
         var attachment =
@@ -148,26 +149,37 @@ export function create_mail_object(to, email_subject, email_content, content_typ
 }
 
 export function create_calendar_events(events, tasks) {
-    function convert_time_zone(d) {
-        if (!d.timeZone) {
-            return d;
-        }
-        if (d.timeZone === 'UTC') {
-            return new Date(d.dateTime + 'Z')
-        }
-        else {
-            return new Date(d.dateTime)
-        }
-    }
 
     for (let event of events) {
-        event['location'] = event['location']['displayName']
-        event['start'] = convert_time_zone(event['start'])
-        event['end'] = convert_time_zone(event['end'])
+        const graph_attendees = event.attendees;
+        event['location'] = event['location'] ? event['location']['displayName'] : ""
+        event['start'] = convert_time_to_scheduler(event['start'])
+        event['end'] = convert_time_to_scheduler(event['end'])
         event['priority'] = get_priority_style(rand_int(0, 3));
+        console.log(event)
+        event['participants'] = graph_attendees ? graph_attendees.map(a => a ? a.emailAddress.address : "") : [];
+        event['participants'] = event['participants'].filter(a => a !== "").join(',');
     }
 
     return events
+}
+function convert_time_to_scheduler(d) {
+    if (!d.timeZone) {
+        return d;
+    }
+    if (d.timeZone === 'UTC') {
+        return new Date(d.dateTime + 'Z')
+    }
+    else {
+        return new Date(d.dateTime)
+    }
+}
+
+export function convert_time_to_graph(schedule_time, zone) {
+    return {
+        dateTime: schedule_time.toUTCString(),
+        timeZone: "UTC"
+    }
 }
 
 export function add_meetings_from_tasks(tasks, existing_meetings) {

@@ -127,7 +127,6 @@ export async function update_draft(email_id, email) {
     } catch (e) {
         console.log(e);
     }
-
 }
 
 export async function delete_email(email_id, folder_id) {
@@ -161,7 +160,6 @@ export async function send_draft(draft_id, user) {
     } catch (e) {
         console.log(e)
     }
-
 }
 
 export async function send_reply(email, reply_id) {
@@ -171,5 +169,28 @@ export async function send_reply(email, reply_id) {
         console.log(res)
     } catch (e) {
         console.log(e)
+    }
+}
+
+
+export async function event_action(event, event_id) {
+
+    var params = {
+        action_type: "new",
+        event: event
+    }
+    if (event_id) {
+        params.action_type = "update";
+        params.event_id = event_id;
+        console.log("updating event");
+    } else {
+        console.log("creating event");
+    }
+    try {
+        const res = await Axios.post('api/event_action', params);
+        console.log(res);
+        return res;
+    } catch (e) {
+        console.log(e);
     }
 }

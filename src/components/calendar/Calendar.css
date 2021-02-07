@@ -45,9 +45,13 @@
     padding: 5px 5px 0 5px;
 }
 
+.e-schedule .e-vertical-view .e-day-wrapper .e-appointment *{
+    color: blue;
+    font-weight: bold;
+}
+
 .e-schedule .e-vertical-view .e-day-wrapper .e-appointment {
     background-color: white;
-    font-weight: bold;
 
 }
 .e-schedule .e-vertical-view .e-day-wrapper .e-appointment.Urgent{
@@ -82,5 +86,10 @@
   #465298 10px,
   #465298 20px
 );
+}
+.e-schedule .e-vertical-view .e-day-wrapper .e-appointment.suggested *{
     color: white;
+}
+.e-field.invisible{
+    display:none;
 }

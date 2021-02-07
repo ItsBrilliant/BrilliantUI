@@ -3,43 +3,42 @@ import './Calendar.css';
 import * as React from 'react';
 import { ScheduleComponent, Day, Week, WorkWeek, Month, Agenda, Inject, ViewsDirective, ViewDirective } from '@syncfusion/ej2-react-schedule';
 import { DataManager, Query, JsonAdaptor } from '@syncfusion/ej2-data'
-import { MsgrahpAdaptor, onPopupOpen, place_priority } from './CalendarConnect.js'
+import { MsgrahpAdaptor, onPopupOpen, onPopupOpen_template, place_priority, adjust_fields } from './CalendarConnect.js'
 import UpcomingMeetings from './UpcomingMeetings';
 import CalendarTasks from './CalendarTasks'
 import SimpleBar from 'simplebar-react';
-import { rand_int, get_priority_style } from '../../utils';
 import './script.js'
 
 export class Calendar extends React.Component {
     constructor(props) {
         super(props)
     }
-    adjust_date_field(events) {
-        return events.map(event => {
-            var new_event = {}
-            for (const key of Object.keys(event_adjustment_mapping)) {
-                new_event[event_adjustment_mapping[key]] = event[key]
-            }
-            return new_event;
-        })
-    }
-
-    // componentDidUpdate() {
-    //       place_priority(this.props.events);
-    //   }
 
     render() {
-        var events = this.adjust_date_field(this.props.events);
+        var events = this.props.events;//adjust_fields(this.props.events);
         return (
             <div className='Calendar'>
                 <div className='scheduler'>
                     <SimpleBar className="simple_bar">
-                        <ScheduleComponent height="auto" width="auto" eventSettings={{ dataSource: new DataManager({ json: events, adaptor: new MsgrahpAdaptor }) }}
+                        <ScheduleComponent height="auto" width="auto" eventSettings={
+                            {
+                                dataSource: new DataManager({ json: events, adaptor: new MsgrahpAdaptor }),
+                                fields: {
+                                    id: 'id',
+                                    subject: { name: 'subject', title: 'Subject', default: "" },
+                                    location: { name: 'location', title: 'Location' },
+                                    description: { name: 'description', title: 'Description' },
+                                    startTime: { name: 'start', title: 'Start' },
+                                    endTime: { name: 'end', title: 'End End' },
+                                    isAllDay: { name: 'isAllDay' },
+                                }
+                            }}
                             timeScale={{ enable: true, interval: 60, slotCount: 2 }}
                             startHour='06:00' endHour='24:00'
-                            popupOpen={null}
-                            appointmentTemplateId="#appTemplate"
+                            popupOpen={onPopupOpen}
                             renderCompleted={() => place_priority(this.props.events)}
+                        //       allowDragAndDrop={true}
+                        //        editorTemplate={() => <div><input classNmae="e-field" name="dov"></input></div>}
                         >
                             <ViewsDirective>
                                 <ViewDirective option='Day'></ViewDirective>
@@ -60,22 +59,3 @@ export class Calendar extends React.Component {
     }
 }
 
-const event_adjustment_mapping = {
-    start: "StartTime",
-    end: "EndTime",
-    subject: "Subject",
-    isAllDay: "IsAllDay",
-    id: "Id",
-    location: "Location",
-    priority: "priority"
-}
-
-function cellTemplate(props) {
-    if (props.type === "workCells") {
-        return (<div className="templatewrap" dangerouslySetInnerHTML={{ __html: "<p>bbbbbb</p>" }}></div>);
-    }
-    if (props.type === "monthCells") {
-        return (<div className="templatewrap" dangerouslySetInnerHTML={{ __html: "<p>aaaaaa</p>" }}></div>);
-    }
-    return (<div></div>);
-}
