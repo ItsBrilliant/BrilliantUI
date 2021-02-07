@@ -43,12 +43,6 @@ export function place_priority(events) {
     }
 }
 
-export function onPopupOpen(args) {
-    if (args.type === 'Editor') {
-        console.log("editor popup");
-    }
-}
-
 function ChipsWrapper(props) {
     const [participants, set_participants] = useState(props.data);
     const items = participants ? participants.split(',') : [];
@@ -65,71 +59,6 @@ function ChipsWrapper(props) {
         </Fragment>
     );
 }
-
-
-export function onPopupOpen_template(args) {
-    if (args.type === 'Editor') {
-        if (!args.element.querySelector('.custom-field-row')) {
-            let row = createElement('div', { className: 'custom-field-row' });
-            let formElement = args.element.querySelector('.e-schedule-form');
-            formElement.firstChild.insertBefore(row, formElement.firstChild.firstChild);
-            let container = createElement('div', { className: 'custom-field-container' });
-            let inputEle = createElement('input', {
-                className: 'e-field', attrs: { name: 'EventType' }
-            });
-            container.appendChild(inputEle);
-            row.appendChild(container);
-            let drowDownList = new DropDownList({
-                dataSource: [
-                    { text: 'Public Event', value: 'public-event' },
-                    { text: 'Maintenance', value: 'maintenance' },
-                    { text: 'Commercial Event', value: 'commercial-event' },
-                    { text: 'Family Event', value: 'family-event' }
-                ],
-                fields: { text: 'text', value: 'value' },
-                value: args.data.EventType,
-                floatLabelType: 'Always', placeholder: 'Event Type'
-            });
-            drowDownList.appendTo(inputEle);
-            inputEle.setAttribute('name', 'EventType');
-        }
-    }
-}
-
-const event_adjustment_mapping = {
-    start: "startTime",
-    end: "endTime",
-    subject: "subject",
-    isAllDay: "IsAllDay",
-    id: "Id",
-    location: "Location",
-    priority: "priority"
-}
-
-function get_event_adjustment_mapping(reverse = false) {
-    if (!reverse) {
-        return event_adjustment_mapping;
-    } else {
-        let reverse_mapping = {};
-        for (let key of Object.keys(event_adjustment_mapping)) {
-            reverse_mapping[event_adjustment_mapping[key]] = key;
-        }
-        return reverse_mapping;
-    }
-}
-
-export function adjust_fields(events, reverse = false) {
-    const mapping = get_event_adjustment_mapping(reverse);
-    return events.map(event => {
-        var new_event = {}
-        for (const key of Object.keys(mapping)) {
-            new_event[mapping[key]] = event[key]
-        }
-        return new_event;
-    })
-}
-
-
 
 export function build_event(schedule_event) {
     var event = {};
