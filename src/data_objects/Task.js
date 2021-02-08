@@ -156,8 +156,8 @@ export class Task {
                         seconds: slot.Data.normalized.value
                     });
                 }
-                else if (slot.Type === "Time" & slot.Data[0].type === 'value') {
-                    times.push((new Date(slot.Data[0].value)));
+                else if (slot.Type === "Time" && slot.Data.type === 'value') {
+                    times.push((new Date(slot.Data.value)));
                 }
 
             }
