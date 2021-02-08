@@ -7,7 +7,10 @@ import { v4 } from 'uuid';
 const GENERAL_TASK_DETECTION_THRESHOLD = 70;
 const REQUEST_MEETING_PROBABILITY_THRESHOLD = 70;
 
+
 export class Task {
+    static CURRENT_TASKS = {};
+
     constructor(text, deadline, priority, isDone, source_indexes = [], owner, id) {
         this.id = id ? id : v4();
         this.text = text;
@@ -66,6 +69,9 @@ export class Task {
         return this.email_id;
     }
 
+    static get_tasks_by_email_id(email_id, tasks = Object.values(Task.CURRENT_TASKS)) {
+        return tasks.filter(t => t.email_id === email_id);
+    }
     static update_task(dispatcher, task, function_name, args) {
         let new_task = Object.assign(Object.create(task), task);
         new_task[function_name](...args);
@@ -73,12 +79,28 @@ export class Task {
     }
 
     static insert_task(dispatcher, email, task) {
+        if (Task.check_text_overlap(email, task)) {
+            console.log("Didn't add task " + task.text + " at indexes " + task.get_source_indexes() + " because of overlap")
+            return;
+        }
         task.email_id = email.get_id();
         task.thread_id = email.get_thread_id();
         task.set_initiator(email.get_sender());
         dispatcher(task);
     }
-
+    static check_text_overlap(email, new_task) {
+        const email_tasks = email.get_tasks();
+        const new_task_indexes = new_task.get_source_indexes();
+        for (const task of email_tasks) {
+            const indexes = task.get_source_indexes();
+            if (indexes.start < new_task_indexes.start && indexes.end >= new_task_indexes.start) {
+                return true;
+            } else if ((indexes.start >= new_task_indexes.start && indexes.start <= new_task_indexes.end)) {
+                return true
+            }
+        }
+        return false
+    }
     static add_general_task_detection(dispatcher, email) {
         const [task_detection, id] = email.get_detection('task_detection');
         if (email.is_draft() || !task_detection || task_detection.length === 0) {
@@ -126,10 +148,13 @@ export class Task {
                         seconds: slot.Data.normalized.value
                     });
                 }
-                else if (slot.Type === "Time") {
-                    times.push(new Date(slot.Data[0].value))
+                else if (slot.Type === "Time" & slot.Data[0].type === 'value') {
+                    times.push((new Date(slot.Data[0].value)));
                 }
 
+            }
+            for (const time of times) {
+                time.setHours(time.getHours() - 10);
             }
             var priority = URGENT;
             if (probability < 75) {

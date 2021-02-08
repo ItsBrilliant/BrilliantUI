@@ -1,11 +1,11 @@
 
 import { Thread } from '../data_objects/Thread.js'
+import { Task } from '../data_objects/Task.js'
 export const TasksReducer = (state = {}, action) => {
     if (action.type === "UPDATE") {
         let updated_task = {};
         updated_task[action.task.get_id()] = action.task
         var new_state = Object.assign(state, updated_task);
-        return new_state;
     }
 
     else if (action.type === "DELETE") {
@@ -13,14 +13,15 @@ export const TasksReducer = (state = {}, action) => {
         for (const task_id of Object.keys(state).filter(id => id !== action.id)) {
             new_state[task_id] = state[task_id];
         }
-        return new_state;
     }
 
     else if (action.type === "RESET") {
-        return {};
+        var new_state = {};
     }
 
     else {
-        return state;
+        var new_state = state;
     }
+    Task.CURRENT_TASKS = new_state;
+    return new_state;
 }

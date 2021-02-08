@@ -139,7 +139,7 @@ export class Email {
         }
     }
     get_tasks() {
-        return this.tasks;
+        return Task.get_tasks_by_email_id(this.get_id());
     }
     add_task(task) {
         const initiator = this.get_sender();

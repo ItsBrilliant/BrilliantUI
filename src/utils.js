@@ -148,16 +148,19 @@ export function create_mail_object(to, email_subject, email_content, content_typ
     return email;
 }
 
-export function create_calendar_events(events, tasks) {
+export function create_calendar_events(events) {
 
     for (let event of events) {
         const graph_attendees = event.attendees;
-        event['location'] = event['location'] ? event['location']['displayName'] : ""
+        if (typeof (event.location) === 'object') {
+            event.location = event.location.displayName;
+        }
         event['start'] = convert_time_to_scheduler(event['start'])
         event['end'] = convert_time_to_scheduler(event['end'])
         event['priority'] = get_priority_style(rand_int(0, 3));
         event['participants'] = graph_attendees ? graph_attendees.map(a => a ? a.emailAddress.address : "") : [];
         event['participants'] = event['participants'].filter(a => a !== "").join(',');
+        event['description'] = event['body']['content']
     }
 
     return events
