@@ -1,7 +1,7 @@
 @import "../Globals.css";
 
 .CenterDivision{
-
+    border-radius: 10px;
     background-color: var(--email-container-background);
     height: 100%;
     width: 55%;

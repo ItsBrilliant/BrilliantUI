@@ -66,9 +66,6 @@
   align-items: center;
 }
 
-.task_source .Deactivate {
-  background-color: rgba(48, 110, 160, 0.3);
-}
 
 .task_source.Urgent{
   color: red;
@@ -82,7 +79,7 @@
   color: green;
 }
 
-.selected_task{
+.task_source.before_approval{
   background-color: rgb(34, 99, 157);
   color: rgb(11, 3, 4);
 }

@@ -29,24 +29,42 @@ export default class EmailTextArea extends Component {
             start: task_args.selection_indexes[0],
             end: task_args.selection_indexes[1]
         }
-        const task = new Task(text, date, priority, false, task_format_indexes, owner);
+        var task;
+        if (task_args.id) {
+            task = this.props.tasks.filter(t => t.id === task_args.id)[0]
+            task.text = text;
+            task.deadline = date;
+            task.priority = priority;
+            task.owner = owner;
+        } else {
+            task = new Task(text, date, priority, false, task_format_indexes, owner);
+        }
+        task.set_approved(true);
         this.props.add_task(task);
 
     }
 
-    handle_task_icon_click(position_style, selection_indexes) {
+    handle_task_icon_click(position_style, selection_indexes, existing_task) {
+        let priority = URGENT;
+        let text = "";
+        let id;
+        if (existing_task) {
+            priority = existing_task.priority;
+            text = existing_task.text;
+            id = existing_task.id;
+        }
         this.setState(
             {
                 add_task_icon: null,
                 add_task_component: <AddTaskPortal style={position_style}
                     handle_ok={this.handle_add_task}
                     handle_close={this.handle_task_component_close}
+                    priority={priority}
+                    task_text={text}
                 />,
                 task_args: {
                     selection_indexes: selection_indexes,
-                    text: "",
-                    date: new Date(),
-                    priority: URGENT
+                    id: id
                 }
             }
         );
@@ -66,13 +84,7 @@ export default class EmailTextArea extends Component {
                 const siblings_offset = getSelectionOffsetRelativeTo(start_grand_parent, start_parent);
                 const startOffset = range.startOffset + siblings_offset;
                 const endOffset = range.endOffset + siblings_offset;
-                const top_offset = e.pageY - 60;
-                const left_offset = e.pageX - 20
-                const position_style = {
-                    position: 'fixed',
-                    top: top_offset,
-                    left: left_offset,
-                };
+                const position_style = get_mouse_position_style(e.pageX, e.pageY);
                 return (
                     <img className="manual_add_task" src='button_icons/task.svg'
                         style={position_style}
@@ -140,13 +152,17 @@ export default class EmailTextArea extends Component {
             const end = tasks[i].get_source_indexes().end
             var style = 'task_source';
             if (!tasks[i].isDone) {
-                style += ' ' + get_priority_style(tasks[i].get_priority())
+                if (tasks[i].is_approved()) {
+                    style += ' ' + get_priority_style(tasks[i].get_priority())
+                } else {
+                    style += ' ' + "before_approval";
+                }
             }
             if (tasks[i] === this.props.selected_task) {
                 style += ''//' selected_task'
             }
             sections.push(
-                <span className={style}>
+                <span className={style} onMouseEnter={on_proposed_task_hover.bind(this, tasks[i])} >
                     {text.slice(start, end)}
                 </span>)
             const next_start = i + 1 < tasks.length ? tasks[i + 1].get_source_indexes().start : text.length;
@@ -187,4 +203,24 @@ export default class EmailTextArea extends Component {
             </div>
         );
     }
+}
+
+function get_mouse_position_style(x, y) {
+    const top_offset = y - 60;
+    const left_offset = x - 20
+    return {
+        position: 'fixed',
+        top: top_offset,
+        left: left_offset,
+    };
+}
+
+function on_proposed_task_hover(task, e) {
+    if (task.is_approved()) {
+        return;
+    }
+    const position_style = get_mouse_position_style(e.pageX, e.pageY);
+    const source_indexes = task.get_source_indexes();
+    const selection_indexes = [source_indexes.start, source_indexes.end];
+    this.handle_task_icon_click(position_style, selection_indexes, task);
 }

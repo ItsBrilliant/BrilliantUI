@@ -14,7 +14,7 @@ export function RightDivision(props) {
     return (thread ?
         <div className='RightDivision'>
             <SimpleBar className='SimpleBar_RightDivision'>
-                <Tasks tasks={tasks.filter(t => t.get_thread_id() === thread.get_id())} thread={thread} />
+                <Tasks tasks={tasks.filter(t => t.get_thread_id() === thread.get_id() && t.is_approved())} thread={thread} />
                 {Participants(thread.get_participants())}
                 {FileAttachments(thread.get_attachments())}
             </SimpleBar>

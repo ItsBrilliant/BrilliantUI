@@ -21,9 +21,17 @@ export class Task {
         this.owner = owner ? owner : Contact.CURRENT_USER;
         this.initiator = Contact.CURRENT_USER;
         this.email_id = undefined;
+        this.approved = false;
     }
     get_source_indexes() {
         return this.source_indexes;
+    }
+    is_approved() {
+        return this.approved;
+    }
+
+    set_approved(approved) {
+        this.approved = approved;
     }
 
     set_initiator(initiator) {
@@ -89,7 +97,7 @@ export class Task {
         dispatcher(task);
     }
     static check_text_overlap(email, new_task) {
-        const email_tasks = email.get_tasks();
+        const email_tasks = email.get_tasks().filter(t => t.id !== new_task.id);
         const new_task_indexes = new_task.get_source_indexes();
         for (const task of email_tasks) {
             const indexes = task.get_source_indexes();
