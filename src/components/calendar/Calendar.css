@@ -87,9 +87,20 @@
   #465298 20px
 );
 }
-.e-schedule .e-vertical-view .e-day-wrapper .e-appointment.suggested *{
+.e-schedule .e-vertical-view .e-day-wrapper .e-appointment.suggested_options {
+    background: repeating-linear-gradient(
+  45deg,
+  #60bc99,
+  #429676 10px,
+  #3a742f 10px,
+  #549846 20px
+);
+}
+.e-schedule .e-vertical-view .e-day-wrapper .e-appointment.suggested *,
+.e-schedule .e-vertical-view .e-day-wrapper .e-appointment.suggested_options *{
     color: white;
 }
+
 .e-field.invisible{
     display:none;
 }

@@ -4,7 +4,7 @@ import { Mail } from './mail/Mail.js'
 import './Home.css';
 import { get_all_mail, get_calendar, get_mail_folders } from '../backend/Connect.js';
 import { Calendar } from './calendar/Calendar.js';
-import { create_calendar_events, add_meetings_from_tasks } from '../utils.js';
+import { create_calendar_events, add_meetings_from_tasks } from './calendar/utils';
 import { EmailComposers } from './EmailComposer.js';
 import { Create } from '../actions/email_composer.js';
 import { useDispatch } from 'react-redux';

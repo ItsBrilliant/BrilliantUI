@@ -7,7 +7,8 @@ import { EmailChips } from '../external/EmailChips'
 import ReactDOM from 'react-dom'
 import React, { Fragment, useState } from 'react'
 import { event_action, delete_event } from '../../backend/Connect'
-import { address_to_recipeint, convert_time_to_graph } from '../../utils';
+import { address_to_recipeint } from '../../utils';
+import { convert_time_to_graph } from './utils'
 export class MsgrahpAdaptor extends JsonAdaptor {
     insert() {
         console.log("my insert called")

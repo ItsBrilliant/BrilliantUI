@@ -148,64 +148,6 @@ export function create_mail_object(to, email_subject, email_content, content_typ
     return email;
 }
 
-export function create_calendar_events(events) {
-
-    for (let event of events) {
-        const graph_attendees = event.attendees;
-        if (typeof (event.location) === 'object') {
-            event.location = event.location.displayName;
-        }
-        event['start'] = convert_time_to_scheduler(event['start'])
-        event['end'] = convert_time_to_scheduler(event['end'])
-        event['priority'] = get_priority_style(rand_int(0, 3));
-        event['participants'] = graph_attendees ? graph_attendees.map(a => a ? a.emailAddress.address : "") : [];
-        event['participants'] = event['participants'].filter(a => a !== "").join(',');
-        event['description'] = event['body']['content']
-    }
-
-    return events
-}
-function convert_time_to_scheduler(d) {
-    if (!d.timeZone) {
-        return d;
-    }
-    if (d.timeZone === 'UTC') {
-        return new Date(d.dateTime + 'Z')
-    }
-    else {
-        return new Date(d.dateTime)
-    }
-}
-
-export function convert_time_to_graph(schedule_time, zone) {
-    return {
-        dateTime: schedule_time.toUTCString(),
-        timeZone: "UTC"
-    }
-}
-
-export function add_meetings_from_tasks(tasks, existing_meetings) {
-    const existing_ids = existing_meetings.map(m => m.task_id);
-    var events = [];
-    for (const task of tasks.filter(t => t.meeting && !existing_ids.includes(t.id))) {
-        var start = task.meeting.times[0];
-        var end = new Date(start);
-        var duration = task.meeting.durations[0] ? task.meeting.durations[0].seconds : 3600
-        end.setSeconds(end.getSeconds() + duration);
-        var new_event =
-        {
-            id: task.id,
-            location: "",
-            start: task.meeting.times[0],
-            end: end,
-            priority: "suggested",
-            subject: "Suggested Meeting",
-            task_id: task.id
-        }
-        events.push(new_event);
-    }
-    return events;
-}
 
 export function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));

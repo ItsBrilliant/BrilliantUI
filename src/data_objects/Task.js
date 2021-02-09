@@ -3,6 +3,7 @@ import { format_date } from '../utils.js'
 import { Contact } from './Contact.js'
 import { PRIORITIES, URGENT, IMPORTANT, CAN_WAIT } from './Consts.js'
 import { v4 } from 'uuid';
+import { create_slot } from '../components/calendar/utils.js';
 
 const GENERAL_TASK_DETECTION_THRESHOLD = 70;
 const REQUEST_MEETING_PROBABILITY_THRESHOLD = 70;
@@ -88,7 +89,7 @@ export class Task {
 
     static insert_task(dispatcher, email, task) {
         if (Task.check_text_overlap(email, task)) {
-            console.log("Didn't add task " + task.text + " at indexes " + task.get_source_indexes() + " because of overlap")
+            console.log("Didn't add task " + task.text + " " + email.get_subject() + " at indexes " + Object.values(task.get_source_indexes()) + " because of overlap")
             return;
         }
         task.email_id = email.get_id();
@@ -135,7 +136,7 @@ export class Task {
 
     static add_request_meeting_task(dispatcher, email) {
         const [meeting_scheduler, id] = email.get_detection('meeting_request');
-        if (email.is_draft() || !meeting_scheduler || meeting_scheduler.length === 0) {
+        if (email.is_draft() || email.added_meetings_already || !meeting_scheduler || meeting_scheduler.length === 0) {
             return;
         }
         for (let i = 0; i < meeting_scheduler.length; i++) {
@@ -146,23 +147,34 @@ export class Task {
             const start_index = parseInt(meeting_scheduler[i][0])
             const text_length = parseInt(meeting_scheduler[i][1])
             const slots = meeting_scheduler[i].slice(3,);
-            var times = []
-            var durations = []
+            var time;
+            var duration;
             for (var slot of Object.values(slots)) {
                 if (slot.Type === "Duration") {
-                    durations.push({
+                    duration = {
                         data: slot.Data.value,
                         unit: slot.Data.unit,
                         seconds: slot.Data.normalized.value
-                    });
+                    };
                 }
-                else if (slot.Type === "Time" && slot.Data.type === 'value') {
-                    times.push((new Date(slot.Data.value)));
-                }
+                else if (slot.Type === "Time") {
+                    if (slot.Data.type === 'value') {
+                        time = { time: new Date(slot.Data.value) };
+                    } else if (slot.Data.type === 'interval') {
+                        time = create_slot(slot.Data.from.value, slot.Data.to.value);
+                    }
 
+                }
             }
-            for (const time of times) {
-                time.setHours(time.getHours() - 10);
+
+            // Cancel the timezone conversion
+            if (time) {
+                if (time.time) {
+                    time.time.setHours(time.time.getHours() - 10);
+                } else if (time.start && time.end) {
+                    time.start.setHours(time.start.getHours() - 10);
+                    time.end.setHours(time.end.getHours() - 10);
+                }
             }
             var priority = URGENT;
             if (probability < 75) {
@@ -170,14 +182,25 @@ export class Task {
             } else if (probability < 83) {
                 priority = IMPORTANT;
             }
-            const time_text = times.length > 0 ? " When: " + format_date(times[0]).date + " " + format_date(times[0]).time + "; " : "";
-            const duration_text = durations.length > 0 ? " Duration: " + durations[0].data + " " + durations[0].unit : "";
-            const task_text = `Setup Meeting(${Math.round(probability)}%);` + time_text + duration_text
-            var task = new Task(task_text, new Date(), priority, false, { start: start_index, end: start_index + text_length }, undefined, id)
-            if (times.length > 0) {
-                task['meeting'] = { durations: durations, times: times };
+            let time_text = "";
+            if (time) {
+                time_text = " When: ";
+                if (time.time) {
+                    time_text += format_date(time.time).date + " " + format_date(time.time).time
+                } else if (time.start && time.end) {
+                    time_text += format_date(time.start).date + " " + format_date(time.start).time + "-" + format_date(time.end).time;
+                }
+                time_text += ';';
+            }
+            const duration_text = duration ? " Duration: " + duration.data + " " + duration.unit : "";
+            const task_text = `Meeting(${Math.round(probability)}%);` + time_text + duration_text
+            var task = new Task(task_text, new Date(), priority, false, { start: start_index, end: start_index + text_length }, undefined)
+            if (time) {
+                task['meeting'] = { duration: duration, time: time };
             }
             Task.insert_task(dispatcher, email, task);
+            email.added_meetings_already = true;
         }
     }
 }
+
