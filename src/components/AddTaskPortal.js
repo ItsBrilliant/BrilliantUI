@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import ReactDOM from 'react-dom'
 import PriorityOptions from './PriorityOptions.js';
 import { useSelector } from 'react-redux';
@@ -13,12 +13,15 @@ export function AddTaskPortal(props) {
     const [priority, setPriority] = useState(props.priority);
     const [owner, setOwner] = useState(user);
     const add_task_portal = (
-        <div className='AddTaskPortal' style={props.style}>
-            <TaskContent setText={setText} owner={owner} setOwner={setOwner} task_text={task_text} />
-            <FooterButtons handle_close={props.handle_close} handle_ok={props.handle_ok}
-                priority={priority} task_text={task_text} date={date}
-                setPriority={setPriority} setDate={setDate} owner={owner} />
-        </div>);
+        <>
+            <div className="invisible_portal_wrapper" onClick={props.handle_close} />
+            <div className='AddTaskPortal' style={props.style}>
+                <TaskContent setText={setText} owner={owner} setOwner={setOwner} task_text={task_text} />
+                <FooterButtons handle_close={props.handle_close} handle_ok={props.handle_ok}
+                    priority={priority} task_text={task_text} date={date}
+                    setPriority={setPriority} setDate={setDate} owner={owner} />
+            </div>
+        </>);
 
     return ReactDOM.createPortal(
         add_task_portal,

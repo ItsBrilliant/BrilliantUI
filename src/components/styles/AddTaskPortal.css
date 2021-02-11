@@ -1,4 +1,4 @@
-@import "../Globals.css";
+@import url(../Globals.css);
 .AddTaskPortal * {
   margin: 2px;
 }
@@ -52,7 +52,11 @@
 
 .FooterButtons button.delete {
   background-color: transparent;
-  font-size: larger;
+  font-size: x-large;
+  font-weight: bold;
+  color: red;
+  border: 2px solid red;
+  padding: 0px 4px;
 }
 
 .TaskContent {

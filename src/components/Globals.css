@@ -14,3 +14,12 @@ input, button {
   outline: none;
   border: none;
 }
+
+.invisible_portal_wrapper{
+  background-color: transparent;
+  position: fixed;
+  left:0;
+  top:0;
+  width: 100vw;
+  height: 100vh;
+}
