@@ -4,6 +4,7 @@ import { Contact } from './Contact.js'
 import { PRIORITIES, URGENT, IMPORTANT, CAN_WAIT } from './Consts.js'
 import { v4 } from 'uuid';
 import { create_slot } from '../components/calendar/utils.js';
+import { create } from 'hbs';
 
 const GENERAL_TASK_DETECTION_THRESHOLD = 70;
 const REQUEST_MEETING_PROBABILITY_THRESHOLD = 70;
@@ -147,8 +148,8 @@ export class Task {
             const start_index = parseInt(meeting_scheduler[i][0])
             const text_length = parseInt(meeting_scheduler[i][1])
             const slots = meeting_scheduler[i].slice(3,);
-            var time;
-            var duration;
+            let time;
+            let duration;
             for (var slot of Object.values(slots)) {
                 if (slot.Type === "Duration") {
                     duration = {
@@ -159,7 +160,12 @@ export class Task {
                 }
                 else if (slot.Type === "Time") {
                     if (slot.Data.type === 'value') {
-                        time = { time: new Date(slot.Data.value) };
+                        if (slot.Data.grain === 'day') {
+                            time = create_slot(new Date(slot.Data.value).valueOf() + 8000 * 3600,
+                                new Date(slot.Data.value).valueOf() + 20000 * 3600);
+                        } else {
+                            time = { time: new Date(slot.Data.value) };
+                        }
                     } else if (slot.Data.type === 'interval') {
                         time = create_slot(slot.Data.from.value, slot.Data.to.value);
                     }

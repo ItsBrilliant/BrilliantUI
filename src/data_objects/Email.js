@@ -3,6 +3,7 @@ import { CAN_WAIT, URGENT, IMPORTANT, NO_PRIORITY } from './Consts.js';
 import { rand_int, my_html_to_text } from '../utils.js';
 import { Task } from './Task.js';
 import parse from 'html-react-parser'
+import { mark_read } from '../backend/utils.js'
 
 const REQUEST_DOCUMENT_PROBABILITY_THRESHOLD = 90;
 const REQUEST_MEETING_PROBABILITY_THRESHOLD = 50;
@@ -207,6 +208,7 @@ export class Email {
 
     set_is_read(is_read) {
         this.email['isRead'] = is_read;
+        mark_read(this.get_id(), is_read);
     }
 
     is_draft() {

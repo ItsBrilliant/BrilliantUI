@@ -1,7 +1,7 @@
 import { TIME_KEY, PRIORITY_KEY, CAN_WAIT } from "./Consts.js";
 import { Email } from './Email.js'
-import { mark_read } from '../backend/utils.js'
 import { delete_email } from '../backend/Connect.js'
+import { Task } from './Task'
 
 export class Thread {
     constructor(id, emails) {
@@ -47,7 +47,8 @@ export class Thread {
     set_priority(priority) {
         this.priority = priority;
     }
-    get_priority(tasks = []) {
+    get_priority() {
+        const tasks = Object.values(Task.CURRENT_TASKS);
         if (this.priority !== undefined) {
             return this.priority;
         }
@@ -132,7 +133,6 @@ export class Thread {
     mark_all_read() {
         for (const email of this.get_emails()) {
             email.set_is_read(true);
-            mark_read(email.get_id());
         }
     }
     delete_all() {
@@ -143,23 +143,16 @@ export class Thread {
     }
 }
 
-Thread.group_functions[PRIORITY_KEY] = function (tasks) {
-    return (thread) => thread.get_priority(tasks);
+Thread.group_functions[PRIORITY_KEY] = (thread) => thread.get_priority();
+
+Thread.group_functions[TIME_KEY] = (thread) => {
+    let d = thread.get_date();
+    return new Date(d.getYear(), d.getMonth(), d.getDate());
 }
 
-Thread.group_functions[TIME_KEY] = function () {
-    return (thread) => {
-        let d = thread.get_date();
-        return new Date(d.getYear(), d.getMonth(), d.getDate());
-    }
-}
+Thread.sort_functions[PRIORITY_KEY] = (a, b) => a.get_priority() - b.get_priority();
 
-Thread.sort_functions[PRIORITY_KEY] = function (tasks) {
-    return (a, b) => a.get_priority(tasks) - b.get_priority(tasks);
-}
-Thread.sort_functions[TIME_KEY] = function () {
-    return (a, b) => b.get_date().valueOf() - a.get_date().valueOf();
-}
+Thread.sort_functions[TIME_KEY] = (a, b) => b.get_date().valueOf() - a.get_date().valueOf();
 
 export function expand_threads(emails) {
     for (const email of emails) {

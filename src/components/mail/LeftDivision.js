@@ -106,10 +106,10 @@ function ScrollableThreadContainer(props) {
     filtered_threads = filter_threads(props.incoming, filtered_threads, props.user);
   }
 
-  var grouped_threads = group_by_function(filtered_threads, Thread.get_group_function(props.group_type)(tasks));
+  var grouped_threads = group_by_function(filtered_threads, Thread.get_group_function(props.group_type));
   var sorted_group_keys = Object.keys(grouped_threads).sort(get_sort_function_by_type(props.group_type));
   for (let key of sorted_group_keys) {
-    grouped_threads[key].sort(Thread.get_sort_function(props.sort_type)(tasks));
+    grouped_threads[key].sort(Thread.get_sort_function(props.sort_type));
   }
   var groupings = sorted_group_keys.map((key) =>
     <GroupedThreads
