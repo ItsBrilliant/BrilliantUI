@@ -12,8 +12,7 @@
 
 .EmailContainer .email_text_area{
     background-color:  var(--email-text-area-bg);
-    padding-left: 15px;
-    padding-right: 15px;
+    padding: 0px 15px 10px 15px;
     border-radius: 30px;
     overflow: visible;
 

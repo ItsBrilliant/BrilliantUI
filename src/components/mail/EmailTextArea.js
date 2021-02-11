@@ -6,6 +6,7 @@ import { URGENT } from '../../data_objects/Consts.js';
 import { getSelectionOffsetRelativeTo, get_priority_style } from '../../utils.js';
 import { GroupIcon } from './EmailStamp.js';
 import "./EmailTextArea.css";
+import OptionsButton from '../OptionsButton.js';
 
 export default class EmailTextArea extends Component {
     constructor(props) {
@@ -120,22 +121,6 @@ export default class EmailTextArea extends Component {
         }
     }
 
-    get_email_options_button() {
-        if (this.props.options_button) {
-            return (
-                <div className='EmailOptionsButton'>
-                    <Menu
-                        options={['Delete', 'Reply', 'Add Task', 'Mark Read']}
-                        label=''
-                        value={this.props.options_button.selected_value}
-                        onChange={(e) => this.props.options_button.onChange(e, this.props.id)} />
-                </div>
-            );
-        }
-        else {
-            return null;
-        }
-    }
     // Insert task highligts
     render_content(text) {
         if (!this.props.tasks || this.props.tasks.length === 0) {
@@ -158,9 +143,6 @@ export default class EmailTextArea extends Component {
                     style += ' ' + "before_approval";
                 }
             }
-            if (tasks[i] === this.props.selected_task) {
-                style += ''//' selected_task'
-            }
             sections.push(
                 <span className={style} onMouseEnter={on_proposed_task_hover.bind(this, tasks[i])} >
                     {text.slice(start, end)}
@@ -179,16 +161,17 @@ export default class EmailTextArea extends Component {
         const subject = this.props.subject ? this.props.subject : "(no subject)";
         const content = this.props.is_html ? this.props.content : this.render_content(this.props.content);
         const priority_style = get_priority_style(this.props.priority);
-
+        const options = ['Mark as unread', 'Export', 'Delete'].map(o => { return { name: o } });
         const header = this.props.of_center_email ?
             <div className="header">
                 <h4>{this.props.sender_name}</h4>
                 <div className="GroupIconWrapper">
                     {GroupIcon(this.props.contacts, 6, 40, 30)}
                     <div className={"email_priority " + priority_style} />
+                    <OptionsButton options={options} offset={{ left: -150, top: 0 }}></OptionsButton>
                 </div>
             </div> : null;
-        // {this.get_email_options_button()}
+
         return (
             <div className={this.get_style()}>
                 {header}
