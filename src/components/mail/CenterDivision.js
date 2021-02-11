@@ -9,39 +9,8 @@ import { Task } from '../../data_objects/Task'
 
 
 export class CenterDivision extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            show_add_task: false,
-            selected_value: null
-        };
-        this.handle_option_button_click = this.handle_option_button_click.bind(this);
-        this.add_task = this.add_task.bind(this);
-        this.reset = this.reset.bind(this);
-    }
-    reset() {
-        this.setState({
-            show_add_task: false,
-            selected_value: null,
-            email_id: null
-        });
-    }
-    add_task(task) {
-        this.setState({ show_add_task: false, selected_value: null });
-        Task.insert_task(this.props.Update, this.props.thread.get_email(this.state.email_id), task)
-    }
-    handle_option_button_click(e, email_id) {
-        if (e.value === 'Delete') {
-            this.props.thread.delete_email(email_id);
-            this.reset()
-        }
-        else if (e.value === 'Mark Read') {
-            this.props.thread.get_email(email_id).set_is_read(true);
-            this.reset();
-        } else {
-            this.setState({ show_add_task: true, selected_value: e.value, email_id: email_id });
-        }
-    }
+
+
     render() {
         if (!this.props.thread) { return null; }
         const thread_emails = this.props.thread.get_emails()
@@ -50,16 +19,11 @@ export class CenterDivision extends React.Component {
         if (thread_emails.length == 0) {
             return null;
         }
-        const options_button = {
-            selected_value: this.state.selected_value,
-            onChange: this.handle_option_button_click,
-        }
+
         const emails = thread_emails.map((email) =>
             <EmailContainer
                 key={email.get_id()}
                 email={email}
-                options_button={options_button}
-                selected_task={this.props.selected_task}
             />);
         return (
             <div className='CenterDivision' >

@@ -7,8 +7,6 @@ import { MsgrahpAdaptor, onPopupOpen, onPopupOpen_template, place_priority, adju
 import UpcomingMeetings from './UpcomingMeetings';
 import CalendarTasks from './CalendarTasks'
 import SimpleBar from 'simplebar-react';
-import './script.js'
-
 export class Calendar extends React.Component {
 
     render() {
