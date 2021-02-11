@@ -21,7 +21,7 @@ export default function OptionsButton(props) {
                 }
             }}
         >{o.name}</li>)
-    const options_list = visible ? <OptionsList evt={evt} options={options} offset={props.offset} /> : null;
+    const options_list = visible ? <OptionsList evt={evt} on_close={() => set_visible(false)} options={options} offset={props.offset} /> : null;
 
     return (
         <div className="OptionsButton">
@@ -40,7 +40,10 @@ function OptionsList(props) {
         left: props.evt.pageX + custom_offset.left
     }
     return ReactDOM.createPortal(
-        <ul className="options_list" style={style} > {props.options}</ul>,
+        <>
+            <div className="invisible_portal_wrapper" onClick={props.on_close} />
+            <ul className="options_list" style={style} > {props.options}</ul>
+        </>,
         document.getElementById('messages_to_user')
     );
 }
