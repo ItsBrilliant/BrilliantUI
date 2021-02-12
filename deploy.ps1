@@ -1,4 +1,4 @@
-(Get-ECRLoginCommand).Password | docker login --username AWS --password-stdin 522483826916.dkr.ecr.us-east-2.amazonaws.com
+aws ecr get-login-password | docker login --username AWS --password-stdin 522483826916.dkr.ecr.us-east-2.amazonaws.com
 
 $api_ecr='522483826916.dkr.ecr.us-east-2.amazonaws.com'
 $tag_cmd='docker tag '
