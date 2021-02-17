@@ -10,7 +10,7 @@ import { Create } from '../../actions/email_composer.js';
 export default class EmailThread extends Component {
 
     get_selected_email() {
-        return this.props.thread.get_emails()[0];
+        return this.props.thread.get_emails(this.props.selected_folder_id)[0];
     }
 
     get_style() {

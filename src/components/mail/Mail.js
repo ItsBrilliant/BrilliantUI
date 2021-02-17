@@ -40,7 +40,7 @@ export class Mail extends Component {
                     selected_folder={this.state.selected_folder}
                 />
                 <CenterDivision thread={selected_thread}
-                    selected_folder={this.state.selected_folder} />
+                    selected_folder_id={this.props.folders[this.state.selected_folder]} />
                 <RightDivision thread={selected_thread} />
             </div>
         )

@@ -13,9 +13,7 @@ export class CenterDivision extends React.Component {
 
     render() {
         if (!this.props.thread) { return null; }
-        const thread_emails = this.props.thread.get_emails()
-            .reverse() // Drafts are shown only in Draft folder and vice versa
-            .filter(e => e.is_draft() === (this.props.selected_folder === 'Drafts'));
+        const thread_emails = this.props.thread.get_emails(this.props.selected_folder_id)
         if (thread_emails.length == 0) {
             return null;
         }

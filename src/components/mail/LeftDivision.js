@@ -99,9 +99,8 @@ function filter_mail_folders(thread, folder_id) {
 
 function ScrollableThreadContainer(props) {
   const tasks = useSelector(state => Object.values(state.tasks));
-  // emailThreads, handle_select, selected_thread_id, load_func,
-  // group_type, sort_type, incoming, user, folders, selected_folder) {
-  var filtered_threads = Object.values(props.emailThreads).filter(t => filter_mail_folders(t, props.folders[props.selected_folder]));
+  const selected_folder_id = props.folders[props.selected_folder];
+  var filtered_threads = Object.values(props.emailThreads).filter(t => filter_mail_folders(t, selected_folder_id));
   if (props.selected_folder !== 'Drafts') {
     filtered_threads = filter_threads(props.incoming, filtered_threads, props.user);
   }
@@ -118,7 +117,8 @@ function ScrollableThreadContainer(props) {
       group_key_type={props.group_type}
       selected_thread_id={props.selected_thread_id}
       handle_select={props.handle_select}
-      tasks={tasks} />)
+      tasks={tasks}
+      selected_folder_id={selected_folder_id} />)
 
   return (
     <SimpleBar className='SimpleBar2'>

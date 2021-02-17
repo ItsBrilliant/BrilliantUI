@@ -46,7 +46,8 @@ class GroupedThreads extends Component {
             <EmailThread key={thread.get_id()} id={thread.get_id()} thread={thread} is_selected={thread.get_id() === this.props.selected_thread_id}
                 handle_select={this.props.handle_select}
                 priority={this.get_priority_style(thread.get_priority(this.props.tasks))}
-                options_offset={{ top: 0, left: 15 }} />);
+                options_offset={{ top: 0, left: 15 }}
+                selected_folder_id={this.props.selected_folder_id} />);
         return (
             <div className='GroupedThreads'>
                 <button className={this.get_group_key_style()}>{title}</button>

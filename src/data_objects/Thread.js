@@ -66,8 +66,12 @@ export class Thread {
         return this.id;
     }
 
-    get_emails() {
-        return Object.values(this.emails_dict)
+    get_emails(folder_id) {
+        let emails = Object.values(this.emails_dict)
+        if (folder_id) {
+            emails = emails.filter(email => email.get_folder_id() === folder_id)
+        }
+        return emails;
     }
 
     size() {
