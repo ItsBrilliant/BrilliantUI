@@ -28,13 +28,28 @@ export async function append_email_attachments(emails, user) {
 
 export async function download_attachment(email_id, attachment_id, user) {
     const params = {
+        action_type: "download",
         email_id: email_id,
         attachment_id: attachment_id
     }
     try {
-        let attachment_data = await Axios.get('api/download_attachment', { params: params });
+        let attachment_data = await Axios.get('api/attachment_action', { params: params });
         attachment_data = attachment_data.data;
         await download(atob(attachment_data.contentBytes), attachment_data.name);
+    }
+    catch (e) {
+        console.log(e);
+    }
+}
+
+export async function delete_attachment(email_id, attachment_id) {
+    const params = {
+        action_type: "delete",
+        email_id: email_id,
+        attachment_id: attachment_id
+    }
+    try {
+        await Axios.get('api/attachment_action', { params: params });
     }
     catch (e) {
         console.log(e);

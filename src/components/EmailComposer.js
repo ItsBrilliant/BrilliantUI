@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import ReactQuillWrapper from './external/ReactQuillWrapper.js';
 import { EmailChips } from './external/EmailChips.js';
 import './EmailComposer.css';
-import { create_based_draft, send_email, update_and_send, update_draft, append_email_attachments } from '../backend/Connect.js';
+import { create_based_draft, send_email, update_and_send, update_draft, append_email_attachments, delete_attachment } from '../backend/Connect.js';
 import { sleep } from '../utils.js';
 import { build_email_from_composer, get_recipient_addresses_from_email } from './email_compuser_utils.js';
 import Draggable from 'react-draggable';
@@ -106,6 +106,9 @@ export function EmailComposer(props) {
         });
     }
     function remove_file(file) {
+        if (file.id && dest_id) {
+            delete_attachment(dest_id, file.id)
+        }
         set_files(Object.values(files).filter(f => f !== file))
         my_set_buffers(file, undefined)
         my_set_progress(file, undefined)
