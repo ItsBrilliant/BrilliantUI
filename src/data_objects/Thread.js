@@ -12,6 +12,7 @@ export class Thread {
     static group_functions = {};
     static sort_functions = {};
     static threads = {}
+    static SELECTED_FOLDER_ID = undefined;
     static get_group_function(group_type) {
         return Thread.group_functions[group_type];
     }
@@ -37,23 +38,16 @@ export class Thread {
         }
     }
 
-    get_num_tasks_deprecated() {
-        let count = 0;
-        for (const email of this.get_emails()) {
-            count = count + email.get_num_tasks();
-        }
-        return count;
-    }
     set_priority(priority) {
         this.priority = priority;
     }
-    get_priority() {
+    get_priority(folder_id) {
         const tasks = Object.values(Task.CURRENT_TASKS);
         if (this.priority !== undefined) {
             return this.priority;
         }
         var highest_priority = CAN_WAIT;
-        for (const email of this.get_emails()) {
+        for (const email of this.get_emails(folder_id)) {
             const priority = Email.get_priority(tasks, email.get_id());
             if (highest_priority > priority) {
                 highest_priority = priority;
@@ -67,10 +61,12 @@ export class Thread {
     }
 
     get_emails(folder_id) {
+
         let emails = Object.values(this.emails_dict)
-        if (folder_id) {
-            emails = emails.filter(email => email.get_folder_id() === folder_id)
-        }
+        //Override the filtering for now
+        //      if (folder_id) {
+        //           emails = emails.filter(email => email.get_folder_id() === folder_id)
+        //       }
         return emails;
     }
 
@@ -84,28 +80,19 @@ export class Thread {
 
     delete_email(id) {
         delete_email(id);
+        this.emails_dict = Object.assign({}, this.emails_dict)
         delete this.emails_dict[id];
     }
 
     add_email(email) {
-        this.emails_dict[email.get_id()] = email;
+        let new_entry = {};
+        new_entry[email.get_id()] = email;
+        this.emails_dict = { ...this.emails_dict, ...new_entry }
     }
 
-    get_tasks_deprecated() {
-        var tasks = []
-        for (const email of this.get_emails()) {
-            if (email.tasks !== undefined) {
-                for (const task of email.tasks) {
-                    tasks.push(task);
-                }
-            }
-        }
-        return tasks;
-    }
-
-    get_participants() {
+    get_participants(folder_id) {
         var participants = new Set()
-        for (const email of this.get_emails()) {
+        for (const email of this.get_emails(folder_id)) {
             const sender = email.get_sender();
             if (sender) {
                 participants.add(sender);
@@ -117,10 +104,10 @@ export class Thread {
         return Array.from(participants);
     }
 
-    get_attachments() {
+    get_attachments(folder_id) {
         var attachments = [];
         var existing_names = [];
-        for (const email of this.get_emails()) {
+        for (const email of this.get_emails(folder_id)) {
             var current_attachments = email.get_attachments();
             if (current_attachments !== undefined) {
                 for (const attachment of current_attachments) {
@@ -134,9 +121,9 @@ export class Thread {
         return attachments;
     }
 
-    get_date() {
+    get_date(folder_id) {
         var newest_date = new Date(1900, 0, 0);
-        for (const email of this.get_emails()) {
+        for (const email of this.get_emails(folder_id)) {
             if (newest_date.valueOf() < email.get_date().valueOf()) {
                 newest_date = email.get_date();
             }
@@ -156,24 +143,13 @@ export class Thread {
     }
 }
 
-Thread.group_functions[PRIORITY_KEY] = (thread) => thread.get_priority();
+Thread.group_functions[PRIORITY_KEY] = (thread) => thread.get_priority(Thread.SELECTED_FOLDER_ID);
 
 Thread.group_functions[TIME_KEY] = (thread) => {
     let d = thread.get_date();
     return new Date(d.getYear(), d.getMonth(), d.getDate());
 }
 
-Thread.sort_functions[PRIORITY_KEY] = (a, b) => a.get_priority() - b.get_priority();
+Thread.sort_functions[PRIORITY_KEY] = (a, b) => a.get_priority(Thread.SELECTED_FOLDER_ID) - b.get_priority(Thread.SELECTED_FOLDER_ID);
 
 Thread.sort_functions[TIME_KEY] = (a, b) => b.get_date().valueOf() - a.get_date().valueOf();
-
-export function expand_threads(emails) {
-    for (const email of emails) {
-        const thread_id = email.get_thread_id()
-        if (Thread.threads[thread_id] === undefined) {
-            Thread.threads[thread_id] = new Thread(thread_id, [])
-        }
-        Thread.threads[thread_id].add_email(email)
-    }
-    return Thread.threads
-}

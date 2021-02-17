@@ -101,7 +101,7 @@ function ScrollableThreadContainer(props) {
   const tasks = useSelector(state => Object.values(state.tasks));
   const selected_folder_id = props.folders[props.selected_folder];
   var filtered_threads = Object.values(props.emailThreads).filter(t => filter_mail_folders(t, selected_folder_id));
-  if (props.selected_folder !== 'Drafts') {
+  if (true || props.selected_folder !== 'Drafts') {
     filtered_threads = filter_threads(props.incoming, filtered_threads, props.user);
   }
 

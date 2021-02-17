@@ -10,10 +10,20 @@ import { Task } from '../../data_objects/Task'
 
 export class CenterDivision extends React.Component {
 
+    filter_emails(emails) {
+        return emails.filter(e => {
+            if (e.get_folder_id() === this.props.folders['Deleted Items']) {
+                return e.get_folder_id() === this.props.selected_folder_id;
+            } else {
+                return e.is_draft() === (this.props.selected_folder === 'Drafts');
+            }
 
+        })
+    }
     render() {
         if (!this.props.thread) { return null; }
-        const thread_emails = this.props.thread.get_emails(this.props.selected_folder_id)
+        const thread_emails = this.filter_emails(this.props.emails);
+
         if (thread_emails.length == 0) {
             return null;
         }

@@ -111,7 +111,7 @@ function ThreadLabels(props) {
     }
 
     options.filter(o => o.name === 'Mark as read')[0].action = () => thread.mark_all_read();
-    options.filter(o => o.name === "Change priority")[0].action = () => thread.set_priority((thread.get_priority(tasks) + 1) % 3);
+    options.filter(o => o.name === "Change priority")[0].action = () => thread.set_priority((thread.get_priority() + 1) % 3);
     return (
         <div className='thread_labels'>
             <div className={'num_tasks_label ' + props.priority}>
