@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import ReactQuillWrapper from './external/ReactQuillWrapper.js';
 import { EmailChips } from './external/EmailChips.js';
 import './EmailComposer.css';
-import { create_based_draft, send_email, update_and_send, update_draft } from '../backend/Connect.js';
+import { create_based_draft, send_email, update_and_send, update_draft, append_email_attachments } from '../backend/Connect.js';
 import { sleep } from '../utils.js';
 import { build_email_from_composer, get_recipient_addresses_from_email } from './email_compuser_utils.js';
 import Draggable from 'react-draggable';
@@ -120,6 +120,9 @@ export function EmailComposer(props) {
             if (['reply', 'reply_all', 'forward'].includes(attributes.composer_type)) {
                 const message = await create_based_draft(attributes.email_id, attributes.composer_type);
                 var email_object = new Email(message);
+                if (attributes.composer_type === 'forward') {
+                    append_email_attachments([email_object]).then(res => set_files(email_object.get_attachments()))
+                }
                 const recipients = get_recipient_addresses_from_email(email_object)
                 const subject = email_object.get_subject();
                 set_to(recipients.to);
