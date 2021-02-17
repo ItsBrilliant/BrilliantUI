@@ -70,11 +70,16 @@ export class Thread {
         return Object.values(this.emails_dict)
     }
 
+    size() {
+        return this.get_emails().length
+    }
+
     get_email(id) {
         return this.emails_dict[id]
     }
 
     delete_email(id) {
+        delete_email(id);
         delete this.emails_dict[id];
     }
 

@@ -24,6 +24,7 @@ export class CenterDivision extends React.Component {
             <EmailContainer
                 key={email.get_id()}
                 email={email}
+                thread={this.props.thread}
             />);
         return (
             <div className='CenterDivision' >

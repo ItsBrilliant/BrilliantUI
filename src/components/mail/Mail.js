@@ -11,11 +11,9 @@ export class Mail extends Component {
         console.log("Started Mail");
         this.state = {
             selected_thread_id: undefined,
-            selected_task_index: -1,
             selected_folder: "Inbox"
         }
         this.handleSelect = this.handleSelect.bind(this);
-        this.handle_task_hover = this.handle_task_hover.bind(this);
         this.set_selected_folder = this.set_selected_folder.bind(this);
 
     }
@@ -27,12 +25,8 @@ export class Mail extends Component {
         this.setState({ selected_thread_id: id });
     }
 
-    handle_task_hover(task) {
-        this.setState({ selected_task: task });
-    }
-
     render() {
-        const selected_thread = this.props.emailThreads[this.state.selected_thread_id]
+        const selected_thread = this.props.emailThreads[this.state.selected_thread_id];
         return (
             <div className='Mail'>
                 <LeftDivision
@@ -46,8 +40,7 @@ export class Mail extends Component {
                     selected_folder={this.state.selected_folder}
                 />
                 <CenterDivision thread={selected_thread}
-                    selected_folder={this.state.selected_folder}
-                    selected_task={this.state.selected_task} />
+                    selected_folder={this.state.selected_folder} />
                 <RightDivision thread={selected_thread} />
             </div>
         )

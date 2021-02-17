@@ -43,7 +43,7 @@ export async function download_attachment(email_id, attachment_id, user) {
 
 export async function get_all_mail(callback_func, user) {
     var chunk = 3;
-    var limit = 80;
+    var limit = 50;
     for (let current = 0; current < limit; current += chunk) {
         try {
             const emails = await Axios.get('api/inbox', { params: { skip: current, top: chunk } })

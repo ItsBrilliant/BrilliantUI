@@ -5,6 +5,7 @@ import EmailTextArea from './EmailTextArea.js'
 import { EmailStamp } from './EmailStamp.js'
 import { useSelector, useDispatch } from 'react-redux'
 import { Delete } from '../../actions/email_threads'
+import { Create } from '../../actions/email_composer.js';
 
 export default class EmailThread extends Component {
 
@@ -89,11 +90,26 @@ function ThreadLabels(props) {
     const thread = useSelector(state => state.email_threads[props.thread_id]);
     const tasks = useSelector(state => Object.values(state.tasks));
     const num_tasks = tasks.filter(t => (!t.isDone && t.is_approved()) && (t.get_thread_id() === props.thread_id)).length;
-    const option_names = ["Set as task", "Change priority", "Add tag", "Export", "Mark as read", "Delete"];
+    const option_names = ["Set as task", "Change priority", "Reply", "Reply All", "Forward", "Mark as read", "Delete"];
     const options = option_names.map(n => { return { name: n } });
     options.filter(o => o.name === 'Delete')[0].action = () => {
         thread.delete_all(); dispatch(Delete(props.thread_id));
     }
+    const email_id = thread.get_emails()[0].get_id();
+    for (const button of [
+        { name: "Reply", composer_type: "reply" },
+        { name: "Reply All", composer_type: "reply_all" },
+        { name: "Forward", composer_type: "forward" }
+    ]) {
+
+        options.filter(o => o.name === button.name)[0].action = () => {
+            dispatch(Create({
+                email_id: email_id,
+                composer_type: button.composer_type
+            }));
+        }
+    }
+
     options.filter(o => o.name === 'Mark as read')[0].action = () => thread.mark_all_read();
     options.filter(o => o.name === "Change priority")[0].action = () => thread.set_priority((thread.get_priority(tasks) + 1) % 3);
     return (

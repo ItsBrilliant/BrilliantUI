@@ -162,6 +162,8 @@ export default class EmailTextArea extends Component {
         const content = this.props.is_html ? this.props.content : this.render_content(this.props.content);
         const priority_style = get_priority_style(this.props.priority);
         const options = ['Mark as unread', 'Export', 'Delete'].map(o => { return { name: o } });
+        options.filter(o => o.name === 'Delete')[0].action = this.props.on_delete;
+        options.filter(o => o.name === 'Mark as unread')[0].action = this.props.on_mark_unread;
         const header = this.props.of_center_email ?
             <div className="header">
                 <h4>{this.props.sender_name}</h4>

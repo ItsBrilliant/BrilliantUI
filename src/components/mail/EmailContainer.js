@@ -6,6 +6,7 @@ import { EmailStamp } from './EmailStamp.js';
 import { Task } from '../../data_objects/Task'
 import { Email } from '../../data_objects/Email'
 import { Update } from '../../actions/tasks'
+import { Delete } from '../../actions/email_threads'
 import "./EmailContainer.css";
 
 export default function EmailContainer(props) {
@@ -22,6 +23,15 @@ export default function EmailContainer(props) {
     const is_html = SHOW_HTML && email.get_content_type() === 'html'
     const content = is_html ? email.get_html() : email.get_text();
     const stamp = sender ? EmailStamp([sender.image_link], email.date, sender.get_name()) : null
+    const on_email_delete = () => {
+        if (props.thread.size() == 1) {
+            props.thread.delete_all();
+            dispatch(Delete(props.thread.id));
+        } else {
+            props.thread.delete_email(email.get_id());
+        }
+    }
+    const on_email_mark_unread = () => email.set_is_read(false);
     const email_text_area =
         <EmailTextArea isUnread={!email.get_is_read()}
             sender_name={sender ? sender.get_name() : null}
@@ -29,13 +39,13 @@ export default function EmailContainer(props) {
             is_html={is_html}
             subject={email.get_subject()}
             of_center_email={true}
-            options_button={props.options_button}
             tags={email.get_tags()} id={email.get_id()}
             tasks={tasks}
-            selected_task={props.selected_task}
             add_task={Task.insert_task.bind(null, task_updater, email)}
             contacts={contacts}
             priority={Email.get_priority(tasks, email.get_id())}
+            on_delete={on_email_delete}
+            on_mark_unread={on_email_mark_unread}
         />
     const result = (sender === user ?
         <Fragment>{email_text_area} {stamp}</Fragment> :

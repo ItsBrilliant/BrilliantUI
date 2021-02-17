@@ -7,8 +7,8 @@ $push_cmd='docker push '
 $tag = Read-Host -Prompt 'Tag'
 
 Invoke-Expression "docker build -t api/frontend:$tag -f docker/Dockerfile ."
-Invoke-Expression "$tag_cmd api/frontend:$tag $api_ecr/api/frontend:$tag"
-Invoke-Expression "$push_cmd $api_ecr/api/frontend:$tag"
+Invoke-Expression "$tag_cmd api/frontend:$tag $api_ecr/api/frontend:latest"
+Invoke-Expression "$push_cmd $api_ecr/api/frontend:latest"
 
 
 
