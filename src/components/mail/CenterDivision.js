@@ -12,11 +12,12 @@ export class CenterDivision extends React.Component {
 
     filter_emails(emails) {
         return emails.filter(e => {
-            if (e.get_folder_id() === this.props.folders['Deleted Items']) {
-                return e.get_folder_id() === this.props.selected_folder_id;
-            } else {
-                return e.is_draft() === (this.props.selected_folder === 'Drafts');
+            const folder_id = e.get_folder_id();
+            if (folder_id === this.props.folders['Deleted Items'] ||
+                folder_id === this.props.folders['Drafts']) {
+                return folder_id === this.props.selected_folder_id;
             }
+            return true;
 
         })
     }

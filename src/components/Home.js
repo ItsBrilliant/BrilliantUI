@@ -17,6 +17,7 @@ import { Contact } from '../data_objects/Contact.js';
 import { MAIL_FOLDERS } from '../data_objects/Consts.js';
 import { Task } from '../data_objects/Task'
 import axios from 'axios';
+import { Email } from '../data_objects/Email.js';
 
 const history = require("history").createBrowserHistory();
 
@@ -92,9 +93,11 @@ export class Home extends React.Component {
                     my_folders[folder['displayName']] = folder['id'];
                 }
             }
+            Email.DELETED_FOLDER_ID = my_folders['Deleted Items'];
             return my_folders;
         }
         this.update_user_data(folders, initial_user, 'mailFolders', update_function);
+
     }
 
     update_user_data(data, user, update_field, update_function) {

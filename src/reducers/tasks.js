@@ -1,5 +1,4 @@
 
-import { Thread } from '../data_objects/Thread.js'
 import { Task } from '../data_objects/Task.js'
 export const TasksReducer = (state = {}, action) => {
     if (action.type === "UPDATE") {

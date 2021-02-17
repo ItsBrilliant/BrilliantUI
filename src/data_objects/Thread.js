@@ -79,7 +79,7 @@ export class Thread {
     }
 
     delete_email(id) {
-        delete_email(id);
+        delete_email(id, this.emails_dict[id].is_deleted());
         this.emails_dict = Object.assign({}, this.emails_dict)
         delete this.emails_dict[id];
     }
@@ -138,7 +138,7 @@ export class Thread {
     delete_all() {
         console.log("Deleting all emails of thread");
         for (const email of this.get_emails()) {
-            delete_email(email.get_id());
+            delete_email(email.get_id(), email.is_deleted());
         }
     }
 }
