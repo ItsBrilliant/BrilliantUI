@@ -182,6 +182,7 @@ export class Task {
                     time.end.setHours(time.end.getHours() - 10);
                 }
             }
+
             var priority = URGENT;
             if (probability < 75) {
                 priority = CAN_WAIT;
@@ -199,7 +200,7 @@ export class Task {
                 time_text += ';';
             }
             const duration_text = duration ? " Duration: " + duration.data + " " + duration.unit : "";
-            const task_text = `Meeting(${Math.round(probability)}%);` + time_text + duration_text
+            const task_text = `Meeting with ${email.get_sender().get_name()} (${Math.round(probability)}%);` + time_text + duration_text
             var task = new Task(task_text, new Date(), priority, false, { start: start_index, end: start_index + text_length }, undefined)
             if (time) {
                 task['meeting'] = { duration: duration, time: time };

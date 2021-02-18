@@ -3,10 +3,10 @@
     box-sizing: border-box;
 }
 .CalendarTasks {
-    height: 75%;
     width: 100%;
+    height: calc(100% - 150px);
     background-color: var(--email-container-background);
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .calendar_right_division  .header {
@@ -74,8 +74,9 @@ s
 }
 
 .calendar_tasks_wrapper{
-    height: 93%;
+    height: calc(100% - 35px);
     overflow: hidden;
+    flex-grow: 1;
 }
 
 .CalendarTasks .CalendarTask .priority {
