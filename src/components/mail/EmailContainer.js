@@ -6,12 +6,13 @@ import { EmailStamp } from './EmailStamp.js';
 import { Task } from '../../data_objects/Task'
 import { Email } from '../../data_objects/Email'
 import { Update } from '../../actions/tasks'
-import { Delete } from '../../actions/email_threads'
+import { DeleteEmails, DeleteThread } from '../../actions/email_threads'
 import "./EmailContainer.css";
 
 export default function EmailContainer(props) {
     const dispatch = useDispatch();
     const task_updater = (task) => dispatch(Update(task))
+    const emails_deleter = (id, email_ids) => dispatch(DeleteEmails(id, email_ids));
     const user = useSelector(state => state.user)
     const email = props.email;
     const tasks = useSelector(state => Object.values(state.tasks)).filter(t => t.email_id === email.get_id());
@@ -24,12 +25,7 @@ export default function EmailContainer(props) {
     const content = is_html ? email.get_html() : email.get_text();
     const stamp = sender ? EmailStamp([sender.image_link], email.date, sender.get_name()) : null
     const on_email_delete = () => {
-        if (props.thread.size() == 1) {
-            props.thread.delete_all();
-            dispatch(Delete(props.thread.id));
-        } else {
-            props.thread.delete_email(email.get_id());
-        }
+        props.thread.delete_email(email.get_id(), emails_deleter);
     }
     const on_email_mark_unread = () => email.set_is_read(false);
     const email_text_area =

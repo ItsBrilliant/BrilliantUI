@@ -1,20 +1,31 @@
-export const Expand = (emails) => {
+export const ExpandThreads = (emails) => {
     return {
-        type: "EXPAND",
+        type: "EXPAND_THREADS",
         emails: emails
     };
 }
 
-export const Delete = (id) => {
+export const DeleteEmails = (thread_id, email_ids) => {
+    if (typeof (email_ids) === 'string') {
+        email_ids = [email_ids];
+    }
     return {
-        type: "DELETE",
+        type: "DELETE_EMAILS",
+        thread_id: thread_id,
+        email_ids: email_ids
+    };
+}
+
+export const DeleteThread = (id) => {
+    return {
+        type: "DELETE_THREAD",
         id: id
     };
 }
 
-export const Reset = () => {
+export const ResetThreads = () => {
     return {
-        type: "RESET"
+        type: "RESET_THREADS"
     };
 }
 

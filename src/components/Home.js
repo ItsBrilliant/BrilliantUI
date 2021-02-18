@@ -12,7 +12,7 @@ import { LoginPage } from './LoginPage.js';
 import { connect } from "react-redux";
 import { Login } from "../actions/login.js";
 import { Update } from "../actions/tasks.js";
-import { Expand, Reset } from "../actions/email_threads.js";
+import { ExpandThreads, ResetThreads } from "../actions/email_threads.js";
 import { Contact } from '../data_objects/Contact.js';
 import { MAIL_FOLDERS } from '../data_objects/Consts.js';
 import { Task } from '../data_objects/Task'
@@ -268,8 +268,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
     Login,
-    Expand,
-    Reset,
+    Expand: ExpandThreads,
+    Reset: ResetThreads,
     Update
 };
 

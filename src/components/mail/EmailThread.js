@@ -4,7 +4,7 @@ import OptionsButton from '../OptionsButton.js'
 import EmailTextArea from './EmailTextArea.js'
 import { EmailStamp } from './EmailStamp.js'
 import { useSelector, useDispatch } from 'react-redux'
-import { Delete } from '../../actions/email_threads'
+import { DeleteEmails } from '../../actions/email_threads'
 import { Create } from '../../actions/email_composer.js';
 
 export default class EmailThread extends Component {
@@ -93,7 +93,7 @@ function ThreadLabels(props) {
     const option_names = ["Set as task", "Change priority", "Reply", "Reply All", "Forward", "Mark as read", "Delete"];
     const options = option_names.map(n => { return { name: n } });
     options.filter(o => o.name === 'Delete')[0].action = () => {
-        thread.delete_all(); dispatch(Delete(props.thread_id));
+        thread.delete_all((t_id, e_ids) => dispatch(DeleteEmails(t_id, e_ids)));
     }
     const email_id = thread.get_emails()[0].get_id();
     for (const button of [

@@ -4,9 +4,8 @@ import { delete_email } from '../backend/Connect.js'
 import { Task } from './Task'
 
 export class Thread {
-    constructor(id, emails) {
+    constructor(id, email_objects) {
         this.id = id;
-        const email_objects = emails.map(e => new Email(e));
         this.emails_dict = email_objects.reduce((dict, e) => { dict[e.get_id()] = e; return dict; }, {});
     }
     static group_functions = {};
@@ -60,13 +59,12 @@ export class Thread {
         return this.id;
     }
 
-    get_emails(folder_id) {
+    get_emails(folder_id = Thread.SELECTED_FOLDER_ID) {
 
         let emails = Object.values(this.emails_dict)
-        //Override the filtering for now
-        //      if (folder_id) {
-        //           emails = emails.filter(email => email.get_folder_id() === folder_id)
-        //       }
+        if (folder_id) {
+            emails = emails.filter(email => email.get_folder_id() === folder_id)
+        }
         return emails;
     }
 
@@ -78,16 +76,13 @@ export class Thread {
         return this.emails_dict[id]
     }
 
-    delete_email(id) {
-        delete_email(id, this.emails_dict[id].is_deleted());
-        this.emails_dict = Object.assign({}, this.emails_dict)
-        delete this.emails_dict[id];
+    delete_email(email_id, dispatcher) {
+        delete_email(email_id, this.emails_dict[email_id].is_deleted());
+        dispatcher(this.id, email_id);
     }
 
     add_email(email) {
-        let new_entry = {};
-        new_entry[email.get_id()] = email;
-        this.emails_dict = { ...this.emails_dict, ...new_entry }
+        this.emails_dict[email.get_id()] = email;
     }
 
     get_participants(folder_id) {
@@ -135,11 +130,13 @@ export class Thread {
             email.set_is_read(true);
         }
     }
-    delete_all() {
+    delete_all(dispatcher) {
         console.log("Deleting all emails of thread");
-        for (const email of this.get_emails()) {
+        const emails = this.get_emails(null);
+        for (const email of emails) {
             delete_email(email.get_id(), email.is_deleted());
         }
+        dispatcher(this.id, emails.map(email => email.get_id()))
     }
 }
 

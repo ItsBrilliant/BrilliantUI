@@ -148,7 +148,7 @@ export async function update_draft(email_id, email) {
 export async function delete_email(email_id, hard_delete) {
     const action_type = hard_delete ? 'hard_delete' : 'delete'
     try {
-        console.log("deleting email");
+        console.log("deleting email, hard_delete = " + hard_delete);
         let res = await Axios.post('api/email_action', { action_type: action_type, email_id: email_id });
         console.log(res);
     } catch (e) {

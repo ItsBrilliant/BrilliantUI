@@ -14,6 +14,7 @@ export class Mail extends Component {
             selected_thread_id: undefined,
             selected_folder: "Inbox"
         }
+        Thread.SELECTED_FOLDER_ID = this.props.folders["Inbox"];
         this.handleSelect = this.handleSelect.bind(this);
         this.set_selected_folder = this.set_selected_folder.bind(this);
 
@@ -30,7 +31,7 @@ export class Mail extends Component {
     render() {
         const selected_thread = this.props.emailThreads[this.state.selected_thread_id];
         const selected_folder_id = this.props.folders[this.state.selected_folder];
-        const selected_thread_emails = selected_thread ? selected_thread.get_emails() : [];
+        const selected_thread_emails = selected_thread ? selected_thread.get_emails(null) : [];
         return (
             <div className='Mail'>
                 <LeftDivision
