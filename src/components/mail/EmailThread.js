@@ -80,7 +80,8 @@ export default class EmailThread extends Component {
                     tags={selected_email.get_tags()}
                     external_show_task_portal={this.state.show_task_portal}
                     external_on_task_portal_close={() => this.setState({ show_task_portal: false })}
-                    email={selected_email} />
+                    email={selected_email}
+                    tasks={[]} />
                 <ThreadLabels
                     has_attachments={has_attatchments}
                     priority={this.props.priority}

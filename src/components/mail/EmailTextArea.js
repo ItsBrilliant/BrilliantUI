@@ -146,7 +146,7 @@ class EmailTextArea extends Component {
 
     // Insert task highligts
     render_content(text) {
-        let tasks = this.props.tasks.filter(t => t.email_id === this.props.email.get_id());
+        let tasks = this.props.tasks.filter(t => t.source_indexes.start >= 0);
         if (!this.props.of_center_email || tasks.length === 0) {
             return <span>{text}</span>
         }
@@ -234,12 +234,7 @@ function on_proposed_task_hover(task, e) {
     this.handle_task_icon_click(position_style, selection_indexes, task);
 }
 
-const mapStateToProps = state => ({
-    tasks: Object.values(state.tasks).filter(t => {
-        const indexes = t.get_source_indexes()
-        return indexes.start >= 0 && indexes.end >= 0;
-    })
-});
+const mapStateToProps = state => { };
 
 const mapDispatchToProps = {
     Update
