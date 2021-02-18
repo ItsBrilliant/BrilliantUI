@@ -5,6 +5,7 @@
     background-color: var(--email-container-background);
     height: 100%;
     width: 55%;
+    min-width: 450px;
 }
 
 .CenterDivision .CenterSimpleBar .simplebar-content{

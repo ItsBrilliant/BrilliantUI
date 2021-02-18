@@ -2,6 +2,7 @@
 
 .RightDivision{
     width: 25%;
+    min-width: 200px;
     height: 100%;
     overflow: hidden;
 }
