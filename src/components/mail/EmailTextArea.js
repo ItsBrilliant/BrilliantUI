@@ -51,10 +51,11 @@ class EmailTextArea extends Component {
     }
     componentWillReceiveProps(next_props) {
         if (next_props.external_show_task_portal && !this.props.external_show_task_portal) {
+            const [x, y] = next_props.task_portal_location;
             this.setState(
                 {
                     add_task_icon: null,
-                    add_task_component: <AddTaskPortal style={get_mouse_position_style()}
+                    add_task_component: <AddTaskPortal style={get_mouse_position_style(x, y)}
                         handle_ok={this.handle_add_task}
                         handle_close={this.handle_task_component_close}
                         priority={URGENT}

@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import ReactDOM from 'react-dom'
 import PriorityOptions from './PriorityOptions.js';
 import { useSelector } from 'react-redux';
@@ -31,6 +31,10 @@ export function AddTaskPortal(props) {
 
 
 function TaskContent(props) {
+    useEffect(() => {
+        let task_text_element = document.querySelector('.TaskContent #task_text_input');
+        task_text_element.focus();
+    }, [])
     const [edited_owner_value, set_owner_value] = useState(props.owner.get_address());
     const owner_options = Contact.get_filtered_contacts(edited_owner_value);
     const owner_selection_list = owner_options[0] === edited_owner_value ? null :
@@ -49,7 +53,7 @@ function TaskContent(props) {
                 {owner_selection_list}
             </div>
             <div className='TaskContent'>
-                <input type='text' value={props.task_text} placeholder='Task content...' onChange={(e) => props.setText(e.target.value)}></input>
+                <input id="task_text_input" type='text' value={props.task_text} placeholder='Task content...' onChange={(e) => props.setText(e.target.value)}></input>
             </div>
         </div>
     );

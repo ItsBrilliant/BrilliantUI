@@ -24,24 +24,27 @@ export class EmailChips extends React.Component {
                         options: []
                     });
                     this.props.on_items_change([...this.props.items, value]);
+
                 } else {
-                    const old_options = this.state.options;
-                    if (old_options.length > 0) {
-                        this.setState({
-                            error: null,
-                            options: old_options.slice(0, 1),
-                            value: old_options[0]
-                        })
-                    } else {
-                        this.setState({
-                            value: value,
-                            options: []
-                        });
+                    if (evt.key === "Tab") {
+                        const old_options = this.state.options;
+                        if (old_options.length > 0) {
+                            this.setState({
+                                error: null,
+                                options: old_options.slice(0, 1),
+                                value: old_options[0]
+                            })
+                        } else {
+                            this.setState({
+                                value: value,
+                                options: []
+                            });
+                        }
                     }
                 }
             }
         }
-    };
+    }
 
     handle_option_select(value) {
         this.handleChange(value)
@@ -127,6 +130,7 @@ export class EmailChips extends React.Component {
                     onKeyDown={this.handleKeyDown}
                     onChange={(e) => this.handleChange(e.target.value)}
                     onPaste={this.handlePaste}
+                    onBlur={() => this.handleKeyDown({ key: 'Enter', preventDefault: () => { } })}
                 />
                 <ul>
                     {this.state.options.map(o => <li onClick={(e) => this.handle_option_select(e.target.innerText)}

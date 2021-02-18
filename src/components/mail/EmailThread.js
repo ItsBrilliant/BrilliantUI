@@ -11,7 +11,10 @@ export default class EmailThread extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { show_task_portal: false }
+        this.state = {
+            show_task_portal: false,
+            location: [null, null]
+        }
     }
     get_selected_email() {
         return this.props.thread.get_emails()[0];
@@ -79,6 +82,7 @@ export default class EmailThread extends Component {
                     subject={selected_email.get_subject()}
                     tags={selected_email.get_tags()}
                     external_show_task_portal={this.state.show_task_portal}
+                    task_portal_location={this.state.location}
                     external_on_task_portal_close={() => this.setState({ show_task_portal: false })}
                     email={selected_email}
                     tasks={[]} />
@@ -87,7 +91,10 @@ export default class EmailThread extends Component {
                     priority={this.props.priority}
                     thread_id={this.props.id}
                     options_offset={this.props.options_offset}
-                    show_task_portal={() => this.setState({ show_task_portal: true })}
+                    show_task_portal={(e) => this.setState({
+                        show_task_portal: true,
+                        location: [e.pageX, e.pageY]
+                    })}
                 />
             </div>
         )

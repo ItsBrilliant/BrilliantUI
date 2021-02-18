@@ -14,10 +14,10 @@ export default function OptionsButton(props) {
     const options = props.options.map(o =>
         <li
             key={o.name}
-            onClick={() => {
+            onClick={(e) => {
                 set_visible(false);
                 if (o.action) {
-                    o.action();
+                    o.action(e);
                 }
             }}
         >{o.name}</li>)
