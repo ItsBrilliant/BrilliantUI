@@ -14,6 +14,7 @@
 .AddTaskPortal {
     width: 400px;
     background-color: var(--email-container-background);
+    border: 2px solid black;
     z-index: 1000;
     input {
         background-color: transparent;

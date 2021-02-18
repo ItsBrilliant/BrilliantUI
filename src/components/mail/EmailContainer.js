@@ -11,7 +11,6 @@ import "./EmailContainer.css";
 
 export default function EmailContainer(props) {
     const dispatch = useDispatch();
-    const task_updater = (task) => dispatch(Update(task))
     const emails_deleter = (id, email_ids) => dispatch(DeleteEmails(id, email_ids));
     const user = useSelector(state => state.user)
     const email = props.email;
@@ -36,12 +35,11 @@ export default function EmailContainer(props) {
             subject={email.get_subject()}
             of_center_email={true}
             tags={email.get_tags()} id={email.get_id()}
-            tasks={tasks}
-            add_task={Task.insert_task.bind(null, task_updater, email)}
             contacts={contacts}
             priority={Email.get_priority(tasks, email.get_id())}
             on_delete={on_email_delete}
             on_mark_unread={on_email_mark_unread}
+            email={email}
         />
     const result = (sender === user ?
         <Fragment>{email_text_area} {stamp}</Fragment> :

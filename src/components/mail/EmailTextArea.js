@@ -7,8 +7,10 @@ import { getSelectionOffsetRelativeTo, get_priority_style } from '../../utils.js
 import { GroupIcon } from './EmailStamp.js';
 import "./EmailTextArea.css";
 import OptionsButton from '../OptionsButton.js';
+import { connect } from 'react-redux'
+import { Update } from '../../actions/tasks'
 
-export default class EmailTextArea extends Component {
+class EmailTextArea extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -18,10 +20,13 @@ export default class EmailTextArea extends Component {
         };
         this.handle_task_component_close = this.handle_task_component_close.bind(this)
         this.handle_add_task = this.handle_add_task.bind(this)
-
     }
+
     handle_task_component_close() {
         this.setState({ add_task_component: null });
+        if (this.props.external_on_task_portal_close) {
+            this.props.external_on_task_portal_close();
+        }
     }
     handle_add_task(text, date, priority, owner) {
         this.handle_task_component_close();
@@ -41,10 +46,28 @@ export default class EmailTextArea extends Component {
             task = new Task(text, date, priority, false, task_format_indexes, owner);
         }
         task.set_approved(true);
-        this.props.add_task(task);
+        Task.insert_task(this.props.Update, this.props.email, task)
 
     }
-
+    componentWillReceiveProps(next_props) {
+        if (next_props.external_show_task_portal && !this.props.external_show_task_portal) {
+            this.setState(
+                {
+                    add_task_icon: null,
+                    add_task_component: <AddTaskPortal style={get_mouse_position_style()}
+                        handle_ok={this.handle_add_task}
+                        handle_close={this.handle_task_component_close}
+                        priority={URGENT}
+                        task_text=""
+                    />,
+                    task_args: {
+                        selection_indexes: [-1, -1],
+                        id: undefined
+                    }
+                }
+            );
+        }
+    }
     handle_task_icon_click(position_style, selection_indexes, existing_task) {
         let priority = URGENT;
         let text = "";
@@ -123,11 +146,12 @@ export default class EmailTextArea extends Component {
 
     // Insert task highligts
     render_content(text) {
-        if (!this.props.tasks || this.props.tasks.length === 0) {
+        let tasks = this.props.tasks.filter(t => t.email_id === this.props.email.get_id());
+        if (!this.props.of_center_email || tasks.length === 0) {
             return <span>{text}</span>
         }
         var sections = []
-        const tasks = this.props.tasks.sort(function (a, b) { return a.get_source_indexes().start - b.get_source_indexes().start; });
+        tasks = tasks.sort(function (a, b) { return a.get_source_indexes().start - b.get_source_indexes().start; });
         const first_highlight = tasks[0].get_source_indexes()
         if (first_highlight && first_highlight.start > 0) {
             sections.push(<span>{text.slice(0, first_highlight.start)}</span>)
@@ -191,8 +215,8 @@ export default class EmailTextArea extends Component {
 }
 
 function get_mouse_position_style(x, y) {
-    const top_offset = y - 60;
-    const left_offset = x - 20
+    const top_offset = y ? y - 60 : "40vh";
+    const left_offset = x ? x - 20 : "40vw";
     return {
         position: 'fixed',
         top: top_offset,
@@ -209,3 +233,16 @@ function on_proposed_task_hover(task, e) {
     const selection_indexes = [source_indexes.start, source_indexes.end];
     this.handle_task_icon_click(position_style, selection_indexes, task);
 }
+
+const mapStateToProps = state => ({
+    tasks: Object.values(state.tasks).filter(t => {
+        const indexes = t.get_source_indexes()
+        return indexes.start >= 0 && indexes.end >= 0;
+    })
+});
+
+const mapDispatchToProps = {
+    Update
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(EmailTextArea);

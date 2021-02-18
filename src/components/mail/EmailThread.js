@@ -9,8 +9,12 @@ import { Create } from '../../actions/email_composer.js';
 
 export default class EmailThread extends Component {
 
+    constructor(props) {
+        super(props);
+        this.state = { show_task_portal: false }
+    }
     get_selected_email() {
-        return this.props.thread.get_emails(this.props.selected_folder_id)[0];
+        return this.props.thread.get_emails()[0];
     }
 
     get_style() {
@@ -73,12 +77,16 @@ export default class EmailThread extends Component {
                 <EmailTextArea isUnread={this.has_unread()}
                     content={selected_email.get_text()}
                     subject={selected_email.get_subject()}
-                    tags={selected_email.get_tags()} />
+                    tags={selected_email.get_tags()}
+                    external_show_task_portal={this.state.show_task_portal}
+                    external_on_task_portal_close={() => this.setState({ show_task_portal: false })}
+                    email={selected_email} />
                 <ThreadLabels
                     has_attachments={has_attatchments}
                     priority={this.props.priority}
                     thread_id={this.props.id}
                     options_offset={this.props.options_offset}
+                    show_task_portal={() => this.setState({ show_task_portal: true })}
                 />
             </div>
         )
@@ -95,6 +103,7 @@ function ThreadLabels(props) {
     options.filter(o => o.name === 'Delete')[0].action = () => {
         thread.delete_all((t_id, e_ids) => dispatch(DeleteEmails(t_id, e_ids)));
     }
+    options.filter(o => o.name === 'Set as task')[0].action = props.show_task_portal;
     const email_id = thread.get_emails()[0].get_id();
     for (const button of [
         { name: "Reply", composer_type: "reply" },
