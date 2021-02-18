@@ -6,12 +6,12 @@ Axios.defaults.xsrfCookieName = 'csrftoken';
 Axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 
 
-export async function append_email_attachments(emails, user) {
+export async function append_email_attachments(emails) {
     if (!emails) {
         return;
     }
     for (const email of emails) {
-        if (email.get_has_attachments()) {
+        if (email.is_new_version && email.get_has_attachments()) {
             try {
                 const attachments_list = await Axios.get('api/list_attachments', { params: { email_id: email.get_id() } })
                 const reducer = (acumulator, current) => {
@@ -27,7 +27,7 @@ export async function append_email_attachments(emails, user) {
     }
 }
 
-export async function download_attachment(email_id, attachment_id, user) {
+export async function download_attachment(email_id, attachment_id) {
     const params = {
         action_type: "download",
         email_id: email_id,
@@ -57,15 +57,24 @@ export async function delete_attachment(email_id, attachment_id) {
     }
 }
 
-export async function get_all_mail(callback_func, user) {
-    var chunk = 3;
-    var limit = 50;
+export async function get_all_mail(callback_func) {
+    get_mail(callback_func, 3, 100);
+}
+
+export async function refresh_mail(callback_fun) {
+    get_mail(callback_fun, 1, 100);
+}
+
+async function get_mail(callback_func, chunk, limit) {
     for (let current = 0; current < limit; current += chunk) {
         try {
             const emails = await Axios.get('api/inbox', { params: { skip: current, top: chunk } })
             const email_objects = emails.data.map(e => new Email(e))
-            callback_func(email_objects, user);
-            append_email_attachments(email_objects, user)
+            callback_func(email_objects);
+            append_email_attachments(email_objects);
+            if (email_objects.length === 0 || !email_objects[email_objects.length - 1].is_new_version) {
+                break;
+            }
         }
         catch (e) {
             console.log("Error getting email messages:");
@@ -73,31 +82,30 @@ export async function get_all_mail(callback_func, user) {
         }
     }
 
-
 }
 
 
-export async function get_calendar(callback_func, user) {
+export async function get_calendar(callback_func) {
     try {
         const events = await Axios.get('api/calendar', { params: { top: 100 } })
-        callback_func(events.data, user);
+        callback_func(events.data);
     } catch (e) {
         console.log("Error getting events:");
         console.log(e);
     }
 }
 
-export async function get_mail_folders(callback_func, user) {
+export async function get_mail_folders(callback_func) {
     try {
         const folders = await Axios.get('api/mail_folders');
-        callback_func(folders.data, user);
+        callback_func(folders.data);
     } catch (e) {
         console.log("Error getting mail folders:");
         console.log(e);
     }
 }
 
-export async function send_email(email, user) {
+export async function send_email(email) {
     console.log("sending email");
     try {
         const res = await Axios.post('api/send_mail', { email: email });
@@ -157,7 +165,7 @@ export async function delete_email(email_id, hard_delete) {
     }
 }
 
-export async function update_and_send(email_id, email, user) {
+export async function update_and_send(email_id, email) {
     console.log("updating reply to email");
     try {
         await update_draft(email_id, email)
@@ -169,7 +177,7 @@ export async function update_and_send(email_id, email, user) {
     }
 }
 
-export async function send_draft(draft_id, user) {
+export async function send_draft(draft_id) {
     console.log("sending draft");
     try {
         const res = await Axios.post('api/email_action', { email_id: draft_id, action_type: "send" });

@@ -49,6 +49,7 @@ export class Mail extends Component {
                     selected_folder={this.state.selected_folder}
                     folders={this.props.folders}
                     emails={selected_thread_emails} />
+
                 <RightDivision thread={selected_thread} selected_folder_id={selected_folder_id} />
             </div>
         )

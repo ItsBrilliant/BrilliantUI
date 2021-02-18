@@ -22,8 +22,8 @@ export class CenterDivision extends React.Component {
 
     render() {
         if (!this.props.thread) { return null; }
-        const thread_emails = this.props.emails.filter(e => this.email_folder_filter(e)).reverse();
-
+        let thread_emails = this.props.emails.filter(e => this.email_folder_filter(e));
+        thread_emails = thread_emails.sort((a, b) => a.get_date() - b.get_date());
         if (thread_emails.length == 0) {
             return null;
         }

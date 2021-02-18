@@ -2,7 +2,7 @@ import React from 'react';
 import { Router, Switch, Route, Link, Redirect } from 'react-router-dom';
 import { Mail } from './mail/Mail.js'
 import './Home.css';
-import { get_all_mail, get_calendar, get_mail_folders } from '../backend/Connect.js';
+import { get_all_mail, get_calendar, get_mail_folders, refresh_mail } from '../backend/Connect.js';
 import { Calendar } from './calendar/Calendar.js';
 import { create_calendar_events, add_meetings_from_tasks } from './calendar/utils';
 import { EmailComposers } from './EmailComposer.js';
@@ -28,7 +28,11 @@ export class Home extends React.Component {
         super(props);
         console.log("Started Home");
         this.update_search_bar = this.update_search_bar.bind(this);
-        this.get_mailboxes = this.get_mailboxes.bind(this)
+        this.get_mailboxes = this.get_mailboxes.bind(this);
+        this.set_threads = this.set_threads.bind(this);
+        this.set_calendar = this.set_calendar.bind(this);
+        this.set_mail_folders = this.set_mail_folders.bind(this);
+        this.refresh_timer = null;
         this.state = {
             calendarEvents: [],
             search: "",
@@ -50,9 +54,12 @@ export class Home extends React.Component {
             this.handle_login(res.data)
         );
     }
+    componentWillUnmount() {
+        clearInterval(this.refresh_timer);
+    }
 
     handle_login(user_address) {
-        console.log("new user address" + user_address);
+        console.log("new user address " + user_address);
         const new_user = this.change_user(user_address);
         this.props.Reset()
         this.setState({
@@ -62,21 +69,23 @@ export class Home extends React.Component {
         this.load_user_data(new_user)
     }
 
-    async get_mailboxes(user) {
+    async get_mailboxes() {
         console.log("getting all mail")
-        await get_all_mail((emails, initial_user) => this.set_threads(emails, initial_user), user);
+        await get_all_mail(this.set_threads);
         //const emails =
         //      append_email_attachments(emails, user)
     }
 
 
     load_user_data(user) {
+        clearInterval(this.refresh_timer);
         if (user.get_address()) {
             console.log("loading user data")
             console.log("getting calendar")
-            get_calendar((events, initial_user) => this.set_calendar(events, initial_user), user);
-            get_mail_folders((folders, initial_user) => this.set_mail_folders(folders, initial_user), user);
+            get_calendar(this.set_calendar);
+            get_mail_folders(this.set_mail_folders);
             this.get_mailboxes(user);
+            this.refresh_timer = setInterval(refresh_mail, 10000, this.set_threads);
         }
     }
     change_user(new_addresss) {
@@ -85,7 +94,7 @@ export class Home extends React.Component {
         this.props.Login(new_user);
         return new_user
     }
-    set_mail_folders(folders, initial_user) {
+    set_mail_folders(folders) {
         const update_function = (folders) => {
             var my_folders = {}
             for (const folder of folders) {
@@ -96,56 +105,36 @@ export class Home extends React.Component {
             Email.DELETED_FOLDER_ID = my_folders['Deleted Items'];
             return my_folders;
         }
-        this.update_user_data(folders, initial_user, 'mailFolders', update_function);
+        this.update_user_data(folders, 'mailFolders', update_function);
 
     }
 
-    update_user_data(data, user, update_field, update_function) {
-        var same_user = false;
-        this.setState(
-            function (state, props) {
-                if (props.user.equals(user)) {
-                    same_user = true;
-                    const new_state = {}
-                    new_state[update_field] = update_function(data);
-                    return new_state;
-                }
-                else {
-                    return {};
-                }
-            })
-        console.log(update_field + ": same user is " + same_user);
-        return same_user;
+    update_user_data(data, update_field, update_function) {
+        const new_state = {}
+        new_state[update_field] = update_function(data);
+        this.setState(new_state);
     }
 
-    set_threads(emails, user) {
-        var same_user = false;
-        if (this.props.user.equals(user)) {
-            this.props.Expand(emails)
-            for (const email of emails) {
-                try {
-                    Task.add_request_meeting_task(this.props.Update, email);
-                    Task.add_general_task_detection(this.props.Update, email);
-                } catch (e) {
-                    console.log("Error in task processing: " + e)
-                }
+    set_threads(emails) {
+        this.props.Expand(emails)
+        for (const email of emails) {
+            try {
+                Task.add_request_meeting_task(this.props.Update, email);
+                Task.add_general_task_detection(this.props.Update, email);
+            } catch (e) {
+                console.log("Error in task processing: " + e)
             }
-            same_user = true;
-        } else {
-            this.props.Reset()
         }
         this.setState((state, props) => {
             const task_meetings = add_meetings_from_tasks(props.tasks, state.calendarEvents);
             console.log("Adding " + task_meetings.length + " task meetings");
             return { calendarEvents: [...state.calendarEvents, ...task_meetings] }
         })
-        console.log("set_threads: same user is " + same_user);
-        return same_user;
     }
 
-    set_calendar(events, initial_user) {
+    set_calendar(events) {
         const update_function = function (events) { return create_calendar_events(events) }
-        this.update_user_data(events, initial_user, 'calendarEvents', update_function);
+        this.update_user_data(events, 'calendarEvents', update_function);
     }
 
 
@@ -233,14 +222,15 @@ function NavCluster(icon_links) {
     return (
         <div className='NavCluster'>
             {icon_links.map(i_l =>
-                <div className='nav_link'>
+                <div className='nav_link' key={i_l.icon}>
                     <Link to={i_l.link}>
                         <div></div>
                     </Link>
                     <img src={i_l.icon} />
                     {i_l.additional}
                 </div>
-            )}
+            )
+            }
         </div>
     )
 }

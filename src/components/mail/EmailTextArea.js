@@ -235,7 +235,7 @@ function on_proposed_task_hover(task, e) {
     this.handle_task_icon_click(position_style, selection_indexes, task);
 }
 
-const mapStateToProps = state => { };
+const mapStateToProps = state => { { } };
 
 const mapDispatchToProps = {
     Update
