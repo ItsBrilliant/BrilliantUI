@@ -2,7 +2,7 @@ import React from 'react';
 import { Router, Switch, Route, Link, Redirect } from 'react-router-dom';
 import { Mail } from './mail/Mail.js'
 import './Home.css';
-import { get_all_mail, get_calendar, get_mail_folders, refresh_mail } from '../backend/Connect.js';
+import { get_all_mail, get_calendar, get_mail_folders, refresh_mail, refresh_calendar } from '../backend/Connect.js';
 import { Calendar } from './calendar/Calendar.js';
 import { create_calendar_events, add_meetings_from_tasks } from './calendar/utils';
 import { EmailComposers } from './EmailComposer.js';
@@ -32,6 +32,7 @@ export class Home extends React.Component {
         this.set_threads = this.set_threads.bind(this);
         this.set_calendar = this.set_calendar.bind(this);
         this.set_mail_folders = this.set_mail_folders.bind(this);
+        this.refresh_user_data = this.refresh_user_data.bind(this);
         this.refresh_timer = null;
         this.state = {
             calendarEvents: [],
@@ -85,7 +86,7 @@ export class Home extends React.Component {
             get_calendar(this.set_calendar);
             get_mail_folders(this.set_mail_folders);
             this.get_mailboxes(user);
-            this.refresh_timer = setInterval(refresh_mail, 10000, this.set_threads);
+            this.refresh_timer = setInterval(this.refresh_user_data, 15000);
         }
     }
     change_user(new_addresss) {
@@ -107,6 +108,11 @@ export class Home extends React.Component {
         }
         this.update_user_data(folders, 'mailFolders', update_function);
 
+    }
+
+    refresh_user_data() {
+        refresh_mail(this.set_threads);
+        refresh_calendar(this.set_calendar);
     }
 
     update_user_data(data, update_field, update_function) {
@@ -133,7 +139,12 @@ export class Home extends React.Component {
     }
 
     set_calendar(events) {
-        const update_function = function (events) { return create_calendar_events(events) }
+        const update_function = events => {
+            let new_event_ids = events.map(e => e.id);
+            let unchanged_events = this.state.calendarEvents.filter(e => !new_event_ids.includes(e.id));
+            const all_events_array = [...unchanged_events, ...events];
+            return create_calendar_events(all_events_array)
+        }
         this.update_user_data(events, 'calendarEvents', update_function);
     }
 

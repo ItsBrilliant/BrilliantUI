@@ -1,10 +1,9 @@
 import Axios from 'axios';
 import { Email } from '../data_objects/Email.js';
 import download from 'downloadjs'
-import { Thread } from '../data_objects/Thread.js';
+import { update_event_version } from './utils'
 Axios.defaults.xsrfCookieName = 'csrftoken';
 Axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
-
 
 export async function append_email_attachments(emails) {
     if (!emails) {
@@ -57,20 +56,20 @@ export async function delete_attachment(email_id, attachment_id) {
     }
 }
 
-export async function get_all_mail(callback_func) {
-    get_mail(callback_func, 3, 100);
+export async function get_all_mail(callback_function) {
+    get_mail(callback_function, 3, 100);
 }
 
-export async function refresh_mail(callback_fun) {
-    get_mail(callback_fun, 1, 100);
+export async function refresh_mail(callback_function) {
+    get_mail(callback_function, 1, 100);
 }
 
-async function get_mail(callback_func, chunk, limit) {
+async function get_mail(callback_function, chunk, limit) {
     for (let current = 0; current < limit; current += chunk) {
         try {
             const emails = await Axios.get('api/inbox', { params: { skip: current, top: chunk } })
             const email_objects = emails.data.map(e => new Email(e))
-            callback_func(email_objects);
+            callback_function(email_objects);
             append_email_attachments(email_objects);
             if (email_objects.length === 0 || !email_objects[email_objects.length - 1].is_new_version) {
                 break;
@@ -84,14 +83,32 @@ async function get_mail(callback_func, chunk, limit) {
 
 }
 
+export async function refresh_calendar(callback_function) {
+    general_graph_paging_call(callback_function, update_event_version, 'api/calendar', 1, 10);
+}
 
-export async function get_calendar(callback_func) {
-    try {
-        const events = await Axios.get('api/calendar', { params: { top: 100 } })
-        callback_func(events.data);
-    } catch (e) {
-        console.log("Error getting events:");
-        console.log(e);
+export async function get_calendar(callback_function) {
+    general_graph_paging_call(callback_function, update_event_version, 'api/calendar', 10, 100);
+}
+
+async function general_graph_paging_call(callback_function, version_function, url, chunk, limit) {
+    var data = [];
+    var new_data = [];
+    for (let current = 0; current < limit && new_data.length === data.length; current += chunk) {
+        try {
+            console.log(current);
+            const response = await Axios.get(url, { params: { skip: current, top: chunk } })
+            data = response.data;
+            new_data = data.filter(d => version_function(d));
+            if (new_data.length === 0) {
+                return;
+            }
+            callback_function(new_data);
+        }
+        catch (e) {
+            console.log("Error getting resource from " + url);
+            console.log(e);
+        }
     }
 }
 

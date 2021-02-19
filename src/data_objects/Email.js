@@ -22,10 +22,13 @@ export class Email {
     static update_email_version(email_json) {
         const current_version = Email.EMAIL_VERSIONS[email_json.id]
         if (email_json.changeKey === current_version) {
+            console.log("old Email " + email_json.subject)
             return false;
         } else {
             Email.EMAIL_VERSIONS[email_json.id] = email_json.changeKey;
+            console.log("new Email " + email_json.subject)
             return true;
+
         }
     }
     set_attachments_dict(attachments_dict) {
