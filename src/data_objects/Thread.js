@@ -2,6 +2,7 @@ import { TIME_KEY, PRIORITY_KEY, CAN_WAIT } from "./Consts.js";
 import { Email } from './Email.js'
 import { delete_email } from '../backend/Connect.js'
 import { Task } from './Task'
+import { email_folder_filter } from "../utils.js";
 
 export class Thread {
     constructor(id, email_objects) {
@@ -63,7 +64,7 @@ export class Thread {
 
         let emails = Object.values(this.emails_dict)
         if (folder_id) {
-            emails = emails.filter(email => email.get_folder_id() === folder_id)
+            emails = emails.filter(email => email_folder_filter(email, Email.FOLDER_MAPPINGS, folder_id))
         }
         return emails;
     }
@@ -132,7 +133,7 @@ export class Thread {
     }
     delete_all(dispatcher) {
         console.log("Deleting all emails of thread");
-        const emails = this.get_emails(null);
+        const emails = this.get_emails();
         for (const email of emails) {
             delete_email(email.get_id(), email.is_deleted());
         }

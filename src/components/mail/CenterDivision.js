@@ -5,25 +5,15 @@ import { useDispatch, connect } from 'react-redux'
 import { Create } from '../../actions/email_composer.js';
 import EmailContainer from './EmailContainer.js';
 import { Update } from '../../actions/tasks'
+import { email_folder_filter } from '../../utils'
 
 
 export class CenterDivision extends React.Component {
 
-    email_folder_filter(email) {
-        const folder_id = email.get_folder_id();
-        if (folder_id === this.props.folders['Deleted Items'] ||
-            this.props.selected_folder_id === this.props.folders['Deleted Items'] ||
-            folder_id === this.props.folders['Drafts'] ||
-            this.props.selected_folder_id === this.props.folders['Drafts']) {
-            return folder_id === this.props.selected_folder_id;
-        }
-        return true;
-    }
-
     render() {
         if (!this.props.thread) { return null; }
-        let thread_emails = this.props.emails.filter(e => this.email_folder_filter(e));
-        thread_emails = thread_emails.sort((a, b) => a.get_date() - b.get_date());
+        //    let thread_emails = this.props.emails.filter(e => email_folder_filter(e, this.props.folders, this.props.selected_folder_id));
+        let thread_emails = this.props.emails.sort((a, b) => a.get_date() - b.get_date());
         if (thread_emails.length == 0) {
             return null;
         }

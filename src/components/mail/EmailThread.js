@@ -41,7 +41,7 @@ export default class EmailThread extends Component {
         return receiver_icons;
     }
     get_has_attachments() {
-        for (const email of this.props.thread.get_emails(null)) {
+        for (const email of this.props.thread.get_emails()) {
             if (email.get_attachments_names().length > 0) {
                 return true;
             }

@@ -9,8 +9,8 @@ const REQUEST_DOCUMENT_PROBABILITY_THRESHOLD = 90;
 const REQUEST_MEETING_PROBABILITY_THRESHOLD = 50;
 const GENERAL_TASK_DETECTION_THRESHOLD = 70;
 export class Email {
-    static DELETED_FOLDER_ID = undefined;
-    static EMAIL_VERSIONS = {}
+    static FOLDER_MAPPINGS = [];
+    static EMAIL_VERSIONS = {};
     constructor(email_json, tags, tasks) {
         this.email = email_json;
         this.tags = tags === undefined ? [] : tags;
@@ -225,7 +225,7 @@ export class Email {
     }
 
     is_deleted() {
-        return this.get_folder_id() === Email.DELETED_FOLDER_ID;
+        return this.get_folder_id() === Email.FOLDER_MAPPINGS['Deleted Items'];
     }
     get_content() {
         return this.email['body']['content'];

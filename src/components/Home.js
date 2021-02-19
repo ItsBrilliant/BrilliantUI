@@ -102,7 +102,7 @@ export class Home extends React.Component {
                     my_folders[folder['displayName']] = folder['id'];
                 }
             }
-            Email.DELETED_FOLDER_ID = my_folders['Deleted Items'];
+            Email.FOLDER_MAPPINGS = my_folders;
             return my_folders;
         }
         this.update_user_data(folders, 'mailFolders', update_function);

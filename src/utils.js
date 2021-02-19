@@ -183,3 +183,13 @@ export function my_html_to_text(html) {
     return text_no_xml_comment.trim();
 }
 
+export function email_folder_filter(email, folder_mappings, selected_folder_id) {
+    const folder_id = email.get_folder_id();
+    if (folder_id === folder_mappings['Deleted Items'] ||
+        selected_folder_id === folder_mappings['Deleted Items'] ||
+        folder_id === folder_mappings['Drafts'] ||
+        selected_folder_id === folder_mappings['Drafts']) {
+        return folder_id === selected_folder_id;
+    }
+    return true;
+}

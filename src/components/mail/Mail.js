@@ -31,7 +31,7 @@ export class Mail extends Component {
     render() {
         const selected_thread = this.props.emailThreads[this.state.selected_thread_id];
         const selected_folder_id = this.props.folders[this.state.selected_folder];
-        const selected_thread_emails = selected_thread ? selected_thread.get_emails(null) : [];
+        const selected_thread_emails = selected_thread ? selected_thread.get_emails() : [];
         return (
             <div className='Mail'>
                 <LeftDivision
@@ -50,7 +50,7 @@ export class Mail extends Component {
                     folders={this.props.folders}
                     emails={selected_thread_emails} />
 
-                <RightDivision thread={selected_thread} selected_folder_id={selected_folder_id} />
+                <RightDivision show={selected_thread_emails.length > 0} thread={selected_thread} selected_folder_id={selected_folder_id} />
             </div>
         )
     }

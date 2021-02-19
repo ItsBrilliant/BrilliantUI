@@ -11,12 +11,12 @@ import { Task } from '../../data_objects/Task'
 export function RightDivision(props) {
     const tasks = useSelector(state => Object.values(state.tasks))
     const thread = props.thread;
-    return (thread ?
+    return (thread && props.show ?
         <div className='RightDivision'>
             <SimpleBar className='SimpleBar_RightDivision'>
                 <Tasks tasks={tasks.filter(t => t.get_thread_id() === thread.get_id() && t.is_approved())} thread={thread} />
-                {Participants(thread.get_participants(null))}
-                {FileAttachments(thread.get_attachments(null))}
+                {Participants(thread.get_participants())}
+                {FileAttachments(thread.get_attachments())}
             </SimpleBar>
         </div> :
         null
