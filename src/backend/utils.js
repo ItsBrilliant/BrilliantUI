@@ -10,13 +10,13 @@ export function mark_read(email_id, is_read) {
 
 }
 
-var CALENDER_EVENT_VERSIONS = {};
-export function update_event_version(event) {
-    const current_version = CALENDER_EVENT_VERSIONS[event.id];
-    if (event.changeKey === current_version) {
+
+export function update_resource_version(resource, database) {
+    const current_version = database[resource.id];
+    if (resource.changeKey === current_version) {
         return false;
     } else {
-        CALENDER_EVENT_VERSIONS[event.id] = event.changeKey;
+        database[resource.id] = resource.changeKey;
         return true;
     }
 }

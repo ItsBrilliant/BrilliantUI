@@ -1,16 +1,19 @@
 import Axios from 'axios';
 import { Email } from '../data_objects/Email.js';
 import download from 'downloadjs'
-import { update_event_version } from './utils'
+import { update_resource_version } from './utils'
 Axios.defaults.xsrfCookieName = 'csrftoken';
 Axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
+
+var CALENDER_EVENT_VERSIONS = {};
+var EMAIL_VERSIONS = {};
 
 export async function append_email_attachments(emails) {
     if (!emails) {
         return;
     }
     for (const email of emails) {
-        if (email.is_new_version && email.get_has_attachments()) {
+        if (email.get_has_attachments()) {
             try {
                 const attachments_list = await Axios.get('api/list_attachments', { params: { email_id: email.get_id() } })
                 const reducer = (acumulator, current) => {
@@ -61,49 +64,60 @@ export async function get_all_mail(callback_function) {
 }
 
 export async function refresh_mail(callback_function) {
-    get_mail(callback_function, 1, 10, false);
+    get_mail(callback_function, 1, 10);
 }
 
-async function get_mail(callback_function, chunk, limit, force_all = false) {
-    for (let current = 0; current < limit; current += chunk) {
-        try {
-            const emails = await Axios.get('api/inbox', { params: { skip: current, top: chunk } })
-            const email_objects = emails.data.map(e => new Email(e))
-            callback_function(email_objects);
-            append_email_attachments(email_objects);
-            if (!force_all && (email_objects.length === 0 || !email_objects[email_objects.length - 1].is_new_version)) {
-                break;
-            }
-        }
-        catch (e) {
-            console.log("Error getting email messages:");
-            console.log(e);
-        }
+function update_event_version(event) {
+    return update_resource_version(event, CALENDER_EVENT_VERSIONS);
+}
+
+function update_email_version(email) {
+    return update_resource_version(email, EMAIL_VERSIONS);
+}
+async function get_mail(set_threads, chunk, limit) {
+    const callback_function = (emails) => {
+        const email_objects = emails.map(e => new Email(e));
+        set_threads(email_objects);
+        append_email_attachments(email_objects);
     }
+    general_graph_paging_call(callback_function, update_email_version, 'api/inbox', chunk, limit);
+
 
 }
 
 export async function refresh_calendar(callback_function) {
-    general_graph_paging_call(callback_function, update_event_version, 'api/calendar', 1, 10, false);
+    general_graph_paging_call(callback_function, update_event_version, 'api/calendar', 1, 10);
 }
 
 export async function get_calendar(callback_function) {
-    general_graph_paging_call(callback_function, update_event_version, 'api/calendar', 10, 100, true);
+    general_graph_paging_call(callback_function, update_event_version, 'api/calendar', 10, 100);
 }
 
-async function general_graph_paging_call(callback_function, version_function, url, chunk, limit, force_all = false) {
-    var data = [];
-    var new_data = [];
-    for (let current = 0; current < limit && new_data.length === data.length; current += chunk) {
+async function general_graph_paging_call(callback_function, version_function, url, chunk, limit) {
+    var SEEN_IDS = new Set()
+    var done = false;
+    for (let current = 0; (current < limit) && !done; current += chunk) {
         try {
-            console.log(current);
+            console.log(`${url}:SEEN_IDS:${SEEN_IDS.size}, curret:${current}`);
             const response = await Axios.get(url, { params: { skip: current, top: chunk } })
-            data = response.data;
-            new_data = data.filter(d => version_function(d));
-            if (!force_all && new_data.length === 0) {
+            let data = response.data;
+            if (data.length === 0) {
                 return;
             }
-            callback_function(new_data);
+            let new_data = []
+            for (const d of data) {
+                if (version_function(d)) {
+                    new_data.push(d);
+                } else {
+                    if (!SEEN_IDS.has(d.id)) {
+                        done = true;
+                    }
+                }
+                SEEN_IDS.add(d.id);
+            }
+            if (new_data.length > 0) {
+                callback_function(new_data);
+            }
         }
         catch (e) {
             console.log("Error getting resource from " + url);

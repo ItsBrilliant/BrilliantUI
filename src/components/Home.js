@@ -36,6 +36,7 @@ export class Home extends React.Component {
         this.refresh_timer = null;
         this.state = {
             calendarEvents: [],
+            taskEvents: [],
             search: "",
             mailFolders: Home.generate_empty_folders()
         };
@@ -132,9 +133,10 @@ export class Home extends React.Component {
             }
         }
         this.setState((state, props) => {
-            const task_meetings = add_meetings_from_tasks(props.tasks, state.calendarEvents);
+            //           const new_email_ids = emails.map(e => e.get_id());
+            const task_meetings = add_meetings_from_tasks(props.tasks, state.taskEvents);
             console.log("Adding " + task_meetings.length + " task meetings");
-            return { calendarEvents: [...state.calendarEvents, ...task_meetings] }
+            return { taskEvents: [...state.taskEvents, ...task_meetings] }
         })
     }
 
@@ -143,6 +145,7 @@ export class Home extends React.Component {
             let new_event_ids = events.map(e => e.id);
             let unchanged_events = this.state.calendarEvents.filter(e => !new_event_ids.includes(e.id));
             const all_events_array = [...unchanged_events, ...events];
+            console.log(`events: ${new_event_ids.length} modified, now ${all_events_array.length} in total`);
             return create_calendar_events(all_events_array)
         }
         this.update_user_data(events, 'calendarEvents', update_function);
@@ -187,7 +190,7 @@ export class Home extends React.Component {
                             <Route
                                 path='/calendar' exact
                                 render={() =>
-                                    <Calendar events={this.state.calendarEvents} />}>
+                                    <Calendar events={[...this.state.calendarEvents, ...this.state.taskEvents]} />}>
                             </Route>
                             <Route
                                 path='/build' exact

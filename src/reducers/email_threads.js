@@ -5,14 +5,11 @@ export const EmailThreadsReducer = (state = {}, action) => {
     if (action.type === "EXPAND_THREADS") {
         var new_state = Object.assign({}, state);
         for (const email of action.emails) {
-            if (email.is_new_version) {
-                const thread_id = email.get_thread_id();
-                if (new_state[thread_id] === undefined) {
-                    new_state[thread_id] = new Thread(thread_id, [])
-                }
-                new_state[thread_id].add_email(email)
+            const thread_id = email.get_thread_id();
+            if (new_state[thread_id] === undefined) {
+                new_state[thread_id] = new Thread(thread_id, [])
             }
-
+            new_state[thread_id].add_email(email)
         }
         return new_state;
     }

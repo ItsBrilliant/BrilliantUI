@@ -10,25 +10,14 @@ const REQUEST_MEETING_PROBABILITY_THRESHOLD = 50;
 const GENERAL_TASK_DETECTION_THRESHOLD = 70;
 export class Email {
     static FOLDER_MAPPINGS = [];
-    static EMAIL_VERSIONS = {};
     constructor(email_json, tags, tasks) {
         this.email = email_json;
         this.tags = tags === undefined ? [] : tags;
         this.tasks = tasks === undefined ? [] : tasks;
         this.date = new Date(this.email['sentDateTime']);
         this.attachments_dict = {}
-        this.is_new_version = Email.update_email_version(email_json);
     }
-    static update_email_version(email_json) {
-        const current_version = Email.EMAIL_VERSIONS[email_json.id]
-        if (email_json.changeKey === current_version) {
-            return false;
-        } else {
-            Email.EMAIL_VERSIONS[email_json.id] = email_json.changeKey;
-            return true;
 
-        }
-    }
     set_attachments_dict(attachments_dict) {
         this.attachments_dict = attachments_dict;
     }
