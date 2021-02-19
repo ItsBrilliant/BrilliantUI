@@ -12,13 +12,11 @@ export function mark_read(email_id, is_read) {
 
 var CALENDER_EVENT_VERSIONS = {};
 export function update_event_version(event) {
-    const current_version = CALENDER_EVENT_VERSIONS[event.id]
+    const current_version = CALENDER_EVENT_VERSIONS[event.id];
     if (event.changeKey === current_version) {
-        console.log("event " + event.subject + " is old")
         return false;
     } else {
         CALENDER_EVENT_VERSIONS[event.id] = event.changeKey;
-        console.log("event " + event.subject + " is new")
         return true;
     }
 }

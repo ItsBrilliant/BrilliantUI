@@ -57,21 +57,21 @@ export async function delete_attachment(email_id, attachment_id) {
 }
 
 export async function get_all_mail(callback_function) {
-    get_mail(callback_function, 3, 100);
+    get_mail(callback_function, 3, 100, true);
 }
 
 export async function refresh_mail(callback_function) {
-    get_mail(callback_function, 1, 100);
+    get_mail(callback_function, 1, 10, false);
 }
 
-async function get_mail(callback_function, chunk, limit) {
+async function get_mail(callback_function, chunk, limit, force_all = false) {
     for (let current = 0; current < limit; current += chunk) {
         try {
             const emails = await Axios.get('api/inbox', { params: { skip: current, top: chunk } })
             const email_objects = emails.data.map(e => new Email(e))
             callback_function(email_objects);
             append_email_attachments(email_objects);
-            if (email_objects.length === 0 || !email_objects[email_objects.length - 1].is_new_version) {
+            if (!force_all && (email_objects.length === 0 || !email_objects[email_objects.length - 1].is_new_version)) {
                 break;
             }
         }
@@ -84,14 +84,14 @@ async function get_mail(callback_function, chunk, limit) {
 }
 
 export async function refresh_calendar(callback_function) {
-    general_graph_paging_call(callback_function, update_event_version, 'api/calendar', 1, 10);
+    general_graph_paging_call(callback_function, update_event_version, 'api/calendar', 1, 10, false);
 }
 
 export async function get_calendar(callback_function) {
-    general_graph_paging_call(callback_function, update_event_version, 'api/calendar', 10, 100);
+    general_graph_paging_call(callback_function, update_event_version, 'api/calendar', 10, 100, true);
 }
 
-async function general_graph_paging_call(callback_function, version_function, url, chunk, limit) {
+async function general_graph_paging_call(callback_function, version_function, url, chunk, limit, force_all = false) {
     var data = [];
     var new_data = [];
     for (let current = 0; current < limit && new_data.length === data.length; current += chunk) {
@@ -100,7 +100,7 @@ async function general_graph_paging_call(callback_function, version_function, ur
             const response = await Axios.get(url, { params: { skip: current, top: chunk } })
             data = response.data;
             new_data = data.filter(d => version_function(d));
-            if (new_data.length === 0) {
+            if (!force_all && new_data.length === 0) {
                 return;
             }
             callback_function(new_data);
