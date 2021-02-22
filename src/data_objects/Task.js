@@ -7,7 +7,7 @@ import { create_slot } from '../components/calendar/utils.js';
 import { create } from 'hbs';
 
 const GENERAL_TASK_DETECTION_THRESHOLD = 70;
-const REQUEST_MEETING_PROBABILITY_THRESHOLD = 70;
+const REQUEST_MEETING_PROBABILITY_THRESHOLD = 96;
 
 
 export class Task {
@@ -137,7 +137,7 @@ export class Task {
 
     static add_request_meeting_task(dispatcher, email) {
         const [meeting_scheduler, id] = email.get_detection('meeting_request');
-        if (email.is_draft() || email.added_meetings_already || !meeting_scheduler || meeting_scheduler.length === 0) {
+        if (email.is_draft() || email.is_deleted() || email.added_meetings_already || !meeting_scheduler || meeting_scheduler.length === 0) {
             return;
         }
         for (let i = 0; i < meeting_scheduler.length; i++) {
@@ -148,62 +148,56 @@ export class Task {
             const start_index = parseInt(meeting_scheduler[i][0])
             const text_length = parseInt(meeting_scheduler[i][1])
             const slots = meeting_scheduler[i].slice(3,);
-            let time;
-            let duration;
+            // time has either {start:, end: for 'interval', or time: for 'value'}
+            let times = [];
+            // duration has {value:, unit: (of value), seconds: (normalized value)}
+            let durations = [];
             for (var slot of Object.values(slots)) {
                 if (slot.Type === "Duration") {
-                    duration = {
+                    let duration = {
                         data: slot.Data.value,
                         unit: slot.Data.unit,
                         seconds: slot.Data.normalized.value
                     };
+                    durations.push(duration);
+                    //            durations.push(duration);
                 }
                 else if (slot.Type === "Time") {
+                    let time;
                     if (slot.Data.type === 'value') {
-                        if (slot.Data.grain === 'day') {
-                            time = create_slot(new Date(slot.Data.value).valueOf() + 8000 * 3600,
-                                new Date(slot.Data.value).valueOf() + 20000 * 3600);
-                        } else {
-                            time = { time: new Date(slot.Data.value) };
-                        }
+                        time = { time: new Date(slot.Data.value) };
+                        // Cancel the timezone conversion
+                        time.time.setHours(time.time.getHours() - 10);
+                        //                      }
                     } else if (slot.Data.type === 'interval') {
                         time = create_slot(slot.Data.from.value, slot.Data.to.value);
+                        // Cancel the timezone conversion
+                        time.start.setHours(time.start.getHours() - 10);
+                        time.end.setHours(time.end.getHours() - 10);
                     }
+                    times.push(time);
 
                 }
             }
-
-            // Cancel the timezone conversion
-            if (time) {
-                if (time.time) {
-                    time.time.setHours(time.time.getHours() - 10);
-                } else if (time.start && time.end) {
-                    time.start.setHours(time.start.getHours() - 10);
-                    time.end.setHours(time.end.getHours() - 10);
-                }
-            }
-
             var priority = URGENT;
             if (probability < 75) {
                 priority = CAN_WAIT;
             } else if (probability < 83) {
                 priority = IMPORTANT;
             }
-            let time_text = "";
-            if (time) {
-                time_text = " When: ";
+            let time_texts = times.map(time => {
                 if (time.time) {
-                    time_text += format_date(time.time).date + " " + format_date(time.time).time
+                    return format_date(time.time).date + " " + format_date(time.time).time
                 } else if (time.start && time.end) {
-                    time_text += format_date(time.start).date + " " + format_date(time.start).time + "-" + format_date(time.end).time;
+                    return format_date(time.start).date + " " + format_date(time.start).time + "-" + format_date(time.end).time;
                 }
-                time_text += ';';
-            }
-            const duration_text = duration ? " Duration: " + duration.data + " " + duration.unit : "";
+            });
+            const time_text = times.length > 0 ? " When: " + time_texts.join(" | ") + ";" : "";
+            const duration_text = durations.length > 0 ? " Duration: " + durations.map(d => d.data + " " + d.unit).join(' | ') + ";" : "";
             const task_text = `Meeting with ${email.get_sender().get_name()} (${Math.round(probability)}%);` + time_text + duration_text
             var task = new Task(task_text, new Date(), priority, false, { start: start_index, end: start_index + text_length }, undefined)
-            if (time) {
-                task['meeting'] = { duration: duration, time: time };
+            if (times.length > 0) {
+                task['meeting'] = { duration: durations[0], times: times };
             }
             Task.insert_task(dispatcher, email, task);
             email.added_meetings_already = true;

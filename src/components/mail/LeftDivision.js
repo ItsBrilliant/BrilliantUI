@@ -90,7 +90,7 @@ function filter_mail_folders(thread, folder_id) {
     return false;
   }
   for (const email of emails) {
-    if (email.get_folder_id() == folder_id) {
+    if (email.get_folder_id() === folder_id) {
       return true;
     }
   }
@@ -111,6 +111,7 @@ function ScrollableThreadContainer(props) {
   }
   var groupings = sorted_group_keys.map((key) =>
     <GroupedThreads
+      key={key}
       emailThreads={grouped_threads[key]}
       group_key={key}
       group_key_type={props.group_type}
@@ -134,7 +135,7 @@ function MailFolders(props) {
   const folder_buttons = relevant_folder_names.map(name => {
     const style = props.selected_folder === name ? "selected" : "";
     return (
-      <button className={style} value={name} onClick={(e) => props.on_select(e.target.value)}>
+      <button key={name} className={style} value={name} onClick={(e) => props.on_select(e.target.value)}>
         {MAIL_FOLDERS_DISPLAY[MAIL_FOLDERS.indexOf(name)]}
       </button>);
   }

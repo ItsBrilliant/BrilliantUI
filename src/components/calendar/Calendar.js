@@ -8,7 +8,6 @@ import UpcomingMeetings from './UpcomingMeetings';
 import CalendarTasks from './CalendarTasks'
 import SimpleBar from 'simplebar-react';
 export class Calendar extends React.Component {
-
     render() {
         var events = this.props.events;//adjust_fields(this.props.events);
         return (

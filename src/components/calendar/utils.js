@@ -6,31 +6,33 @@ export function add_meetings_from_tasks(tasks, existing_meetings) {
     const existing_ids = existing_meetings.map(m => m.task_id);
     var events = [];
     for (const task of tasks.filter(t => !t.isDone && t.meeting && !existing_ids.includes(t.id))) {
-        const time = task.meeting.time;
+        const times = task.meeting.times;
         var duration = task.meeting.duration ? task.meeting.duration.seconds : 1800
-        var meeting_options = [];
-        var priority = "suggested";
-        if (time.start && time.end) {
-            let available_slots = get_available_slots(existing_meetings, time.start, time.end)
-            meeting_options = suggest_meeting_times_for_slots(available_slots, duration)
-            priority = "suggested_options";
-        } else if (time.time) {
-            var end = new Date(time.time);
-            end.setSeconds(end.getSeconds() + duration);
-            meeting_options = [create_slot(time.time, end)];
-        }
-        for (const option of meeting_options) {
-            var new_event =
-            {
-                id: v4(),
-                location: "",
-                start: option.start,
-                end: option.end,
-                priority: priority,
-                subject: task.text,
-                task_id: task.id
+        for (const time of times) {
+            let meeting_options = [];
+            let priority = "suggested";
+            if (time.start && time.end) {
+                let available_slots = get_available_slots(existing_meetings, time.start, time.end)
+                meeting_options = suggest_meeting_times_for_slots(available_slots, duration)
+                priority = "suggested_options";
+            } else if (time.time) {
+                let end = new Date(time.time);
+                end.setSeconds(end.getSeconds() + duration);
+                meeting_options = [create_slot(time.time, end)];
             }
-            events.push(new_event);
+            for (const option of meeting_options) {
+                let new_event =
+                {
+                    id: v4(),
+                    location: "",
+                    start: option.start,
+                    end: option.end,
+                    priority: priority,
+                    subject: task.text,
+                    task_id: task.id
+                }
+                events.push(new_event);
+            }
         }
 
     }
@@ -112,15 +114,17 @@ function min(d1, d2) {
 export function suggest_meeting_times_for_slots(slots, meeting_duration) {
     meeting_duration = 1000 * meeting_duration;
     var meeting_times = [];
-    for (const slot of slots) {
+    for (let i = 0; i < slots.length; i++) {
+        const slot = slots[i];
         const slot_duration_fraction = duration(slot) / meeting_duration;
-        if (slot_duration_fraction >= 1) {
+        //----------------------------------- Make at least one suggestion if none were made
+        if (slot_duration_fraction >= 0.8 || (meeting_times.length === 0 && i === slots.length - 1)) {
             meeting_times.push(create_slot(slot.start, slot.start.valueOf() + meeting_duration));
         }
-        if (slot_duration_fraction >= 1.5) {
+        if (slot_duration_fraction >= 3) {
             meeting_times.push(create_slot(slot.end.valueOf() - meeting_duration, slot.end));
         }
-        if (slot_duration_fraction >= 5) {
+        if (slot_duration_fraction >= 10) {
             let start = slot.start.valueOf() + (duration(slot) - meeting_duration) / 2
             meeting_times.push(create_slot(start, start + meeting_duration));
         }

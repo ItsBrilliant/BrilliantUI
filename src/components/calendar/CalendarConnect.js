@@ -68,7 +68,7 @@ export function build_event(schedule_event) {
     event.start = convert_time_to_graph(schedule_event.start, schedule_event.StartTimeazne)
     event.end = convert_time_to_graph(schedule_event.end, schedule_event.EndTimezone)
     event.location = { displayName: schedule_event.location }
-    event.attendees = schedule_event.participants.split(',').map(a => {
+    event.attendees = !schedule_event.participants ? [] : schedule_event.participants.split(',').map(a => {
         let recipient = address_to_recipeint(a)
         recipient.type = "required";
         return recipient;

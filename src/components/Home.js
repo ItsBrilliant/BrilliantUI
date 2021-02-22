@@ -86,7 +86,7 @@ export class Home extends React.Component {
             console.log("getting calendar")
             get_calendar(this.set_calendar);
             get_mail_folders(this.set_mail_folders);
-            this.get_mailboxes(user);
+            this.get_mailboxes();
             this.refresh_timer = setInterval(this.refresh_user_data, 15000);
         }
     }
@@ -182,7 +182,7 @@ export class Home extends React.Component {
                                 path='/mail' exact
                                 render={() =>
                                     <Mail emailThreads={this.props.emailThreads}
-                                        load_threads_function={() => this.get_mailboxes(this.props.user)}
+                                        load_threads_function={() => this.load_user_data(this.props.user)}
                                         user={this.props.user}
                                         folders={this.state.mailFolders}
                                     />}>

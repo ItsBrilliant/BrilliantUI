@@ -7,6 +7,9 @@ Axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 
 var CALENDER_EVENT_VERSIONS = {};
 var EMAIL_VERSIONS = {};
+var NUM_EMAILS_LOADED = 0;
+var NUM_EVENTS_LOADED = 0;
+const PAGE_SIZE = 50;
 
 export async function append_email_attachments(emails) {
     if (!emails) {
@@ -60,11 +63,12 @@ export async function delete_attachment(email_id, attachment_id) {
 }
 
 export async function get_all_mail(callback_function) {
-    get_mail(callback_function, 3, 100, true);
+    NUM_EMAILS_LOADED = Math.max(NUM_EMAILS_LOADED, await get_mail(callback_function, 3, NUM_EMAILS_LOADED, NUM_EMAILS_LOADED + PAGE_SIZE, false));
+    console.log("NUM_EMAILS_LOADED = " + NUM_EMAILS_LOADED);
 }
 
 export async function refresh_mail(callback_function) {
-    get_mail(callback_function, 1, 10);
+    get_mail(callback_function, 1, 0, 10, true);
 }
 
 function update_event_version(event) {
@@ -74,42 +78,45 @@ function update_event_version(event) {
 function update_email_version(email) {
     return update_resource_version(email, EMAIL_VERSIONS);
 }
-async function get_mail(set_threads, chunk, limit) {
+async function get_mail(set_threads, chunk, start, end, refresh) {
     const callback_function = (emails) => {
         const email_objects = emails.map(e => new Email(e));
         set_threads(email_objects);
         append_email_attachments(email_objects);
     }
-    general_graph_paging_call(callback_function, update_email_version, 'api/inbox', chunk, limit);
+    return general_graph_paging_call(callback_function, update_email_version, 'api/inbox', chunk, start, end, refresh);
 
 
 }
 
 export async function refresh_calendar(callback_function) {
-    general_graph_paging_call(callback_function, update_event_version, 'api/calendar', 1, 10);
+    general_graph_paging_call(callback_function, update_event_version, 'api/calendar', 1, 0, 10, true);
 }
 
 export async function get_calendar(callback_function) {
-    general_graph_paging_call(callback_function, update_event_version, 'api/calendar', 10, 100);
+    NUM_EVENTS_LOADED = Math.max(NUM_EVENTS_LOADED, await general_graph_paging_call(callback_function, update_event_version, 'api/calendar', 10, NUM_EVENTS_LOADED, NUM_EVENTS_LOADED + PAGE_SIZE, false));
+    console.log("NUM_EVENTS_LOADED = " + NUM_EVENTS_LOADED);
 }
 
-async function general_graph_paging_call(callback_function, version_function, url, chunk, limit) {
+async function general_graph_paging_call(callback_function, version_function, url, chunk, start, end, refresh) {
     var SEEN_IDS = new Set()
     var done = false;
-    for (let current = 0; (current < limit) && !done; current += chunk) {
+    var next_page_url = null;
+    for (var current = start; (current < end) && !done; current += chunk) {
         try {
             console.log(`${url}:SEEN_IDS:${SEEN_IDS.size}, curret:${current}`);
-            const response = await Axios.get(url, { params: { skip: current, top: chunk } })
-            let data = response.data;
-            if (data.length === 0) {
-                return;
+            const response = await Axios.get(url, { params: { skip: current, top: chunk, refresh: refresh, link: next_page_url } })
+            let data = response.data.value;
+            next_page_url = response.data['@odata.nextLink'];
+            if (data && data.length === 0) {
+                break;
             }
             let new_data = []
             for (const d of data) {
                 if (version_function(d)) {
                     new_data.push(d);
                 } else {
-                    if (!SEEN_IDS.has(d.id)) {
+                    if (!SEEN_IDS.has(d.id) && refresh) {
                         done = true;
                     }
                 }
@@ -124,6 +131,7 @@ async function general_graph_paging_call(callback_function, version_function, ur
             console.log(e);
         }
     }
+    return current;
 }
 
 export async function get_mail_folders(callback_func) {
