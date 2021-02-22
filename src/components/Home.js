@@ -114,6 +114,11 @@ export class Home extends React.Component {
     refresh_user_data() {
         refresh_mail(this.set_threads);
         refresh_calendar(this.set_calendar);
+        this.setState((state, props) => {
+            const task_meetings = add_meetings_from_tasks(props.tasks, [...state.calendarEvents, ...state.taskEvents]);
+            console.log("Adding " + task_meetings.length + " task meetings");
+            return { taskEvents: [...state.taskEvents, ...task_meetings] }
+        })
     }
 
     update_user_data(data, update_field, update_function) {
@@ -132,12 +137,6 @@ export class Home extends React.Component {
                 console.log("Error in task processing: " + e)
             }
         }
-        this.setState((state, props) => {
-            //           const new_email_ids = emails.map(e => e.get_id());
-            const task_meetings = add_meetings_from_tasks(props.tasks, state.taskEvents);
-            console.log("Adding " + task_meetings.length + " task meetings");
-            return { taskEvents: [...state.taskEvents, ...task_meetings] }
-        })
     }
 
     set_calendar(events) {

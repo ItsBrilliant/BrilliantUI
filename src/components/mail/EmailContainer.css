@@ -8,6 +8,7 @@
     margin: 20px 0px;
     overflow-wrap: break-word;
     overflow-y: visible;
+    z-index: 2;
 }
 
 .EmailContainer .email_text_area{
@@ -15,5 +16,6 @@
     padding: 0px 15px 10px 15px;
     border-radius: 30px;
     overflow: visible;
+    z-index: 2;
 
 }

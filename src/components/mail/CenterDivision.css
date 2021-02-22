@@ -35,10 +35,11 @@
     color: var(--main-text-color);
     border-radius: 100%;
     position: absolute;
-    right: calc(0% - var(--expand_button_size));
-    top: 50%;
+    right: calc(5px - var(--expand_button_size));
+    top: 70%;
     height: calc(2 * var(--expand_button_size));
     width: calc(2 * var(--expand_button_size));
+    z-index: 0;
 }
 
 .AttachedFile {
@@ -74,20 +75,16 @@
 }
 
 .ReplyForm {
-    border: 2px solid var(--main-bg-color);
     background-color: var(--email-container-background);
-    width: 95%;
     height: 40px;
-    margin: 10px;
     padding: 2px;
+    margin: 0;
     display: flex;
     flex-direction: row;
     align-items: center;
-
-
 }
 
-.ReplyForm .reply_button{
+.ReplyForm .reply_button_old{
     color:var(--main-text-color);
     background-color: var(--email-container-background);
     outline: none;
@@ -97,8 +94,18 @@
     align-self: center;
     border: none;
 }
-.ReplyForm .reply_button:hover{
-    cursor: text;
+
+
+.ReplyForm .email_action_button{
+    color:var(--main-text-color);
+    background-color: transparent;
+    outline: none;
+    padding: 5px 0 0 5px;
+    margin-left: 15px;
+    border-radius: 10px;
+    border: 3px solid var(--email-text-area-bg);
+    width: 100px;
+    height: 40px;
 }
 
 .ReplyForm input[type='text'] {

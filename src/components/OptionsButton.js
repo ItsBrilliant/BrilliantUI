@@ -33,7 +33,7 @@ export default function OptionsButton(props) {
 
 function OptionsList(props) {
     const custom_offset = props.offset ? props.offset : { top: 0, left: 0 }
-    const top_offset = Math.min(props.evt.pageY - 15, window.visualViewport.height - 300);
+    const top_offset = Math.min(props.evt.pageY - 15, window.visualViewport.height - 350);
     const style = {
         position: "fixed",
         top: top_offset + custom_offset.top,

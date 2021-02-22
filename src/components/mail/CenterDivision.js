@@ -5,6 +5,8 @@ import { useDispatch, connect } from 'react-redux'
 import { Create } from '../../actions/email_composer.js';
 import EmailContainer from './EmailContainer.js';
 import { Update } from '../../actions/tasks'
+import { build_email_action_button } from '../email_compuser_utils'
+import { act } from '@testing-library/react';
 
 
 export class CenterDivision extends React.Component {
@@ -47,22 +49,22 @@ function ExpandButton(props) {
 function NewReply(props) {
     const dispatch = useDispatch();
     const [is_open, set_is_open] = useState(false);
+    const cleanup = () => set_is_open(false);
     if (is_open) {
         return null;
     }
+    const email_action_buttons = ['reply', 'reply_all', 'forward'].map(type => {
+        const action_button = build_email_action_button(dispatch, type, props.email_id, cleanup)
+        return (
+            <button
+                className="email_action_button"
+                onClick={() => { set_is_open(true); action_button.action() }}>{action_button.name}
+            </button>
+        );
+    })
     return (
         <div className="ReplyForm">
-            <span
-                className="reply_button"
-                onClick={() => {
-                    set_is_open(true);
-                    dispatch(Create({
-                        email_id: props.email_id,
-                        cleanup: () => set_is_open(false),
-                        composer_type: 'reply'
-                    }));
-                }}
-            >Reply</span>
+            {email_action_buttons}
         </div>
     );
 }

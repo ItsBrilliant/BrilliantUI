@@ -6,6 +6,7 @@ import { EmailStamp } from './EmailStamp.js'
 import { useSelector, useDispatch } from 'react-redux'
 import { DeleteEmails } from '../../actions/email_threads'
 import { Create } from '../../actions/email_composer.js';
+import { build_email_action_button } from '../email_compuser_utils'
 
 export default class EmailThread extends Component {
 
@@ -71,6 +72,9 @@ export default class EmailThread extends Component {
         //const num_unread_emails = this.get_num_unread()
         //        const receiver_icons = this.get_receiver_icons();
         const selected_email = this.get_selected_email();
+        if (!selected_email) {
+            return null;
+        }
         const has_attatchments = this.get_has_attachments();
         const sender = selected_email.get_sender();
         const stamp = sender ? EmailStamp([sender.get_icon()], selected_email.date, sender.get_name()) : null;
@@ -106,29 +110,17 @@ function ThreadLabels(props) {
     const thread = useSelector(state => state.email_threads[props.thread_id]);
     const tasks = useSelector(state => Object.values(state.tasks));
     const num_tasks = tasks.filter(t => (!t.isDone && t.is_approved()) && (t.get_thread_id() === props.thread_id)).length;
-    const option_names = ["Set as task", "Change priority", "Reply", "Reply All", "Forward", "Mark as read", "Delete"];
-    const options = option_names.map(n => { return { name: n } });
+    const option_names = ["Set as task", "Change priority", "Mark as read", "Delete"];
+    let options = option_names.map(n => { return { name: n } });
     options.filter(o => o.name === 'Delete')[0].action = () => {
         thread.delete_all((t_id, e_ids) => dispatch(DeleteEmails(t_id, e_ids)));
     }
     options.filter(o => o.name === 'Set as task')[0].action = props.show_task_portal;
     const email_id = thread.get_emails()[0].get_id();
-    for (const button of [
-        { name: "Reply", composer_type: "reply" },
-        { name: "Reply All", composer_type: "reply_all" },
-        { name: "Forward", composer_type: "forward" }
-    ]) {
-
-        options.filter(o => o.name === button.name)[0].action = () => {
-            dispatch(Create({
-                email_id: email_id,
-                composer_type: button.composer_type
-            }));
-        }
-    }
 
     options.filter(o => o.name === 'Mark as read')[0].action = () => thread.mark_all_read();
     options.filter(o => o.name === "Change priority")[0].action = () => thread.set_priority((thread.get_priority() + 1) % 3);
+    options.splice(2, 0, ...['reply', 'reply_all', 'forward'].map(type => build_email_action_button(dispatch, type, email_id)));
     return (
         <div className='thread_labels'>
             <div className={'num_tasks_label ' + props.priority}>

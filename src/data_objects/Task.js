@@ -7,7 +7,7 @@ import { create_slot } from '../components/calendar/utils.js';
 import { create } from 'hbs';
 
 const GENERAL_TASK_DETECTION_THRESHOLD = 70;
-const REQUEST_MEETING_PROBABILITY_THRESHOLD = 96;
+const REQUEST_MEETING_PROBABILITY_THRESHOLD = 70;
 
 
 export class Task {

@@ -1,6 +1,7 @@
 import { send_reply } from '../backend/Connect.js';
 import { Contact } from '../data_objects/Contact.js';
 import { create_mail_object } from '../utils.js'
+import { Create } from '../actions/email_composer'
 export function recipient_to_address(recipient) {
     const contact = Contact.create_contact(recipient);
     return contact.get_address();
@@ -37,4 +38,22 @@ export async function send_quick_reply(to, subject, html, cc, bcc, file_buffers,
     await send_reply(email, dest_id);
     // mail was sent (true)
     return true
+}
+
+export function build_email_action_button(dispatch_hook, email_type, base_email_id, cleanup) {
+    const DISPLAY_NAMES = {
+        reply: 'Reply',
+        reply_all: 'Reply All',
+        forward: 'Forward'
+    }
+    return {
+        name: DISPLAY_NAMES[email_type],
+        action: () => {
+            dispatch_hook(Create({
+                email_id: base_email_id,
+                cleanup: cleanup,
+                composer_type: email_type
+            }));
+        }
+    }
 }
