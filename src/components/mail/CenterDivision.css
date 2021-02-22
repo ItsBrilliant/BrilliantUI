@@ -1,11 +1,12 @@
 @import "../Globals.css";
-
 .CenterDivision{
     border-radius: 10px;
     background-color: var(--email-container-background);
     height: 100%;
-    width: 55%;
+    width: 50%;
     min-width: 450px;
+    position:relative;
+    transition: width .7s ease-in-out;
 }
 
 .CenterDivision .CenterSimpleBar .simplebar-content{
@@ -13,6 +14,31 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: stretch;
+}
+
+.CenterDivision .ExpandButton:hover{
+    cursor: pointer;
+}
+
+.CenterDivision.collapsed_right {
+    width: 70%;
+    transition: width .7s ease-in-out;
+}
+
+.CenterDivision .ExpandButton{
+    --expand_button_size: 20px;
+    background-color: var(--email-container-background);
+    padding-top: calc(0.5 * var(--expand_button_size));
+    text-align: center;
+    font-size: calc(1 * var(--expand_button_size));
+    font-weight: bold;
+    color: var(--main-text-color);
+    border-radius: 100%;
+    position: absolute;
+    right: calc(0% - var(--expand_button_size));
+    top: 50%;
+    height: calc(2 * var(--expand_button_size));
+    width: calc(2 * var(--expand_button_size));
 }
 
 .AttachedFile {

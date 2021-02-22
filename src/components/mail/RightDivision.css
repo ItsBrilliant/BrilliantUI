@@ -5,6 +5,12 @@
     min-width: 200px;
     height: 100%;
     overflow: hidden;
+    transition: width .7s ease, min-width .7s ease;
+}
+
+.RightDivision.collapsed_right {
+    width: 0%;
+    min-width: 0;
 }
 
 .TasksDisplayer {

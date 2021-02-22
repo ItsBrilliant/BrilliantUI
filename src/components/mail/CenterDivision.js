@@ -5,19 +5,20 @@ import { useDispatch, connect } from 'react-redux'
 import { Create } from '../../actions/email_composer.js';
 import EmailContainer from './EmailContainer.js';
 import { Update } from '../../actions/tasks'
-import { email_folder_filter } from '../../utils'
 
 
 export class CenterDivision extends React.Component {
 
     render() {
         if (!this.props.thread) { return null; }
-        //    let thread_emails = this.props.emails.filter(e => email_folder_filter(e, this.props.folders, this.props.selected_folder_id));
         let thread_emails = this.props.emails.sort((a, b) => a.get_date() - b.get_date());
         if (thread_emails.length == 0) {
             return null;
         }
-
+        let style = 'CenterDivision';
+        if (this.props.collapsed_right) {
+            style += ' collapsed_right';
+        }
         const emails = thread_emails.map((email) =>
             <EmailContainer
                 key={email.get_id()}
@@ -25,17 +26,23 @@ export class CenterDivision extends React.Component {
                 thread={this.props.thread}
             />);
         return (
-            <div className='CenterDivision' >
+            <div className={style}>
                 <SimpleBar className="CenterSimpleBar">
                     {emails}
                 </SimpleBar>
                 <NewReply email_id={thread_emails[thread_emails.length - 1].get_id()} />
+                <ExpandButton is_shrink={this.props.collapsed_right} on_click={this.props.toggle_collapse}></ExpandButton>
             </div>
         );
     }
 }
 
-
+function ExpandButton(props) {
+    const symbol = props.is_shrink ? " < " : " > "
+    return (
+        <div className="ExpandButton" onClick={props.on_click}> {symbol} </div>
+    )
+}
 
 function NewReply(props) {
     const dispatch = useDispatch();
@@ -58,50 +65,6 @@ function NewReply(props) {
             >Reply</span>
         </div>
     );
-}
-
-class ReplyForm extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            text: '',
-            touched: false
-        }
-    }
-    submitmyeventHandler = (myevent) => {
-        alert("Reply sent");
-        this.setState({
-            text: ''
-        });
-    }
-    changeEventHandler = (myevent) => {
-        this.setState({ text: myevent.target.value });
-    }
-    render() {
-        return (
-            <form className="ReplyForm" onSubmit={this.submitmyeventHandler}>
-                <input
-                    type='text'
-                    placeholder='Reply'
-                    value={this.state.text}
-                    onChange={this.changeEventHandler}
-                />
-                <img className='file' src='file_icons/attachment.png'></img>
-                <input
-                    value=''
-                    placeholder=''
-                    type='file'
-                />
-                <img className='send' src='button_icons/send.png'></img>
-                <input
-                    value=''
-                    type='button'
-                    onClick={this.submitmyeventHandler}
-
-                />
-            </form>
-        );
-    }
 }
 
 const mapStateToProps = state => ({

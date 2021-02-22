@@ -12,7 +12,8 @@ export class Mail extends Component {
         console.log("Started Mail");
         this.state = {
             selected_thread_id: undefined,
-            selected_folder: "Inbox"
+            selected_folder: "Inbox",
+            collapsed_right: false
         }
         Thread.SELECTED_FOLDER_ID = this.props.folders["Inbox"];
         this.handleSelect = this.handleSelect.bind(this);
@@ -43,14 +44,20 @@ export class Mail extends Component {
                     folders={this.props.folders}
                     set_selected_folder={this.set_selected_folder}
                     selected_folder={this.state.selected_folder}
+
                 />
                 <CenterDivision thread={selected_thread}
                     selected_folder_id={selected_folder_id}
                     selected_folder={this.state.selected_folder}
                     folders={this.props.folders}
-                    emails={selected_thread_emails} />
+                    emails={selected_thread_emails}
+                    collapsed_right={this.state.collapsed_right}
+                    toggle_collapse={() => this.setState((state, props) => { return { collapsed_right: !state.collapsed_right } })}
+                />
 
-                <RightDivision show={selected_thread_emails.length > 0} thread={selected_thread} selected_folder_id={selected_folder_id} />
+                <RightDivision
+                    collapsed_right={this.state.collapsed_right}
+                    show={selected_thread_emails.length > 0} thread={selected_thread} selected_folder_id={selected_folder_id} />
             </div>
         )
     }
