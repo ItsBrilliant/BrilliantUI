@@ -22,18 +22,19 @@ import { Email } from '../data_objects/Email.js';
 const history = require("history").createBrowserHistory();
 
 export const SHOW_HTML = false;
+const REFRESH_INTERVAL = 15000;
 
 export class Home extends React.Component {
     constructor(props) {
         super(props);
         console.log("Started Home");
         this.update_search_bar = this.update_search_bar.bind(this);
-        this.get_mailboxes = this.get_mailboxes.bind(this);
         this.set_threads = this.set_threads.bind(this);
         this.set_calendar = this.set_calendar.bind(this);
         this.set_mail_folders = this.set_mail_folders.bind(this);
         this.refresh_user_data = this.refresh_user_data.bind(this);
         this.refresh_timer = null;
+        this.loading = false;
         this.state = {
             calendarEvents: [],
             taskEvents: [],
@@ -71,23 +72,24 @@ export class Home extends React.Component {
         this.load_user_data(new_user)
     }
 
-    async get_mailboxes() {
-        console.log("getting all mail")
-        await get_all_mail(this.set_threads);
-        //const emails =
-        //      append_email_attachments(emails, user)
-    }
-
 
     load_user_data(user) {
+        if (this.loading) {
+            return;
+        }
+        this.loading = true;
         clearInterval(this.refresh_timer);
         if (user.get_address()) {
             console.log("loading user data")
             console.log("getting calendar")
-            get_calendar(this.set_calendar);
-            get_mail_folders(this.set_mail_folders);
-            this.get_mailboxes();
-            this.refresh_timer = setInterval(this.refresh_user_data, 15000);
+            Promise.all(
+                [
+                    get_mail_folders(this.set_mail_folders),
+                    get_calendar(this.set_calendar),
+                    get_all_mail(this.set_threads)
+                ]
+            ).then(arr => this.loading = false);
+            this.refresh_timer = setInterval(this.refresh_user_data, REFRESH_INTERVAL);
         }
     }
     change_user(new_addresss) {

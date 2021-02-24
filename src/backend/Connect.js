@@ -10,6 +10,7 @@ var EMAIL_VERSIONS = {};
 var NUM_EMAILS_LOADED = 0;
 var NUM_EVENTS_LOADED = 0;
 const PAGE_SIZE = 50;
+const EMAIL_CHUNK_SIZE = 3;
 
 export async function append_email_attachments(emails) {
     if (!emails) {
@@ -63,7 +64,7 @@ export async function delete_attachment(email_id, attachment_id) {
 }
 
 export async function get_all_mail(callback_function) {
-    NUM_EMAILS_LOADED = Math.max(NUM_EMAILS_LOADED, await get_mail(callback_function, 3, NUM_EMAILS_LOADED, NUM_EMAILS_LOADED + PAGE_SIZE, false));
+    NUM_EMAILS_LOADED = Math.max(NUM_EMAILS_LOADED, await get_mail(callback_function, EMAIL_CHUNK_SIZE, NUM_EMAILS_LOADED, NUM_EMAILS_LOADED + PAGE_SIZE, false));
     console.log("NUM_EMAILS_LOADED = " + NUM_EMAILS_LOADED);
 }
 
@@ -102,15 +103,15 @@ async function general_graph_paging_call(callback_function, version_function, ur
     var SEEN_IDS = new Set()
     var done = false;
     var next_page_url = null;
-    for (var current = start; (current < end) && !done; current += chunk) {
-        try {
+    try {
+        for (var current = start; (current < end) && !done; current += chunk) {
+
             console.log(`${url}:SEEN_IDS:${SEEN_IDS.size}, curret:${current}`);
             const response = await Axios.get(url, { params: { skip: current, top: chunk, refresh: refresh, link: next_page_url } })
             let data = response.data.value;
-            next_page_url = response.data['@odata.nextLink'];
-            if (data && data.length === 0) {
-                break;
-            }
+            // This may have been causing session problems so disable it for now.
+            // The ordering by time for the intense skipping seems to solve the problem anyway
+            next_page_url = null;//response.data['@odata.nextLink'];
             let new_data = []
             for (const d of data) {
                 if (version_function(d)) {
@@ -126,10 +127,9 @@ async function general_graph_paging_call(callback_function, version_function, ur
                 callback_function(new_data);
             }
         }
-        catch (e) {
-            console.log("Error getting resource from " + url);
-            console.log(e);
-        }
+    } catch (e) {
+        console.log("Error getting resource from " + url);
+        console.log(e);
     }
     return current;
 }

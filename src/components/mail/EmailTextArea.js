@@ -110,16 +110,19 @@ class EmailTextArea extends Component {
                 const startOffset = range.startOffset + siblings_offset;
                 const endOffset = range.endOffset + siblings_offset;
                 const position_style = get_mouse_position_style(e.pageX, e.pageY);
-                return (
-                    <img className="manual_add_task" src='button_icons/task.svg'
-                        style={position_style}
-                        onClick={() => this.handle_task_icon_click(position_style,
-                            [startOffset, endOffset])}>
-                    </img>
-                );
+                return this.get_add_task_icon(position_style, [startOffset, endOffset])
             }
         }
         return null;
+    }
+
+    get_add_task_icon(position_style, selection_indexes, existing_task) {
+        return (
+            <img className="manual_add_task" src='button_icons/task.svg'
+                style={position_style}
+                onClick={() => this.handle_task_icon_click(position_style, selection_indexes, existing_task)}>
+            </img>
+        );
     }
 
     get_style() {
@@ -226,13 +229,13 @@ function get_mouse_position_style(x, y) {
 }
 
 function on_proposed_task_hover(task, e) {
-    if (task.is_approved()) {
+    if (task.is_approved() || this.state.add_task_icon) {
         return;
     }
     const position_style = get_mouse_position_style(e.pageX, e.pageY);
     const source_indexes = task.get_source_indexes();
     const selection_indexes = [source_indexes.start, source_indexes.end];
-    this.handle_task_icon_click(position_style, selection_indexes, task);
+    this.setState({ add_task_icon: this.get_add_task_icon(position_style, selection_indexes, task) });
 }
 
 const mapStateToProps = state => ({});

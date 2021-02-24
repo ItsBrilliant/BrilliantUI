@@ -36,8 +36,8 @@ export function GroupIcon(icons, MAX_ICONS = 6, size = 50, spacing = 20) {
         height: size
     }
     var extra_icons = icons.length - MAX_ICONS;
-    const merged = icons.slice(0, MAX_ICONS).map((icon) =>
-        <img style={image_style} className={class_name} src={icon}></img>);
+    const merged = icons.slice(0, MAX_ICONS).map((icon, index) =>
+        <img key={index} style={image_style} className={class_name} src={icon}></img>);
     const group_style = icons.length > 1 ?
         {
             width: `${spacing * merged.length - spacing + size}px`,
