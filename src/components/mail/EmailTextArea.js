@@ -18,8 +18,9 @@ class EmailTextArea extends Component {
             add_task_component: null,
             task_args: null
         };
-        this.handle_task_component_close = this.handle_task_component_close.bind(this)
-        this.handle_add_task = this.handle_add_task.bind(this)
+        this.handle_task_component_close = this.handle_task_component_close.bind(this);
+        this.handle_add_task = this.handle_add_task.bind(this);
+        this.handle_task_icon_click = this.handle_task_icon_click.bind(this);
     }
 
     handle_task_component_close() {
@@ -110,19 +111,13 @@ class EmailTextArea extends Component {
                 const startOffset = range.startOffset + siblings_offset;
                 const endOffset = range.endOffset + siblings_offset;
                 const position_style = get_mouse_position_style(e.pageX, e.pageY);
-                return this.get_add_task_icon(position_style, [startOffset, endOffset])
+                return <AddTaskIcon
+                    position_style={position_style}
+                    selection_indexes={[startOffset, endOffset]}
+                    on_click={this.handle_task_icon_click} />
             }
         }
         return null;
-    }
-
-    get_add_task_icon(position_style, selection_indexes, existing_task) {
-        return (
-            <img className="manual_add_task" src='button_icons/task.svg'
-                style={position_style}
-                onClick={() => this.handle_task_icon_click(position_style, selection_indexes, existing_task)}>
-            </img>
-        );
     }
 
     get_style() {
@@ -235,7 +230,23 @@ function on_proposed_task_hover(task, e) {
     const position_style = get_mouse_position_style(e.pageX, e.pageY);
     const source_indexes = task.get_source_indexes();
     const selection_indexes = [source_indexes.start, source_indexes.end];
-    this.setState({ add_task_icon: this.get_add_task_icon(position_style, selection_indexes, task) });
+    const add_task_icon =
+        <AddTaskIcon
+            position_style={position_style}
+            selection_indexes={selection_indexes}
+            task={task}
+            on_click={this.handle_task_icon_click}
+        />
+    this.setState({ add_task_icon: add_task_icon });
+}
+
+function AddTaskIcon(props) {
+    return (
+        <img className="manual_add_task" src='button_icons/task.svg'
+            style={props.position_style}
+            onClick={() => props.on_click(props.position_style, props.selection_indexes, props.task)}>
+        </img>
+    );
 }
 
 const mapStateToProps = state => ({});
