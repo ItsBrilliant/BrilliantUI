@@ -6,10 +6,12 @@ import './styles/AddTaskPortal.css';
 import { IMPORTANT, PRIORITIES } from '../data_objects/Consts.js';
 import { Contact } from '../data_objects/Contact.js';
 
+const DEFAULT_TASK_TEXT = "Manual Task";
+
 export function AddTaskPortal(props) {
     const user = useSelector(state => state.user);
-    const [date, setDate] = useState(new Date());
-    const [task_text, setText] = useState(props.task_text);
+    const [date, setDate] = useState(props.date || new Date());
+    const [task_text, setText] = useState(props.task_text || DEFAULT_TASK_TEXT);
     const [priority, setPriority] = useState(props.priority);
     const [owner, setOwner] = useState(user);
     const add_task_portal = (

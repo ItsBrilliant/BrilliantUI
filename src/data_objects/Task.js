@@ -24,6 +24,8 @@ export class Task {
         this.initiator = Contact.CURRENT_USER;
         this.email_id = undefined;
         this.approved = false;
+        this.declined = false
+        //  this.span_ref = React.createRef();
     }
     get_source_indexes() {
         return this.source_indexes;
@@ -84,7 +86,12 @@ export class Task {
     }
     static update_task(dispatcher, task, function_name, args) {
         let new_task = Object.assign(Object.create(task), task);
-        new_task[function_name](...args);
+        if (typeof (new_task[function_name]) === 'function') {
+            new_task[function_name](...args);
+        } else {
+            new_task[function_name] = args;
+        }
+
         dispatcher(new_task);
     }
 
@@ -99,7 +106,7 @@ export class Task {
         dispatcher(task);
     }
     static check_text_overlap(email, new_task) {
-        const email_tasks = email.get_tasks().filter(t => t.id !== new_task.id);
+        const email_tasks = email.get_tasks().filter(t => t.id !== new_task.id && !t.declined);
         const new_task_indexes = new_task.get_source_indexes();
         for (const task of email_tasks) {
             const indexes = task.get_source_indexes();
@@ -113,7 +120,7 @@ export class Task {
     }
     static add_general_task_detection(dispatcher, email) {
         const [task_detection, id] = email.get_detection('task_detection');
-        if (email.is_draft() || !task_detection || task_detection.length === 0) {
+        if (email.is_draft() || email.is_deleted() || !task_detection || task_detection.length === 0) {
             return;
         }
         for (let i = 0; i < task_detection.length; i++) {

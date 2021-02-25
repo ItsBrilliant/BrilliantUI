@@ -49,15 +49,15 @@
   color: white;
   font-size: small;
   height: 100%;
+  padding: 5px;
 }
 
 .FooterButtons button.delete {
   background-color: transparent;
   font-size: x-large;
   font-weight: bold;
-  color: red;
-  border: 2px solid red;
-  padding: 0px 4px;
+  padding: 5px;
+  margin: 2px;
 }
 
 .TaskContent {

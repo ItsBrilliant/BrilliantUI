@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Menu } from '../external/Menues.js';
 import { AddTaskPortal } from '../AddTaskPortal.js';
 import { Task } from '../../data_objects/Task.js';
 import { URGENT } from '../../data_objects/Consts.js';
@@ -7,7 +6,7 @@ import { getSelectionOffsetRelativeTo, get_priority_style } from '../../utils.js
 import { GroupIcon } from './EmailStamp.js';
 import "./EmailTextArea.css";
 import OptionsButton from '../OptionsButton.js';
-import { connect } from 'react-redux'
+import { connect, useDispatch } from 'react-redux'
 import { Update } from '../../actions/tasks'
 
 class EmailTextArea extends Component {
@@ -21,6 +20,7 @@ class EmailTextArea extends Component {
         this.handle_task_component_close = this.handle_task_component_close.bind(this);
         this.handle_add_task = this.handle_add_task.bind(this);
         this.handle_task_icon_click = this.handle_task_icon_click.bind(this);
+        this.handle_task_icon_hide = this.handle_task_icon_hide.bind(this);
     }
 
     handle_task_component_close() {
@@ -43,6 +43,7 @@ class EmailTextArea extends Component {
             task.deadline = date;
             task.priority = priority;
             task.owner = owner;
+            task.source_indexes = task_format_indexes;
         } else {
             task = new Task(text, date, priority, false, task_format_indexes, owner);
         }
@@ -70,14 +71,19 @@ class EmailTextArea extends Component {
             );
         }
     }
+    handle_task_icon_hide() {
+        this.setState({ add_task_icon: null });
+    }
     handle_task_icon_click(position_style, selection_indexes, existing_task) {
         let priority = URGENT;
         let text = "";
         let id;
+        let date;
         if (existing_task) {
             priority = existing_task.priority;
             text = existing_task.text;
             id = existing_task.id;
+            date = existing_task.date;
         }
         this.setState(
             {
@@ -87,6 +93,7 @@ class EmailTextArea extends Component {
                     handle_close={this.handle_task_component_close}
                     priority={priority}
                     task_text={text}
+                    date={date}
                 />,
                 task_args: {
                     selection_indexes: selection_indexes,
@@ -102,19 +109,28 @@ class EmailTextArea extends Component {
 
             const range = selection.getRangeAt(0);
             const start_parent = range.startContainer.parentElement
+            const end_parent = range.endContainer.parentElement
             const start_grand_parent = start_parent.parentElement;
-            const end_grand_parent = range.endContainer.parentElement.parentElement;
+            const end_grand_parent = end_parent.parentElement;
+
             if (start_grand_parent === end_grand_parent &&
                 start_grand_parent.className === "span_text_area" &&
-                range.startOffset < range.endOffset) {
+                (start_parent === end_parent || start_parent.nextElementSibling === end_parent)) {
+                console.log("selection: " + start_parent.innerText + " , " + end_parent.innerText);
                 const siblings_offset = getSelectionOffsetRelativeTo(start_grand_parent, start_parent);
                 const startOffset = range.startOffset + siblings_offset;
-                const endOffset = range.endOffset + siblings_offset;
+                let endOffset = range.endOffset + siblings_offset;
+                if (start_parent !== end_parent) {
+                    endOffset += start_parent.innerText.length;
+                }
                 const position_style = get_mouse_position_style(e.pageX, e.pageY);
+                const existing_task = get_task_between_elements(start_parent, end_parent);
                 return <AddTaskIcon
                     position_style={position_style}
+                    task={existing_task}
                     selection_indexes={[startOffset, endOffset]}
-                    on_click={this.handle_task_icon_click} />
+                    on_click={this.handle_task_icon_click}
+                    hide={this.handle_task_icon_hide} />
             }
         }
         return null;
@@ -145,7 +161,7 @@ class EmailTextArea extends Component {
 
     // Insert task highligts
     render_content(text) {
-        let tasks = this.props.tasks.filter(t => t.source_indexes.start >= 0);
+        let tasks = this.props.tasks.filter(t => !t.declined && t.source_indexes.start >= 0);
         if (!this.props.of_center_email || tasks.length === 0) {
             return <span>{text}</span>
         }
@@ -159,15 +175,13 @@ class EmailTextArea extends Component {
             const start = tasks[i].get_source_indexes().start
             const end = tasks[i].get_source_indexes().end
             var style = 'task_source';
-            if (!tasks[i].isDone) {
-                if (tasks[i].is_approved()) {
-                    style += ' ' + get_priority_style(tasks[i].get_priority())
-                } else {
-                    style += ' ' + "before_approval";
-                }
+            if (tasks[i].is_approved()) {
+                style += ' ' + get_priority_style(tasks[i].get_priority())
+            } else {
+                style += " before_approval";
             }
             sections.push(
-                <span className={style} onMouseEnter={on_proposed_task_hover.bind(this, tasks[i])} >
+                <span task_id={tasks[i].id} className={style} onMouseEnter={on_proposed_task_hover.bind(this, tasks[i])} >
                     {text.slice(start, end)}
                 </span>)
             const next_start = i + 1 < tasks.length ? tasks[i + 1].get_source_indexes().start : text.length;
@@ -215,7 +229,7 @@ class EmailTextArea extends Component {
 
 function get_mouse_position_style(x, y) {
     const top_offset = y ? y - 60 : "40vh";
-    const left_offset = x ? x - 20 : "40vw";
+    const left_offset = x ? x - 40 : "40vw";
     return {
         position: 'fixed',
         top: top_offset,
@@ -224,7 +238,7 @@ function get_mouse_position_style(x, y) {
 }
 
 function on_proposed_task_hover(task, e) {
-    if (task.is_approved() || this.state.add_task_icon) {
+    if (task.is_approved() || task.declined || this.state.add_task_icon) {
         return;
     }
     const position_style = get_mouse_position_style(e.pageX, e.pageY);
@@ -236,17 +250,45 @@ function on_proposed_task_hover(task, e) {
             selection_indexes={selection_indexes}
             task={task}
             on_click={this.handle_task_icon_click}
-        />
+            hide={this.handle_task_icon_hide} />
     this.setState({ add_task_icon: add_task_icon });
 }
 
 function AddTaskIcon(props) {
+    const dispatch = useDispatch()
+    const handle_close = () => {
+        props.hide();
+        if (props.task) {
+            Task.update_task((t) => dispatch(Update(t)), props.task, 'declined', true);
+        }
+    }
     return (
-        <img className="manual_add_task" src='button_icons/task.svg'
-            style={props.position_style}
-            onClick={() => props.on_click(props.position_style, props.selection_indexes, props.task)}>
-        </img>
+        <div className="add_task_wrapper" onClick={props.hide}>
+            <div className="AddTaskIcon" style={props.position_style}>
+                <img src='button_icons/task.svg'
+                    onClick={() => props.on_click(props.position_style, props.selection_indexes, props.task)}>
+                </img>
+                <button onClick={handle_close} className="delete">&times;</button>
+            </div>
+        </div>
     );
+}
+
+function task_from_text_element(element) {
+    const tasks = Object.values(Task.CURRENT_TASKS);
+    return tasks.filter(t => t.approved && t.id === element.getAttribute("task_id"))[0];
+
+}
+
+function get_task_between_elements(start_element, end_element) {
+    const start_task = task_from_text_element(start_element);
+    const end_task = task_from_text_element(end_element)
+    if (start_task && end_task && (start_task !== end_task)) {
+        return undefined
+    } else {
+        return start_task ? start_task : end_task;
+    }
+
 }
 
 const mapStateToProps = state => ({});

@@ -94,3 +94,46 @@
   background-color: lightblue;
   align-self: center;
 }
+
+.AddTaskIcon {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  width: max-content;
+  padding: 5px;
+
+}
+
+.AddTaskIcon *{
+  width: 35px;
+  height: 35px;
+  padding: 5px;
+  border-radius: 20%;
+  background-color: var(--email-container-background);
+  border: 2px solid var(--main-text-color);
+  box-sizing: border-box;
+  margin: 5px;
+}
+.AddTaskIcon button.delete {
+    font-size: 30px;
+    font-weight: normal;
+    color: red;
+    border-color: red;
+    padding-top: 0;
+
+}
+
+.add_task_wrapper{
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background-color: transparent;
+}
+
+.AddTaskIcon *:hover {
+  cursor: pointer;
+  background-color: var(--link_hover_color);
+}
+

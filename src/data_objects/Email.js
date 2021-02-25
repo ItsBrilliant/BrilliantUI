@@ -124,7 +124,7 @@ export class Email {
     // Get priority based on the priority of unfinished tasks
     static get_priority(tasks, email_id) {
         tasks = tasks.filter(t => t.get_email_id() === email_id)
-        const priorities = tasks.map(task => parseInt(task.isDone ? NO_PRIORITY : task.priority));
+        const priorities = tasks.map(task => parseInt(task.isDone || task.declined ? NO_PRIORITY : task.priority));
         if (priorities.includes(URGENT)) {
             return URGENT;
         }

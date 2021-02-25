@@ -19,14 +19,19 @@ export function LoginPage(props) {
     const action_button = props.user_address ?
         <button className="out" onClick={() => handle_click(false)}>Log out</button> :
         <button className="in" onClick={() => handle_click(true)}>Log in</button>
-
+    const comment_style = { color: "gray", margin: "10px" };
     return (
-        <div className="LoginPage">
-            <h3>{header}</h3>
-            {email_labels}
-            <div className="login_page_buttons">
-                {action_button}
+
+        <div >
+            <div className="LoginPage">
+                <h3>{header}</h3>
+                {email_labels}
+                <div className="login_page_buttons">
+                    {action_button}
+                </div>
             </div>
+            <p style={comment_style}>-updated Feb 25th</p>
+            <p style={comment_style}>-put magic*moments in email subject for AI to process that email</p>
         </div>
     );
 }
