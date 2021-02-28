@@ -24,7 +24,9 @@ export class Task {
         this.initiator = Contact.CURRENT_USER;
         this.email_id = undefined;
         this.approved = false;
-        this.declined = false
+        this.declined = false;
+        this.watchers = new Set([this.initiator, this.owner]);
+        this.tags = ["Tag1", "Tag2"];
         //  this.span_ref = React.createRef();
     }
     get_source_indexes() {

@@ -18,6 +18,7 @@ import { MAIL_FOLDERS } from '../data_objects/Consts.js';
 import { Task } from '../data_objects/Task'
 import axios from 'axios';
 import { Email } from '../data_objects/Email.js';
+import Tasks from '../components/tasks/Tasks';
 
 const history = require("history").createBrowserHistory();
 
@@ -194,8 +195,8 @@ export class Home extends React.Component {
                                     <Calendar events={[...this.state.calendarEvents, ...this.state.taskEvents]} />}>
                             </Route>
                             <Route
-                                path='/build' exact
-                                render={() => <h1>Build</h1>}
+                                path='/tasks' exact
+                                render={() => <Tasks />}
                             >
                             </Route>
                         </Switch>
@@ -217,7 +218,7 @@ function Nav() {
     const calendar = { icon: "button_icons/calendar.svg", link: '/calendar' }
     const files = { icon: "button_icons/files.svg", link: '/' }
     const people = { icon: "button_icons/people.svg", link: '/' }
-    const task = { icon: "button_icons/task.svg", link: '/' }
+    const task = { icon: "button_icons/task.svg", link: '/tasks' }
     const user_account = { icon: "person_images/0.jpg", link: '/login' }
     mail.additional = <div className="plus"><button onClick={() => dispatch(Create({ composer_type: "new" }))}>+</button></div>
     return (
