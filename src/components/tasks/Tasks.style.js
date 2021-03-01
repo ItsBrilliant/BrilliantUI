@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { email_text_area_bg, main_text_color, email_container_background } from '../StyleConsts'
+import { email_text_area_bg, main_text_color, email_container_background, main_bg_color, link_hover_color } from '../StyleConsts'
 import { URGENT, IMPORTANT, CAN_WAIT } from '../../data_objects/Consts'
 
 const TaskGrid = styled.div`
@@ -56,6 +56,7 @@ export const TaskRowStyle = styled(TaskGrid)`
   }
   .Dropdown-control{
     padding-right: 35px;
+    background-color: transparent;
   }
 `;
 
@@ -81,6 +82,19 @@ export const TaskHeaderStyle = styled(TaskGrid)`
   background-color: ${email_container_background};
   .filter_buttons{
     grid-area: first_column;
+    margin-right: auto;
+    margin-left: 5px;
+    button {
+      background-color: ${main_bg_color};
+      margin: 5px;
+      padding: 5px;
+      font-weight: bold;
+      color: ${main_text_color};
+    }
+    button.selected {
+      background-color: ${link_hover_color};
+      color: ${main_bg_color};
+    }
   }
   
 `;

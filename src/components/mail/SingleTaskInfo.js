@@ -53,8 +53,8 @@ export default function TaskInfoWrapper(props) {
 function TopButtons(props) {
     const dispatch = useDispatch();
     const task_updater = (task) => dispatch(Update(task));
-    const [priority, setPriority] = useState(props.task.get_priority())
-    const [task_status, setStatus] = useState(props.task.isDone ? "Done" : "To do")
+    const [priority, setPriority] = useState(props.task.get_priority());
+    const [task_status, setStatus] = useState(props.task.status);
     const option_button_names = ["Quick Reply", "Set In Calendar", "Add To Topic", "Go To Source", "Mark As Done"];
     var options_buttons = option_button_names.map(n => { return { name: n } });
     options_buttons.filter(n => n.name === "Mark As Done")[0].action = e => my_set_status("Done");
