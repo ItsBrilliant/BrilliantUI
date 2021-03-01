@@ -21,7 +21,7 @@ export function Menu(props) {
     return (
         <div className='Menu'>
             <span>{props.label}</span>
-            <div>
+            <div className={props.style_class}>
                 <Dropdown className={props.style_class}
                     options={props.options}
                     value={props.value}

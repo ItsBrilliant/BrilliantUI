@@ -27,6 +27,7 @@ export class Task {
         this.declined = false;
         this.watchers = new Set([this.initiator, this.owner]);
         this.tags = ["Tag1", "Tag2"];
+        this.status = 'To Do';
         //  this.span_ref = React.createRef();
     }
     get_source_indexes() {
@@ -64,6 +65,7 @@ export class Task {
 
     }
     set_status(status) {
+        this.status = status;
         if (status === "Done") {
             this.isDone = true;
         } else {
