@@ -39,7 +39,7 @@ function Tasks(props) {
 
     return (
         <div className='Container'>
-            <TaskInfoWrapper thread={props.thread}
+            <TaskInfoWrapper thread_id={props.thread.id}
                 task_id={task_id_for_info}
                 close={() => set_task_id(null)} />
             <TasksDisplayer tasks={active_tasks} areDone={false} on_status_click={my_update_finished_task} on_click={set_task_id} />

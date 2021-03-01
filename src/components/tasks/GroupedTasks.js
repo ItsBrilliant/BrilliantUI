@@ -7,6 +7,7 @@ export default function GroupedTasks(props) {
     const title = PRIORITIES[props.priority];
     const tasks = props.tasks.map(t =>
         <TaskRow
+            on_click={props.select_task}
             key={t.id}
             task={t}
             task_text={t.text}

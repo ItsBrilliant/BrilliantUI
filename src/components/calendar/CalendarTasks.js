@@ -15,7 +15,7 @@ export default function CalendarTasks() {
     const tasks_dict = useSelector(state => state.tasks);
     const tasks = Object.values(tasks_dict).sort((a, b) => a.priority - b.priority);
     const threads = useSelector(state => state.email_threads);
-    const selected_thread = selected_task_id ? threads[tasks_dict[selected_task_id].get_thread_id()] : null
+    const selected_thread_id = selected_task_id ? selected_task_id.get_thread_id() : null
     const task_components = tasks.map(task => {
         const thread = threads[task.get_thread_id()];
         let participants = thread ? thread.get_participants() : [];
@@ -46,7 +46,7 @@ export default function CalendarTasks() {
                     {task_components}
                 </SimpleBar>
             </div>
-            <TaskInfoWrapper thread={selected_thread}
+            <TaskInfoWrapper thread_id={selected_thread_id}
                 task_id={selected_task_id}
                 close={() => set_task_id(null)} />
         </div>

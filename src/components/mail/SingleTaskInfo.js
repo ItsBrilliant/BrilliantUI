@@ -38,13 +38,14 @@ function SingleTaskInfo(props) {
 
 export default function TaskInfoWrapper(props) {
     const task = useSelector(state => state.tasks[props.task_id]);
-    if (!props.task_id || !props.thread) {
+    const thread = useSelector(state => state.email_threads[props.thread_id])
+    if (!props.task_id || !thread) {
         return null;
     }
     return ReactDOM.createPortal(
         <div className="TaskInfoWrapper">
             <div className="invisible_close" onClick={props.close} />
-            <SingleTaskInfo task={task}{...props} />
+            <SingleTaskInfo task={task} thread={thread}{...props} />
         </div>,
         document.getElementById('messages_to_user')
     );

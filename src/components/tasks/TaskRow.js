@@ -18,7 +18,9 @@ export default function TaskRow(props) {
     const change_priority = (value) => Task.update_task(task_updater, props.task, 'set_priority', [value]);
     return (
         <TaskRowStyle>
-            <span className="task_text">{props.task_text}</span>
+            <span className="task_text"
+                onClick={() => props.on_click(props.task)}
+            > {props.task_text}</span>
             <PriorityOptions style_class="priority" default_selection={props.priority} onChange={change_priority} />
             <span className="owner">{GroupIcon([props.owner], 6, 35)}</span>
             <Menu style_class="status" value={props.status} options={status_options} onChange={change_status}></Menu>

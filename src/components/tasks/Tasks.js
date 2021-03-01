@@ -5,6 +5,7 @@ import { useTasks } from '../../hooks/redux'
 import SimpleBar from 'simplebar-react'
 import { TaskHeaderStyle } from './Tasks.style'
 import { useSelector } from 'react-redux'
+import TaskInfoWrapper from '../mail/SingleTaskInfo'
 
 
 const TASK_FILTERS = ["owner", "initiator", "watchers"];
@@ -13,6 +14,7 @@ const FILTER_FUNCTIONS = [EQUAL, EQUAL, (a, b) => a.has(b)]
 
 export default function Tasks() {
     const [filter_index, set_filter] = useState(0)
+    const [selected_task, select_task] = useState(null)
     const user = useSelector(state => state.user)
     const task_filter = [TASK_FILTERS[filter_index], 'approved']
     const filter_target = [user, true]
@@ -23,11 +25,22 @@ export default function Tasks() {
             <TaskHeader selected_filter={filter_index} on_select_filter={set_filter} />
             <div style={{ height: "calc(100% - 100px)" }}>
                 <SimpleBar style={{ height: "calc(100% - 100px)" }}>
-                    <GroupedTasks priority={URGENT} tasks={tasks.filter(t => t.priority === URGENT)} />
-                    <GroupedTasks priority={IMPORTANT} tasks={tasks.filter(t => t.priority === IMPORTANT)} />
-                    <GroupedTasks priority={CAN_WAIT} tasks={tasks.filter(t => t.priority === CAN_WAIT)} />
+                    <GroupedTasks select_task={select_task}
+                        priority={URGENT}
+                        tasks={tasks.filter(t => t.priority === URGENT)} />
+                    <GroupedTasks select_task={select_task}
+                        priority={IMPORTANT}
+                        tasks={tasks.filter(t => t.priority === IMPORTANT)} />
+                    <GroupedTasks select_task={select_task}
+                        priority={CAN_WAIT}
+                        tasks={tasks.filter(t => t.priority === CAN_WAIT)} />
                 </SimpleBar>
             </div>
+            {selected_task ?
+                <TaskInfoWrapper thread_id={selected_task.get_thread_id()}
+                    task_id={selected_task.id}
+                    close={() => select_task(null)} />
+                : null}
         </Fragment>
     )
 }

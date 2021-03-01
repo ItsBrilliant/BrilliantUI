@@ -37,11 +37,15 @@ export const TaskRowStyle = styled(TaskGrid)`
   background: ${email_text_area_bg};
   color: ${main_text_color};
   margin: 5px;
-  height: 50px;
+  height: 54px;
   border-radius: 20px;
+  box-sizing: border-box;
   .task_text {
     grid-area: first_column;
     padding-left: 10px;
+  }
+  .task_text:hover {
+    cursor: pointer;
   }
   .tag{
     border:1px solid yellow;
@@ -57,6 +61,9 @@ export const TaskRowStyle = styled(TaskGrid)`
   .Dropdown-control{
     padding-right: 35px;
     background-color: transparent;
+  }
+  &:hover{
+    border: 2px solid ${link_hover_color};
   }
 `;
 
