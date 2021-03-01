@@ -67,7 +67,7 @@
 .not_nav{
     background-color: var(--main-bg-color);
     height:100%;
-    width: calc(100% - 40px);
+    width: calc(100% - 64px);
 }
 
 .top_buttons{

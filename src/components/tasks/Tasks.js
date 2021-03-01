@@ -23,8 +23,8 @@ export default function Tasks() {
     return (
         <Fragment>
             <TaskHeader selected_filter={filter_index} on_select_filter={set_filter} />
-            <div style={{ height: "calc(100% - 100px)" }}>
-                <SimpleBar style={{ height: "calc(100% - 100px)" }}>
+            <div style={{ height: "calc(100% - 101px)" }}>
+                <SimpleBar style={{ height: "100%" }}>
                     <GroupedTasks select_task={select_task}
                         priority={URGENT}
                         tasks={tasks.filter(t => t.priority === URGENT)} />

@@ -24,8 +24,8 @@ function SingleTaskInfo(props) {
             </div>
             <div className="scrollable">
                 <SimpleBar className="simplebar">
-                    <QuickReply to={props.task.get_initiator()} email_id={props.task.email_id} on_close={props.close} />
-                    <People watching={props.thread.get_participants()}
+                    <QuickReply to={props.task.initiator} email_id={props.task.email_id} on_close={props.close} />
+                    <People watchers={Array.from(props.task.watchers)}
                         owner={props.task.get_owner()} />
                     <Highlights highlights={DEFAULT_HIGHLIGHTS} />
                     <RelevantResources resources={props.thread.get_attachments()} />
@@ -101,10 +101,10 @@ function QuickReply(props) {
 }
 
 function People(props) {
-    const watching =
+    const watchers =
         <span>
             <div><p> Watching</p></div>
-            {GroupIcon(props.watching, 6, 30, 22)}
+            {GroupIcon(props.watchers, 6, 30, 22)}
         </span>
 
     const owner =
@@ -119,7 +119,7 @@ function People(props) {
     const people_componenet =
         <div className="People">
             {owner}
-            {watching}
+            {watchers}
         </div>
     return <TitledComponent title="People" component={people_componenet} class_name="People" />
 }

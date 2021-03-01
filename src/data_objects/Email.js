@@ -141,15 +141,6 @@ export class Email {
     get_tasks() {
         return Task.get_tasks_by_email_id(this.get_id());
     }
-    add_task(task) {
-        const initiator = this.get_sender();
-        if (initiator) {
-            task.set_initiator(initiator);
-        }
-        task.email_id = this.get_id();
-        task.thread_id = this.get_thread_id();
-        this.tasks = [...this.tasks, task];
-    }
 
     get_id() {
         return this.email['id'];
@@ -163,7 +154,11 @@ export class Email {
     }
 
     get_receivers() {
-        return this.get_recipients().concat(this.get_ccs()).concat(this.get_bccs());
+        let result = new Set()
+        for (let contact of this.get_recipients().concat(this.get_ccs()).concat(this.get_bccs())) {
+            result.add(contact);
+        }
+        return Array.from(result);
     }
     get_recipients() {
         return this.email['toRecipients'].map((c) => Contact.create_contact(c));

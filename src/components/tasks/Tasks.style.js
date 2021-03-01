@@ -5,12 +5,13 @@ import { URGENT, IMPORTANT, CAN_WAIT } from '../../data_objects/Consts'
 const TaskGrid = styled.div`
   color: ${main_text_color};
   display: grid;
-  grid-template-columns: 4fr 1fr 1fr 1fr 2fr 1fr 3fr;
+  grid-template-columns: 5fr 1fr 1fr 1fr 2fr 1fr 2.5fr;
   grid-template-rows: 1fr;
   justify-items: center;
   align-items: center;
-  width: calc(100% - 65px);
+  width: 100%;
   padding: 0 0 5px 0;
+  box-sizing: border-box;
   grid-template-areas: "first_column priority owner status watchers deadline tags";
   .priority{
     grid-area: priority;
@@ -34,15 +35,16 @@ const TaskGrid = styled.div`
 `;
 
 export const TaskRowStyle = styled(TaskGrid)`
+  font-size: 13px;
   background: ${email_text_area_bg};
   color: ${main_text_color};
   margin: 5px;
   height: 54px;
   border-radius: 20px;
-  box-sizing: border-box;
   .task_text {
     grid-area: first_column;
     padding-left: 10px;
+    justify-self:start;
   }
   .task_text:hover {
     cursor: pointer;
@@ -87,10 +89,11 @@ export const GroupedTasksStyle = styled.div.attrs(props => {
 
 export const TaskHeaderStyle = styled(TaskGrid)`
   background-color: ${email_container_background};
+  height: 40px;
   .filter_buttons{
     grid-area: first_column;
-    margin-right: auto;
     margin-left: 5px;
+    justify-self: start;
     button {
       background-color: ${main_bg_color};
       margin: 5px;

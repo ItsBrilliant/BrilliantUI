@@ -25,7 +25,7 @@ export class Task {
         this.email_id = undefined;
         this.approved = false;
         this.declined = false;
-        this.watchers = new Set([this.initiator, this.owner]);
+        this.watchers = new Set([this.owner]);
         this.tags = ["Tag1", "Tag2"];
         this.status = 'To Do';
         //  this.span_ref = React.createRef();
@@ -41,12 +41,6 @@ export class Task {
         this.approved = approved;
     }
 
-    set_initiator(initiator) {
-        this.initiator = initiator;
-    }
-    get_initiator() {
-        return this.initiator;
-    }
     get_owner() {
         return this.owner;
     }
@@ -106,7 +100,10 @@ export class Task {
         }
         task.email_id = email.get_id();
         task.thread_id = email.get_thread_id();
-        task.set_initiator(email.get_sender());
+        task.watchers.add(task.initiator);
+        for (const receiver of email.get_receivers()) {
+            task.watchers.add(receiver);
+        }
         dispatcher(task);
     }
     static check_text_overlap(email, new_task) {
@@ -142,6 +139,7 @@ export class Task {
             }
             var task_text = `auto task (${Math.round(probability)}%)`;
             var task = new Task(task_text, new Date(), priority, false, { start: start_index, end: start_index + text_length }, undefined, id)
+            task.initiator = email.get_sender();
             Task.insert_task(dispatcher, email, task);
         }
     }
@@ -210,6 +208,7 @@ export class Task {
             if (times.length > 0) {
                 task['meeting'] = { duration: durations[0], times: times };
             }
+            task.initiator = email.get_sender();
             Task.insert_task(dispatcher, email, task);
             email.added_meetings_already = true;
         }

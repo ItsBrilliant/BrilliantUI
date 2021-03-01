@@ -93,7 +93,7 @@ export class Thread {
             if (sender) {
                 participants.add(sender);
             }
-            for (const receiver of email.get_receivers().concat(email.get_ccs().concat(email.get_bccs()))) {
+            for (const receiver of email.get_receivers()) {
                 participants.add(receiver);
             }
         }
