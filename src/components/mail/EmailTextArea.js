@@ -83,7 +83,7 @@ class EmailTextArea extends Component {
             priority = existing_task.priority;
             text = existing_task.text;
             id = existing_task.id;
-            date = existing_task.date;
+            date = existing_task.deadline;
         }
         this.setState(
             {

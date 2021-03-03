@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom'
 import { DEFAULT_HIGHLIGHTS } from '../../data_objects/Consts.js'
 import SimpleBar from 'simplebar-react'
 import './SingleTaskInfo.css'
-import { AttachmentDisplay } from './FileAttachments.js'
-import EmailThread from './EmailThread.js'
-import { GroupIcon } from './EmailStamp.js'
+import { AttachmentDisplay } from '../mail/FileAttachments.js'
+import EmailThread from '../mail/EmailThread.js'
+import { GroupIcon } from '../mail/EmailStamp.js'
 import { Menu } from '../external/Menues.js'
 import OptionsButton from '../OptionsButton.js'
 import PriorityOptions from '../PriorityOptions.js'
@@ -14,6 +14,9 @@ import { send_quick_reply } from '../email_compuser_utils.js'
 import { useDispatch, useSelector } from 'react-redux'
 import { Update } from '../../actions/tasks'
 import { Task } from '../../data_objects/Task'
+import { DateTimePickerComponent } from '@syncfusion/ej2-react-calendars';
+import { GeneralPortal } from '../GeneralPortal'
+import AddTag from './AddTag'
 
 function SingleTaskInfo(props) {
     return (
@@ -67,7 +70,12 @@ function TopButtons(props) {
     const my_set_priority = (value) => {
         setPriority(value);
         Task.update_task(task_updater, props.task, 'set_priority', [value]);
-
+    }
+    const my_set_deadline = (value) => {
+        Task.update_task(task_updater, props.task, 'deadline', value);
+    }
+    const my_set_tags = (tags) => {
+        Task.update_task(task_updater, props.task, 'tags', tags);
     }
     return (
         <div className="TopButtons">
@@ -79,11 +87,18 @@ function TopButtons(props) {
             <div className="task_priority">
                 <PriorityOptions default_selection={priority} onChange={my_set_priority} />
             </div>
-            <span>{props.task.get_formatted_deadline().date}</span>
+            <AddTag on_items_change={my_set_tags} task={props.task} />
+            <DateTimePickerComponent format='dd/MM/yy hh:mm a'
+                id="deadline" data-name="deadline"
+                value={props.task.deadline}
+                onChange={(e) => my_set_deadline(e.target.value)}
+                className="task_deadline" />
+
+
         </div>
     )
 }
-
+//<span>{props.task.get_formatted_deadline().date}</span>
 function QuickReply(props) {
     const email_attributes = {
         email_id: props.email_id,

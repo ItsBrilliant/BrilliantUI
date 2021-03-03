@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import './styles/AddTaskPortal.css';
 import { IMPORTANT, PRIORITIES } from '../data_objects/Consts.js';
 import { Contact } from '../data_objects/Contact.js';
+import { DatePickerComponent } from '@syncfusion/ej2-react-calendars';
 
 const DEFAULT_TASK_TEXT = "Manual Task";
 
@@ -67,11 +68,14 @@ function FooterButtons(props) {
             <button className="create_task"
                 onClick={(e) => props.handle_ok(props.task_text, new Date(props.date), props.priority, props.owner)}>Create Task</button>
             <PriorityOptions default_selection={props.priority} onChange={(value) => props.setPriority(PRIORITIES.indexOf(value))} />
-            <input type='date' onChange={(e) => props.setDate(e.target.value)}></input>
+            <DatePickerComponent format='dd/MM/yy'
+                value={props.date}
+                onChange={(e) => props.setDate(e.target.value)} />
+
             <button className="delete" onClick={() => props.handle_close()}>&times;</button>
         </div>
     );
 }
-
+//            <input type='date' onChange={(e) => props.setDate(e.target.value)}></input>
 
 

@@ -30,8 +30,9 @@ export function LoginPage(props) {
                     {action_button}
                 </div>
             </div>
-            <p style={comment_style}>-updated Feb 25th</p>
-            <p style={comment_style}>-put magic*moments in email subject for AI to process that email</p>
+            <p style={comment_style}>-updated March 3rd</p>
+            <p style={comment_style}>-put 'magic*moments' in email subject for AI to process that email</p>
+            <p style={comment_style}>-Manual and AI tasks that were approved appear in tasks page</p>
         </div>
     );
 }

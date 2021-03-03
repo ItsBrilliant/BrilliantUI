@@ -50,11 +50,11 @@ export const TaskRowStyle = styled(TaskGrid)`
     cursor: pointer;
   }
   .tag{
-    border:1px solid yellow;
     margin: 3px;
-    background-color: white;
+    background-color: #eeeeee;
     color: red;
-    padding: 2px;
+    padding: 0.2em 0.5em;
+    border-radius:7px;
   }
   .Dropdown-menu, .Dropdown-control{
     min-width: max-content;
@@ -84,6 +84,9 @@ export const GroupedTasksStyle = styled.div.attrs(props => {
   }
 })`
    color: ${props => props.my_color};
+   p {
+     margin-left: 10px;
+   }
 `;
 
 
@@ -107,4 +110,34 @@ export const TaskHeaderStyle = styled(TaskGrid)`
     }
   }
   
+`;
+
+const add_tag_width = 250;
+export const AddTagStyle = styled.div`
+  background-color: #535c7b;
+  border-radius: 10px;
+  width: ${add_tag_width}px;
+  position:fixed;
+  top: ${props => props.location.y + 20}px;
+  left: ${props => props.location.x - add_tag_width - 50}px;
+  z-index: 2000;
+  padding: 20px;
+  .tag-item{
+    border-radius:5px;
+    padding: 0 4px;
+    background-color: lightgreen;
+    .button{
+      padding: 0px;
+      border-radius:0;
+      background-color:transparent;
+    }
+
+  }
+  input.input{
+      width: 100%;
+      box-sizing:border-box;
+      background-color: lightblue;
+      border-radius:5px;
+      margin-bottom: 10px
+  }
 `;

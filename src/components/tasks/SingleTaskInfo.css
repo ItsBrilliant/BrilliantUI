@@ -208,5 +208,13 @@ background-color: var(--main-bg-color);
 }
 
 .TopButtons .task_priority {
-    margin-left: auto;
+    width: 100px
+}
+
+.TopButtons button.add_tag {
+    background-color: transparent;
+    width: 70px;
+    min-width: 70px;
+    padding: 4px;
+    color: var(--main-text-color);
 }

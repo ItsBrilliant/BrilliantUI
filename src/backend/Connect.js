@@ -2,6 +2,7 @@ import Axios from 'axios';
 import { Email } from '../data_objects/Email.js';
 import download from 'downloadjs'
 import { update_resource_version } from './utils'
+
 Axios.defaults.xsrfCookieName = 'csrftoken';
 Axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 
@@ -33,16 +34,29 @@ export async function append_email_attachments(emails) {
     }
 }
 
-export async function download_attachment(email_id, attachment_id) {
+export async function download_attachment(email_id, attachment_id, get_url) {
     const params = {
         action_type: "download",
         email_id: email_id,
         attachment_id: attachment_id
     }
     try {
-        let attachment_data = await Axios.get('api/attachment_action', { params: params });
-        attachment_data = attachment_data.data;
-        await download(atob(attachment_data.contentBytes), attachment_data.name);
+        let response = await Axios.get('api/attachment_action', { params: params });
+        let attachment_data = response.data;
+        let bytes = atob(attachment_data.contentBytes);
+        var rawLength = bytes.length;
+        var array = new Uint8Array(new ArrayBuffer(rawLength));
+        for (var i = 0; i < rawLength; i++) {
+            array[i] = bytes.charCodeAt(i);
+        }
+        if (get_url) {
+            //const url = URL.createObjectURL(new Blob([array]));
+            //  return bytes
+            return attachment_data.contentBytes;
+        }
+        else {
+            download(bytes, attachment_data.name);
+        }
     }
     catch (e) {
         console.log(e);

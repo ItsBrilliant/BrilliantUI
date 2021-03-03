@@ -3,7 +3,7 @@ import './RightDivision.css';
 import { get_priority_style, format_date } from '../../utils.js';
 import { useSelector, useDispatch } from 'react-redux';
 import SimpleBar from 'simplebar-react';
-import TaskInfoWrapper from './SingleTaskInfo.js'
+import TaskInfoWrapper from '../tasks/SingleTaskInfo.js'
 import { FileAttachments } from './FileAttachments.js'
 import { Update } from '../../actions/tasks'
 import { Task } from '../../data_objects/Task'

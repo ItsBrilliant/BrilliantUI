@@ -5,7 +5,7 @@ import { useTasks } from '../../hooks/redux'
 import SimpleBar from 'simplebar-react'
 import { TaskHeaderStyle } from './Tasks.style'
 import { useSelector } from 'react-redux'
-import TaskInfoWrapper from '../mail/SingleTaskInfo'
+import TaskInfoWrapper from './SingleTaskInfo'
 
 
 const TASK_FILTERS = ["owner", "initiator", "watchers"];
