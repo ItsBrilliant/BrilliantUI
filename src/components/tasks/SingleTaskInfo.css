@@ -218,3 +218,12 @@ background-color: var(--main-bg-color);
     padding: 4px;
     color: var(--main-text-color);
 }
+
+.SingleTaskInfo .People button.add_watchers {
+    color: white;
+    background-color: transparent;
+    font-size: 20px;
+    margin-left: 0;
+    position:relative;
+    left: -5px;
+}

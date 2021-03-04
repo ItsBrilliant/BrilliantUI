@@ -37,18 +37,21 @@ export class Contact {
         return contact ? contact.get_name() : null
     }
 
-    static get_filtered_contacts(sub_address, max_num = 7) {
-        if (sub_address === "") {
+    static get_filtered_contacts(search_phrase, max_num = 7) {
+        if (search_phrase === "") {
             return []
         }
-        const all_addresses = Object.keys(Contact.contact_dict);
+        const all_contacts = Object.values(Contact.contact_dict);
         try {
-            return all_addresses.filter(a => a.search(sub_address) !== -1).slice(0, max_num);
+            return all_contacts.filter(a =>
+                a.get_name().search(search_phrase) !== -1 ||
+                a.get_address().search(search_phrase) !== -1).slice(0, max_num);
         } catch (err) {
             console.warn(err);
             return [];
         }
     }
+
 
     constructor(recipient_object, image_link) {
         this.recipient = recipient_object;

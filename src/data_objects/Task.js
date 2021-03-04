@@ -78,6 +78,9 @@ export class Task {
     get_email_id() {
         return this.email_id;
     }
+    add_watcher(contact) {
+        this.watchers.add(contact);
+    }
 
     static get_tasks_by_email_id(email_id, tasks = Object.values(Task.CURRENT_TASKS)) {
         return tasks.filter(t => t.email_id === email_id);

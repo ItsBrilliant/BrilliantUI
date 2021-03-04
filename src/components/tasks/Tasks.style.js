@@ -112,8 +112,36 @@ export const TaskHeaderStyle = styled(TaskGrid)`
   
 `;
 
+const PortalStyle = styled.div`
+  background-color: #535c7b;
+  border-radius: 10px;
+  width: ${props => props.width}px;
+  position:fixed;
+  z-index: 2000;
+  padding: 10px;
+    input.input{
+      width: 100%;
+      box-sizing:border-box;
+      background-color: lightblue;
+      border-radius:5px;
+      margin-bottom: 10px
+  }
+  `;
+
+export const AddWatchersStyle = styled(PortalStyle)`
+  left: ${props => props.location.x}px;
+  bottom: calc(100vh - ${props => props.location.y}px);
+  .NameWithIcon{
+    display: flex;
+    align-items: center;
+  }
+  .NameWithIcon:hover{
+    background-color: ${link_hover_color};
+  }
+`;
+
 const add_tag_width = 250;
-export const AddTagStyle = styled.div`
+export const AddTagStyle = styled(PortalStyle)`
   background-color: #535c7b;
   border-radius: 10px;
   width: ${add_tag_width}px;
@@ -132,12 +160,5 @@ export const AddTagStyle = styled.div`
       background-color:transparent;
     }
 
-  }
-  input.input{
-      width: 100%;
-      box-sizing:border-box;
-      background-color: lightblue;
-      border-radius:5px;
-      margin-bottom: 10px
   }
 `;

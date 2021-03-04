@@ -53,7 +53,7 @@ export class EmailChips extends React.Component {
     }
 
     handleChange(value) {
-        const options = Contact.get_filtered_contacts(value);
+        const options = Contact.get_filtered_contacts(value).map(c => c.get_address());
         this.setState({
             value: value,
             error: null,

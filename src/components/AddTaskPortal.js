@@ -39,7 +39,7 @@ function TaskContent(props) {
         task_text_element.focus();
     }, [])
     const [edited_owner_value, set_owner_value] = useState(props.owner.get_address());
-    const owner_options = Contact.get_filtered_contacts(edited_owner_value);
+    const owner_options = Contact.get_filtered_contacts(edited_owner_value).map(c => c.get_address());
     const owner_selection_list = owner_options[0] === edited_owner_value ? null :
         <ul className="owner_selection_list">
             {owner_options.map(o => <li onClick={(e) => {

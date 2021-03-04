@@ -17,6 +17,7 @@ import { Task } from '../../data_objects/Task'
 import { DateTimePickerComponent } from '@syncfusion/ej2-react-calendars';
 import { GeneralPortal } from '../GeneralPortal'
 import AddTag from './AddTag'
+import AddWatchers from './AddWatchers.js'
 
 function SingleTaskInfo(props) {
     return (
@@ -28,7 +29,7 @@ function SingleTaskInfo(props) {
             <div className="scrollable">
                 <SimpleBar className="simplebar">
                     <QuickReply to={props.task.initiator} email_id={props.task.email_id} on_close={props.close} />
-                    <People watchers={Array.from(props.task.watchers)}
+                    <People task={props.task} watchers={Array.from(props.task.watchers)}
                         owner={props.task.get_owner()} />
                     <Highlights highlights={DEFAULT_HIGHLIGHTS} />
                     <RelevantResources resources={props.thread.get_attachments()} />
@@ -116,12 +117,18 @@ function QuickReply(props) {
 }
 
 function People(props) {
-    const watchers =
-        <span>
-            <div><p> Watching</p></div>
-            {GroupIcon(props.watchers, 6, 30, 22)}
-        </span>
-
+    const dispatch = useDispatch();
+    const task_updater = (task) => dispatch(Update(task));
+    const [add_watchers_visible, set_visible] = useState(false);
+    const [location, set_location] = useState({ x: 0, y: 0 });
+    const open_portal = (e) => {
+        set_location({ x: e.pageX - 200, y: e.pageY });
+        set_visible(true);
+    }
+    const handle_add_watcher = (contact) => {
+        set_visible(false);
+        Task.update_task(task_updater, props.task, 'add_watcher', [contact]);
+    }
     const owner =
         <span>
             {GroupIcon([props.owner], 1, 50)}
@@ -129,6 +136,17 @@ function People(props) {
                 <p className="owner_name">{props.owner.get_name()}</p>
                 <p>Owner</p>
             </div>
+        </span>
+
+    const watchers =
+        <span>
+            <div><p> Watching</p></div>
+            {GroupIcon(props.watchers, 6, 30, 22)}
+            <button onClick={open_portal} className="add_watchers">+</button>
+            <GeneralPortal
+                visible={add_watchers_visible}
+                handle_close={() => set_visible(false)}
+                component={<AddWatchers on_select={handle_add_watcher} location={location} />} />
         </span>
 
     const people_componenet =

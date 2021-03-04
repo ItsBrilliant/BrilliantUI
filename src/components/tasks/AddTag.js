@@ -25,7 +25,7 @@ export default function AddTag(props) {
 function TagChips(props) {
     const [new_tag_value, set_value] = useState("");
     const handleKeyDown = evt => {
-        if (["Enter", "Tab", ","].includes(evt.key)) {
+        if (["Enter", "Tab"].includes(evt.key)) {
             evt.preventDefault();
             var value = new_tag_value.trim();
             if (!props.items.includes(value) && value !== "") {
