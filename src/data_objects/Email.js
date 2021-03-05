@@ -75,6 +75,23 @@ export class Email {
 
     }
 
+    get_graph_priority() {
+        let score = this.email.prioritization_score;
+        if (!score) {
+            return NO_PRIORITY
+        }
+        score = parseFloat(score);
+        if (score > 0.75) {
+            return URGENT;
+        } else if (score > 0.5) {
+            return IMPORTANT;
+        } else if (score > 0.25) {
+            return CAN_WAIT;
+        } else {
+            return NO_PRIORITY;
+        }
+    }
+
     add_request_meeting_task() {
         const meeting_scheduler = this.email['meeting_request'];
         if (!meeting_scheduler || meeting_scheduler.length === 0) {
@@ -122,9 +139,15 @@ export class Email {
     }
 
     // Get priority based on the priority of unfinished tasks
-    static get_priority(tasks, email_id) {
+    // third argument 'email' is for testing the new prioritization feature instead
+    static get_priority(tasks, email_id, email) {
+        let sender_priority = NO_PRIORITY
+        if (email && !email.is_sent()) {
+            sender_priority = email.get_graph_priority()
+        }
         tasks = tasks.filter(t => t.get_email_id() === email_id)
-        const priorities = tasks.map(task => parseInt(task.isDone || task.declined ? NO_PRIORITY : task.priority));
+        let priorities = tasks.map(task => parseInt(task.isDone || task.declined ? NO_PRIORITY : task.priority));
+        priorities.push(sender_priority)
         if (priorities.includes(URGENT)) {
             return URGENT;
         }
@@ -211,6 +234,9 @@ export class Email {
 
     is_deleted() {
         return this.get_folder_id() === Email.FOLDER_MAPPINGS['Deleted Items'];
+    }
+    is_sent() {
+        return this.get_folder_id() === Email.FOLDER_MAPPINGS['Sent Items'];
     }
     get_content() {
         return this.email['body']['content'];

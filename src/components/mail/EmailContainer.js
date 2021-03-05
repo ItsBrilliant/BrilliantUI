@@ -37,7 +37,7 @@ export default function EmailContainer(props) {
             tags={email.get_tags()} id={email.get_id()}
             tasks={tasks}
             contacts={contacts}
-            priority={Email.get_priority(tasks, email.get_id())}
+            priority={Email.get_priority(tasks, email.get_id(), email)}
             on_delete={on_email_delete}
             on_mark_unread={on_email_mark_unread}
             email={email}

@@ -48,7 +48,7 @@ export class Thread {
         }
         var highest_priority = CAN_WAIT;
         for (const email of this.get_emails(folder_id)) {
-            const priority = Email.get_priority(tasks, email.get_id());
+            const priority = Email.get_priority(tasks, email.get_id(), email);
             if (highest_priority > priority) {
                 highest_priority = priority;
             }
