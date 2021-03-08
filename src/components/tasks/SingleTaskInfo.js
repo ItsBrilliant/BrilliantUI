@@ -21,23 +21,30 @@ import AddWatchers from './AddWatchers.js'
 function SingleTaskInfo(props) {
     const dispatch = useDispatch();
     const task_updater = (task) => dispatch(Update(task));
+    const [details_view, set_details_view] = useState(true)
+    const body = details_view ?
+        <TaskDetails {...props} updater={task_updater}></TaskDetails> :
+        <TaskConversation></TaskConversation>
+
     return (
-        <div className="SingleTaskInfo">
+        < div className="SingleTaskInfo" >
             <div className="header">
-                <TopButtons task={props.task} task_updater={task_updater} />
-                <h1 className="task_text">{props.task.get_text()}</h1>
+                <TopButtons task={props.task} updater={task_updater} />
+                <EditingTextArea
+                    commit={(val) => Task.update_task(task_updater, props.task, 'text', val)}
+                    start_value={props.task.text}
+                />
+                <ViewSelector
+                    details_view={details_view}
+                    set_details_view={set_details_view} />
+
             </div>
             <div className="scrollable">
                 <SimpleBar className="simplebar">
-                    <QuickReply to={props.task.initiator} email_id={props.task.email_id} on_close={props.close} />
-                    <Description task={props.task} updater={task_updater} />
-                    <People task={props.task} watchers={Array.from(props.task.watchers)}
-                        owner={props.task.get_owner()} />
-                    <RelevantResources resources={props.thread.get_attachments()} />
-                    <SourceConversation thread={props.thread} />
+                    {body}
                 </SimpleBar>
             </div>
-        </div>
+        </div >
     );
 }
 
@@ -56,6 +63,35 @@ export default function TaskInfoWrapper(props) {
     );
 }
 
+function TaskDetails(props) {
+    return (
+        <>
+            <QuickReply to={props.task.initiator} email_id={props.task.email_id} on_close={props.close} />
+            <Description task={props.task} updater={props.updater} />
+            <People task={props.task} watchers={Array.from(props.task.watchers)}
+                owner={props.task.get_owner()} />
+            <RelevantResources resources={props.thread.get_attachments()} />
+            <SourceConversation thread={props.thread} />
+        </>
+    );
+}
+
+function TaskConversation(props) {
+    return <h1>Conversations...</h1>
+}
+
+function ViewSelector(props) {
+    const selected_style = { color: "white" };
+    const details_style = props.details_view ? selected_style : null;
+    const conversation_style = !props.details_view ? selected_style : null;
+    return (
+        <div className="ViewSelector">
+            <button style={details_style} onClick={() => props.set_details_view(true)}>Details</button>
+            <button style={conversation_style} onClick={() => props.set_details_view(false)}>Conversation</button>
+        </div>
+    )
+}
+
 function TopButtons(props) {
     const [priority, setPriority] = useState(props.task.get_priority());
     const [task_status, setStatus] = useState(props.task.status);
@@ -65,17 +101,17 @@ function TopButtons(props) {
     const task_options = ['To do', 'In progress', 'Pending', 'Done'];
     const my_set_status = (value) => {
         setStatus(value);
-        Task.update_task(props.task_updater, props.task, 'set_status', [value]);
+        Task.update_task(props.updater, props.task, 'set_status', [value]);
     }
     const my_set_priority = (value) => {
         setPriority(value);
-        Task.update_task(props.task_updater, props.task, 'set_priority', [value]);
+        Task.update_task(props.updater, props.task, 'set_priority', [value]);
     }
     const my_set_deadline = (value) => {
-        Task.update_task(props.task_updater, props.task, 'deadline', value);
+        Task.update_task(props.updater, props.task, 'deadline', value);
     }
     const my_set_tags = (tags) => {
-        Task.update_task(props.task_updater, props.task, 'tags', tags);
+        Task.update_task(props.updater, props.task, 'tags', tags);
     }
     return (
         <div className="TopButtons">
@@ -93,12 +129,10 @@ function TopButtons(props) {
                 value={props.task.deadline}
                 onChange={(e) => my_set_deadline(e.target.value)}
                 className="task_deadline" />
-
-
         </div>
     )
 }
-//<span>{props.task.get_formatted_deadline().date}</span>
+
 function QuickReply(props) {
     const email_attributes = {
         email_id: props.email_id,
@@ -156,16 +190,25 @@ function People(props) {
     return <TitledComponent title="People" component={people_componenet} class_name="People" />
 }
 
-function Description(props) {
-    const [description, set_description] = useState(props.task.description)
-    const my_set_description = () => {
-        Task.update_task(props.updater, props.task, 'description', description);
+function EditingTextArea(props) {
+    const [text, set_text] = useState(props.start_value)
+    const commit_text = () => {
+        props.commit(text);
     }
+    return (
+        <textarea className="EditingTextArea"
+            value={text}
+            onChange={(e) => set_text(e.target.value)}
+            onBlur={commit_text} />
+    )
+}
+
+function Description(props) {
     const description_component =
-        <textarea className="description"
-            value={description}
-            onChange={(e) => set_description(e.target.value)}
-            onBlur={my_set_description} />
+        <EditingTextArea
+            start_value={props.task.description}
+            commit={(val) => Task.update_task(props.updater, props.task, 'description', val)}
+        />
 
     return <TitledComponent title="Description" component={description_component} />
 }

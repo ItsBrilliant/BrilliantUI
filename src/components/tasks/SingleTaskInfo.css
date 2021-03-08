@@ -30,6 +30,8 @@
 .SingleTaskInfo .header {
     margin:0;
     padding-bottom: 0;
+    border-bottom: 2px solid black;
+    height: max-content
 }
 .SingleTaskInfo .scrollable .simplebar-content{
     display: flex;
@@ -47,12 +49,12 @@
     width:100%;
 }
 
-.SingleTaskInfo .task_text{
+.SingleTaskInfo .header textarea.EditingTextArea{
     color: white;
     text-align: left;
     padding:10px;
     margin:2px;
-    border-bottom: 2px solid black;
+    font-size: 20px;
 }
 
 .SingleTaskInfo .TitledComponent {
@@ -227,8 +229,9 @@ background-color: var(--main-bg-color);
     position:relative;
     left: -5px;
 }
-.SingleTaskInfo textarea.description {
-    min-height: 80px;
+.SingleTaskInfo textarea.EditingTextArea {
+    min-height: 60px;
+    height: max-content;
     width: 100%;
     background-color: transparent;
     color: var(--main-text-color);
@@ -237,7 +240,21 @@ background-color: var(--main-bg-color);
     border: none;
 }
 
-.SingleTaskInfo textarea.description:focus{
+.SingleTaskInfo textarea.EditingTextArea:focus{
     outline: none;
     border: none;
+}
+
+.SingleTaskInfo .ViewSelector {
+    display: flex;
+    justify-content: space-around;
+
+}
+.SingleTaskInfo .ViewSelector button {
+    background-color: transparent;
+    flex-grow: 1;
+    font-size: 18px;
+    margin: 10px;
+    color: var(--main-text-color);
+
 }
