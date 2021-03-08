@@ -4,7 +4,7 @@ import SimpleBar from 'simplebar-react'
 import './SingleTaskInfo.css'
 import { AttachmentDisplay } from '../mail/FileAttachments.js'
 import EmailThread from '../mail/EmailThread.js'
-import { GroupIcon } from '../mail/EmailStamp.js'
+import { GroupIcon, EmailStamp } from '../mail/EmailStamp.js'
 import { Menu } from '../external/Menues.js'
 import OptionsButton from '../OptionsButton.js'
 import PriorityOptions from '../PriorityOptions.js'
@@ -16,7 +16,8 @@ import { Task } from '../../data_objects/Task'
 import { DateTimePickerComponent } from '@syncfusion/ej2-react-calendars';
 import { GeneralPortal } from '../GeneralPortal'
 import AddTag from './AddTag'
-import AddWatchers from './AddWatchers.js'
+import AddWatchers, { NameWithIcon } from './AddWatchers.js'
+import { Contact } from '../../data_objects/Contact'
 
 function SingleTaskInfo(props) {
     const dispatch = useDispatch();
@@ -24,14 +25,14 @@ function SingleTaskInfo(props) {
     const [details_view, set_details_view] = useState(true)
     const body = details_view ?
         <TaskDetails {...props} updater={task_updater}></TaskDetails> :
-        <TaskConversation></TaskConversation>
+        <TaskConversation task={props.task} updater={task_updater} />
 
     return (
         < div className="SingleTaskInfo" >
             <div className="header">
                 <TopButtons task={props.task} updater={task_updater} />
                 <EditingTextArea
-                    commit={(val) => Task.update_task(task_updater, props.task, 'text', val)}
+                    handle_blur={(val) => Task.update_task(task_updater, props.task, 'text', val)}
                     start_value={props.task.text}
                 />
                 <ViewSelector
@@ -77,7 +78,29 @@ function TaskDetails(props) {
 }
 
 function TaskConversation(props) {
-    return <h1>Conversations...</h1>
+    const messages = props.task.messages.map(message => {
+        const sender = Contact.create_contact_from_address(message.sender_email);
+        const own_message_style = (message.sender_email === Contact.CURRENT_USER.get_address()) ? " user" : "";
+        return (
+            <div className={"task_message" + own_message_style}>
+                { EmailStamp([sender], message.timestamp)}
+                <span>{message.body}</span>
+            </div>
+        )
+    }
+
+
+    )
+    return (
+        <div className="TaskConversation">
+            {messages}
+            <EditingTextArea
+                placeholder="new comment..."
+                start_value=""
+                handle_enter={(val) => Task.update_task(props.updater, props.task, 'add_message', [val])} />
+        </div>);
+
+
 }
 
 function ViewSelector(props) {
@@ -192,14 +215,20 @@ function People(props) {
 
 function EditingTextArea(props) {
     const [text, set_text] = useState(props.start_value)
-    const commit_text = () => {
-        props.commit(text);
+    const my_key_press = (e) => {
+        if (e.key === 'Enter' && props.handle_enter) {
+            props.handle_enter(text);
+            set_text("");
+        }
     }
     return (
-        <textarea className="EditingTextArea"
+        <textarea
+            className="EditingTextArea"
             value={text}
             onChange={(e) => set_text(e.target.value)}
-            onBlur={commit_text} />
+            onBlur={() => props.handle_blur && props.handle_blur(text)}
+            onKeyPress={my_key_press}
+            placeholder={props.placeholder} />
     )
 }
 
@@ -207,10 +236,10 @@ function Description(props) {
     const description_component =
         <EditingTextArea
             start_value={props.task.description}
-            commit={(val) => Task.update_task(props.updater, props.task, 'description', val)}
+            handle_blur={(val) => Task.update_task(props.updater, props.task, 'description', val)}
         />
 
-    return <TitledComponent title="Description" component={description_component} />
+    return <TitledComponent title="Description" component={description_component} class_name="description" />
 }
 
 function RelevantResources(props) {

@@ -13,7 +13,7 @@ export function TimeStamp(date) {
     );
 }
 
-export function EmailStamp(icons, date, name) {
+export function EmailStamp(icons, date) {
     //            <h4>{name}</h4>
     return (
         <div className='emailStamp'>

@@ -4,7 +4,8 @@ import { Contact } from './Contact.js'
 import { PRIORITIES, URGENT, IMPORTANT, CAN_WAIT } from './Consts.js'
 import { v4 } from 'uuid';
 import { create_slot } from '../components/calendar/utils.js';
-import { create } from 'hbs';
+import TaskMessage, { DEFAULT_TASK_MESSAGE_1, DEFAULT_TASK_MESSAGE_2 } from './TaskMessage'
+
 
 const GENERAL_TASK_DETECTION_THRESHOLD = 70;
 const REQUEST_MEETING_PROBABILITY_THRESHOLD = 70;
@@ -28,7 +29,7 @@ export class Task {
         this.watchers = new Set([this.owner]);
         this.tags = ["Tag1", "Tag2"];
         this.status = 'To Do';
-        //  this.span_ref = React.createRef();
+        this.messages = [DEFAULT_TASK_MESSAGE_1, DEFAULT_TASK_MESSAGE_2];
     }
     get_source_indexes() {
         return this.source_indexes;
@@ -80,6 +81,10 @@ export class Task {
     }
     add_watcher(contact) {
         this.watchers.add(contact);
+    }
+    add_message(message_body) {
+        const message = new TaskMessage(message_body, Contact.CURRENT_USER.get_address());
+        this.messages.push(message);
     }
 
     static get_tasks_by_email_id(email_id, tasks = Object.values(Task.CURRENT_TASKS)) {
