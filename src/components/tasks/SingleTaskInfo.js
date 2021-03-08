@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
-import { DEFAULT_HIGHLIGHTS } from '../../data_objects/Consts.js'
 import SimpleBar from 'simplebar-react'
 import './SingleTaskInfo.css'
 import { AttachmentDisplay } from '../mail/FileAttachments.js'
@@ -20,18 +19,20 @@ import AddTag from './AddTag'
 import AddWatchers from './AddWatchers.js'
 
 function SingleTaskInfo(props) {
+    const dispatch = useDispatch();
+    const task_updater = (task) => dispatch(Update(task));
     return (
         <div className="SingleTaskInfo">
             <div className="header">
-                <TopButtons task={props.task} />
+                <TopButtons task={props.task} task_updater={task_updater} />
                 <h1 className="task_text">{props.task.get_text()}</h1>
             </div>
             <div className="scrollable">
                 <SimpleBar className="simplebar">
                     <QuickReply to={props.task.initiator} email_id={props.task.email_id} on_close={props.close} />
+                    <Description task={props.task} updater={task_updater} />
                     <People task={props.task} watchers={Array.from(props.task.watchers)}
                         owner={props.task.get_owner()} />
-                    <Highlights highlights={DEFAULT_HIGHLIGHTS} />
                     <RelevantResources resources={props.thread.get_attachments()} />
                     <SourceConversation thread={props.thread} />
                 </SimpleBar>
@@ -56,8 +57,6 @@ export default function TaskInfoWrapper(props) {
 }
 
 function TopButtons(props) {
-    const dispatch = useDispatch();
-    const task_updater = (task) => dispatch(Update(task));
     const [priority, setPriority] = useState(props.task.get_priority());
     const [task_status, setStatus] = useState(props.task.status);
     const option_button_names = ["Quick Reply", "Set In Calendar", "Add To Topic", "Go To Source", "Mark As Done"];
@@ -66,17 +65,17 @@ function TopButtons(props) {
     const task_options = ['To do', 'In progress', 'Pending', 'Done'];
     const my_set_status = (value) => {
         setStatus(value);
-        Task.update_task(task_updater, props.task, 'set_status', [value]);
+        Task.update_task(props.task_updater, props.task, 'set_status', [value]);
     }
     const my_set_priority = (value) => {
         setPriority(value);
-        Task.update_task(task_updater, props.task, 'set_priority', [value]);
+        Task.update_task(props.task_updater, props.task, 'set_priority', [value]);
     }
     const my_set_deadline = (value) => {
-        Task.update_task(task_updater, props.task, 'deadline', value);
+        Task.update_task(props.task_updater, props.task, 'deadline', value);
     }
     const my_set_tags = (tags) => {
-        Task.update_task(task_updater, props.task, 'tags', tags);
+        Task.update_task(props.task_updater, props.task, 'tags', tags);
     }
     return (
         <div className="TopButtons">
@@ -157,11 +156,18 @@ function People(props) {
     return <TitledComponent title="People" component={people_componenet} class_name="People" />
 }
 
-function Highlights(props) {
-    const highlights =
-        <ul> {props.highlights.map(h => <li>{h}</li>)}</ul>
+function Description(props) {
+    const [description, set_description] = useState(props.task.description)
+    const my_set_description = () => {
+        Task.update_task(props.updater, props.task, 'description', description);
+    }
+    const description_component =
+        <textarea className="description"
+            value={description}
+            onChange={(e) => set_description(e.target.value)}
+            onBlur={my_set_description} />
 
-    return <TitledComponent title="Highlights" component={highlights} />
+    return <TitledComponent title="Description" component={description_component} />
 }
 
 function RelevantResources(props) {
