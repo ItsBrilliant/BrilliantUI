@@ -5,14 +5,14 @@ import { URGENT, IMPORTANT, CAN_WAIT } from '../../data_objects/Consts'
 const TaskGrid = styled.div`
   color: ${main_text_color};
   display: grid;
-  grid-template-columns: 5fr 1fr 1fr 1fr 2fr 1fr 2.5fr;
+  grid-template-columns: 0.2fr 5fr 1fr 1fr 1fr 2fr 1fr 2.5fr;
   grid-template-rows: 1fr;
   justify-items: center;
   align-items: center;
   width: 100%;
   padding: 0 0 5px 0;
   box-sizing: border-box;
-  grid-template-areas: "first_column priority owner status watchers deadline tags";
+  grid-template-areas: "multiselect first_column priority owner status watchers deadline tags";
   .priority{
     grid-area: priority;
   }
@@ -38,9 +38,10 @@ export const TaskRowStyle = styled(TaskGrid)`
   font-size: 13px;
   background: ${email_text_area_bg};
   color: ${main_text_color};
-  margin: 5px;
+  margin: 5px 15px;
   height: 54px;
   border-radius: 20px;
+  border: ${props => props.is_multiselected ? "2px solid white" : "none"};
   .task_text {
     grid-area: first_column;
     padding-left: 10px;
@@ -66,6 +67,19 @@ export const TaskRowStyle = styled(TaskGrid)`
   }
   &:hover{
     border: 2px solid ${link_hover_color};
+  }
+  .multiselect{
+    position:relative;
+    left:-10px;
+    grid-area: multiselect;
+    width: 10px;
+    height: 10px;
+    border-radius:100%;
+    border: 2px solid white;
+    background-color: ${props => props.is_multiselected ? "white" : "black"};
+  }
+    .multiselect:hover{
+      background-color: gray;
   }
 `;
 

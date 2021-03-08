@@ -20,20 +20,34 @@ export default function Tasks() {
     const filter_target = [user, true]
     const filter_functions = [FILTER_FUNCTIONS[filter_index], EQUAL]
     const tasks = useTasks(task_filter, filter_target, filter_functions);
+    const [multiselected_tasks, set_multiselect] = useState([]);
+    const my_set_multiselect = (task) => {
+        if (!multiselected_tasks.includes(task)) {
+            set_multiselect([...multiselected_tasks, task])
+        } else {
+            set_multiselect(multiselected_tasks.filter(t => t !== task));
+        }
+        alert(multiselected_tasks.map(t => t.text));
+    }
     return (
         <Fragment>
             <TaskHeader selected_filter={filter_index} on_select_filter={set_filter} />
             <div style={{ height: "calc(100% - 101px)" }}>
                 <SimpleBar style={{ height: "100%" }}>
-                    <GroupedTasks select_task={select_task}
+                    <GroupedTasks on_multiselect={my_set_multiselect}
+                        select_task={select_task}
+                        multiselected_tasks={multiselected_tasks}
                         priority={URGENT}
                         tasks={tasks.filter(t => t.priority === URGENT)} />
-                    <GroupedTasks select_task={select_task}
+                    <GroupedTasks on_multiselect={my_set_multiselect} select_task={select_task}
                         priority={IMPORTANT}
-                        tasks={tasks.filter(t => t.priority === IMPORTANT)} />
-                    <GroupedTasks select_task={select_task}
+                        tasks={tasks.filter(t => t.priority === IMPORTANT)}
+                        multiselected_tasks={multiselected_tasks} />
+                    <GroupedTasks on_multiselect={my_set_multiselect} select_task={select_task}
                         priority={CAN_WAIT}
-                        tasks={tasks.filter(t => t.priority === CAN_WAIT)} />
+                        tasks={tasks.filter(t => t.priority === CAN_WAIT)}
+                        multiselected_tasks={multiselected_tasks}
+                    />
                 </SimpleBar>
             </div>
             {selected_task ?

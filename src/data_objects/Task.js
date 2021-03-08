@@ -4,7 +4,7 @@ import { Contact } from './Contact.js'
 import { PRIORITIES, URGENT, IMPORTANT, CAN_WAIT } from './Consts.js'
 import { v4 } from 'uuid';
 import { create_slot } from '../components/calendar/utils.js';
-import TaskMessage, { DEFAULT_TASK_MESSAGE_1, DEFAULT_TASK_MESSAGE_2 } from './TaskMessage'
+import TaskMessage, { DEFAULT_TASK_MESSAGES } from './TaskMessage'
 
 
 const GENERAL_TASK_DETECTION_THRESHOLD = 70;
@@ -29,7 +29,7 @@ export class Task {
         this.watchers = new Set([this.owner]);
         this.tags = ["Tag1", "Tag2"];
         this.status = 'To Do';
-        this.messages = [DEFAULT_TASK_MESSAGE_1, DEFAULT_TASK_MESSAGE_2];
+        this.messages = DEFAULT_TASK_MESSAGES;
     }
     get_source_indexes() {
         return this.source_indexes;
