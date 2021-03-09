@@ -132,7 +132,6 @@ export function EmailComposer(props) {
                 set_cc(recipients.cc);
                 set_bcc(recipients.bcc);
                 set_subject(subject);
-                console.log(email_object.get_text());
                 set_dest_id(email_object.get_id());
             }
         } catch (e) {

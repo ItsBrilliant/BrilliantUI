@@ -8,8 +8,11 @@ export const TasksReducer = (state = {}, action) => {
     }
 
     else if (action.type === "DELETE") {
+        if (typeof (action.id) === 'string') {
+            action.id = [action.id];
+        }
         var new_state = {};
-        for (const task_id of Object.keys(state).filter(id => id !== action.id)) {
+        for (const task_id of Object.keys(state).filter(id => !action.id.includes(id))) {
             new_state[task_id] = state[task_id];
         }
     }

@@ -18,7 +18,7 @@ export default function GroupedTasks(props) {
             priority={props.priority}
             status={t.status}
             on_multiselect={props.on_multiselect}
-            is_multiselected={props.multiselected_tasks.includes(t)}
+            multiselected_tasks={props.multiselected_tasks}
         />
     );
     return (

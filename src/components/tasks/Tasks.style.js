@@ -41,7 +41,8 @@ export const TaskRowStyle = styled(TaskGrid)`
   margin: 5px 15px;
   height: 54px;
   border-radius: 20px;
-  border: ${props => props.is_multiselected ? "2px solid white" : "none"};
+  border: 2px solid;
+  border-color: ${props => props.is_multiselected ? "white" : "transparent"};
   .task_text {
     grid-area: first_column;
     padding-left: 10px;
@@ -66,7 +67,7 @@ export const TaskRowStyle = styled(TaskGrid)`
     background-color: transparent;
   }
   &:hover{
-    border: 2px solid ${link_hover_color};
+    border-color: ${props => props.is_multiselected ? "white" : link_hover_color};
   }
   .multiselect{
     position:relative;
@@ -176,3 +177,25 @@ export const AddTagStyle = styled(PortalStyle)`
 
   }
 `;
+export const MultiselectActionsStyle = styled.div`
+  position: fixed;
+  left: 600px;
+  top: 12px;
+  display:flex;
+  color: ${main_text_color};
+  background-color: ${email_text_area_bg};
+  opacity: ${props => props.visible ? 1 : 0};
+  transition: opacity 0.7s ease;
+  padding: 5px 8px;
+  border-radius: 3px;
+
+  button {
+    border-radius: 3px;
+    outline: none;
+    border: none;
+    color: red;
+    background-color: ${email_container_background};
+    margin-left: 10px;
+    pointer-events: ${props => props.visible ? "auto" : "none"};
+  }
+`

@@ -17,7 +17,7 @@ export default function AddWatchers(props) {
     );
 }
 
-function NameWithIcon(props) {
+export function NameWithIcon(props) {
     return (
         <div onClick={() => props.on_select(props.contact)} className="NameWithIcon">
             {GroupIcon([props.contact], 1, 35)}
