@@ -19,11 +19,13 @@ import { Task } from '../data_objects/Task'
 import axios from 'axios';
 import { Email } from '../data_objects/Email.js';
 import Tasks from '../components/tasks/Tasks';
+import { get_tasks_from_database } from '../backend/ConnectDatabase'
+import { build_task_from_database } from '../backend/utils.js';
 
 const history = require("history").createBrowserHistory();
 
 export const SHOW_HTML = false;
-const REFRESH_INTERVAL = 15000;
+const REFRESH_INTERVAL = 10000;
 
 export class Home extends React.Component {
     constructor(props) {
@@ -33,6 +35,7 @@ export class Home extends React.Component {
         this.set_threads = this.set_threads.bind(this);
         this.set_calendar = this.set_calendar.bind(this);
         this.set_mail_folders = this.set_mail_folders.bind(this);
+        this.set_tasks = this.set_tasks.bind(this);
         this.refresh_user_data = this.refresh_user_data.bind(this);
         this.refresh_timer = null;
         this.loading = false;
@@ -87,7 +90,8 @@ export class Home extends React.Component {
                 [
                     get_mail_folders(this.set_mail_folders),
                     get_calendar(this.set_calendar),
-                    get_all_mail(this.set_threads)
+                    get_tasks_from_database(user.get_address(), this.set_tasks).
+                        then(x => get_all_mail(this.set_threads))
                 ]
             ).then(arr => this.loading = false);
             this.refresh_timer = setInterval(this.refresh_user_data, REFRESH_INTERVAL);
@@ -115,8 +119,13 @@ export class Home extends React.Component {
     }
 
     refresh_user_data() {
-        refresh_mail(this.set_threads);
+        const now = new Date().valueOf();
+        get_tasks_from_database(
+            this.props.user.get_address(),
+            this.set_tasks, now - Math.round((1.5 * REFRESH_INTERVAL))).
+            then(x => refresh_mail(this.set_threads));
         refresh_calendar(this.set_calendar);
+
         this.setState((state, props) => {
             const task_meetings = add_meetings_from_tasks(props.tasks, [...state.calendarEvents, ...state.taskEvents]);
             console.log("Adding " + task_meetings.length + " task meetings");
@@ -130,9 +139,14 @@ export class Home extends React.Component {
         this.setState(new_state);
     }
 
+    set_tasks(database_tasks) {
+        const tasks = database_tasks.map(db_task => build_task_from_database(db_task));
+        this.props.Update(tasks);
+    }
     set_threads(emails) {
         this.props.Expand(emails)
-        for (const email of emails) {
+        const task_emails = Object.values(Task.CURRENT_TASKS).map(t => t.email_id);
+        for (const email of emails.filter(e => !task_emails.includes(e.get_id()))) {
             try {
                 Task.add_request_meeting_task(this.props.Update, email);
                 Task.add_general_task_detection(this.props.Update, email);

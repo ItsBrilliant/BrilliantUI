@@ -1,6 +1,6 @@
 export class Contact {
     static contact_dict = {};
-    static CURRENT_USER = Contact.create_contact_from_address(window.localStorage.getItem("user") || "");
+    static CURRENT_USER = Contact.create_contact_from_address("");
 
     static clear_contacts() {
         Contact.contact_dict = {};

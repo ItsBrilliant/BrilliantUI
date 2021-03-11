@@ -45,11 +45,10 @@ class EmailTextArea extends Component {
             task.owner = owner;
             task.source_indexes = task_format_indexes;
         } else {
-            task = new Task(text, date, priority, false, task_format_indexes, owner);
+            task = new Task(text, date, priority, task_format_indexes, owner);
         }
-        task.set_approved(true);
+        task.approved = true;
         Task.insert_task(this.props.Update, this.props.email, task)
-
     }
     componentWillReceiveProps(next_props) {
         if (next_props.external_show_task_portal && !this.props.external_show_task_portal) {
@@ -116,7 +115,6 @@ class EmailTextArea extends Component {
             if (start_grand_parent === end_grand_parent &&
                 start_grand_parent.className === "span_text_area" &&
                 (start_parent === end_parent || start_parent.nextElementSibling === end_parent)) {
-                console.log("selection: " + start_parent.innerText + " , " + end_parent.innerText);
                 const siblings_offset = getSelectionOffsetRelativeTo(start_grand_parent, start_parent);
                 const startOffset = range.startOffset + siblings_offset;
                 let endOffset = range.endOffset + siblings_offset;
@@ -166,16 +164,16 @@ class EmailTextArea extends Component {
             return <span>{text}</span>
         }
         var sections = []
-        tasks = tasks.sort(function (a, b) { return a.get_source_indexes().start - b.get_source_indexes().start; });
-        const first_highlight = tasks[0].get_source_indexes()
+        tasks = tasks.sort(function (a, b) { return a.source_indexes.start - b.source_indexes.start; });
+        const first_highlight = tasks[0].source_indexes
         if (first_highlight && first_highlight.start > 0) {
             sections.push(<span>{text.slice(0, first_highlight.start)}</span>)
         }
         for (let i = 0; i < tasks.length; i++) {
-            const start = tasks[i].get_source_indexes().start
-            const end = tasks[i].get_source_indexes().end
+            const start = tasks[i].source_indexes.start
+            const end = tasks[i].source_indexes.end
             var style = 'task_source';
-            if (tasks[i].is_approved()) {
+            if (tasks[i].approved) {
                 style += ' ' + get_priority_style(tasks[i].get_priority())
             } else {
                 style += " before_approval";
@@ -184,7 +182,7 @@ class EmailTextArea extends Component {
                 <span task_id={tasks[i].id} className={style} onMouseEnter={on_proposed_task_hover.bind(this, tasks[i])} >
                     {text.slice(start, end)}
                 </span>)
-            const next_start = i + 1 < tasks.length ? tasks[i + 1].get_source_indexes().start : text.length;
+            const next_start = i + 1 < tasks.length ? tasks[i + 1].source_indexes.start : text.length;
             if (next_start > end) {
                 sections.push(
                     <span>
@@ -238,11 +236,11 @@ function get_mouse_position_style(x, y) {
 }
 
 function on_proposed_task_hover(task, e) {
-    if (task.is_approved() || task.declined || this.state.add_task_icon) {
+    if (task.approved || task.declined || this.state.add_task_icon) {
         return;
     }
     const position_style = get_mouse_position_style(e.pageX, e.pageY);
-    const source_indexes = task.get_source_indexes();
+    const source_indexes = task.source_indexes;
     const selection_indexes = [source_indexes.start, source_indexes.end];
     const add_task_icon =
         <AddTaskIcon

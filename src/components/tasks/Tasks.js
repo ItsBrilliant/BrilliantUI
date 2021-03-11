@@ -60,7 +60,7 @@ export default function Tasks() {
                 </SimpleBar>
             </div>
             {selected_task ?
-                <TaskInfoWrapper thread_id={selected_task.get_thread_id()}
+                <TaskInfoWrapper thread_id={selected_task.thread_id}
                     task_id={selected_task.id}
                     close={() => select_task(null)} />
                 : null}

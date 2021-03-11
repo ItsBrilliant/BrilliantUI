@@ -42,7 +42,6 @@ export class Email {
         var name = ""
         const all_contacts = Object.values(Contact.contact_dict);
         const random_contact = all_contacts[rand_int(0, all_contacts.length)]
-        const isDone = Math.random() < 0.3;
         const priority = rand_int(0, 3);
         if (Math.random() < 0.5) {
             for (let i = 0; i < len; i++) {
@@ -51,7 +50,7 @@ export class Email {
             }
             var source_indexes = { start: rand_int(0, this.get_text().length - 1) }
             source_indexes['end'] = rand_int(source_indexes.start + 1, this.get_text().length)
-            var task = new Task(name, new Date(), priority, isDone, source_indexes, random_contact)
+            var task = new Task(name, new Date(), priority, source_indexes, random_contact)
             this.tasks.push(task)
         }
     }
@@ -69,7 +68,7 @@ export class Email {
             const start_index = parseInt(document_request_detection[i][0])
             const text_length = parseInt(document_request_detection[i][1])
             var task_text = `Send the document (${Math.round(probability)}%)`;
-            var task = new Task(task_text, new Date(), IMPORTANT, false, { start: start_index, end: start_index + text_length })
+            var task = new Task(task_text, new Date(), IMPORTANT, { start: start_index, end: start_index + text_length })
             this.add_task(task);
         }
 
@@ -120,7 +119,7 @@ export class Email {
             const time_text = times.length > 0 ? " Time: " + times.join(' | ') + ";" : "";
             const duration_text = durations.length > 0 ? " Duration: " + durations.join(' | ') + ";" : "";
             const task_text = `Setup Meeting(${Math.round(probability)}%);` + time_text + duration_text
-            var task = new Task(task_text, new Date(), URGENT, false, { start: start_index, end: start_index + text_length })
+            var task = new Task(task_text, new Date(), URGENT, { start: start_index, end: start_index + text_length })
             this.add_task(task);
         }
     }
@@ -131,7 +130,7 @@ export class Email {
     get_num_tasks() {
         var count = 0;
         for (const task of this.tasks) {
-            if (!task.isDone) {
+            if (!task.is_done()) {
                 count++;
             }
         }
@@ -145,8 +144,8 @@ export class Email {
         if (email && !email.is_sent()) {
             sender_priority = email.get_graph_priority()
         }
-        tasks = tasks.filter(t => t.get_email_id() === email_id)
-        let priorities = tasks.map(task => parseInt(task.isDone || task.declined ? NO_PRIORITY : task.priority));
+        tasks = tasks.filter(t => t.email_id === email_id)
+        let priorities = tasks.map(task => parseInt(task.is_done() || task.declined ? NO_PRIORITY : task.priority));
         priorities.push(sender_priority)
         if (priorities.includes(URGENT)) {
             return URGENT;

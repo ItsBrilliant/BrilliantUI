@@ -52,7 +52,7 @@ function SingleTaskInfo(props) {
 export default function TaskInfoWrapper(props) {
     const task = useSelector(state => state.tasks[props.task_id]);
     const thread = useSelector(state => state.email_threads[props.thread_id])
-    if (!props.task_id || !thread) {
+    if (!props.task_id) {
         return null;
     }
     return ReactDOM.createPortal(
@@ -65,13 +65,14 @@ export default function TaskInfoWrapper(props) {
 }
 
 function TaskDetails(props) {
+    const resources = props.thread ? props.thread.get_attachments() : [];
     return (
         <>
             <QuickReply to={props.task.initiator} email_id={props.task.email_id} on_close={props.close} />
             <Description task={props.task} updater={props.updater} />
             <People task={props.task} watchers={Array.from(props.task.watchers)}
                 owner={props.task.get_owner()} />
-            <RelevantResources resources={props.thread.get_attachments()} />
+            <RelevantResources resources={resources} />
             <SourceConversation thread={props.thread} />
         </>
     );
@@ -124,7 +125,7 @@ function TopButtons(props) {
     const task_options = ['To do', 'In progress', 'Pending', 'Done'];
     const my_set_status = (value) => {
         setStatus(value);
-        Task.update_task(props.updater, props.task, 'set_status', [value]);
+        Task.update_task(props.updater, props.task, 'status', value);
     }
     const my_set_priority = (value) => {
         setPriority(value);
@@ -255,8 +256,8 @@ function RelevantResources(props) {
 }
 
 function SourceConversation(props) {
-    const email_thread_component = <EmailThread id={props.thread.get_id()} thread={props.thread} is_selected={false}
-        handle_select={() => { }} priority={null} options_offset={{ top: 0, left: -160 }} />
+    const email_thread_component = props.thread ? <EmailThread id={props.thread.id} thread={props.thread} is_selected={false}
+        handle_select={() => { }} priority={null} options_offset={{ top: 0, left: -160 }} /> : <h2>Not Available</h2>
     return <TitledComponent title="Source Conversation" component={email_thread_component} />
 }
 

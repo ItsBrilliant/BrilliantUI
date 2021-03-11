@@ -5,7 +5,7 @@ import { get_priority_style, rand_int } from '../../utils'
 export function add_meetings_from_tasks(tasks, existing_meetings) {
     const existing_ids = existing_meetings.map(m => m.task_id);
     var events = [];
-    for (const task of tasks.filter(t => !t.isDone && t.meeting && !existing_ids.includes(t.id))) {
+    for (const task of tasks.filter(t => !t.is_done() && t.meeting && !existing_ids.includes(t.id))) {
         const times = task.meeting.times;
         var duration = task.meeting.duration ? task.meeting.duration.seconds : 1800
         for (const time of times) {

@@ -5,6 +5,7 @@ import { PRIORITIES, URGENT, IMPORTANT, CAN_WAIT } from './Consts.js'
 import { v4 } from 'uuid';
 import { create_slot } from '../components/calendar/utils.js';
 import TaskMessage, { DEFAULT_TASK_MESSAGES } from './TaskMessage'
+import { insert_task_database, update_task_database } from '../backend/ConnectDatabase'
 
 
 const GENERAL_TASK_DETECTION_THRESHOLD = 70;
@@ -14,32 +15,20 @@ const REQUEST_MEETING_PROBABILITY_THRESHOLD = 70;
 export class Task {
     static CURRENT_TASKS = {};
 
-    constructor(text, deadline, priority, isDone, source_indexes = [], owner, id) {
+    constructor(text, deadline, priority, source_indexes = [], owner, id, initiator) {
         this.id = id ? id : v4();
         this.text = text;
         this.deadline = new Date(deadline);
         this.priority = priority;
-        this.isDone = isDone;
         this.source_indexes = source_indexes
         this.owner = owner ? owner : Contact.CURRENT_USER;
-        this.initiator = Contact.CURRENT_USER;
-        this.email_id = undefined;
+        this.initiator = initiator ? initiator : Contact.CURRENT_USER;
         this.approved = false;
         this.declined = false;
         this.watchers = new Set([this.owner]);
-        this.tags = ["Tag1", "Tag2"];
-        this.status = 'To Do';
         this.messages = DEFAULT_TASK_MESSAGES;
-    }
-    get_source_indexes() {
-        return this.source_indexes;
-    }
-    is_approved() {
-        return this.approved;
-    }
-
-    set_approved(approved) {
-        this.approved = approved;
+        this.tags = [];
+        this.status = "To Do";
     }
 
     get_owner() {
@@ -57,30 +46,19 @@ export class Task {
         } else {
             this.priority = priority
         }
-
+        return "priority";
     }
-    set_status(status) {
-        this.status = status;
-        if (status === "Done") {
-            this.isDone = true;
-        } else {
-            this.isDone = false;
-        }
+
+    is_done() {
+        return this.status === 'Done';
     }
     get_formatted_deadline() {
         return format_date(this.deadline)
     }
-    get_id() {
-        return this.id;
-    }
-    get_thread_id() {
-        return this.thread_id;
-    }
-    get_email_id() {
-        return this.email_id;
-    }
+
     add_watcher(contact) {
         this.watchers.add(contact);
+        return "watchers";
     }
     add_message(message_body) {
         const message = new TaskMessage(message_body, Contact.CURRENT_USER.get_address());
@@ -90,12 +68,14 @@ export class Task {
     static get_tasks_by_email_id(email_id, tasks = Object.values(Task.CURRENT_TASKS)) {
         return tasks.filter(t => t.email_id === email_id);
     }
-    static update_task(dispatcher, task, function_name, args) {
+    static update_task(dispatcher, task, field_name, args) {
         let new_task = Object.assign(Object.create(task), task);
-        if (typeof (new_task[function_name]) === 'function') {
-            new_task[function_name](...args);
+        if (typeof (new_task[field_name]) === 'function') {
+            const changed_field = new_task[field_name](...args);
+            update_task_database(new_task.id, changed_field, new_task[changed_field])
         } else {
-            new_task[function_name] = args;
+            new_task[field_name] = args;
+            update_task_database(new_task.id, field_name, args)
         }
 
         dispatcher(new_task);
@@ -103,7 +83,7 @@ export class Task {
 
     static insert_task(dispatcher, email, task) {
         if (Task.check_text_overlap(email, task)) {
-            console.log("Didn't add task " + task.text + " " + email.get_subject() + " at indexes " + Object.values(task.get_source_indexes()) + " because of overlap")
+            console.log("Didn't add task " + task.text + " " + email.get_subject() + " at indexes " + Object.values(task.source_indexes) + " because of overlap")
             return;
         }
         task.email_id = email.get_id();
@@ -112,13 +92,16 @@ export class Task {
         for (const receiver of email.get_receivers()) {
             task.watchers.add(receiver);
         }
+        if (task.approved) {
+            insert_task_database(task);
+        }
         dispatcher(task);
     }
     static check_text_overlap(email, new_task) {
         const email_tasks = email.get_tasks().filter(t => t.id !== new_task.id && !t.declined);
-        const new_task_indexes = new_task.get_source_indexes();
+        const new_task_indexes = new_task.source_indexes;
         for (const task of email_tasks) {
-            const indexes = task.get_source_indexes();
+            const indexes = task.source_indexes;
             if (indexes.start < new_task_indexes.start && indexes.end >= new_task_indexes.start) {
                 return true;
             } else if ((indexes.start >= new_task_indexes.start && indexes.start <= new_task_indexes.end)) {
@@ -146,7 +129,7 @@ export class Task {
                 priority = IMPORTANT;
             }
             var task_text = `document request (${Math.round(probability)}%)`;
-            var task = new Task(task_text, new Date(), priority, false, { start: start_index, end: start_index + text_length }, undefined, id)
+            var task = new Task(task_text, new Date(), priority, { start: start_index, end: start_index + text_length }, undefined, id)
             task.initiator = email.get_sender();
             Task.insert_task(dispatcher, email, task);
         }
@@ -212,7 +195,7 @@ export class Task {
             const time_text = times.length > 0 ? " When: " + time_texts.join(" | ") + ";" : "";
             const duration_text = durations.length > 0 ? " Duration: " + durations.map(d => d.data + " " + d.unit).join(' | ') + ";" : "";
             const task_text = `Meeting with ${email.get_sender().get_name()} (${Math.round(probability)}%);` + time_text + duration_text
-            var task = new Task(task_text, new Date(), priority, false, { start: start_index, end: start_index + text_length }, undefined)
+            var task = new Task(task_text, new Date(), priority, { start: start_index, end: start_index + text_length }, undefined)
             if (times.length > 0) {
                 task['meeting'] = { duration: durations[0], times: times };
             }

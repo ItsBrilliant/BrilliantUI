@@ -56,10 +56,6 @@ export class Thread {
         return highest_priority
     }
 
-    get_id() {
-        return this.id;
-    }
-
     get_emails(folder_id = Thread.SELECTED_FOLDER_ID) {
 
         let emails = Object.values(this.emails_dict)

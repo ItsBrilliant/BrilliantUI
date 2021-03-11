@@ -6,7 +6,6 @@ const TaskGrid = styled.div`
   color: ${main_text_color};
   display: grid;
   grid-template-columns: 0.2fr 5fr 1fr 1fr 1fr 2fr 1fr 2.5fr;
-  grid-template-rows: 1fr;
   justify-items: center;
   align-items: center;
   width: 100%;
@@ -29,7 +28,11 @@ const TaskGrid = styled.div`
     grid-area: deadline;
   }
   .tags{
+    max-height: 100%;
     grid-area: tags;
+    display:flex;
+    flex-wrap:wrap;
+    overflow: hidden;
   }
   
 `;
@@ -38,8 +41,8 @@ export const TaskRowStyle = styled(TaskGrid)`
   font-size: 13px;
   background: ${email_text_area_bg};
   color: ${main_text_color};
+  height: 60px;
   margin: 5px 15px;
-  height: 54px;
   border-radius: 20px;
   border: 2px solid;
   border-color: ${props => props.is_multiselected ? "white" : "transparent"};

@@ -18,7 +18,7 @@ export function RightDivision(props) {
     return (thread && props.show ?
         <div className={style}>
             <SimpleBar className='SimpleBar_RightDivision'>
-                <Tasks tasks={tasks.filter(t => t.get_thread_id() === thread.get_id() && t.is_approved())} thread={thread} />
+                <Tasks tasks={tasks.filter(t => (t.thread_id === thread.id) && t.approved)} thread={thread} />
                 {Participants(thread.get_participants())}
                 {FileAttachments(thread.get_attachments())}
             </SimpleBar>
@@ -31,10 +31,10 @@ function Tasks(props) {
     const dispatch = useDispatch();
     const task_updater = (task) => dispatch(Update(task));
     const [task_id_for_info, set_task_id] = useState(null);
-    const finished_tasks = props.tasks.filter(task => task.isDone);
-    const active_tasks = props.tasks.filter(task => !task.isDone);
+    const finished_tasks = props.tasks.filter(task => task.is_done());
+    const active_tasks = props.tasks.filter(task => !task.is_done());
     const my_update_finished_task = (task) => {
-        Task.update_task(task_updater, task, 'set_status', ["Done"]);
+        Task.update_task(task_updater, task, 'status', "Done");
     }
 
     return (
@@ -68,7 +68,7 @@ function TasksDisplayer(props) {
                             <span className="inner">v</span>
                         </span>
                         <span className={"task_owner" + done_style}>{owner_name}:</span>
-                        <span onClick={() => props.on_click(task.get_id())} className="task_text">{task.text}</span>
+                        <span onClick={() => props.on_click(task.id)} className="task_text">{task.text}</span>
                     </li>
                 );
             })

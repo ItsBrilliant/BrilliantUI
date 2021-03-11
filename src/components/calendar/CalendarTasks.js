@@ -15,14 +15,14 @@ export default function CalendarTasks() {
     const tasks_dict = useSelector(state => state.tasks);
     const tasks = Object.values(tasks_dict).sort((a, b) => a.priority - b.priority);
     const threads = useSelector(state => state.email_threads);
-    const selected_thread_id = tasks_dict[selected_task_id] ? tasks_dict[selected_task_id].get_thread_id() : null
+    const selected_thread_id = tasks_dict[selected_task_id] ? tasks_dict[selected_task_id].thread_id : null
     const task_components = tasks.map(task => {
-        const thread = threads[task.get_thread_id()];
+        const thread = threads[task.thread_id];
         let participants = thread ? thread.get_participants() : [];
         participants = participants.filter(p => p !== task.owner)
         return (
             <CalendarTask
-                key={task.get_id()}
+                key={task.id}
                 task={task}
                 priority={task.priority}
                 owner={task.owner}
@@ -70,7 +70,7 @@ function CalendarTask(props) {
     const priority_style = get_priority_style(props.priority);
     return (
         <div className="CalendarTask">
-            <span className="title" onClick={() => props.on_select(props.task.get_id())}>{props.title}</span>
+            <span className="title" onClick={() => props.on_select(props.task.id)}>{props.title}</span>
             <span className={"priority " + priority_style}></span>
             <span className="deadline">{props.deadline}</span>
             <span className="options"><OptionsButton options={button_options} offset={{ top: 0, left: -150 }} /></span>

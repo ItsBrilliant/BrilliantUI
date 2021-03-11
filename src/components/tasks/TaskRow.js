@@ -30,7 +30,7 @@ export default function TaskRow(props) {
             Task.update_task(task_updater, props.task, func, value);
         }
     }
-    const change_status = (selected) => change_multi([selected.value], 'set_status');
+    const change_status = (selected) => change_multi(selected.value, 'status');
     const change_priority = (value) => change_multi([value], 'set_priority');
 
     return (

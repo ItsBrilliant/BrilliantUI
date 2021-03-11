@@ -1,13 +1,13 @@
 export const Create = (attributes) => {
     return {
-        type: "CREATE",
+        type: "CREATE_COMPOSER",
         attributes: attributes
     };
 }
 
 export const Delete = (id) => {
     return {
-        type: "DELETE",
+        type: "DELETE_COMPOSER",
         id: id
     };
 }

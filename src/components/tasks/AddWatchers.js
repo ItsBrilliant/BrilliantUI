@@ -5,6 +5,12 @@ import { AddWatchersStyle } from './Tasks.style'
 export default function AddWatchers(props) {
     const [search_text, set_search_text] = useState("");
     const options = Contact.get_filtered_contacts(search_text, 10)
+    const handle_key_press = (e) => {
+        if (e.key === "Enter") {
+            const contact = Contact.create_contact_from_address(search_text);
+            props.on_select(contact);
+        }
+    }
     const contact_list = options.map(c =>
         <NameWithIcon key={c}
             contact={c}
@@ -12,7 +18,10 @@ export default function AddWatchers(props) {
     return (
         <AddWatchersStyle location={props.location} className="AddWatchers">
             {contact_list}
-            <input className="input" type="text" value={search_text} onChange={(e) => set_search_text(e.target.value)}></input>
+            <input className="input" type="text" value={search_text}
+                onChange={(e) => set_search_text(e.target.value)}
+                onKeyPress={handle_key_press}
+            />
         </AddWatchersStyle>
     );
 }
