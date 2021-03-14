@@ -39,6 +39,7 @@ export async function get_tasks_from_database(user_email, set_tasks, updated_sin
         updated_since: updated_since.valueOf()
     });
     let res = await general_axios_call(call, 'get_tasks_from_database');
+    // Each item in tasks is a pair: (task, is_deleted)
     const tasks = res.data;
     if (tasks.length > 0) {
         set_tasks(tasks);

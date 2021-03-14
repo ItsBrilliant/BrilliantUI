@@ -11,7 +11,7 @@ import { useDispatch } from 'react-redux';
 import { LoginPage } from './LoginPage.js';
 import { connect } from "react-redux";
 import { Login } from "../actions/login.js";
-import { Update } from "../actions/tasks.js";
+import { Update, Delete } from "../actions/tasks.js";
 import { ExpandThreads, ResetThreads } from "../actions/email_threads.js";
 import { Contact } from '../data_objects/Contact.js';
 import { MAIL_FOLDERS } from '../data_objects/Consts.js';
@@ -140,8 +140,14 @@ export class Home extends React.Component {
     }
 
     set_tasks(database_tasks) {
-        const tasks = database_tasks.map(db_task => build_task_from_database(db_task));
-        this.props.Update(tasks);
+        const deleted_task_ids = database_tasks.filter(([task, is_deleted]) => is_deleted).map(([task, is_deleted]) => task.id);
+        if (deleted_task_ids.length > 0) {
+            this.props.Delete(deleted_task_ids);
+        }
+        const tasks = database_tasks.filter(([task, is_deleted]) => !is_deleted).map(([db_task, is_deleted]) => build_task_from_database(db_task));
+        if (tasks.length > 0) {
+            this.props.Update(tasks);
+        }
     }
     set_threads(emails) {
         this.props.Expand(emails)
@@ -290,7 +296,8 @@ const mapDispatchToProps = {
     Login,
     Expand: ExpandThreads,
     Reset: ResetThreads,
-    Update
+    Update,
+    Delete
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

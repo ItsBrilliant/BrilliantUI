@@ -110,6 +110,8 @@ export class Task {
         }
         return false
     }
+
+    // task_detection is currently 'document_request'
     static add_general_task_detection(dispatcher, email) {
         const [task_detection, id] = email.get_detection('document_request');
         if (email.is_draft() || email.is_deleted() || !task_detection || task_detection.length === 0) {
@@ -129,7 +131,7 @@ export class Task {
                 priority = IMPORTANT;
             }
             var task_text = `document request (${Math.round(probability)}%)`;
-            var task = new Task(task_text, new Date(), priority, { start: start_index, end: start_index + text_length }, undefined, id)
+            var task = new Task(task_text, new Date(), priority, { start: start_index, end: start_index + text_length }, undefined)
             task.initiator = email.get_sender();
             Task.insert_task(dispatcher, email, task);
         }

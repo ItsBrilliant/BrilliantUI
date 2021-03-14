@@ -5,9 +5,6 @@ import { Task } from './Task.js';
 import parse from 'html-react-parser'
 import { mark_read } from '../backend/utils.js'
 
-const REQUEST_DOCUMENT_PROBABILITY_THRESHOLD = 90;
-const REQUEST_MEETING_PROBABILITY_THRESHOLD = 50;
-const GENERAL_TASK_DETECTION_THRESHOLD = 70;
 export class Email {
     static FOLDER_MAPPINGS = [];
     constructor(email_json, tags, tasks) {
@@ -55,25 +52,6 @@ export class Email {
         }
     }
 
-    add_request_document_task() {
-        const document_request_detection = this.email['document_request'];
-        if (!document_request_detection || document_request_detection.length === 0) {
-            return;
-        }
-        for (let i = 0; i < document_request_detection.length; i++) {
-            const probability = parseFloat(document_request_detection[i][2])
-            if (probability < REQUEST_DOCUMENT_PROBABILITY_THRESHOLD) {
-                continue;
-            }
-            const start_index = parseInt(document_request_detection[i][0])
-            const text_length = parseInt(document_request_detection[i][1])
-            var task_text = `Send the document (${Math.round(probability)}%)`;
-            var task = new Task(task_text, new Date(), IMPORTANT, { start: start_index, end: start_index + text_length })
-            this.add_task(task);
-        }
-
-    }
-
     get_graph_priority() {
         let score = this.email.prioritization_score;
         if (!score) {
@@ -88,39 +66,6 @@ export class Email {
             return CAN_WAIT;
         } else {
             return NO_PRIORITY;
-        }
-    }
-
-    add_request_meeting_task() {
-        const meeting_scheduler = this.email['meeting_request'];
-        if (!meeting_scheduler || meeting_scheduler.length === 0) {
-            return;
-        }
-        for (let i = 0; i < meeting_scheduler.length; i++) {
-            const probability = parseFloat(meeting_scheduler[i][2])
-            if (probability < REQUEST_MEETING_PROBABILITY_THRESHOLD) {
-                continue;
-            }
-            const start_index = parseInt(meeting_scheduler[i][0])
-            const text_length = parseInt(meeting_scheduler[i][1])
-            const slots = meeting_scheduler[i].slice(3,);
-            var times = []
-            var durations = []
-            for (var slot of slots) {
-                slot = slot[0];
-                if (slot.Type === "Duration") {
-                    times.push(slot.Data.values[0]);
-                }
-                else if (slot.Type === "Time") {
-                    durations.push(slot.Data)
-                }
-
-            }
-            const time_text = times.length > 0 ? " Time: " + times.join(' | ') + ";" : "";
-            const duration_text = durations.length > 0 ? " Duration: " + durations.join(' | ') + ";" : "";
-            const task_text = `Setup Meeting(${Math.round(probability)}%);` + time_text + duration_text
-            var task = new Task(task_text, new Date(), URGENT, { start: start_index, end: start_index + text_length })
-            this.add_task(task);
         }
     }
 

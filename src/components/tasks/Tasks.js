@@ -8,6 +8,7 @@ import { TaskHeaderStyle, MultiselectActionsStyle } from './Tasks.style'
 import { useSelector, useDispatch } from 'react-redux'
 import TaskInfoWrapper from './SingleTaskInfo'
 import { Delete } from '../../actions/tasks'
+import { delete_tasks_database } from '../../backend/ConnectDatabase'
 
 
 
@@ -34,6 +35,7 @@ export default function Tasks() {
     }
     const my_delete_tasks = (ids) => {
         dispatch(Delete(ids));
+        delete_tasks_database(ids);
         set_multiselect([]);
     }
     return (

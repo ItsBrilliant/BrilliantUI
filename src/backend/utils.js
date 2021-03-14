@@ -32,7 +32,8 @@ export function build_task_from_database(db_task) {
     task.owner = Contact.create_contact_from_address(db_task.owner);
     task.initiator = Contact.create_contact_from_address(db_task.initiator);
     task.watchers = new Set(db_task.watchers.map(w => Contact.create_contact_from_address(w)));
-    task.approved = true;
+    task.approved = db_task.approved;
+    task.declined = db_task.declined;
     task.email_id = db_task.email_id;
     task.thread_id = db_task.thread_id;
     task.description = db_task.description;
