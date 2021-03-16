@@ -29,17 +29,25 @@ export function build_task_from_database(db_task) {
         new Task(
             db_task.text, db_task.deadline, db_task.priority,
             db_task.source_indexes, undefined, db_task.id, undefined);
-    task.owner = Contact.create_contact_from_address(db_task.owner);
-    task.initiator = Contact.create_contact_from_address(db_task.initiator);
-    task.watchers = new Set(db_task.watchers.map(w => Contact.create_contact_from_address(w)));
-    task.approved = db_task.approved;
-    task.declined = db_task.declined;
-    task.email_id = db_task.email_id;
-    task.thread_id = db_task.thread_id;
-    task.description = db_task.description;
-    task.tags = db_task.tags;
-    task.status = db_task.status;
+    for (const field in db_task) {
+        const converted_value = convert_from_database_value(field, db_task[field])
+        if (converted_value !== undefined) {
+            task[field] = converted_value;
+        }
+    }
     return task;
+}
+
+export function convert_from_database_value(field, value) {
+    if (field === 'watchers') {
+        return new Set(value.map(w => Contact.create_contact_from_address(w)));
+    } else if (['initiator', 'owner'].includes(field)) {
+        return Contact.create_contact_from_address(value)
+    } else if (field === 'deadline') {
+        // deadline is already converted in the constructor
+        return undefined;
+    }
+    return value;
 }
 
 export function build_task_for_database(task) {
@@ -50,20 +58,6 @@ export function build_task_for_database(task) {
     let all_watchers = new Set(db_task.watchers);
     all_watchers.add(db_task.initiator);
     all_watchers.add(db_task.owner);
-    //   db_task.text = task.text;
-    //  db_task.owner = convert_to_database_value('owner',)
-    // db_task.initiator = task.initiator.get_address();
-    // db_task.watchers = convert_to_database_value("watchers", task.watchers);
-    //  db_task.id = task.id;
-    //  db_task.status = task.status;
-    //  db_task.deadline = task.deadline;
-    //  db_task.source_indexes = task.source_indexes;
-    //  db_task.priority = task.priority;
-    //  db_task.email_id = task.email_id;
-    // db_task.thread_id = task.thread_id;
-    //  db_task.tags = task.tags;
-    // db_task.description = task.description;
-    //  db_task.messages = task.messages;
     return [db_task, Array.from(all_watchers)];
 }
 

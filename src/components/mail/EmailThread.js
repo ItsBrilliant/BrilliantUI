@@ -109,7 +109,7 @@ function ThreadLabels(props) {
     const dispatch = useDispatch()
     const thread = useSelector(state => state.email_threads[props.thread_id]);
     const tasks = useSelector(state => Object.values(state.tasks));
-    const num_tasks = tasks.filter(t => (!t.is_done() && t.approved) && (t.thread_id === props.thread_id)).length;
+    const num_tasks = tasks.filter(t => (!t.is_done() && t.approved()) && (t.thread_id === props.thread_id)).length;
     const option_names = ["Set as task", "Change priority", "Mark as read", "Delete"];
     let options = option_names.map(n => { return { name: n } });
     options.filter(o => o.name === 'Delete')[0].action = () => {

@@ -90,7 +90,7 @@ export class Email {
             sender_priority = email.get_graph_priority()
         }
         tasks = tasks.filter(t => t.email_id === email_id)
-        let priorities = tasks.map(task => parseInt(task.is_done() || task.declined ? NO_PRIORITY : task.priority));
+        let priorities = tasks.map(task => parseInt(task.is_done() || task.declined() ? NO_PRIORITY : task.priority));
         priorities.push(sender_priority)
         if (priorities.includes(URGENT)) {
             return URGENT;

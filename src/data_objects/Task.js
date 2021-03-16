@@ -23,8 +23,7 @@ export class Task {
         this.source_indexes = source_indexes
         this.owner = owner ? owner : Contact.CURRENT_USER;
         this.initiator = initiator ? initiator : Contact.CURRENT_USER;
-        this.approved = false;
-        this.declined = false;
+        this.approve_status = undefined;
         this.watchers = new Set([this.owner]);
         this.messages = DEFAULT_TASK_MESSAGES;
         this.tags = [];
@@ -47,6 +46,13 @@ export class Task {
             this.priority = priority
         }
         return "priority";
+    }
+    approved() {
+        return this.approve_status === 'approved';
+    }
+
+    declined() {
+        return this.approve_status === 'declined';
     }
 
     is_done() {
@@ -92,13 +98,13 @@ export class Task {
         for (const receiver of email.get_receivers()) {
             task.watchers.add(receiver);
         }
-        if (task.approved) {
-            insert_task_database(task);
-        }
+        //     if (task.approved) {
+        insert_task_database(task);
+        //      }
         dispatcher(task);
     }
     static check_text_overlap(email, new_task) {
-        const email_tasks = email.get_tasks().filter(t => t.id !== new_task.id && !t.declined);
+        const email_tasks = email.get_tasks().filter(t => t.id !== new_task.id && !t.declined());
         const new_task_indexes = new_task.source_indexes;
         for (const task of email_tasks) {
             const indexes = task.source_indexes;

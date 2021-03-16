@@ -47,7 +47,7 @@ class EmailTextArea extends Component {
         } else {
             task = new Task(text, date, priority, task_format_indexes, owner);
         }
-        task.approved = true;
+        task.approve_status = "approved";
         Task.insert_task(this.props.Update, this.props.email, task)
     }
     componentWillReceiveProps(next_props) {
@@ -159,7 +159,7 @@ class EmailTextArea extends Component {
 
     // Insert task highligts
     render_content(text) {
-        let tasks = this.props.tasks.filter(t => !t.declined && t.source_indexes.start >= 0);
+        let tasks = this.props.tasks.filter(t => !t.declined() && t.source_indexes.start >= 0);
         if (!this.props.of_center_email || tasks.length === 0) {
             return <span>{text}</span>
         }
@@ -173,7 +173,7 @@ class EmailTextArea extends Component {
             const start = tasks[i].source_indexes.start
             const end = tasks[i].source_indexes.end
             var style = 'task_source';
-            if (tasks[i].approved) {
+            if (tasks[i].approved()) {
                 style += ' ' + get_priority_style(tasks[i].get_priority())
             } else {
                 style += " before_approval";
@@ -236,7 +236,7 @@ function get_mouse_position_style(x, y) {
 }
 
 function on_proposed_task_hover(task, e) {
-    if (task.approved || task.declined || this.state.add_task_icon) {
+    if (task.approve_status || this.state.add_task_icon) {
         return;
     }
     const position_style = get_mouse_position_style(e.pageX, e.pageY);
@@ -257,7 +257,7 @@ function AddTaskIcon(props) {
     const handle_close = () => {
         props.hide();
         if (props.task) {
-            Task.update_task((t) => dispatch(Update(t)), props.task, 'declined', true);
+            Task.update_task((t) => dispatch(Update(t)), props.task, 'approve_status', 'declined');
         }
     }
     return (
@@ -274,7 +274,7 @@ function AddTaskIcon(props) {
 
 function task_from_text_element(element) {
     const tasks = Object.values(Task.CURRENT_TASKS);
-    return tasks.filter(t => t.approved && t.id === element.getAttribute("task_id"))[0];
+    return tasks.filter(t => t.approved() && t.id === element.getAttribute("task_id"))[0];
 
 }
 

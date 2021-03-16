@@ -21,8 +21,8 @@ export default function Tasks() {
     const [selected_task, select_task] = useState(null)
     const user = useSelector(state => state.user)
     const dispatch = useDispatch();
-    const task_filter = [TASK_FILTERS[filter_index], 'approved']
-    const filter_target = [user, true]
+    const task_filter = [TASK_FILTERS[filter_index], 'approve_status']
+    const filter_target = [user, 'approved']
     const filter_functions = [FILTER_FUNCTIONS[filter_index], EQUAL]
     const tasks = useTasks(task_filter, filter_target, filter_functions);
     const [multiselected_tasks, set_multiselect] = useState([]);
