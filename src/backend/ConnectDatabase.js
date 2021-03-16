@@ -54,3 +54,15 @@ export async function delete_tasks_database(task_ids) {
     general_axios_call(call, 'delete_tasks_database');
 }
 
+export async function set_email_user_priority(email, user_priority) {
+    let params = {
+        email_id: email.get_id(),
+        user_priority: user_priority,
+        ai_score: email.email.prioritization_score,
+        ai_priority: email.get_graph_priority()
+    }
+
+    const call = async () => await Axios.post('api/set_email_priority', params);
+    general_axios_call(call, 'set_email_user_priority');
+}
+

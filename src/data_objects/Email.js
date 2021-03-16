@@ -69,6 +69,10 @@ export class Email {
         }
     }
 
+    get_user_priority() {
+        return this.email.user_priority;
+    }
+
     get_tags() {
         return this.tags
     }
@@ -85,25 +89,31 @@ export class Email {
     // Get priority based on the priority of unfinished tasks
     // third argument 'email' is for testing the new prioritization feature instead
     static get_priority(tasks, email_id, email) {
-        let sender_priority = NO_PRIORITY
-        if (email && !email.is_sent()) {
-            sender_priority = email.get_graph_priority()
+        const manual_user_priority = email.get_user_priority();
+        if (manual_user_priority !== undefined) {
+            return manual_user_priority;
+        } else {
+            let sender_priority = NO_PRIORITY
+            if (email && !email.is_sent()) {
+                sender_priority = email.get_graph_priority()
+            }
+            tasks = tasks.filter(t => t.email_id === email_id)
+            let priorities = tasks.map(task => parseInt(task.is_done() || task.declined() ? NO_PRIORITY : task.priority));
+            priorities.push(sender_priority)
+            if (priorities.includes(URGENT)) {
+                return URGENT;
+            }
+            else if (priorities.includes(IMPORTANT)) {
+                return IMPORTANT;
+            }
+            else if (priorities.includes(CAN_WAIT)) {
+                return CAN_WAIT;
+            }
+            else {
+                return NO_PRIORITY;
+            }
         }
-        tasks = tasks.filter(t => t.email_id === email_id)
-        let priorities = tasks.map(task => parseInt(task.is_done() || task.declined() ? NO_PRIORITY : task.priority));
-        priorities.push(sender_priority)
-        if (priorities.includes(URGENT)) {
-            return URGENT;
-        }
-        else if (priorities.includes(IMPORTANT)) {
-            return IMPORTANT;
-        }
-        else if (priorities.includes(CAN_WAIT)) {
-            return CAN_WAIT;
-        }
-        else {
-            return NO_PRIORITY;
-        }
+
     }
     get_tasks() {
         return Task.get_tasks_by_email_id(this.get_id());

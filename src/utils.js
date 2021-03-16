@@ -1,4 +1,4 @@
-import { PRIORITIES, TIME_KEY, PRIORITY_KEY, URGENT, IMPORTANT, CAN_WAIT } from './data_objects/Consts.js';
+import { PRIORITIES, TIME_KEY, PRIORITY_KEY, URGENT, IMPORTANT, CAN_WAIT, NO_PRIORITY } from './data_objects/Consts.js';
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 export function format_date(dateOjbect) {

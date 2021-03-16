@@ -30,11 +30,12 @@ export function LoginPage(props) {
                     {action_button}
                 </div>
             </div>
-            <p style={comment_style}>-updated March 16th</p>
+            <p style={comment_style}>-updated March 17th</p>
             <p style={comment_style}>-Manual and AI tasks that were approved appear in tasks page</p>
             <p style={comment_style}>-Tasks are saved to the database and persist after reloading the app</p>
             <p style={comment_style}>-Updating tasks end deleting tasks propogate to watchers in real-time</p>
             <p style={comment_style}>-Email prioritization based on importance inferred from the connections graph that is automatically updated</p>
+            <p style={comment_style}>-User can manually override email priority and it is saved to the database</p>
         </div>
     );
 }

@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
 import { AddTaskPortal } from '../AddTaskPortal.js';
 import { Task } from '../../data_objects/Task.js';
-import { URGENT } from '../../data_objects/Consts.js';
+import { Email } from '../../data_objects/Email.js';
+import { NO_PRIORITY, URGENT, IMPORTANT, CAN_WAIT } from '../../data_objects/Consts.js';
 import { getSelectionOffsetRelativeTo, get_priority_style } from '../../utils.js';
 import { GroupIcon } from './EmailStamp.js';
 import "./EmailTextArea.css";
 import OptionsButton from '../OptionsButton.js';
 import { connect, useDispatch } from 'react-redux'
 import { Update } from '../../actions/tasks'
+import { set_email_user_priority } from '../../backend/ConnectDatabase'
 
 class EmailTextArea extends Component {
     constructor(props) {
@@ -145,6 +147,31 @@ class EmailTextArea extends Component {
         return style;
     }
 
+    get_priority_option_buttons(current_priority) {
+        let result = []
+        const priority_options = {
+            [URGENT]: "Set urgent",
+            [IMPORTANT]: "Set important",
+            [CAN_WAIT]: "Set can wait",
+            [NO_PRIORITY]: "Remove Priority"
+        }
+        for (const priority in priority_options) {
+            if (current_priority !== parseInt(priority)) {
+                result.push(
+                    {
+                        name: priority_options[priority],
+                        action: () => {
+                            set_email_user_priority(this.props.email, priority);
+                            this.props.email.email.user_priority = parseInt(priority);
+                            //re-render
+                            this.setState({});
+                        }
+                    });
+            }
+        }
+        return result;
+    }
+
     get_tags() {
         if (this.props.tags === undefined) {
             return "";
@@ -195,10 +222,13 @@ class EmailTextArea extends Component {
     render() {
         const subject = this.props.subject ? this.props.subject : "(no subject)";
         const content = this.props.is_html ? this.props.content : this.render_content(this.props.content);
-        const priority_style = get_priority_style(this.props.priority);
-        const options = ['Mark as unread', 'Delete'].map(o => { return { name: o } });
+        const priority_code = Email.get_priority(this.props.tasks, this.props.email.get_id(), this.props.email);
+        const priority_style = get_priority_style(priority_code)
+        const set_priority_options = this.get_priority_option_buttons(priority_code);
+        let options = ['Mark as unread', 'Delete'].map(o => { return { name: o } });
         options.filter(o => o.name === 'Delete')[0].action = this.props.on_delete;
         options.filter(o => o.name === 'Mark as unread')[0].action = this.props.on_mark_unread;
+        options = [...options, ...set_priority_options];
         const header = this.props.of_center_email ?
             <div className="header">
                 <h4>{this.props.sender_name}</h4>
