@@ -150,9 +150,9 @@ class EmailTextArea extends Component {
     get_priority_option_buttons(current_priority) {
         let result = []
         const priority_options = {
-            [URGENT]: "Set urgent",
-            [IMPORTANT]: "Set important",
-            [CAN_WAIT]: "Set can wait",
+            [URGENT]: "Urgent",
+            [IMPORTANT]: "Important",
+            [CAN_WAIT]: "Can wait",
             [NO_PRIORITY]: "Remove Priority"
         }
         for (const priority in priority_options) {
