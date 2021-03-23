@@ -11,13 +11,13 @@ export const FeedElementStyle = styled.div`
   color: ${main_text_color};
   display: grid;
   grid-template-columns: 1fr 5fr 1fr;
-  grid-template-rows: 1fr 6fr;
+  grid-template-rows: 1fr 8fr;
   justify-items: flex-start;
   align-items: flex-start;
-  width: 600px;
-  height: 400px;
+  width: 700px;
+  height: max-content;
   padding: 0;
-  margin: 5px;
+  margin: 30px 0;
   box-sizing: border-box;
   grid-template-areas:
     "time title close_button"
@@ -36,8 +36,10 @@ export const FeedElementStyle = styled.div`
     background-color: transparent;
     color: ${main_text_color};
     font-size: 20px;
+    margin-left: auto;
   }
   .element_component {
+    width: 100%;
     grid-area: component;
   }
 `;
@@ -58,4 +60,25 @@ export const BrilliantFeedStyled = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
+`;
+
+export const FeedComponentStyle = styled.div`
+  width: 100%;
+
+  .component_area {
+    background-color: ${email_text_area_bg};
+    border-radius: 10px;
+    width: 100%;
+    padding: 0 5px;
+  }
+  .ButtonsRow {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    button {
+      border: 2px solid ${main_text_color};
+      color: ${main_text_color};
+      background-color: transparent;
+    }
+  }
 `;
