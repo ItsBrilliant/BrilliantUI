@@ -64,12 +64,16 @@ export const BrilliantFeedStyled = styled.div`
 
 export const FeedComponentStyle = styled.div`
   width: 100%;
+  .EmailThread {
+    background-color: ${main_bg_color};
+    margin: 10px;
+  }
 
   .component_area {
     background-color: ${email_text_area_bg};
     border-radius: 10px;
     width: 100%;
-    padding: 0 5px;
+    padding: 10px;
   }
   .ButtonsRow {
     display: flex;
