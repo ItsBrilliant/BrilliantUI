@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { email_text_area_bg, main_text_color, email_container_background, main_bg_color, link_hover_color } from '../StyleConsts'
 import { URGENT, IMPORTANT, CAN_WAIT } from '../../data_objects/Consts'
 
-const TaskGrid = styled.div`
+const TaskGrid = styled.div `
   color: ${main_text_color};
   display: grid;
   grid-template-columns: 0.2fr 5fr 1fr 1fr 1fr 2fr 1fr 2.5fr;
@@ -37,7 +37,8 @@ const TaskGrid = styled.div`
   
 `;
 
-export const TaskRowStyle = styled(TaskGrid)`
+export const TaskRowStyle = styled(TaskGrid)
+`
   font-size: 13px;
   background: ${email_text_area_bg};
   color: ${main_text_color};
@@ -88,19 +89,20 @@ export const TaskRowStyle = styled(TaskGrid)`
 `;
 
 export const GroupedTasksStyle = styled.div.attrs(props => {
-  let my_color = "pink";
-  console.log(props.priority);
-  if (props.priority === URGENT) {
-    my_color = "red";
-  } else if (props.priority === IMPORTANT) {
-    my_color = "orange";
-  } else if (props.priority === CAN_WAIT) {
-    my_color = "green";
-  }
-  return {
-    my_color: my_color
-  }
-})`
+    let my_color = "pink";
+    console.log(props.priority);
+    if (props.priority === URGENT) {
+        my_color = "red";
+    } else if (props.priority === IMPORTANT) {
+        my_color = "orange";
+    } else if (props.priority === CAN_WAIT) {
+        my_color = "green";
+    }
+    return {
+        my_color: my_color
+    }
+})
+`
    color: ${props => props.my_color};
    p {
      margin-left: 10px;
@@ -108,7 +110,8 @@ export const GroupedTasksStyle = styled.div.attrs(props => {
 `;
 
 
-export const TaskHeaderStyle = styled(TaskGrid)`
+export const TaskHeaderStyle = styled(TaskGrid)
+`
   background-color: ${email_container_background};
   height: 40px;
   .filter_buttons{
@@ -130,7 +133,7 @@ export const TaskHeaderStyle = styled(TaskGrid)`
   
 `;
 
-const PortalStyle = styled.div`
+const PortalStyle = styled.div `
   background-color: #535c7b;
   border-radius: 10px;
   width: ${props => props.width}px;
@@ -146,7 +149,8 @@ const PortalStyle = styled.div`
   }
   `;
 
-export const AddWatchersStyle = styled(PortalStyle)`
+export const AddWatchersStyle = styled(PortalStyle)
+`
   left: ${props => props.location.x}px;
   bottom: calc(100vh - ${props => props.location.y}px);
   .NameWithIcon{
@@ -159,7 +163,8 @@ export const AddWatchersStyle = styled(PortalStyle)`
 `;
 
 const add_tag_width = 250;
-export const AddTagStyle = styled(PortalStyle)`
+export const AddTagStyle = styled(PortalStyle)
+`
   background-color: #535c7b;
   border-radius: 10px;
   width: ${add_tag_width}px;
@@ -180,7 +185,7 @@ export const AddTagStyle = styled(PortalStyle)`
 
   }
 `;
-export const MultiselectActionsStyle = styled.div`
+export const MultiselectActionsStyle = styled.div `
   position: fixed;
   left: 600px;
   top: 12px;

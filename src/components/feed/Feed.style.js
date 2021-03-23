@@ -8,8 +8,13 @@ export const FeedElementStyle = styled.div`
   grid-template-rows: 1fr 6fr;
   justify-items: flex-start;
   align-items: flex-start;
+<<<<<<< HEAD
   width: 600px;
   height: 400px;
+=======
+  width: 100%;
+  height: 100%;
+>>>>>>> e2c5b69c9cb44c1da3d9cea6274c7e6487d4c719
   padding: 0;
   margin: 5px;
   box-sizing: border-box;
@@ -41,7 +46,11 @@ export const BrilliantFeedStyled = styled.div`
   justify-content: flex-start;
   align-items: center;
   overflow:hidden;
+<<<<<<< HEAD
   width: 100%;
+=======
+  width: 600px;
+>>>>>>> e2c5b69c9cb44c1da3d9cea6274c7e6487d4c719
   height: calc(100% - 60px);
 
   .simple_bar{
