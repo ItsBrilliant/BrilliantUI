@@ -41,6 +41,7 @@ export const FeedElementStyle = styled.div`
   .element_component {
     width: 100%;
     grid-area: component;
+    margin-bottom: 10px;
   }
 `;
 
@@ -73,9 +74,10 @@ export const FeedComponentStyle = styled.div`
     background-color: ${email_text_area_bg};
     border-radius: 10px;
     width: 100%;
-    padding: 10px;
+    padding: 5px;
   }
   .ButtonsRow {
+    margin-top: 10px;
     display: flex;
     justify-content: space-between;
     width: 100%;

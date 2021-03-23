@@ -2,6 +2,7 @@ import React from "react";
 import { Router, Switch, Route, Link, Redirect } from "react-router-dom";
 import Mail from "./mail/Mail.js";
 import "./Home.css";
+import { ExpandEvents, ResetEvents } from "../actions/events";
 import {
   get_all_mail,
   get_calendar,
@@ -30,7 +31,6 @@ import { Email } from "../data_objects/Email.js";
 import Tasks from "../components/tasks/Tasks";
 import { get_tasks_from_database } from "../backend/ConnectDatabase";
 import { build_task_from_database } from "../backend/utils.js";
-import FeedElement from "../components/feed/FeedElement";
 import BrilliantFeed from "../components/feed/BrilliantFeed";
 
 const history = require("history").createBrowserHistory();
@@ -51,7 +51,6 @@ export class Home extends React.Component {
     this.refresh_timer = null;
     this.loading = false;
     this.state = {
-      calendarEvents: [],
       taskEvents: [],
       search: "",
       mailFolders: Home.generate_empty_folders(),
@@ -78,8 +77,8 @@ export class Home extends React.Component {
     console.log("new user address " + user_address);
     const new_user = this.change_user(user_address);
     this.props.Reset();
+    this.props.ResetEvents();
     this.setState({
-      calendarEvents: [],
       mailFolders: Home.generate_empty_folders(),
     });
     this.load_user_data(new_user);
@@ -138,7 +137,7 @@ export class Home extends React.Component {
 
     this.setState((state, props) => {
       const task_meetings = add_meetings_from_tasks(props.tasks, [
-        ...state.calendarEvents,
+        ...props.calendarEvents,
         ...state.taskEvents,
       ]);
       console.log("Adding " + task_meetings.length + " task meetings");
@@ -185,18 +184,7 @@ export class Home extends React.Component {
   }
 
   set_calendar(events) {
-    const update_function = (events) => {
-      let new_event_ids = events.map((e) => e.id);
-      let unchanged_events = this.state.calendarEvents.filter(
-        (e) => !new_event_ids.includes(e.id)
-      );
-      const all_events_array = [...unchanged_events, ...events];
-      console.log(
-        `events: ${new_event_ids.length} modified, now ${all_events_array.length} in total`
-      );
-      return create_calendar_events(all_events_array);
-    };
-    this.update_user_data(events, "calendarEvents", update_function);
+    this.props.ExpandEvents(events);
   }
 
   render() {
@@ -260,7 +248,7 @@ export class Home extends React.Component {
                 render={() => (
                   <Calendar
                     events={[
-                      ...this.state.calendarEvents,
+                      ...this.props.calendarEvents,
                       ...this.state.taskEvents,
                     ]}
                   />
@@ -349,12 +337,15 @@ const mapStateToProps = (state) => ({
   user: state.user,
   emailThreads: state.email_threads,
   tasks: Object.values(state.tasks),
+  calendarEvents: state.events,
 });
 
 const mapDispatchToProps = {
   Login,
   Expand: ExpandThreads,
   Reset: ResetThreads,
+  ExpandEvents,
+  ResetEvents,
   Update,
   Delete,
 };
