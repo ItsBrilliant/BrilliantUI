@@ -20,7 +20,9 @@ import axios from 'axios';
 import { Email } from '../data_objects/Email.js';
 import Tasks from '../components/tasks/Tasks';
 import { get_tasks_from_database } from '../backend/ConnectDatabase'
-import { build_task_from_database } from '../backend/utils.js';
+import { build_task_from_database } from '../backend/utils.js'
+import FeedElement from '../components/feed/FeedElement'
+import BrilliantFeed from '../components/feed/BrilliantFeed'
 
 const history = require("history").createBrowserHistory();
 
@@ -220,6 +222,11 @@ export class Home extends React.Component {
                                 render={() => <Tasks />}
                             >
                             </Route>
+                            <Route
+                                path='/feed' exact
+                                render={() => <BrilliantFeed />}
+                            >
+                            </Route>
                         </Switch>
                     </div>
                 </div>
@@ -232,7 +239,7 @@ export class Home extends React.Component {
 function Nav() {
     const dispatch = useDispatch();
     const logo = { icon: "button_icons/logo.svg", link: '/' }
-    const brilliant_mode = { icon: "button_icons/brilliant.svg", link: '/build' }
+    const brilliant_mode = { icon: "button_icons/brilliant.svg", link: '/feed' }
     const accounts = { icon: "button_icons/accounts.svg", link: '/' }
     const mail = { icon: "button_icons/mail.svg", link: '/mail' }
     const layout = { icon: "button_icons/layout.svg", link: '/' }
