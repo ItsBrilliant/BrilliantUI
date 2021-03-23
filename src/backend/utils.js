@@ -43,7 +43,7 @@ export function build_task_from_database(db_task) {
 
 export function convert_from_database_value(field, value) {
   if (field === "watchers") {
-    return new Set(value.map((w) => Contact.create_contact_from_address(w)));
+    return value.map((w) => Contact.create_contact_from_address(w));
   } else if (["initiator", "owner"].includes(field)) {
     return Contact.create_contact_from_address(value);
   } else if (field === "deadline") {
@@ -80,7 +80,7 @@ export function general_axios_call(func, context) {
 
 export function convert_to_database_value(field, value) {
   if (field === "watchers") {
-    return Array.from(value).map((contact) => contact.get_address());
+    return value.map((contact) => contact.get_address());
   } else if (["initiator", "owner"].includes(field)) {
     return value.get_address();
   }

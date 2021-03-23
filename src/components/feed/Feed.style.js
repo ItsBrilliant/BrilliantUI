@@ -11,7 +11,7 @@ export const FeedElementStyle = styled.div`
   color: ${main_text_color};
   display: grid;
   grid-template-columns: 1fr 5fr 1fr;
-  grid-template-rows: 1fr 8fr;
+  grid-template-rows: 40px 1fr;
   justify-items: flex-start;
   align-items: flex-start;
   width: 700px;
@@ -68,6 +68,32 @@ export const FeedComponentStyle = styled.div`
   .EmailThread {
     background-color: ${main_bg_color};
     margin: 10px;
+  }
+
+  .CalendarTask {
+    margin-bottom: 5px;
+    background-color: ${main_bg_color};
+  }
+
+  .EmailContainer * {
+    background-color: transparent;
+  }
+
+  .indicators {
+    display: flex;
+    justify-content: center;
+    height: max-content;
+    width: 100%;
+    span {
+      margin: 2px;
+      width: 10px;
+      height: 10px;
+      border-radius: 100%;
+      border: 1px solid white;
+      &.selected {
+        background-color: white;
+      }
+    }
   }
 
   .component_area {

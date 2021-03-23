@@ -25,6 +25,19 @@ export function useTasks(filter_by, value, func = (a, b) => a === b) {
 export function useThreads(priority) {
   let threads_dict = useSelector((state) => state.email_threads);
   let threads = Object.values(threads_dict);
-  threads = threads.filter((t) => t.get_priority() === priority);
+  threads = threads.filter(
+    (t) => priority === undefined || t.get_priority() === priority
+  );
   return threads;
+}
+
+export function useEmails(prority) {
+  const threads = useThreads();
+  let res = [];
+  for (const thread of threads) {
+    for (const email of thread.get_emails()) {
+      res.push(email);
+    }
+  }
+  return res;
 }

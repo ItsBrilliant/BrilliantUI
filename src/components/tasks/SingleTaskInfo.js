@@ -80,7 +80,7 @@ function TaskDetails(props) {
       <Description task={props.task} updater={props.updater} />
       <People
         task={props.task}
-        watchers={Array.from(props.task.watchers)}
+        watchers={props.task.watchers}
         owner={props.task.get_owner()}
       />
       <RelevantResources resources={resources} />

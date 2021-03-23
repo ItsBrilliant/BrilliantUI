@@ -176,7 +176,16 @@ export class Home extends React.Component {
     )) {
       try {
         Task.add_request_meeting_task(this.props.Update, email);
-        Task.add_general_task_detection(this.props.Update, email);
+        Task.add_general_task_detection(
+          this.props.Update,
+          email,
+          "document_request"
+        );
+        Task.add_general_task_detection(
+          this.props.Update,
+          email,
+          "task_detection"
+        );
       } catch (e) {
         console.log("Error in task processing: " + e);
       }

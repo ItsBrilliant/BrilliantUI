@@ -9,8 +9,11 @@ import {
   update_task_database,
 } from "../backend/ConnectDatabase";
 
-const GENERAL_TASK_DETECTION_THRESHOLD = 70;
-const REQUEST_MEETING_PROBABILITY_THRESHOLD = 70;
+const GENERAL_TASK_DETECTION_THRESHOLD = {
+  document_request: 90,
+  task_detection: 92,
+};
+const REQUEST_MEETING_PROBABILITY_THRESHOLD = 90;
 
 export class Task {
   static CURRENT_TASKS = {};
@@ -32,7 +35,7 @@ export class Task {
     this.owner = owner ? owner : Contact.CURRENT_USER;
     this.initiator = initiator ? initiator : Contact.CURRENT_USER;
     this.approve_status = undefined;
-    this.watchers = new Set([this.owner]);
+    this.watchers = [this.owner];
     this.messages = DEFAULT_TASK_MESSAGES;
     this.tags = [];
     this.status = "To Do";
@@ -71,7 +74,9 @@ export class Task {
   }
 
   add_watcher(contact) {
-    this.watchers.add(contact);
+    if (!this.watchers.includes(contact)) {
+      this.watchers.push(contact);
+    }
     return "watchers";
   }
   add_message(message_body) {
@@ -116,9 +121,9 @@ export class Task {
     }
     task.email_id = email.get_id();
     task.thread_id = email.get_thread_id();
-    task.watchers.add(task.initiator);
+    task.add_watcher(task.initiator);
     for (const receiver of email.get_receivers()) {
-      task.watchers.add(receiver);
+      task.add_watcher(receiver);
     }
     //     if (task.approved) {
     insert_task_database(task);
@@ -148,8 +153,8 @@ export class Task {
   }
 
   // task_detection is currently 'document_request'
-  static add_general_task_detection(dispatcher, email) {
-    const [task_detection, id] = email.get_detection("document_request");
+  static add_general_task_detection(dispatcher, email, task_type) {
+    const [task_detection, id] = email.get_detection(task_type);
     if (
       email.is_draft() ||
       email.is_deleted() ||
@@ -160,18 +165,18 @@ export class Task {
     }
     for (let i = 0; i < task_detection.length; i++) {
       const probability = parseFloat(task_detection[i][2]);
-      if (probability < GENERAL_TASK_DETECTION_THRESHOLD) {
+      if (probability < GENERAL_TASK_DETECTION_THRESHOLD[task_type]) {
         continue;
       }
       const start_index = parseInt(task_detection[i][0]);
       const text_length = parseInt(task_detection[i][1]);
       var priority = URGENT;
-      if (probability < 75) {
+      if (probability < 94) {
         priority = CAN_WAIT;
-      } else if (probability < 83) {
+      } else if (probability < 97) {
         priority = IMPORTANT;
       }
-      var task_text = `document request (${Math.round(probability)}%)`;
+      var task_text = `${task_type} (${Math.round(probability)}%)`;
       var task = new Task(
         task_text,
         new Date(),
@@ -233,9 +238,9 @@ export class Task {
         }
       }
       var priority = URGENT;
-      if (probability < 75) {
+      if (probability < 93) {
         priority = CAN_WAIT;
-      } else if (probability < 83) {
+      } else if (probability < 97) {
         priority = IMPORTANT;
       }
       let time_texts = times.map((time) => {
