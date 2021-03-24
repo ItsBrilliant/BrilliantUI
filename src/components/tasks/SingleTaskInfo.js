@@ -55,10 +55,11 @@ function SingleTaskInfo(props) {
 
 export default function TaskInfoWrapper(props) {
   const task = useSelector((state) => state.tasks[props.task_id]);
-  const thread = useSelector((state) => state.email_threads[props.thread_id]);
+  const thread_dict = useSelector((state) => state.email_threads);
   if (!props.task_id) {
     return null;
   }
+  const thread = thread_dict[task.thread_id];
   return ReactDOM.createPortal(
     <div className="TaskInfoWrapper">
       <div className="invisible_close" onClick={props.close} />
@@ -199,7 +200,7 @@ function TopButtons(props) {
   );
 }
 
-function QuickReply(props) {
+export function QuickReply(props) {
   const email_attributes = {
     email_id: props.email_id,
     composer_type: "quick_reply",

@@ -35,9 +35,7 @@ export function useEmails(prority) {
   const threads = useThreads();
   let res = [];
   for (const thread of threads) {
-    for (const email of thread.get_emails()) {
-      res.push(email);
-    }
+    res = [...res, ...thread.get_emails()];
   }
   return res;
 }

@@ -50,7 +50,7 @@ export default function CalendarTasks() {
         <SimpleBar className="simple_bar">{task_components}</SimpleBar>
       </div>
       <TaskInfoWrapper
-        thread_id={selected_thread_id}
+        thread_id={undefined}
         task_id={selected_task_id}
         close={() => set_task_id(null)}
       />

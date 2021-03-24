@@ -30,6 +30,7 @@ export const FeedElementStyle = styled.div`
   }
   .element_time {
     grid-area: time;
+    font-size: 20px;
   }
   .close_button {
     grid-area: close_button;
@@ -77,7 +78,10 @@ export const FeedComponentStyle = styled.div`
     margin-bottom: 5px;
     background-color: ${main_bg_color};
   }
-
+  .EmailComposer {
+    position: static;
+    height: 200px;
+  }
   .EmailContainer {
     height: 190px;
     overflow: hidden;
