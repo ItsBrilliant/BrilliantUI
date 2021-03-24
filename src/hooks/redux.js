@@ -35,7 +35,14 @@ export function useEmails(prority) {
   const threads = useThreads();
   let res = [];
   for (const thread of threads) {
-    res = [...res, ...thread.get_emails()];
+    res = [...res, ...thread.get_emails(null)];
   }
   return res;
+}
+
+export function useEmailsHead() {
+  const threads = useThreads();
+  return threads.map(
+    (t) => t.get_emails(null).sort((a, b) => b.date - a.date)[0]
+  );
 }

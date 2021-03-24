@@ -19,7 +19,7 @@ import {
   fill_meetings,
   is_short_email,
 } from "./utils";
-import { useEmails } from "../../hooks/redux";
+import { useEmailsHead } from "../../hooks/redux";
 import TaskInfoWrapper from "../tasks/SingleTaskInfo";
 
 const NOW = new Date("2021-03-24T09:00:00");
@@ -29,12 +29,12 @@ export default function BrilliantFeed() {
   const user = useSelector((state) => state.user);
   let events = useSelector((state) => state.events);
   const [selected_task_id, set_task_id] = useState(undefined);
-  const all_emails = useEmails();
+  const head_emails = useEmailsHead();
   const slots = get_slots(NOW, INTERVAL);
   events = events.filter((e) => is_same_day(NOW, e.start));
   events = events.sort((a, b) => a.start - b.start);
   let feed_components = allocate_meeting_component_slots(slots, events);
-  const components = generate_example_components(all_emails, set_task_id);
+  const components = generate_example_components(head_emails, set_task_id);
   for (const component of components) {
     add_feed_component(feed_components, component);
   }
@@ -85,13 +85,13 @@ function allocate_meeting_component_slots(slots, events) {
   return feed_array_with_meetings;
 }
 
-function generate_example_components(all_emails, select_task) {
-  let short_emails = all_emails.filter((e) => is_short_email(e));
+function generate_example_components(head_emails, select_task) {
+  let short_emails = head_emails.filter((e) => is_short_email(e));
   short_emails = short_emails.sort((a, b) => b.date - a.date);
   short_emails = short_emails.slice(0, 5);
   return [
     {
-      component: <UrgentEmails priority={URGENT} emails={all_emails} />,
+      component: <UrgentEmails priority={URGENT} emails={head_emails} />,
       title: "Catch up on some urgent emails",
     },
     {
@@ -116,11 +116,11 @@ function generate_example_components(all_emails, select_task) {
     },
 
     {
-      component: <UnfinishedDrafts emails={all_emails} />,
+      component: <UnfinishedDrafts emails={head_emails} />,
       title: "You have unfinished drafts in you mailbox",
     },
     {
-      component: <UrgentEmails priority={IMPORTANT} emails={all_emails} />,
+      component: <UrgentEmails priority={IMPORTANT} emails={head_emails} />,
       title: "Catch up on some important emails",
     },
     {

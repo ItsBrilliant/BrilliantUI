@@ -1,3 +1,4 @@
+import { Contact } from "../../data_objects/Contact";
 import { format_date } from "../../utils";
 
 export function get_slots(now, minutes_interval) {
@@ -45,8 +46,12 @@ export function add_feed_component(arr, component) {
   return false;
 }
 
-export function is_short_email(email, max_characters = 80) {
-  if (email.is_draft()) {
+export function is_short_email(email, user, max_characters = 80) {
+  if (
+    email.is_draft() ||
+    email.is_deleted() ||
+    email.get_sender() === Contact.CURRENT_USER
+  ) {
     return false;
   }
   const text = email.get_text();

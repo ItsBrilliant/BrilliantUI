@@ -6,15 +6,16 @@ import React, { Component } from "react";
 import { Thread } from "../../data_objects/Thread.js";
 import { SelectThread } from "../../actions/email_threads";
 import { connect } from "react-redux";
+import { ALL_FOLDERS_MAGIC } from "../../data_objects/Consts.js";
 
 class Mail extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selected_folder: "Inbox",
+      selected_folder: "All",
       collapsed_right: false,
     };
-    Thread.SELECTED_FOLDER_ID = this.props.folders["Inbox"];
+    Thread.SELECTED_FOLDER_ID = ALL_FOLDERS_MAGIC;
     this.handleSelect = this.handleSelect.bind(this);
     this.set_selected_folder = this.set_selected_folder.bind(this);
   }

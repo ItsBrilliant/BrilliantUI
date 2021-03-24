@@ -164,20 +164,19 @@ export function QuickReplyFeed(props) {
   const [emails, set_emails] = useState(props.emails);
   const COMPOSER_ID = -2; //has to be different from the -1 in task view page otherwise will crash
   const buttons = [];
-  const email_attributes = {
-    email_id: props.email_id,
-    composer_type: "quick_reply",
-  };
   const remove_email = (id) => {
     set_emails(emails.filter((e) => e.get_id() !== id));
   };
-  const pages = props.emails.map((email) => (
+  const pages = emails.map((email) => (
     <div>
       <EmailContainer key={email.get_id()} email={email} />
       <EmailComposer
         only_content={true}
         id={COMPOSER_ID}
-        email_attributes={email_attributes}
+        email_attributes={{
+          composer_type: "quick_reply",
+          email_id: email.get_id(),
+        }}
         content_title="Reply"
         send={send_quick_reply}
         on_close={() => remove_email(email.get_id())}

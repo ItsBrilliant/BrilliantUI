@@ -24,7 +24,7 @@ import { Login } from "../actions/login.js";
 import { Update, Delete } from "../actions/tasks.js";
 import { ExpandThreads, ResetThreads } from "../actions/email_threads.js";
 import { Contact } from "../data_objects/Contact.js";
-import { MAIL_FOLDERS } from "../data_objects/Consts.js";
+import { ALL_FOLDERS_MAGIC, MAIL_FOLDERS } from "../data_objects/Consts.js";
 import { Task } from "../data_objects/Task";
 import axios from "axios";
 import { Email } from "../data_objects/Email.js";
@@ -61,6 +61,7 @@ export class Home extends React.Component {
     for (const folder of MAIL_FOLDERS) {
       mailFolders[folder] = null;
     }
+    mailFolders["All"] = ALL_FOLDERS_MAGIC;
     return mailFolders;
   }
   update_search_bar(value) {
@@ -120,6 +121,7 @@ export class Home extends React.Component {
           my_folders[folder["displayName"]] = folder["id"];
         }
       }
+      my_folders["All"] = ALL_FOLDERS_MAGIC;
       Email.FOLDER_MAPPINGS = my_folders;
       return my_folders;
     };
