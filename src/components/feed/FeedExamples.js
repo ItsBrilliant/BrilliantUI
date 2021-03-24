@@ -3,20 +3,25 @@ import { useTasks, useThreads, useEmails } from "../../hooks/redux";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { SelectThread } from "../../actions/email_threads";
-import { URGENT, ALL_FOLDERS_MAGIC } from "../../data_objects/Consts";
+import {
+  URGENT,
+  ALL_FOLDERS_MAGIC,
+  PRIORITIES,
+} from "../../data_objects/Consts";
 import EmailThread from "../mail/EmailThread";
 import FeedComponent from "../feed/FeedComponent";
 import FeedElement from "./FeedElement";
 import { format_date, is_same_day } from "../../utils";
 import { CalendarTask } from "../calendar/CalendarTasks";
 import EmailContainer from "../mail/EmailContainer";
+import { IncrementalStyle } from "./Feed.style";
 
 const NOW = new Date("2021-03-24T10:00:00");
 
 export function UrgentEmails(props) {
   const dispatch = useDispatch();
   const history = useHistory();
-  let threads = useThreads(URGENT);
+  let threads = useThreads(props.priority);
   const count = props.max_threads ? props.max_threads : 3;
   threads = threads.slice(0, count);
   const my_handle_select = (id) => {
@@ -30,22 +35,14 @@ export function UrgentEmails(props) {
       thread={thread}
       is_selected={false}
       handle_select={my_handle_select}
-      priority={URGENT}
+      priority={props.priority}
       options_offset={{ top: 0, left: 15 }}
     />
   ));
-  const component = (
+  return (
     <FeedComponent
       buttons={[]}
       component={<div className="UrgentEmails">{thread_components}</div>}
-    />
-  );
-
-  return (
-    <FeedElement
-      title="Catch up on some urgent emails"
-      time="11:00"
-      component={component}
     />
   );
 }
@@ -75,24 +72,20 @@ export function NextMeeting(props) {
   ].map((b) => {
     return { name: b, action: () => {} };
   });
-  const component = (
+  return (
     <FeedComponent
       buttons={buttons}
       component={<div className="NextMeeting">{meeting_component}</div>}
     />
   );
-
-  return (
-    <FeedElement
-      title="Your next Meeting"
-      time={start_time}
-      component={component}
-    />
-  );
 }
 
 export function OverdueTasks(props) {
-  let tasks = useTasks("deadline", NOW, (a, b) => is_same_day(a, b));
+  let tasks = useTasks(
+    ["deadline", "status"],
+    [NOW, "Done"],
+    [(a, b) => is_same_day(a, b), (a, b) => a !== b]
+  );
   tasks = tasks.sort((a, b) => a.priority - b.priority);
   const tasks_component = tasks.map((t) => (
     <CalendarTask
@@ -114,27 +107,42 @@ export function OverdueTasks(props) {
   ].map((b) => {
     return { name: b, action: () => {} };
   });
-  const component = (
+  return (
     <FeedComponent
       buttons={buttons}
       component={<div className="OverdueTasks">{tasks_component}</div>}
     />
   );
+}
 
+export function UnfinishedDrafts(props) {
+  let emails = useEmails();
+  emails = emails.filter((e) => e.is_draft());
+  const buttons = ["Continue", "Discard"].map((b) => {
+    return { name: b, action: () => {} };
+  });
+  const pages = emails.map((email) => (
+    <EmailContainer key={email.get_id()} email={email} />
+  ));
   return (
-    <FeedElement
-      title="These tasks are due today"
-      time={props.time}
-      component={component}
+    <FeedComponent
+      buttons={buttons}
+      component={
+        <div className="UnfinishedDrafts">
+          {<IncrementalFeedComponent pages={pages} />}
+        </div>
+      }
     />
   );
 }
 
-export function UnfinishedDrafts(props) {
+export function IncrementalFeedComponent(props) {
   const [index, set_index] = useState(0);
-  let emails = useEmails();
-  emails = emails.filter((e) => e.is_draft());
-  const increment = (max) => {
+  const max = props.pages.length - 1;
+  if (max === -1) {
+    return null;
+  }
+  const increment = () => {
     if (index < max) {
       set_index(index + 1);
     }
@@ -145,37 +153,22 @@ export function UnfinishedDrafts(props) {
       set_index(index - 1);
     }
   };
-  if (emails.length === 0) {
-    return null;
-  }
-  const email = emails[index];
-  const buttons = [
-    { name: "Back", action: decrement },
-    { name: "Next", action: () => increment(emails.length - 1) },
-  ];
+
+  const current_page = props.pages[index];
   let indicators = [];
-  for (let i = 0; i < emails.length; i++) {
+  for (let i = 0; i < props.pages.length; i++) {
     const style = index === i ? "selected" : null;
     indicators.push(<span className={style} />);
   }
-  const drafts_component = (
-    <>
-      <EmailContainer key={email.get_id()} email={email} />
-      <div className="indicators">{indicators}</div>
-    </>
-  );
-  const component = (
-    <FeedComponent
-      buttons={buttons}
-      component={<div className="UnfinishedDrafts">{drafts_component}</div>}
-    />
-  );
 
   return (
-    <FeedElement
-      title="You have unfinished drafts"
-      time={props.time}
-      component={component}
-    />
+    <IncrementalStyle>
+      {current_page}
+      <div className="indicators">
+        <button onClick={decrement}>{"<"}</button>
+        {indicators}
+        <button onClick={increment}>{">"}</button>
+      </div>
+    </IncrementalStyle>
   );
 }

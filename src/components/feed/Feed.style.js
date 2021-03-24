@@ -61,6 +61,9 @@ export const BrilliantFeedStyled = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
+  h1 {
+    color: white;
+  }
 `;
 
 export const FeedComponentStyle = styled.div`
@@ -75,25 +78,12 @@ export const FeedComponentStyle = styled.div`
     background-color: ${main_bg_color};
   }
 
+  .EmailContainer {
+    height: 190px;
+    overflow: hidden;
+  }
   .EmailContainer * {
     background-color: transparent;
-  }
-
-  .indicators {
-    display: flex;
-    justify-content: center;
-    height: max-content;
-    width: 100%;
-    span {
-      margin: 2px;
-      width: 10px;
-      height: 10px;
-      border-radius: 100%;
-      border: 1px solid white;
-      &.selected {
-        background-color: white;
-      }
-    }
   }
 
   .component_area {
@@ -111,6 +101,35 @@ export const FeedComponentStyle = styled.div`
       border: 2px solid ${main_text_color};
       color: ${main_text_color};
       background-color: transparent;
+    }
+  }
+`;
+
+export const IncrementalStyle = styled.div`
+  .indicators {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: max-content;
+    width: 100%;
+
+    button {
+      background-color: transparent;
+      font-weight: bold;
+      font-size: 20px;
+      color: ${main_text_color};
+      align-self: center;
+      outline: none;
+    }
+    span {
+      margin: 2px;
+      width: 10px;
+      height: 10px;
+      border-radius: 100%;
+      border: 1px solid white;
+      &.selected {
+        background-color: white;
+      }
     }
   }
 `;
