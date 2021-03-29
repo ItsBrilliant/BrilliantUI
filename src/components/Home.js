@@ -32,6 +32,7 @@ import Tasks from "../components/tasks/Tasks";
 import { get_tasks_from_database } from "../backend/ConnectDatabase";
 import { build_task_from_database } from "../backend/utils.js";
 import BrilliantFeed from "../components/feed/BrilliantFeed";
+import {Search} from './search/Search'
 
 const history = require("history").createBrowserHistory();
 
@@ -42,7 +43,6 @@ export class Home extends React.Component {
   constructor(props) {
     super(props);
     console.log("Started Home");
-    this.update_search_bar = this.update_search_bar.bind(this);
     this.set_threads = this.set_threads.bind(this);
     this.set_calendar = this.set_calendar.bind(this);
     this.set_mail_folders = this.set_mail_folders.bind(this);
@@ -52,7 +52,6 @@ export class Home extends React.Component {
     this.loading = false;
     this.state = {
       taskEvents: [],
-      search: "",
       mailFolders: Home.generate_empty_folders(),
     };
   }
@@ -63,9 +62,6 @@ export class Home extends React.Component {
     }
     mailFolders["All"] = ALL_FOLDERS_MAGIC;
     return mailFolders;
-  }
-  update_search_bar(value) {
-    this.setState({ search: value });
   }
   componentDidMount() {
     axios.get("api/me").then((res) => this.handle_login(res.data));
@@ -206,7 +202,7 @@ export class Home extends React.Component {
           <Nav />
           <div id="not_nav" className="not_nav">
             <div className="top_buttons">
-              {SearchBar(this.state.search, this.update_search_bar)}
+              <Search/>
               <button className="filter_button">Filter</button>
             </div>
             <Switch>
@@ -330,19 +326,6 @@ function NavCluster(icon_links) {
   );
 }
 
-const SearchBar = (keyword, setKeyword) => {
-  return (
-    <div className="SearchBar">
-      <img src="button_icons/search.png"></img>
-      <input
-        key="search_bar"
-        value={keyword}
-        placeholder={"search"}
-        onChange={(e) => setKeyword(e.target.value)}
-      />
-    </div>
-  );
-};
 
 const mapStateToProps = (state) => ({
   user: state.user,

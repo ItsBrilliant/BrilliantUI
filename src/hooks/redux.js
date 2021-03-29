@@ -31,7 +31,7 @@ export function useThreads(priority) {
   return threads;
 }
 
-export function useEmails(prority) {
+export function useEmails() {
   const threads = useThreads();
   let res = [];
   for (const thread of threads) {
