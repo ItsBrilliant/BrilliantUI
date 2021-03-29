@@ -21,8 +21,11 @@ import {
 } from "./utils";
 import { useEmails } from "../../hooks/redux";
 import TaskInfoWrapper from "../tasks/SingleTaskInfo";
+import { now } from "moment";
 
-const NOW = new Date("2021-03-24T09:00:00");
+let NOW = new Date()
+NOW.setMinutes(0)
+NOW.setSeconds(0)
 const INTERVAL = 30;
 
 export default function BrilliantFeed() {

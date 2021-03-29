@@ -31,11 +31,11 @@ export function useThreads(priority) {
   return threads;
 }
 
-export function useEmails(prority) {
+export function useEmails() {
   const threads = useThreads();
   let res = [];
   for (const thread of threads) {
-    res = [...res, ...thread.get_emails()];
+    res = [...res, ...thread.get_emails(null)];
   }
   return res;
 }
