@@ -39,7 +39,7 @@ export default function TaskRow(props) {
         onClick={() => props.on_multiselect(props.task.id)}
         className="multiselect"
       />
-      <span className="task_text" onClick={() => props.on_click(props.task)}>
+      <span className="task_text" onClick={() => props.on_click(props.task.id)}>
         {" "}
         {props.task_text}
       </span>

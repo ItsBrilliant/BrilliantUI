@@ -7,7 +7,7 @@ import SimpleBar from "simplebar-react";
 import { TaskHeaderStyle, MultiselectActionsStyle } from "./Tasks.style";
 import { useSelector, useDispatch } from "react-redux";
 import TaskInfoWrapper from "./SingleTaskInfo";
-import { Delete } from "../../actions/tasks";
+import { Delete, SelectTask } from "../../actions/tasks";
 import { delete_tasks_database } from "../../backend/ConnectDatabase";
 
 const TASK_FILTERS = ["owner", "initiator", "watchers"];
@@ -16,9 +16,12 @@ const FILTER_FUNCTIONS = [EQUAL, EQUAL, (a, b) => a.includes(b)];
 
 export default function Tasks() {
   const [filter_index, set_filter] = useState(0);
-  const [selected_task, select_task] = useState(null);
+  //const [selected_task, select_task] = useState(null);
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const select_task_id = (id) => dispatch(SelectTask(id));
+  const selected_task_id = useSelector((state) => state.selected_task_id);
+  const selected_task = useTasks("id", selected_task_id, EQUAL)[0];
   const task_filter = [TASK_FILTERS[filter_index], "approve_status"];
   const filter_target = [user, "approved"];
   const filter_functions = [FILTER_FUNCTIONS[filter_index], EQUAL];
@@ -50,21 +53,21 @@ export default function Tasks() {
         <SimpleBar style={{ height: "100%" }}>
           <GroupedTasks
             on_multiselect={my_set_multiselect}
-            select_task={select_task}
+            select_task_id={select_task_id}
             priority={URGENT}
             tasks={tasks.filter((t) => t.priority === URGENT)}
             multiselected_tasks={multiselected_tasks}
           />
           <GroupedTasks
             on_multiselect={my_set_multiselect}
-            select_task={select_task}
+            select_task_id={select_task_id}
             priority={IMPORTANT}
             tasks={tasks.filter((t) => t.priority === IMPORTANT)}
             multiselected_tasks={multiselected_tasks}
           />
           <GroupedTasks
             on_multiselect={my_set_multiselect}
-            select_task={select_task}
+            select_task_id={select_task_id}
             priority={CAN_WAIT}
             tasks={tasks.filter((t) => t.priority === CAN_WAIT)}
             multiselected_tasks={multiselected_tasks}
@@ -75,7 +78,7 @@ export default function Tasks() {
         <TaskInfoWrapper
           thread_id={selected_task.thread_id}
           task_id={selected_task.id}
-          close={() => select_task(null)}
+          close={() => select_task_id(null)}
         />
       ) : null}
     </Fragment>

@@ -6,12 +6,15 @@ import { format_date, get_priority_style } from "../../utils";
 import { GroupIcon } from "../mail/EmailStamp";
 import { Contact } from "../../data_objects/Contact";
 import SimpleBar from "simplebar-react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import TaskInfoWrapper from "../tasks/SingleTaskInfo";
+import { SelectTask } from "../../actions/tasks";
 
 export default function CalendarTasks() {
+  const dispatch = useDispatch();
+  const set_task_id = (id) => dispatch(SelectTask(id));
+  const selected_task_id = useSelector((state) => state.selected_task_id);
   const [sort_type, set_sort] = useState("Priority");
-  const [selected_task_id, set_task_id] = useState(null);
   const tasks_dict = useSelector((state) => state.tasks);
   const tasks = Object.values(tasks_dict).sort(
     (a, b) => a.priority - b.priority
