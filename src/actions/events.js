@@ -10,3 +10,10 @@ export const ResetEvents = () => {
     type: "RESET_EVENTS",
   };
 };
+
+export const SelectCalendarDate = (date) => {
+  return {
+    type: "SELECT_DATE",
+    date: date,
+  };
+};

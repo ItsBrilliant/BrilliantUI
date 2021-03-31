@@ -13,3 +13,11 @@ export const EventsReducer = (state = [], action) => {
 
   return state;
 };
+
+export const SelectedDateReducer = (state = new Date(), action) => {
+  let new_state = state;
+  if (action.type === "SELECT_DATE") {
+    new_state = action.date;
+  }
+  return new_state;
+};

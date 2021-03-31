@@ -32,9 +32,12 @@ export const SearchBarStyle = styled.div`
 export const SearchStyle = styled.div.attrs((props) => ({
   width: props.list_open ? "800" : "200",
   list_opacity: props.list_open ? "1" : "0",
+  pointer_events: props.list_open ? "auto" : "none",
 }))`
   box-sizing: border-box;
   width: ${(props) => props.width}px;
+  height: 100vh;
+  overflow: hidden;
   transition: height, width 1s ease;
   position: relative;
   .SearchList {
@@ -49,6 +52,7 @@ export const SearchStyle = styled.div.attrs((props) => ({
     border: 1px solid var(--main-text-color);
     transition: height, width 1s ease;
     opacity: ${(props) => props.list_opacity};
+    pointer-events: ${(props) => props.pointer_events};
   }
 `;
 
@@ -69,5 +73,6 @@ export const SearchResultStyle = styled.div`
   &:hover {
     background-color: ${link_hover_color};
     color: black;
+    cursor: pointer;
   }
 `;

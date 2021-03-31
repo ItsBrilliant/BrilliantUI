@@ -7,7 +7,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { format_date } from "../../utils";
 import { useHistory } from "react-router";
 import { SelectThread } from "../../actions/email_threads";
+import { SelectTask } from "../../actions/tasks";
 import { render_search_text } from "./utils";
+import { useSearchResultSelect } from "../../hooks/search";
+import { SelectCalendarDate } from "../../actions/events";
 
 export function SearchResults(props) {
   if (props.search_value.length < 2) {
@@ -34,15 +37,11 @@ export function SearchResults(props) {
 
 export function SearchConversations(props) {
   const emails = useEmails();
-  const history = useHistory();
-  const dispatch = useDispatch();
   const filter_function = (email, value) =>
     email.get_subject().toLowerCase().includes(value.toLowerCase());
-  const select_email = (email) => {
-    let id = email.get_thread_id();
-    dispatch(SelectThread(id));
-    history.push("mail");
-  };
+  const select_email = useSearchResultSelect("mail", (email) =>
+    SelectThread(email.get_thread_id())
+  );
   return (
     <SearchResults
       filter_function={filter_function}
@@ -53,7 +52,7 @@ export function SearchConversations(props) {
       }
       search_value={props.search_value}
       icon={"button_icons/mail.svg"}
-      max_results={10}
+      max_results={5}
       time_stamp={(email) => {
         let timestamp = format_date(email.get_date());
         return timestamp.date + " " + timestamp.time;
@@ -72,6 +71,9 @@ export function SearchEvents(props) {
     let end = format_date(event.end);
     return `${start.date} ${start.time} - ${end.time}`;
   };
+  const select_event = useSearchResultSelect("calendar", (event) =>
+    SelectCalendarDate(event.start)
+  );
   return (
     <SearchResults
       filter_function={filter_function}
@@ -84,6 +86,7 @@ export function SearchEvents(props) {
       icon={"button_icons/calendar.svg"}
       max_results={5}
       time_stamp={event_time_stamp}
+      my_on_click={select_event}
     ></SearchResults>
   );
 }
@@ -92,6 +95,9 @@ export function SearchTasks(props) {
   const tasks = useTasks("status", "Done", (a, b) => a !== b);
   const filter_function = (task, value) =>
     task.text.toLowerCase().includes(value.toLowerCase());
+  const select_task = useSearchResultSelect("tasks", (task) =>
+    SelectTask(task.id)
+  );
   return (
     <SearchResults
       filter_function={filter_function}
@@ -105,6 +111,7 @@ export function SearchTasks(props) {
         let timestamp = format_date(task.deadline);
         return timestamp.date + " " + timestamp.time;
       }}
+      my_on_click={select_task}
     ></SearchResults>
   );
 }

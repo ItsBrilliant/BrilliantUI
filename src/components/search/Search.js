@@ -11,7 +11,7 @@ export function Search(props) {
     <SearchStyle list_open={list_visible}>
       <SearchBar
         keyword={search_value}
-        my_on_blur={() => set_visible(false)}
+        my_on_blur={() => setTimeout(() => set_visible(false), 100)}
         my_on_focus={() => set_visible(true)}
         setKeyword={set_search}
       ></SearchBar>

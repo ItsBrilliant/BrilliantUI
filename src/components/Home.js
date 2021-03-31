@@ -10,7 +10,7 @@ import {
   refresh_mail,
   refresh_calendar,
 } from "../backend/Connect.js";
-import { Calendar } from "./calendar/Calendar.js";
+import Calendar from "./calendar/Calendar.js";
 import {
   create_calendar_events,
   add_meetings_from_tasks,
@@ -32,7 +32,7 @@ import Tasks from "../components/tasks/Tasks";
 import { get_tasks_from_database } from "../backend/ConnectDatabase";
 import { build_task_from_database } from "../backend/utils.js";
 import BrilliantFeed from "../components/feed/BrilliantFeed";
-import {Search} from './search/Search'
+import { Search } from "./search/Search";
 
 const history = require("history").createBrowserHistory();
 
@@ -202,7 +202,7 @@ export class Home extends React.Component {
           <Nav />
           <div id="not_nav" className="not_nav">
             <div className="top_buttons">
-              <Search/>
+              <Search />
               <button className="filter_button">Filter</button>
             </div>
             <Switch>
@@ -325,7 +325,6 @@ function NavCluster(icon_links) {
     </div>
   );
 }
-
 
 const mapStateToProps = (state) => ({
   user: state.user,
