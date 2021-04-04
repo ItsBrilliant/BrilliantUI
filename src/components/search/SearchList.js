@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { SearchConversations, SearchFiles } from './conversations';
 import { SearchEvents } from './events';
 import { SearchTasks } from './tasks';
+import { SearchContacts } from './contacts';
 
 export function SearchList(props) {
     const list = (
@@ -11,6 +12,7 @@ export function SearchList(props) {
             <SearchEvents search_value={props.search_value} />
             <SearchTasks search_value={props.search_value} />
             <SearchFiles search_value={props.search_value} />
+            <SearchContacts search_value={props.search_value} />
         </div>
     );
     return list;
