@@ -1,26 +1,32 @@
-
 :root {
-  --main-bg-color: rgb(10,11,15);
-  --main-text-color: rgb(120,133,161);
-  --selected-thread-bg-color: rgb(20,25,40);
-  --unread-text-color: rgb(214, 209, 209);
-  --email-container-background: rgb(16, 20, 33);
-  --email-text-area-bg: rgb(24, 30, 50);
-  --link_hover_color: rgb(107,161,219);
-  --brighter-bg: rgb(56, 65, 96);
+    --main-bg-color: rgb(10, 11, 15);
+    --main-text-color: rgb(120, 133, 161);
+    --selected-thread-bg-color: rgb(20, 25, 40);
+    --unread-text-color: rgb(214, 209, 209);
+    --email-container-background: rgb(16, 20, 33);
+    --email-text-area-bg: rgb(24, 30, 50);
+    --link_hover_color: rgb(107, 161, 219);
+    --brighter-bg: rgb(56, 65, 96);
 }
 
-input, button {
-  outline: none;
-  border: none;
+input,
+button {
+    outline: none;
+    border: none;
 }
 
-.invisible_portal_wrapper{
-  background-color: transparent;
-  position: fixed;
-  left:0;
-  top:0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 99;
+#messages_to_user {
+    position: fixed;
+    left: 0;
+    top: 0;
+}
+
+.invisible_portal_wrapper {
+    background-color: transparent;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 99;
 }
