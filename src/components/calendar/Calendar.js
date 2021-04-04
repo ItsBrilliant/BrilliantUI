@@ -1,6 +1,6 @@
-import './Calendar.css'
+import './Calendar.css';
 
-import * as React from 'react'
+import * as React from 'react';
 import {
     ScheduleComponent,
     Day,
@@ -13,8 +13,8 @@ import {
     ViewDirective,
     DragAndDrop,
     Resize,
-} from '@syncfusion/ej2-react-schedule'
-import { DataManager, Query, JsonAdaptor } from '@syncfusion/ej2-data'
+} from '@syncfusion/ej2-react-schedule';
+import { DataManager, Query, JsonAdaptor } from '@syncfusion/ej2-data';
 import {
     MsgrahpAdaptor,
     onPopupOpen,
@@ -22,18 +22,18 @@ import {
     place_priority,
     adjust_fields,
     editorTemplate,
-} from './CalendarConnect.js'
-import UpcomingMeetings from './UpcomingMeetings'
-import CalendarTasks from './CalendarTasks'
-import SimpleBar from 'simplebar-react'
-import { connect } from 'react-redux'
-import { SelectCalendarDate } from '../../actions/events'
+} from './CalendarConnect.js';
+import UpcomingMeetings from './UpcomingMeetings';
+import CalendarTasks from './CalendarTasks';
+import SimpleBar from 'simplebar-react';
+import { connect } from 'react-redux';
+import { DeleteEvent, SelectCalendarDate } from '../../actions/events';
 class Calendar extends React.Component {
     componentWillUnmount() {
-        this.props.select_calendar_date({ date: new Date(), view: 'Week' })
+        this.props.select_calendar_date({ date: new Date(), view: 'Week' });
     }
     render() {
-        var events = this.props.events //adjust_fields(this.props.events);
+        var events = this.props.events; //adjust_fields(this.props.events);
         return (
             <div className="Calendar">
                 <div className="scheduler">
@@ -48,7 +48,9 @@ class Calendar extends React.Component {
                             eventSettings={{
                                 dataSource: new DataManager({
                                     json: events,
-                                    adaptor: new MsgrahpAdaptor(),
+                                    adaptor: new MsgrahpAdaptor(
+                                        this.props.delete_event
+                                    ),
                                 }),
                                 fields: {
                                     id: 'id',
@@ -114,16 +116,17 @@ class Calendar extends React.Component {
                     />
                 </div>
             </div>
-        )
+        );
     }
 }
 
 const mapStateToProps = (state) => ({
     selected_calendar_date: state.selected_calendar_date,
-})
+});
 
 const mapDispatchToProps = {
     select_calendar_date: SelectCalendarDate,
-}
+    delete_event: DeleteEvent,
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(Calendar)
+export default connect(mapStateToProps, mapDispatchToProps)(Calendar);

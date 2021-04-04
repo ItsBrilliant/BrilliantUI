@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import { SearchConversations } from './conversations';
+import { SearchConversations, SearchFiles } from './conversations';
 import { SearchEvents } from './events';
 import { SearchTasks } from './tasks';
 
@@ -10,6 +10,7 @@ export function SearchList(props) {
             <SearchConversations search_value={props.search_value} />
             <SearchEvents search_value={props.search_value} />
             <SearchTasks search_value={props.search_value} />
+            <SearchFiles search_value={props.search_value} />
         </div>
     );
     return list;
