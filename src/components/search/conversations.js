@@ -7,7 +7,9 @@ import { SearchResults } from './SearchResults';
 export function SearchConversations(props) {
     const emails = useEmails();
     const filter_function = (email, value) =>
-        email.get_subject().toLowerCase().includes(value.toLowerCase());
+        email.get_subject().toLowerCase().includes(value.toLowerCase()) ||
+        (email.get_sender() &&
+            email.get_sender().get_address().includes(value));
     const select_email = useSearchResultSelect('mail', (email) =>
         SelectThread(email.get_thread_id())
     );

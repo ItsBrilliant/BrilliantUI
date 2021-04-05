@@ -17,7 +17,10 @@ export function SearchResults(props) {
             <img src={props.icon} />
             <span>
                 {render_search_text(props.top_line(item), props.search_value)}
-                <p>{props.bottom_line(item)}</p>
+                {render_search_text(
+                    props.bottom_line(item),
+                    props.search_value
+                )}
             </span>
             <span className="timestamp">{props.time_stamp(item)}</span>
         </SearchResultStyle>
