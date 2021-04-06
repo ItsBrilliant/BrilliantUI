@@ -15,13 +15,10 @@ export const EMAIL_PROPS = {
 };
 
 export const EMAIL_FILTER_FUNCTION = (email, search_value) =>
-    (search_value &&
-        email
-            .get_subject()
-            .toLowerCase()
-            .includes(search_value.toLowerCase())) ||
-    (email.get_sender() &&
-        email.get_sender().get_address().includes(search_value));
+    search_value &&
+    (email.get_subject().toLowerCase().includes(search_value.toLowerCase()) ||
+        (email.get_sender() &&
+            email.get_sender().get_address().includes(search_value)));
 
 export const FILE_PROPS = {
     top_line: (email) =>
@@ -42,6 +39,7 @@ export const FILE_PROPS = {
 };
 
 export const FILE_FILTER_FUNCTION = (email, search_value) =>
+    search_value &&
     email
         .get_attachments()
         .map((attacment) =>

@@ -13,7 +13,7 @@ export function Search(props) {
     const history = useHistory();
     const my_key_down = (e) => {
         if (e.key === 'Enter') {
-            dispatch(ApplySearch(props.keyword));
+            dispatch(ApplySearch(search_value));
             set_visible(false);
             history.push('search');
         }

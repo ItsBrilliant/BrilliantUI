@@ -17,4 +17,5 @@ export const TASK_PROPS = {
 };
 
 export const TASK_FILTER_FUNCTION = (task, search_value) =>
+    search_value &&
     task.text.toLowerCase().includes(search_value.toLowerCase());

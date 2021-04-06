@@ -8,7 +8,7 @@ import { Contact } from '../../data_objects/Contact';
 export function SearchList(props) {
     const all_events = useSelector((state) => state.events);
     const all_emails = useEmails();
-    const all_tasks = useTasks('status', 'Done', (a, b) => a !== b);
+    const all_tasks = useTasks(); //'status', 'Done', (a, b) => a !== b);
     if (props.search_value.length < 2) {
         return null;
     }

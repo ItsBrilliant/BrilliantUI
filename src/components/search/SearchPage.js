@@ -9,20 +9,28 @@ import { useSelector } from 'react-redux';
 import { DetailedEventStyle, DetailedContactStyle } from './SearchPage.style';
 import { Contact } from '../../data_objects/Contact';
 import { filter_search_objects } from './SearchResults';
+import {
+    num_conversations_with_contact,
+    num_tasks_with_contact,
+} from './contacts';
 export function SearchPage(props) {
+    const search_value = useSelector(
+        (state) => state.searches[state.searches.length - 1]
+    );
+    console.log(search_value);
     return (
         <div>
             <DetailedSearchResult title="Tasks">
-                <DetailedTaskResults />
+                <DetailedTaskResults search_value={search_value} />
             </DetailedSearchResult>
             <DetailedSearchResult title="Conversations">
-                <DetailedConversationResults />
+                <DetailedConversationResults search_value={search_value} />
             </DetailedSearchResult>
             <DetailedSearchResult title="Calendar">
-                <DetailedEventResults />
+                <DetailedEventResults search_value={search_value} />
             </DetailedSearchResult>
             <DetailedSearchResult wrap={true} title="Contacts">
-                <DetailedContactResults />
+                <DetailedContactResults search_value={search_value} />
             </DetailedSearchResult>
         </div>
     );
@@ -38,15 +46,12 @@ function DetailedSearchResult(props) {
 }
 
 function DetailedConversationResults(props) {
-    const search_value = useSelector(
-        (state) => state.searches[state.searches.length - 1]
-    );
     const all_emails = useEmails();
     const threads = useThreads();
     const thread_ids = filter_search_objects(
         all_emails,
         'email',
-        search_value
+        props.search_value
     ).map((item) => item.item.get_thread_id());
     const filtered_threads = threads.filter((t) => thread_ids.includes(t.id));
     const thread_components = filtered_threads.map((thread) => (
@@ -64,8 +69,14 @@ function DetailedConversationResults(props) {
 }
 
 function DetailedTaskResults(props) {
-    const tasks = useTasks().slice(0, 5);
-    const tasks_component = tasks.map((t) => (
+    console.log(props.search_value);
+    const tasks = useTasks();
+    const filtered_tasks = filter_search_objects(
+        tasks,
+        'task',
+        props.search_value
+    ).map((t) => t.item);
+    const tasks_component = filtered_tasks.map((t) => (
         <CalendarTask
             key={t.id}
             task={t}
@@ -74,15 +85,20 @@ function DetailedTaskResults(props) {
             watching={t.watchers}
             title={t.text}
             deadline={format_date(t.deadline).time}
-            on_select={props.on_select}
+            on_select={() => {}}
         />
     ));
     return tasks_component;
 }
 
 function DetailedEventResults(props) {
-    const events = useSelector((state) => state.events).slice(0, 5);
-    const events_component = events.map((event) => {
+    const events = useSelector((state) => state.events);
+    const filtered_events = filter_search_objects(
+        events,
+        'event',
+        props.search_value
+    ).map((e) => e.item);
+    const events_component = filtered_events.map((event) => {
         const start = format_date(event.start);
         const end = format_date(event.end);
         return (
@@ -98,15 +114,22 @@ function DetailedEventResults(props) {
 }
 
 function DetailedContactResults(props) {
-    const contacts = Object.values(Contact.contact_dict).slice(0, 12);
-    const contacts_component = contacts.map((contact) => (
+    const contacts = Contact.get_all_contacts();
+    const all_threads = useThreads();
+    const all_tasks = useTasks();
+    const filtered_contacts = filter_search_objects(
+        contacts,
+        'contact',
+        props.search_value
+    ).map((c) => c.item);
+    const contacts_component = filtered_contacts.map((contact) => (
         <DetailedContactStyle>
             <img className="person" src={contact.get_icon()} />
             <span className="name">{contact.get_name()} </span>
             <img className="icon" src="button_icons\task.svg" />
-            <span>5</span>
+            <span>{num_tasks_with_contact(all_tasks, contact)}</span>
             <img className="icon" src="button_icons\mail.svg" />
-            <span>7</span>
+            <span>{num_conversations_with_contact(all_threads, contact)}</span>
         </DetailedContactStyle>
     ));
 

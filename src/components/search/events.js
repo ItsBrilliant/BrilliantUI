@@ -18,4 +18,5 @@ export const EVENT_PROPS = {
 };
 
 export const EVENT_FILTER_FUNCTION = (event, search_value) =>
+    search_value &&
     event.subject.toLowerCase().includes(search_value.toLowerCase());
