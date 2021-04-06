@@ -33,6 +33,9 @@ export class Contact {
         };
         return Contact.create_contact(recipient_object);
     }
+    static get_all_contacts() {
+        return Object.values(Contact.contact_dict);
+    }
     static get_contact_name_by_address(address) {
         const contact = Contact.contact_dict[address];
         return contact ? contact.get_name() : null;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useThreads, useTasks } from '../../hooks/redux';
+import { useThreads, useTasks, useEmails } from '../../hooks/redux';
 import { email_text_area_bg } from '../StyleConsts';
 import { DetailedSearchResultStyle } from './SearchPage.style';
 import EmailThread from '../mail/EmailThread';
@@ -8,6 +8,7 @@ import { CalendarTask } from '../calendar/CalendarTasks';
 import { useSelector } from 'react-redux';
 import { DetailedEventStyle, DetailedContactStyle } from './SearchPage.style';
 import { Contact } from '../../data_objects/Contact';
+import { filter_search_objects } from './SearchResults';
 export function SearchPage(props) {
     return (
         <div>
@@ -37,8 +38,18 @@ function DetailedSearchResult(props) {
 }
 
 function DetailedConversationResults(props) {
-    const threads = useThreads().slice(0, 5);
-    const thread_components = threads.map((thread) => (
+    const search_value = useSelector(
+        (state) => state.searches[state.searches.length - 1]
+    );
+    const all_emails = useEmails();
+    const threads = useThreads();
+    const thread_ids = filter_search_objects(
+        all_emails,
+        'email',
+        search_value
+    ).map((item) => item.item.get_thread_id());
+    const filtered_threads = threads.filter((t) => thread_ids.includes(t.id));
+    const thread_components = filtered_threads.map((thread) => (
         <EmailThread
             key={thread.id}
             id={thread.id}
