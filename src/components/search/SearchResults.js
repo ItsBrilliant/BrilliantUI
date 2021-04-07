@@ -15,7 +15,11 @@ import { CONTACT_FILTER_FUNCTION, CONTACT_PROPS } from './contacts';
 export function SearchResults(props) {
     const my_on_click = useSearchResultSelect(props.url, props.action);
     return (
-        <SearchResultStyle onClick={() => my_on_click(props.item)}>
+        <SearchResultStyle
+            onClick={() => {
+                my_on_click(props.item);
+            }}
+        >
             <img src={props.icon} />
             <span>
                 {render_search_text(
