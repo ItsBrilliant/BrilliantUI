@@ -10,19 +10,17 @@ export const DetailedSearchResultStyle = styled.div`
     padding: 10px;
     border-bottom: 2px solid white;
     width: calc(100vw - 60px);
-    max-height: 40vh;
     overflow: hidden;
     .children {
         display: flex;
         flex-direction: row;
-        flex-wrap: ${(props) => (props.wrap ? 'wrap' : 'nowarp')};
+        flex-wrap: wrap;
         & > * {
-            margin-right: 5px;
+            margin: 5px;
             padding: 10px;
             background-color: ${email_text_area_bg};
             color: ${main_text_color};
             max-width: 400px;
-            max-height: 120px;
         }
     }
     .header {
@@ -35,12 +33,22 @@ export const DetailedSearchResultStyle = styled.div`
 
 export const DetailedEventStyle = styled.div`
     border-radius: 10px;
+    margin: 5px;
     .subject {
         color: white;
         font-size: 16px;
     }
     .time {
         color: ${main_text_color};
+    }
+`;
+
+export const SearchPageWrapperStyle = styled.div`
+    width: 100%;
+    height: calc(100% - 60px);
+    overflow: hidden;
+    .simple_bar {
+        height: 100%;
     }
 `;
 

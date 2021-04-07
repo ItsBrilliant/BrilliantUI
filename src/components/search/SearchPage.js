@@ -6,33 +6,45 @@ import EmailThread from '../mail/EmailThread';
 import { format_date } from '../../utils';
 import { CalendarTask } from '../calendar/CalendarTasks';
 import { useSelector } from 'react-redux';
-import { DetailedEventStyle, DetailedContactStyle } from './SearchPage.style';
+import {
+    DetailedEventStyle,
+    DetailedContactStyle,
+    SearchPageWrapperStyle,
+} from './SearchPage.style';
 import { Contact } from '../../data_objects/Contact';
 import { filter_search_objects } from './SearchResults';
+import SimpleBar from 'simplebar-react';
 import {
     num_conversations_with_contact,
     num_tasks_with_contact,
 } from './contacts';
+const MAX_RESULTS = 10;
 export function SearchPage(props) {
     const search_value = useSelector(
         (state) => state.searches[state.searches.length - 1]
     );
     console.log(search_value);
     return (
-        <div>
-            <DetailedSearchResult title="Tasks">
-                <DetailedTaskResults search_value={search_value} />
-            </DetailedSearchResult>
-            <DetailedSearchResult title="Conversations">
-                <DetailedConversationResults search_value={search_value} />
-            </DetailedSearchResult>
-            <DetailedSearchResult title="Calendar">
-                <DetailedEventResults search_value={search_value} />
-            </DetailedSearchResult>
-            <DetailedSearchResult wrap={true} title="Contacts">
-                <DetailedContactResults search_value={search_value} />
-            </DetailedSearchResult>
-        </div>
+        <SearchPageWrapperStyle>
+            <SimpleBar className="simple_bar">
+                <div style={{ height: '100%' }}>
+                    <DetailedSearchResult title="Tasks">
+                        <DetailedTaskResults search_value={search_value} />
+                    </DetailedSearchResult>
+                    <DetailedSearchResult title="Conversations">
+                        <DetailedConversationResults
+                            search_value={search_value}
+                        />
+                    </DetailedSearchResult>
+                    <DetailedSearchResult title="Calendar">
+                        <DetailedEventResults search_value={search_value} />
+                    </DetailedSearchResult>
+                    <DetailedSearchResult wrap={true} title="Contacts">
+                        <DetailedContactResults search_value={search_value} />
+                    </DetailedSearchResult>
+                </div>
+            </SimpleBar>
+        </SearchPageWrapperStyle>
     );
 }
 
@@ -53,7 +65,9 @@ function DetailedConversationResults(props) {
         'email',
         props.search_value
     ).map((item) => item.item.get_thread_id());
-    const filtered_threads = threads.filter((t) => thread_ids.includes(t.id));
+    const filtered_threads = threads
+        .filter((t) => thread_ids.includes(t.id))
+        .slice(0, MAX_RESULTS);
     const thread_components = filtered_threads.map((thread) => (
         <EmailThread
             key={thread.id}
@@ -75,7 +89,9 @@ function DetailedTaskResults(props) {
         tasks,
         'task',
         props.search_value
-    ).map((t) => t.item);
+    )
+        .map((t) => t.item)
+        .slice(0, MAX_RESULTS);
     const tasks_component = filtered_tasks.map((t) => (
         <CalendarTask
             key={t.id}
@@ -97,7 +113,9 @@ function DetailedEventResults(props) {
         events,
         'event',
         props.search_value
-    ).map((e) => e.item);
+    )
+        .map((e) => e.item)
+        .slice(0, MAX_RESULTS);
     const events_component = filtered_events.map((event) => {
         const start = format_date(event.start);
         const end = format_date(event.end);
@@ -121,7 +139,9 @@ function DetailedContactResults(props) {
         contacts,
         'contact',
         props.search_value
-    ).map((c) => c.item);
+    )
+        .map((c) => c.item)
+        .slice(0, MAX_RESULTS);
     const contacts_component = filtered_contacts.map((contact) => (
         <DetailedContactStyle>
             <img className="person" src={contact.get_icon()} />
