@@ -10,16 +10,20 @@ export function SearchList(props) {
     const all_events = useSelector((state) => state.events);
     const all_emails = useEmails();
     const all_tasks = useTasks(); //'status', 'Done', (a, b) => a !== b);
+    if (!props.visible) {
+        return null;
+    }
     let search_results;
-    if (props.search_value.length < 2) {
-        props.lock_focus();
-        const select_previous_search = (search_val) => {
-            props.set_search(search_val);
-        };
-        search_results = (
-            <PreviousSearches select_previous_search={select_previous_search} />
-        );
-    } else {
+    const select_previous_search = (search_val) => {
+        props.set_search(search_val);
+    };
+    search_results = (
+        <PreviousSearches
+            lock_focus={props.lock_focus}
+            select_previous_search={select_previous_search}
+        />
+    );
+    if (props.search_value.length >= 2) {
         const conversations = filter_search_objects(
             all_emails,
             'email',
@@ -45,7 +49,7 @@ export function SearchList(props) {
             'contact',
             props.search_value
         );
-        search_results = [
+        const list = [
             ...conversations,
             ...tasks,
             ...events,
@@ -61,6 +65,9 @@ export function SearchList(props) {
                 />
             );
         });
+        if (list.length > 0) {
+            search_results = list;
+        }
     }
 
     return <div className="SearchList">{search_results}</div>;
@@ -81,7 +88,10 @@ function PreviousSearches(props) {
         </SearchResultStyle>
     ));
     return (
-        <div>
+        <div
+            onMouseLeave={() => props.lock_focus(false)}
+            onMouseEnter={() => props.lock_focus(true)}
+        >
             <h3>previous searches:</h3>
             {previous_searches}
         </div>

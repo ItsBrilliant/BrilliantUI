@@ -42,7 +42,7 @@ export function Search(props) {
                 visible={list_visible}
                 search_value={search_value}
                 set_search={set_search}
-                lock_focus={() => lock_focus(true)}
+                lock_focus={lock_focus}
             />
         </SearchStyle>
     );
