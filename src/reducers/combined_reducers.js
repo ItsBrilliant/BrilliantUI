@@ -5,6 +5,7 @@ import { EventsReducer, SelectedDateReducer } from './events_reducer';
 import { EmailThreadsReducer, SelectedThreadReducer } from './email_threads.js';
 import { SelectedTaskReducer, TasksReducer } from './tasks.js';
 import { SearchReducer } from './search.js';
+import { FilterReducer } from './filter.js';
 
 export const CombinedReducers = combineReducers({
     user: LoginReducer,
@@ -16,4 +17,5 @@ export const CombinedReducers = combineReducers({
     tasks: TasksReducer,
     events: EventsReducer,
     searches: SearchReducer,
+    filters: FilterReducer,
 });

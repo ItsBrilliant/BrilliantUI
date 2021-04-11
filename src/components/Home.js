@@ -34,6 +34,7 @@ import { build_task_from_database } from '../backend/utils.js';
 import BrilliantFeed from '../components/feed/BrilliantFeed';
 import { Search } from './search/Search';
 import { SearchPage } from './search/SearchPage';
+import Filter from '../components/filter/Filter';
 
 const history = require('history').createBrowserHistory();
 
@@ -205,7 +206,7 @@ export class Home extends React.Component {
                     <div id="not_nav" className="not_nav">
                         <div className="top_buttons">
                             <Search />
-                            <button className="filter_button">Filter</button>
+                            <Filter></Filter>
                         </div>
                         <Switch>
                             <Route

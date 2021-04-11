@@ -21,3 +21,11 @@ export function render_search_text(text, search_value) {
         );
     }
 }
+
+export function reduce_results(arr, current_num, limit) {
+    if (current_num <= limit) {
+        return arr;
+    }
+    const required_arr_num = Math.round((arr.length * limit) / current_num);
+    return arr.slice(0, required_arr_num);
+}

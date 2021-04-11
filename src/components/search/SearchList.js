@@ -5,7 +5,9 @@ import { useEmails, useTasks } from '../../hooks/redux';
 import { filter_search_objects, SEARCH_RESULT_PROPS } from './SearchResults';
 import { Contact } from '../../data_objects/Contact';
 import { SearchResultStyle } from './Search.style';
+import { reduce_results } from './utils';
 
+const MAX_RESULTS = 15;
 export function SearchList(props) {
     const all_events = useSelector((state) => state.events);
     const all_emails = useEmails();
@@ -49,12 +51,18 @@ export function SearchList(props) {
             'contact',
             props.search_value
         );
+        const total_num_results =
+            conversations.length +
+            tasks.length +
+            events.length +
+            files.length +
+            contacts.length;
         const list = [
-            ...conversations,
-            ...tasks,
-            ...events,
-            ...files,
-            ...contacts,
+            ...reduce_results(conversations, total_num_results, MAX_RESULTS),
+            ...reduce_results(tasks, total_num_results, MAX_RESULTS),
+            ...reduce_results(events, total_num_results, MAX_RESULTS),
+            ...reduce_results(files, total_num_results, MAX_RESULTS),
+            ...reduce_results(contacts, total_num_results, MAX_RESULTS),
         ].map((x) => {
             const properties = SEARCH_RESULT_PROPS[x.type];
             return (
@@ -92,7 +100,7 @@ function PreviousSearches(props) {
             onMouseLeave={() => props.lock_focus(false)}
             onMouseEnter={() => props.lock_focus(true)}
         >
-            <h3>previous searches:</h3>
+            <h4>recent searches</h4>
             {previous_searches}
         </div>
     );
