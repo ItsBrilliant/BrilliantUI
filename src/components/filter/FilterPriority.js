@@ -1,7 +1,9 @@
 import React from 'react';
 import Select from 'react-select';
 import { useTaskTags } from '../../hooks/redux';
+import { customStyles } from './Filter.styles';
 
+const MyControl = ({ children, ...rest }) => <div>OK {children}</div>;
 export function FilterPriority(props) {
     const options = ['Urgent', 'Important', 'Can Wait'].map((o) => ({
         label: o,
@@ -30,10 +32,11 @@ export function FilterSubMenu(props) {
     return (
         <div>
             <Select
+                styles={customStyles}
                 options={props.options}
-                closeMenuOnSelect
                 onChange={handle_change}
-                defaultMenuIsOpen
+                defaultMenuIsOpen={true}
+                components={{ Control: MyControl }}
             />
         </div>
     );
