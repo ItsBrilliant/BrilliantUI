@@ -5,9 +5,10 @@ export const SetFilter = (filter_type, filter_value) => {
     };
 };
 
-export const RemoveFilter = (filter_type) => {
+export const RemoveFilter = (filter) => {
     return {
         type: 'REMOVE_FILTER',
-        payload: filter_type,
+        filter_type: filter.type,
+        filter_value: filter.value,
     };
 };

@@ -5,7 +5,10 @@ export const FilterReducer = (state = {}, action) => {
     } else if (action.type === 'REMOVE_FILTER') {
         let new_state = {};
         for (const key in state) {
-            if (key !== action.payload) {
+            if (
+                key !== action.filter_type &&
+                state[key] !== action.filter_value
+            ) {
                 new_state[key] = state[key];
             }
         }
