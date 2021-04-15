@@ -4,9 +4,11 @@ import OptionsButton from '../OptionsButton';
 import SelectedFilters from './SelectedFilters';
 import React, { useState } from 'react';
 import Select, { components } from 'react-select';
-import { customStyles } from './Filter.styles';
-import { FilterPriority, FilterTags } from './FilterPriority';
+import { main_menu_style } from './Filter.styles';
+import { FilterPriority, FilterTags, MyControl } from './FilterPriority';
 import { useFilters } from '../../hooks/redux';
+import { FilterStyle } from './Filter.styles';
+import { PRIORITIES } from '../../data_objects/Consts';
 
 const MenuList = (props) => {
     return (
@@ -16,11 +18,12 @@ const MenuList = (props) => {
 
 export default function Filter(props) {
     const filters = useFilters().map((f) => ({
-        label: f.value,
+        label: f.type === 'priority' ? PRIORITIES[f.value] : f.value,
         filter_type: f.type,
     }));
     const [priorities_visible, set_priorities_visible] = useState(false);
     const [tags_visible, set_tags_visible] = useState(false);
+    //  const [menu_is_open, set_menu_open] = useState(false);
     const state_setters = {
         priority: set_priorities_visible,
         tags: set_tags_visible,
@@ -28,7 +31,10 @@ export default function Filter(props) {
     const dispatch = useDispatch();
     const select_menu = (options, action) => {
         if (action.action === 'select-option') {
-            action.option.open();
+            for (const type in state_setters) {
+                // open the right menua and close all others
+                state_setters[type](type === action.option.value);
+            }
         } else if (action.action === 'remove-value') {
             dispatch(RemoveFilter({ type: action.removedValue.filter_type }));
         }
@@ -42,30 +48,36 @@ export default function Filter(props) {
         {
             label: 'Priority',
             value: 'priority',
-            open: () => set_priorities_visible(true),
         },
         {
             label: 'Tags',
             value: 'tags',
-            open: () => set_tags_visible(true),
         },
     ];
 
     return (
-        <div>
+        <FilterStyle>
+            <span
+                //            onClick={() => set_menu_open(!menu_is_open)}
+                className="filter_label"
+            >
+                Filter
+            </span>
+            ,
             <Select
-                styles={customStyles}
+                styles={main_menu_style}
                 options={options}
-                placeholder="Filter"
                 isMulti
                 value={filters}
                 onChange={select_menu}
+                placeholder=""
+                closeMenuOnSelect={false}
             />
             <FilterPriority
                 on_select={set_filter}
                 visible={priorities_visible}
             />
             <FilterTags on_select={set_filter} visible={tags_visible} />;
-        </div>
+        </FilterStyle>
     );
 }

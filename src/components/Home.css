@@ -6,16 +6,15 @@
     flex-direction: row;
     height: 100vh;
     width: 100vw;
-    min-width:max-content;
+    min-width: max-content;
     min-height: max-content;
-
 }
 .Nav {
     background-color: var(--email-container-background);
     display: flex;
     flex-direction: column;
-    width:60px;
-    height:100%;
+    width: 60px;
+    height: 100%;
     align-items: center;
     overflow: visible;
 }
@@ -27,8 +26,8 @@
     flex-direction: column;
 }
 
-
-.nav_link, .last_nav_link {
+.nav_link,
+.last_nav_link {
     margin: 10px;
     background-color: var(--main-bg-color);
     border-radius: 100%;
@@ -36,7 +35,7 @@
     height: 40px;
 }
 
-.nav_link a div{
+.nav_link a div {
     width: 40px;
     height: 40px;
     z-index: 2000;
@@ -45,14 +44,14 @@
 .nav_link img {
     position: relative;
     top: -100%;
-    width:60%;
+    width: 60%;
     height: 60%;
     padding: 20%;
     pointer-events: none;
 }
 
 .last_nav_link {
-     margin-top: auto;
+    margin-top: auto;
 }
 
 .last_nav_link img {
@@ -60,33 +59,24 @@
     height: 100%;
     border-radius: 100%;
 }
-.nav_link:hover{
+.nav_link:hover {
     background-color: var(--link_hover_color);
 }
 
-.not_nav{
+.not_nav {
     background-color: var(--main-bg-color);
-    height:100%;
+    height: 100%;
     width: calc(100% - 64px);
 }
 
-.top_buttons{
-    display:flex;
+.top_buttons {
+    display: flex;
     flex-direction: row;
     height: 60px;
 }
 
-.filter_button{
-    background-color: var(--email-text-area-bg);
-    color:var(--unread-text-color);
-    font-size: 16px;
-    margin: 10px 20px;
-    border-radius: 10px;
-    width: 100px;
-}
-
 .plus {
-    transition:all 0s ease 0.5s;
+    transition: all 0s ease 0.5s;
     visibility: hidden;
     pointer-events: none;
     background-color: rgba(56, 65, 96, 0.5);
@@ -102,7 +92,7 @@
 }
 
 .plus button {
-    pointer-events:visible;
+    pointer-events: visible;
     cursor: pointer;
     width: 40px;
     height: 40px;
@@ -113,11 +103,13 @@
     color: rgb(139, 139, 139);
 }
 
-.nav_link:hover > .plus, .plus:hover, .plus button:hover{
+.nav_link:hover > .plus,
+.plus:hover,
+.plus button:hover {
     visibility: visible;
 }
 
 .plus button:hover {
     background-color: var(--link_hover_color);
-    color:var(--main-bg-color);
+    color: var(--main-bg-color);
 }

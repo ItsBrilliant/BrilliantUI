@@ -1,13 +1,14 @@
 import React from 'react';
 import Select from 'react-select';
 import { useTaskTags } from '../../hooks/redux';
-import { customStyles } from './Filter.styles';
+import { sub_menu_style } from './Filter.styles';
+import { PRIORITIES } from '../../data_objects/Consts';
 
-const MyControl = ({ children, ...rest }) => <div>OK {children}</div>;
+export const MyControl = ({ children, ...rest }) => <div>{children}</div>;
 export function FilterPriority(props) {
     const options = ['Urgent', 'Important', 'Can Wait'].map((o) => ({
         label: o,
-        value: o,
+        value: PRIORITIES.indexOf(o),
         filter_type: 'priority',
     }));
     return <FilterSubMenu options={options} type="priority" {...props} />;
@@ -32,11 +33,12 @@ export function FilterSubMenu(props) {
     return (
         <div>
             <Select
-                styles={customStyles}
+                styles={sub_menu_style}
                 options={props.options}
                 onChange={handle_change}
                 defaultMenuIsOpen={true}
-                components={{ Control: MyControl }}
+                placeholder=""
+                classNamePrefix="my_react_select"
             />
         </div>
     );

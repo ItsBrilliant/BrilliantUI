@@ -1,6 +1,8 @@
 import { useSelector } from 'react-redux';
+import { ApplyThreadFilters, ApplyTaskFilters } from './search';
 
 export function useTasks(filter_by, value, func = (a, b) => a === b) {
+    const filters = useSelector((state) => state.filters);
     let tasks_dict = useSelector((state) => state.tasks);
     let tasks = Object.values(tasks_dict);
     if (filter_by) {
@@ -19,16 +21,14 @@ export function useTasks(filter_by, value, func = (a, b) => a === b) {
             }
         });
     }
-    return tasks;
+    return ApplyTaskFilters(tasks, filters);
 }
 
-export function useThreads(priority) {
+export function useThreads() {
+    const filters = useSelector((state) => state.filters);
     let threads_dict = useSelector((state) => state.email_threads);
     let threads = Object.values(threads_dict);
-    threads = threads.filter(
-        (t) => priority === undefined || t.get_priority() === priority
-    );
-    return threads;
+    return ApplyThreadFilters(threads, filters);
 }
 
 export function useEmails() {

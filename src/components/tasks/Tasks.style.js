@@ -208,3 +208,9 @@ export const MultiselectActionsStyle = styled.div`
         pointer-events: ${(props) => (props.visible ? 'auto' : 'none')};
     }
 `;
+
+export const SelectOwnerStyle = styled(PortalStyle)`
+    left: ${(props) => props.location.x}px;
+    bottom: calc(100vh - ${(props) => props.location.y}px);
+    width: 300px;
+`;
