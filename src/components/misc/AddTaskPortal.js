@@ -10,7 +10,7 @@ import { DatePickerComponent } from '@syncfusion/ej2-react-calendars';
 const DEFAULT_TASK_TEXT = 'Manual Task';
 
 export function AddTaskPortal(props) {
-    const user = useSelector((state) => state.user);
+    const user = useSelector((state) => state.user.contact);
     const [date, setDate] = useState(props.date || new Date());
     const [task_text, setText] = useState(props.task_text || DEFAULT_TASK_TEXT);
     const [priority, setPriority] = useState(props.priority);

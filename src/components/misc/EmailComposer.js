@@ -27,7 +27,9 @@ var SEND_WAS_CANCELED = { value: false };
 
 export function EmailComposers() {
     const composers_state = useSelector((state) => state.email_composers);
-    const user_address = useSelector((state) => state.user.get_address());
+    const user_address = useSelector((state) =>
+        state.user.contact.get_address()
+    );
     const dispatch = useDispatch();
     const [focused, set_focus] = useState(-1);
     const [send_was_canceled, set_send_cancelation] = useState(false);

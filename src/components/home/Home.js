@@ -19,7 +19,7 @@ import {
 import { EmailComposers } from '../misc/EmailComposer.js';
 import { LoginPage } from './LoginPage.js';
 import { connect } from 'react-redux';
-import { Login } from '../../actions/login.js';
+import { FullLogin } from '../../actions/login.js';
 import { Update, Delete } from '../../actions/tasks.js';
 import { ExpandThreads, ResetThreads } from '../../actions/email_threads.js';
 import { Contact } from '../../data_objects/Contact.js';
@@ -65,37 +65,40 @@ export class Home extends React.Component {
         return mailFolders;
     }
     componentDidMount() {
-        axios.get('api/me').then((res) => this.handle_login(res.data));
+        this.props.Login();
+    }
+    componentDidUpdate(prevProps) {
+        if (prevProps.user != this.props.user) {
+            this.handle_login();
+        }
     }
     componentWillUnmount() {
         clearInterval(this.refresh_timer);
     }
 
-    handle_login(user_address) {
-        console.log('new user address ' + user_address);
-        const new_user = this.change_user(user_address);
+    handle_login() {
         this.props.Reset();
         this.props.ResetEvents();
         this.setState({
             mailFolders: Home.generate_empty_folders(),
         });
-        this.load_user_data(new_user);
+        this.load_user_data();
     }
 
-    load_user_data(user) {
+    load_user_data() {
         if (this.loading) {
             return;
         }
         this.loading = true;
         clearInterval(this.refresh_timer);
-        if (user.get_address()) {
+        if (this.props.user.get_address()) {
             console.log('loading user data');
             console.log('getting calendar');
             Promise.all([
                 get_mail_folders(this.set_mail_folders),
                 get_calendar(this.set_calendar),
                 get_tasks_from_database(
-                    user.get_address(),
+                    this.props.user.get_address(),
                     this.set_tasks
                 ).then((x) => get_all_mail(this.set_threads)),
             ]).then((arr) => (this.loading = false));
@@ -104,12 +107,6 @@ export class Home extends React.Component {
                 REFRESH_INTERVAL
             );
         }
-    }
-    change_user(new_addresss) {
-        Contact.clear_contacts();
-        const new_user = Contact.create_contact_from_address(new_addresss);
-        this.props.Login(new_user);
-        return new_user;
     }
     set_mail_folders(folders) {
         const update_function = (folders) => {
@@ -288,14 +285,14 @@ export class Home extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-    user: state.user,
+    user: state.user.contact,
     emailThreads: state.email_threads,
     tasks: Object.values(state.tasks),
     calendarEvents: state.events,
 });
 
 const mapDispatchToProps = {
-    Login,
+    Login: FullLogin,
     Expand: ExpandThreads,
     Reset: ResetThreads,
     ExpandEvents,

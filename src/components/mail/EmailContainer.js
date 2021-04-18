@@ -13,7 +13,7 @@ export default function EmailContainer(props) {
     const dispatch = useDispatch();
     const emails_deleter = (id, email_ids) =>
         dispatch(DeleteEmails(id, email_ids));
-    const user = useSelector((state) => state.user);
+    const user = useSelector((state) => state.user.contact);
     const email = props.email;
     const tasks = useSelector((state) => Object.values(state.tasks)).filter(
         (t) => t.email_id === email.get_id()

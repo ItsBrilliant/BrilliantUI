@@ -2,6 +2,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { Create } from '../../actions/email_composer';
 import { Link } from 'react-router-dom';
+import './Nav.css';
 
 export default function Nav() {
     const dispatch = useDispatch();
