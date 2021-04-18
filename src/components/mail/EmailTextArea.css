@@ -1,118 +1,114 @@
-@import "../Globals.css";
+@import '../misc/Globals.css';
 
 .email_text_area {
-  color: rgb(120,133,161);
-  text-align: left;
-  height: 105px;
-  line-height: 1.5;
-  overflow: hidden;
-  padding-bottom: 10px;
-  margin-left: 5px;
-  font-size: medium;
-  width: 80%;
-  text-overflow: ellipsis;
+    color: rgb(120, 133, 161);
+    text-align: left;
+    height: 105px;
+    line-height: 1.5;
+    overflow: hidden;
+    padding-bottom: 10px;
+    margin-left: 5px;
+    font-size: medium;
+    width: 80%;
+    text-overflow: ellipsis;
 }
 
-
-.adjust_height_to_text{
-  height: auto;
-  width: 75%;
+.adjust_height_to_text {
+    height: auto;
+    width: 75%;
 }
 .email_text_area .header .GroupIconWrapper .email_priority.Urgent {
-  background-color: red;
+    background-color: red;
 }
 
 .email_text_area .header .GroupIconWrapper .email_priority.Important {
-  background-color: orange;
+    background-color: orange;
 }
 
 .email_text_area .header .GroupIconWrapper .email_priority.CanWait {
-  background-color: green;
+    background-color: green;
 }
 
-.EmailOptionsButton{
-  position: relative;
-  left: 85%;
-  top: 10px;
-  background: transparent;
+.EmailOptionsButton {
+    position: relative;
+    left: 85%;
+    top: 10px;
+    background: transparent;
 }
 
 .EmailOptionsButton * div {
-  width: 70px;
+    width: 70px;
 }
 
 .EmailOptionsButton * .Dropdown-control {
-  background-color: transparent;
-  text-align: right;
+    background-color: transparent;
+    text-align: right;
 }
 
 .EmailOptionsButton *.Dropdown-arrow {
-  visibility: hidden;
+    visibility: hidden;
 }
 
-
-.email_text_area .header .GroupIconWrapper{
-  display: flex;
-  padding-right:2px;
-  padding-top: 10px;
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: center;
-  margin: 0;
-  flex-grow: 1;
+.email_text_area .header .GroupIconWrapper {
+    display: flex;
+    padding-right: 2px;
+    padding-top: 10px;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    margin: 0;
+    flex-grow: 1;
 }
 
-.email_text_area .header{
-  display: flex;
-  justify-content:flex-end;
-  align-items: center;
-  padding: 0;
+.email_text_area .header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0;
 }
 
-
-.task_source.Urgent{
-  color: red;
+.task_source.Urgent {
+    color: red;
 }
 
-.task_source.Important{
-  color: orange;
+.task_source.Important {
+    color: orange;
 }
 
-.task_source.CanWait{
-  color: green;
+.task_source.CanWait {
+    color: green;
 }
 
-.task_source.before_approval{
-  background-color: rgb(34, 99, 157);
-  color: rgb(11, 3, 4);
+.task_source.before_approval {
+    background-color: rgb(34, 99, 157);
+    color: rgb(11, 3, 4);
 }
 
 .email_text_area .header .GroupIconWrapper .email_priority {
-  height:8px;
-  width:8px;
-  border-radius: 100%;
-  background-color: lightblue;
-  align-self: center;
+    height: 8px;
+    width: 8px;
+    border-radius: 100%;
+    background-color: lightblue;
+    align-self: center;
 }
 
 .AddTaskIcon {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  width: max-content;
-  padding: 5px;
-
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    width: max-content;
+    padding: 5px;
 }
 
-.AddTaskIcon *{
-  width: 35px;
-  height: 35px;
-  padding: 5px;
-  border-radius: 20%;
-  background-color: var(--email-container-background);
-  border: 2px solid var(--main-text-color);
-  box-sizing: border-box;
-  margin: 5px;
+.AddTaskIcon * {
+    width: 35px;
+    height: 35px;
+    padding: 5px;
+    border-radius: 20%;
+    background-color: var(--email-container-background);
+    border: 2px solid var(--main-text-color);
+    box-sizing: border-box;
+    margin: 5px;
 }
 .AddTaskIcon button.delete {
     font-size: 30px;
@@ -120,20 +116,18 @@
     color: red;
     border-color: red;
     padding-top: 0;
-
 }
 
-.add_task_wrapper{
-  position: absolute;
-  left: 0;
-  top: 0;
-  height: 100%;
-  width: 100%;
-  background-color: transparent;
+.add_task_wrapper {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    background-color: transparent;
 }
 
 .AddTaskIcon *:hover {
-  cursor: pointer;
-  background-color: var(--link_hover_color);
+    cursor: pointer;
+    background-color: var(--link_hover_color);
 }
-

@@ -1,4 +1,4 @@
-@import "../Globals.css";
+@import '../misc/Globals.css';
 
 @mixin flex_row {
     display: flex;
@@ -24,7 +24,7 @@
     }
 }
 
-.FooterButtons{
+.FooterButtons {
     @include flex_row;
     padding: 2px;
     background-color: rgb(56, 65, 96);
@@ -50,12 +50,12 @@
 
 .TaskContent {
     @include flex_row;
-    input, input::placeholder {
+    input,
+    input::placeholder {
         background-color: var(--eamil-container-background);
         color: white;
         font-weight: normal;
         width: 90%;
-        
     }
 }
 
@@ -72,8 +72,8 @@
         margin: 5px;
     }
     input {
-            color: white;
-            flex-grow: 1;
+        color: white;
+        flex-grow: 1;
     }
     ul {
         background-color: var(--email-container-background);
@@ -83,7 +83,7 @@
         z-index: 1000;
         list-style-type: none;
         padding: 3px;
-        li:hover{
+        li:hover {
             cursor: pointer;
             background-color: var(--email-text-area-bg);
         }

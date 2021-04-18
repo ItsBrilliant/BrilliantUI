@@ -1,62 +1,60 @@
-@import '../Globals.css';
-.ComposerAttachments{
+@import '../misc/Globals.css';
+.ComposerAttachments {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     height: 90px;
 }
-.ComposerAttachment .attachment_icon{
+.ComposerAttachment .attachment_icon {
     height: 100%;
     width: 100%;
     grid-area: attachment_icon;
 }
 
-.ComposerAttachment{
+.ComposerAttachment {
     height: 100%;
     width: 100%;
     display: grid;
     grid-template-columns: 3fr 1fr;
     grid-template-rows: 1fr 2fr 1fr;
-    grid-template-areas: 
-    "attachment_icon delete_button"
-    "attachment_icon progress"
-    "file_name file_name";
+    grid-template-areas:
+        'attachment_icon delete_button'
+        'attachment_icon progress'
+        'file_name file_name';
     background-color: var(--email-container-background);
     border-radius: 5px;
     justify-content: flex-start;
 }
 
-
-.ComposerAttachment .delete_button{
+.ComposerAttachment .delete_button {
     background-color: transparent;
     grid-area: delete_button;
     margin-left: auto;
     color: white;
     font-size: larger;
-
 }
 
-.ComposerAttachment_outer{
+.ComposerAttachment_outer {
     height: 100%;
     padding: 5px;
     width: 90px;
     display: inline-block;
-    padding:0;
+    padding: 0;
     margin: 2px;
 }
 
-.ComposerAttachment .progress{
+.ComposerAttachment .progress {
     grid-area: progress;
     font-size: small;
     text-align: left;
 }
 
-.ComposerAttachment .file_name{
+.ComposerAttachment .file_name {
     max-width: 100%;
     margin-top: 0px;
     grid-area: file_name;
     text-align: left;
-    text-overflow:ellipsis;
+    text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
     font-size: smaller;
@@ -64,17 +62,19 @@
 
 .upload_progress {
     position: relative;
-    top:-100%;
-    left:0;
+    top: -100%;
+    left: 0;
     height: 100%;
     background-color: var(--link_hover_color);
     pointer-events: none;
     opacity: 0.2;
 }
 
-.EmailContent .quill, .ql-editor, .ql-container {
-  background-color: var(--main-bg-color);
-  min-height: 100px;
+.EmailContent .quill,
+.ql-editor,
+.ql-container {
+    background-color: var(--main-bg-color);
+    min-height: 100px;
 }
 
 .EmailContent .SimpleBar {

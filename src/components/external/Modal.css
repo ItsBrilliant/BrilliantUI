@@ -1,24 +1,23 @@
-@import '../Globals.css';
+@import '../misc/Globals.css';
 
-.AddTaskModal{
+.AddTaskModal {
     width: auto;
 }
 
-.text_input{
+.text_input {
     border: 2px solid black;
-    color:black;
+    color: black;
     width: 100%;
     font-size: medium;
     display: inline-block;
     margin-bottom: 20px;
-
 }
 
-.text_input[name='email_text']{
+.text_input[name='email_text'] {
     height: 150px;
     padding-bottom: 24%;
 }
 
-.modal_body{
+.modal_body {
     background-color: var(--email-container-background);
 }

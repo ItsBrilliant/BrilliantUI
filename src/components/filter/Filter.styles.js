@@ -3,7 +3,7 @@ import {
     main_text_color,
     link_hover_color,
     email_text_area_bg,
-} from '../StyleConsts';
+} from '../misc/StyleConsts';
 import styled from 'styled-components';
 import { contentReady } from '@syncfusion/ej2-schedule';
 import { getStartEndHours } from '@syncfusion/ej2-schedule';

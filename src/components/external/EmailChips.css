@@ -1,30 +1,30 @@
-@import "../Globals.css";
+@import '../misc/Globals.css';
 
 .Recipients input {
-  background-color: transparent;
-  border: none;
-  width: auto;
-  color: var(--main-text-color);
-  -webkit-appearance: none;
-  flex-grow: 1;
+    background-color: transparent;
+    border: none;
+    width: auto;
+    color: var(--main-text-color);
+    -webkit-appearance: none;
+    flex-grow: 1;
 }
 
 .Recipients input:focus {
-  border-color: cornflowerblue;
-  outline: none;
+    border-color: cornflowerblue;
+    outline: none;
 }
 
 input.has-error {
-  color: tomato;
+    color: tomato;
 }
 
 .error {
-  margin: 0;
-  font-size: 90%;
-  color: tomato;
+    margin: 0;
+    font-size: 90%;
+    color: tomato;
 }
 
-#chips_container{
+#chips_container {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -37,50 +37,49 @@ input.has-error {
 }
 
 .tag-item {
-  background-color: rgb(164, 172, 164);
-  color:black;
-  font-size: 14px;
-  border-radius: 30px;
-  height: 30px;
-  padding: 0 4px 0 1rem;
-  display: inline-flex;
-  align-items: center;
-  margin: 0 0.3rem 3px 0;
+    background-color: rgb(164, 172, 164);
+    color: black;
+    font-size: 14px;
+    border-radius: 30px;
+    height: 30px;
+    padding: 0 4px 0 1rem;
+    display: inline-flex;
+    align-items: center;
+    margin: 0 0.3rem 3px 0;
 }
 
 .tag-item > .button {
-  background-color: rgb(163, 56, 56);
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  border: none;
-  cursor: pointer;
-  font: inherit;
-  margin-left: 10px;
-  font-weight: bold;
-  padding: 0;
-  line-height: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    background-color: rgb(163, 56, 56);
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    font: inherit;
+    margin-left: 10px;
+    font-weight: bold;
+    padding: 0;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .Recipients ul li {
-  background-color: var(--email-container-background);
-  color:cornsilk;
+    background-color: var(--email-container-background);
+    color: cornsilk;
 }
 .Recipients ul li:hover {
-  background-color: var(--email-text-area-bg);
-  cursor: pointer;
+    background-color: var(--email-text-area-bg);
+    cursor: pointer;
 }
 
 .Recipients ul {
-  max-height: 20px;
-  overflow: visible;
-  flex-grow: 2;
-  position: relative;
-  left: 0;
-  margin: 0;
-  list-style-type: none;
+    max-height: 20px;
+    overflow: visible;
+    flex-grow: 2;
+    position: relative;
+    left: 0;
+    margin: 0;
+    list-style-type: none;
 }
-

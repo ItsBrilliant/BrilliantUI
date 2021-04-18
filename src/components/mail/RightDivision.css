@@ -1,11 +1,11 @@
-@import "../Globals.css";
+@import '../misc/Globals.css';
 
-.RightDivision{
+.RightDivision {
     width: 25%;
     min-width: 200px;
     height: 100%;
     overflow: hidden;
-    transition: width .7s ease, min-width .7s ease;
+    transition: width 0.7s ease, min-width 0.7s ease;
 }
 
 .RightDivision.collapsed_right {
@@ -18,32 +18,30 @@
     color: var(--main-text-color);
 }
 
-.TasksDisplayer h4{
+.TasksDisplayer h4 {
     margin-bottom: 1px;
     padding-bottom: 1px;
 }
 
-.TasksDisplayer span.task_owner{
-    color:white;
-    display:inline;
-    height:fit-content;
+.TasksDisplayer span.task_owner {
+    color: white;
+    display: inline;
+    height: fit-content;
     margin-right: 0.2em;
 }
 
-.TasksDisplayer span.task_text{
-    color:white;
-    display:inline;
-    height:fit-content;
+.TasksDisplayer span.task_text {
+    color: white;
+    display: inline;
+    height: fit-content;
     margin-right: 0.2em;
-    color:rgb(107, 161, 219);
+    color: rgb(107, 161, 219);
     overflow: hidden;
     word-wrap: break-word;
-
 }
 
-.TasksDisplayer.done span.task_text{
-    color:var(--main-text-color)
-
+.TasksDisplayer.done span.task_text {
+    color: var(--main-text-color);
 }
 
 .Tasks {
@@ -55,44 +53,44 @@
     font-size: 14px;
 }
 
-.TasksDisplayer ul li::before{
-  content: "\2022";
-  font-weight: bold;
-  font-size: medium;
-  display: inline-block; 
-  width: 8px;
-  margin-left: -1em;
+.TasksDisplayer ul li::before {
+    content: '\2022';
+    font-weight: bold;
+    font-size: medium;
+    display: inline-block;
+    width: 8px;
+    margin-left: -1em;
 }
 
-.TasksDisplayer ul li.Urgent::before{
-  color:red;
+.TasksDisplayer ul li.Urgent::before {
+    color: red;
 }
 
-.TasksDisplayer ul li.Important::before{
-  color:orange;
+.TasksDisplayer ul li.Important::before {
+    color: orange;
 }
 
-.TasksDisplayer ul li.CanWait::before{
-  color:green;
+.TasksDisplayer ul li.CanWait::before {
+    color: green;
 }
 
-.TasksDisplayer.done ul li::before{
-  display: none;
+.TasksDisplayer.done ul li::before {
+    display: none;
 }
 
-.TasksDisplayer ul li:hover{
+.TasksDisplayer ul li:hover {
     cursor: pointer;
 }
 
-.TasksDisplayer ul{
+.TasksDisplayer ul {
     padding: 5px;
 }
 
-.TasksDisplayer ul li{
+.TasksDisplayer ul li {
     padding: 2px 5px;
 }
 
-.TasksDisplayer ul li .task_status_button{
+.TasksDisplayer ul li .task_status_button {
     display: inline-block;
     position: relative;
     top: 5px;
@@ -107,28 +105,28 @@
     font-weight: bold;
 }
 
-.TasksDisplayer ul li .task_status_button span.inner{
+.TasksDisplayer ul li .task_status_button span.inner {
     position: relative;
-    top:-6px;
-    color:var(--email-container-background);
+    top: -6px;
+    color: var(--email-container-background);
 }
 
-.TasksDisplayer ul li .task_status_button:hover{
+.TasksDisplayer ul li .task_status_button:hover {
     background-color: var(--main-text-color);
     transition: all 0.5s ease;
     color: var(--email-container-background);
 }
 
-.TasksDisplayer.done ul li .task_status_button{
+.TasksDisplayer.done ul li .task_status_button {
     background-color: var(--main-text-color);
     color: var(--email-container-background);
 }
 
-.TasksDisplayer ul li .done{
+.TasksDisplayer ul li .done {
     color: var(--main-text-color) !important;
 }
 
-.Container{
+.Container {
     display: block;
     background-color: var(--email-container-background);
     color: var(--main-text-color);
@@ -139,18 +137,18 @@
     border-radius: 20px;
 }
 
-.ParticipantsIcons{
+.ParticipantsIcons {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: flex-start;
 }
 
- .SimpleBar_RightDivision {
-     height: 100%;
- }
+.SimpleBar_RightDivision {
+    height: 100%;
+}
 
- .ParticipantsIcons img {
+.ParticipantsIcons img {
     height: 50px;
     width: 50px;
     border-radius: 100%;

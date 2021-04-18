@@ -3,7 +3,7 @@ import {
     email_container_background,
     link_hover_color,
     main_text_color,
-} from '../StyleConsts';
+} from '../misc/StyleConsts';
 
 export const SearchBarStyle = styled.div`
     display: flex;

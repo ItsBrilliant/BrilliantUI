@@ -1,6 +1,6 @@
 import React from 'react';
 import { useThreads, useTasks, useEmails } from '../../hooks/redux';
-import { email_text_area_bg } from '../StyleConsts';
+import { email_text_area_bg } from '../misc/StyleConsts';
 import { DetailedSearchResultStyle } from './SearchPage.style';
 import EmailThread from '../mail/EmailThread';
 import { format_date } from '../../utils';

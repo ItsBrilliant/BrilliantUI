@@ -1,117 +1,117 @@
-@import "../Globals.css";
+@import '../misc/Globals.css';
 .CalendarTasks * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 .CalendarTasks {
-  width: 100%;
-  height: calc(100% - 150px);
-  background-color: var(--email-container-background);
-  margin-bottom: 10px;
+    width: 100%;
+    height: calc(100% - 150px);
+    background-color: var(--email-container-background);
+    margin-bottom: 10px;
 }
 
 .calendar_right_division .header {
-  display: flex;
-  height: 30px;
-  align-items: flex-start;
-  padding-right: 0;
+    display: flex;
+    height: 30px;
+    align-items: flex-start;
+    padding-right: 0;
 }
 
 .calendar_right_division .header * {
-  margin: 2px;
+    margin: 2px;
 }
 
 .CalendarTasks .header .header_button {
-  background-color: var(--email-text-area-bg);
-  color: var(--main-text-color);
+    background-color: var(--email-text-area-bg);
+    color: var(--main-text-color);
 }
 
 .calendar_right_division .header .header_title {
-  color: white;
-  font-size: 18px;
+    color: white;
+    font-size: 18px;
 }
 .calendar_right_division .header .Menu {
-  margin-left: auto;
-  margin-right: 0;
-  width: fit-content;
-  font-size: 12px;
+    margin-left: auto;
+    margin-right: 0;
+    width: fit-content;
+    font-size: 12px;
 }
 
 .CalendarTasks .header .Dropdown-menu {
-  min-width: max-content;
+    min-width: max-content;
 }
 
 .calendar_right_division .header .Dropdown-control {
-  min-width: max-content;
-  background-color: transparent;
+    min-width: max-content;
+    background-color: transparent;
 }
 
 .CalendarTask {
-  display: grid;
-  grid-template-columns: 1fr 1.5fr 1.5fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  grid-template-areas:
-    "title title title priority"
-    "owner watching deadline options";
-  background-color: var(--email-text-area-bg);
-  border-radius: 10px;
-  margin: 10px 5px;
-  padding: 2px 10px;
+    display: grid;
+    grid-template-columns: 1fr 1.5fr 1.5fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas:
+        'title title title priority'
+        'owner watching deadline options';
+    background-color: var(--email-text-area-bg);
+    border-radius: 10px;
+    margin: 10px 5px;
+    padding: 2px 10px;
 }
 
 .CalendarTask .title {
-  grid-area: title;
-  color: white;
-  font-size: large;
-  margin: 0;
+    grid-area: title;
+    color: white;
+    font-size: large;
+    margin: 0;
 }
 .CalendarTask .title:hover {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .CalendarTask * {
-  align-self: center;
+    align-self: center;
 }
 
 .calendar_tasks_wrapper {
-  height: calc(100% - 35px);
-  overflow: hidden;
-  flex-grow: 1;
+    height: calc(100% - 35px);
+    overflow: hidden;
+    flex-grow: 1;
 }
 
 .CalendarTask .priority {
-  grid-area: priority;
-  background-color: lightblue;
-  border-radius: 100%;
-  width: 10px;
-  height: 10px;
-  margin-left: auto;
-  margin-right: 5px;
+    grid-area: priority;
+    background-color: lightblue;
+    border-radius: 100%;
+    width: 10px;
+    height: 10px;
+    margin-left: auto;
+    margin-right: 5px;
 }
 
 .CalendarTask .priority.Urgent {
-  background-color: red;
+    background-color: red;
 }
 .CalendarTask .priority.CanWait {
-  background-color: green;
+    background-color: green;
 }
 
 .CalendarTask .priority.Important {
-  background-color: orange;
+    background-color: orange;
 }
 
 .CalendarTask .deadline {
-  grid-area: deadline;
-  color: var(--main-text-color);
+    grid-area: deadline;
+    color: var(--main-text-color);
 }
 
 .CalendarTask .options {
-  grid-area: options;
-  margin-left: auto;
+    grid-area: options;
+    margin-left: auto;
 }
 .CalendarTask .owner {
-  grid-area: owner;
+    grid-area: owner;
 }
 
 .CalendarTask .watching {
-  grid-area: watching;
+    grid-area: watching;
 }

@@ -1,5 +1,4 @@
-
-@import '../Globals.css';
+@import '../misc/Globals.css';
 
 .GroupedThreads {
     display: flex;
@@ -17,24 +16,27 @@
 }
 
 button.Urgent {
-  color: red;
+    color: red;
 }
 
 button.Important {
-  color: orange;
+    color: orange;
 }
 
 button.CanWait {
-  color: green;
+    color: green;
 }
 
 button.Default {
-  color: rgb(24, 116, 177);
+    color: rgb(24, 116, 177);
 }
 
-button.Urgent , button.Important, button.CanWait, button.Default{
-  font-size: large;
-  border-color: var(--email-container-background);
-  border-width: 2px;
-  border-style: solid;
+button.Urgent,
+button.Important,
+button.CanWait,
+button.Default {
+    font-size: large;
+    border-color: var(--email-container-background);
+    border-width: 2px;
+    border-style: solid;
 }

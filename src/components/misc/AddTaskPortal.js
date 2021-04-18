@@ -1,10 +1,10 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import PriorityOptions from './PriorityOptions.js';
 import { useSelector } from 'react-redux';
-import './styles/AddTaskPortal.css';
-import { IMPORTANT, PRIORITIES } from '../data_objects/Consts.js';
-import { Contact } from '../data_objects/Contact.js';
+import '../styles/AddTaskPortal.css';
+import { PRIORITIES } from '../../data_objects/Consts.js';
+import { Contact } from '../../data_objects/Contact.js';
 import { DatePickerComponent } from '@syncfusion/ej2-react-calendars';
 
 const DEFAULT_TASK_TEXT = 'Manual Task';

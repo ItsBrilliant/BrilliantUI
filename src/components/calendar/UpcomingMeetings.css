@@ -1,11 +1,10 @@
-@import "../Globals.css";
+@import '../misc/Globals.css';
 
 .UpcomingMeetings {
     width: 100%;
     height: max-content;
     background-color: var(--email-container-background);
     color: white;
-
 }
 .UpcomingMeetings .meetings {
     display: flex;
@@ -13,14 +12,14 @@
     padding-bottom: 17px;
     margin-bottom: 0;
 }
-.UpcomingMeetings .meetings_wrapper{
+.UpcomingMeetings .meetings_wrapper {
     overflow: hidden;
-    width:100%;
+    width: 100%;
     padding-bottom: 0;
     margin: 0;
 }
 
-.UpcomingMeetings .MeetingIcon{
+.UpcomingMeetings .MeetingIcon {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -28,11 +27,10 @@
     margin-right: 10px;
 }
 
-.UpcomingMeetings .MeetingIcon .meeting_time{
+.UpcomingMeetings .MeetingIcon .meeting_time {
     font-size: 12px;
 }
 
-.UpcomingMeetings .simple_bar{
-    width:100%;
+.UpcomingMeetings .simple_bar {
+    width: 100%;
 }
-

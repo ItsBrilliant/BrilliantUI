@@ -1,40 +1,39 @@
 import React from 'react';
-import { Router, Switch, Route, Link, Redirect } from 'react-router-dom';
-import Mail from './mail/Mail.js';
+import { Router, Switch, Route, Redirect } from 'react-router-dom';
+import Nav from './Nav';
+import Mail from '../mail/Mail.js';
 import './Home.css';
-import { ExpandEvents, ResetEvents } from '../actions/events';
+import { ExpandEvents, ResetEvents } from '../../actions/events';
 import {
     get_all_mail,
     get_calendar,
     get_mail_folders,
     refresh_mail,
     refresh_calendar,
-} from '../backend/Connect.js';
-import Calendar from './calendar/Calendar.js';
+} from '../../backend/Connect.js';
+import Calendar from '../calendar/Calendar.js';
 import {
     create_calendar_events,
     add_meetings_from_tasks,
-} from './calendar/utils';
-import { EmailComposers } from './EmailComposer.js';
-import { Create } from '../actions/email_composer.js';
-import { useDispatch } from 'react-redux';
+} from '../calendar/utils';
+import { EmailComposers } from '../misc/EmailComposer.js';
 import { LoginPage } from './LoginPage.js';
 import { connect } from 'react-redux';
-import { Login } from '../actions/login.js';
-import { Update, Delete } from '../actions/tasks.js';
-import { ExpandThreads, ResetThreads } from '../actions/email_threads.js';
-import { Contact } from '../data_objects/Contact.js';
-import { ALL_FOLDERS_MAGIC, MAIL_FOLDERS } from '../data_objects/Consts.js';
-import { Task } from '../data_objects/Task';
+import { Login } from '../../actions/login.js';
+import { Update, Delete } from '../../actions/tasks.js';
+import { ExpandThreads, ResetThreads } from '../../actions/email_threads.js';
+import { Contact } from '../../data_objects/Contact.js';
+import { ALL_FOLDERS_MAGIC, MAIL_FOLDERS } from '../../data_objects/Consts.js';
+import { Task } from '../../data_objects/Task';
 import axios from 'axios';
-import { Email } from '../data_objects/Email.js';
-import Tasks from '../components/tasks/Tasks';
-import { get_tasks_from_database } from '../backend/ConnectDatabase';
-import { build_task_from_database } from '../backend/utils.js';
-import BrilliantFeed from '../components/feed/BrilliantFeed';
-import { Search } from './search/Search';
-import { SearchPage } from './search/SearchPage';
-import Filter from '../components/filter/Filter';
+import { Email } from '../../data_objects/Email.js';
+import Tasks from '../tasks/Tasks';
+import { get_tasks_from_database } from '../../backend/ConnectDatabase';
+import { build_task_from_database } from '../../backend/utils.js';
+import BrilliantFeed from '../feed/BrilliantFeed';
+import { Search } from '../search/Search';
+import { SearchPage } from '../search/SearchPage';
+import Filter from '../filter/Filter';
 
 const history = require('history').createBrowserHistory();
 
@@ -286,59 +285,6 @@ export class Home extends React.Component {
             </Router>
         );
     }
-}
-
-function Nav() {
-    const dispatch = useDispatch();
-    const logo = { icon: 'button_icons/logo.svg', link: '/' };
-    const brilliant_mode = {
-        icon: 'button_icons/brilliant.svg',
-        link: '/feed',
-    };
-    const accounts = { icon: 'button_icons/accounts.svg', link: '/' };
-    const mail = { icon: 'button_icons/mail.svg', link: '/mail' };
-    const layout = { icon: 'button_icons/layout.svg', link: '/' };
-    const calendar = { icon: 'button_icons/calendar.svg', link: '/calendar' };
-    const files = { icon: 'button_icons/files.svg', link: '/search' };
-    const people = { icon: 'button_icons/people.svg', link: '/' };
-    const task = { icon: 'button_icons/task.svg', link: '/tasks' };
-    const user_account = { icon: 'person_images/0.jpg', link: '/login' };
-    mail.additional = (
-        <div className="plus">
-            <button onClick={() => dispatch(Create({ composer_type: 'new' }))}>
-                +
-            </button>
-        </div>
-    );
-    return (
-        <div className="Nav">
-            {NavCluster([logo])}
-            {NavCluster([brilliant_mode])}
-            {NavCluster([mail, task, calendar, people, files])}
-            {NavCluster([layout, accounts])}
-            {
-                <Link className="last_nav_link" to={user_account.link}>
-                    <img src={user_account.icon} />
-                </Link>
-            }
-        </div>
-    );
-}
-//            <img className='nav_link' src={icon} />
-function NavCluster(icon_links) {
-    return (
-        <div className="NavCluster">
-            {icon_links.map((i_l) => (
-                <div className="nav_link" key={i_l.icon}>
-                    <Link to={i_l.link}>
-                        <div></div>
-                    </Link>
-                    <img src={i_l.icon} />
-                    {i_l.additional}
-                </div>
-            ))}
-        </div>
-    );
 }
 
 const mapStateToProps = (state) => ({

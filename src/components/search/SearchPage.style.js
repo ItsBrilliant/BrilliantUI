@@ -4,7 +4,7 @@ import {
     email_text_area_bg,
     link_hover_color,
     main_text_color,
-} from '../StyleConsts';
+} from '../misc/StyleConsts';
 
 export const DetailedSearchResultStyle = styled.div`
     padding: 10px;

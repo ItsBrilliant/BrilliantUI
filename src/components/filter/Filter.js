@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { RemoveFilter, SetFilter } from '../../actions/filter';
-import OptionsButton from '../OptionsButton';
+import OptionsButton from '../misc/OptionsButton';
 import SelectedFilters from './SelectedFilters';
 import React, { useState } from 'react';
 import Select, { components } from 'react-select';

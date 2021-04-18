@@ -5,7 +5,7 @@ import {
     email_container_background,
     main_bg_color,
     link_hover_color,
-} from '../StyleConsts';
+} from '../misc/StyleConsts';
 import { URGENT, IMPORTANT, CAN_WAIT } from '../../data_objects/Consts';
 
 const TaskGrid = styled.div`

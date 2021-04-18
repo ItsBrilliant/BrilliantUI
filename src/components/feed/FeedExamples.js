@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { SelectThread } from '../../actions/email_threads';
 import { QuickReply } from '../tasks/SingleTaskInfo';
-import { send_quick_reply } from '../email_compuser_utils.js';
-import { EmailComposer } from '../EmailComposer';
+import { send_quick_reply } from '../misc/email_composer_utils.js';
+import { EmailComposer } from '../misc/EmailComposer';
 import EmailTextArea from '../mail/EmailTextArea';
 import {
     URGENT,

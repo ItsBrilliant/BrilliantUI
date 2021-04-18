@@ -1,4 +1,4 @@
-@import './Globals.css';
+@import '../misc/Globals.css';
 
 .Home {
     background-color: var(--main-bg-color);

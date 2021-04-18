@@ -1,11 +1,11 @@
-@import "../Globals.css";
+@import '../misc/Globals.css';
 
-.EmailThread .threadIcon, .EmailContainer .threadIcon {
-  border-radius: 100%;
-  height: 50px;
-  width: 50px;
-  margin: 2px;
-
+.EmailThread .threadIcon,
+.EmailContainer .threadIcon {
+    border-radius: 100%;
+    height: 50px;
+    width: 50px;
+    margin: 2px;
 }
 
 .EmailContainer .email_text_area .threadIcon {
@@ -14,72 +14,65 @@
 }
 
 .attachment {
-  margin: 5px;
-  height: 40px;
-  width: 40px;
+    margin: 5px;
+    height: 40px;
+    width: 40px;
 }
-.EmailThread:hover{
-  cursor: pointer;
-
-}
-
-.EmailThread{
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  border-radius: 20px;
-  max-width: 100%;
-  overflow-x: visible;
-  background-color: transparent;
-  margin: 5px;
-  padding: 5px;
-  font-size: medium;
-  font-weight: normal;
-
+.EmailThread:hover {
+    cursor: pointer;
 }
 
+.EmailThread {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-radius: 20px;
+    max-width: 100%;
+    overflow-x: visible;
+    background-color: transparent;
+    margin: 5px;
+    padding: 5px;
+    font-size: medium;
+    font-weight: normal;
+}
 
 .selected_thread {
-  background-color: var(--selected-thread-bg-color);
+    background-color: var(--selected-thread-bg-color);
 }
-
-
 
 .thread_labels {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: flex-start;
-  flex-wrap: nowrap;
-  
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-wrap: nowrap;
 }
 
-.num_tasks_label{
-  width: 20px;
-  height: 20px;
-  border-radius: 100%;
-  padding: 1px;
-  color: black;
-  background-color: lightblue;
-  margin-top: 5px;
-  text-align: center;
-  font-weight: bold;
-  font-size: medium;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
+.num_tasks_label {
+    width: 20px;
+    height: 20px;
+    border-radius: 100%;
+    padding: 1px;
+    color: black;
+    background-color: lightblue;
+    margin-top: 5px;
+    text-align: center;
+    font-weight: bold;
+    font-size: medium;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .unread h4 {
-  color: white;
+    color: white;
 }
-.unread.email_text_area, .unread .TimeStamp{
-  color: var(--unread-text-color);
+.unread.email_text_area,
+.unread .TimeStamp {
+    color: var(--unread-text-color);
 }
-
 
 button {
-  outline: none;
-  font-weight: normal;
+    outline: none;
+    font-weight: normal;
 }
