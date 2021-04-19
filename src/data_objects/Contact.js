@@ -13,7 +13,7 @@ export class Contact {
         var existing_contact = Contact.contact_dict[address];
         if (existing_contact) {
             const name = recipient_object['emailAddress']['name'];
-            if (name && !existing_contact.get_name())
+            if (name && !existing_contact.recipient['emailAddress']['name'])
                 existing_contact.set_name(name);
             return existing_contact;
         } else {

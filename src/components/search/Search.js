@@ -5,6 +5,7 @@ import { SearchStyle } from './Search.style';
 import { ApplySearch } from '../../actions/search';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import Select from 'react-select';
 
 export function Search(props) {
     const [search_value, set_search] = useState('');
