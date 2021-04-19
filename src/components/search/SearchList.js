@@ -5,7 +5,7 @@ import { useEmails, useTasks } from '../../hooks/redux';
 import { filter_search_objects, SEARCH_RESULT_PROPS } from './SearchResults';
 import { Contact } from '../../data_objects/Contact';
 import { SearchResultStyle } from './Search.style';
-import { reduce_results } from './utils';
+import { reduce_results, get_filtered_search_results } from './utils';
 
 const MAX_RESULTS = 15;
 export function SearchList(props) {
@@ -26,31 +26,47 @@ export function SearchList(props) {
         />
     );
     if (props.search_value.length >= 2) {
-        const conversations = filter_search_objects(
+        const conversations = get_filtered_search_results(
+            'emails',
+            props.search_filters,
+            filter_search_objects,
             all_emails,
             'email',
             props.search_value
         );
-        const tasks = filter_search_objects(
+        const tasks = get_filtered_search_results(
+            'tasks',
+            props.search_filters,
+            filter_search_objects,
             all_tasks,
             'task',
             props.search_value
         );
-        const events = filter_search_objects(
+        const events = get_filtered_search_results(
+            'events',
+            props.search_filters,
+            filter_search_objects,
             all_events,
             'event',
             props.search_value
         );
-        const files = filter_search_objects(
+        const files = get_filtered_search_results(
+            'files',
+            props.search_filters,
+            filter_search_objects,
             all_emails,
             'file',
             props.search_value
         );
-        const contacts = filter_search_objects(
+        const contacts = get_filtered_search_results(
+            'contacts',
+            props.search_filters,
+            filter_search_objects,
             Contact.get_all_contacts(),
             'contact',
             props.search_value
         );
+
         const total_num_results =
             conversations.length +
             tasks.length +

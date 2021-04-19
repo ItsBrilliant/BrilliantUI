@@ -16,9 +16,11 @@ export const SearchBar = ({ ...props }) => {
                     props.my_on_focus();
                 }}
                 onFocus={props.my_on_focus}
-                onBlur={props.my_on_blur}
                 onKeyDown={props.my_key_down}
             />
+            <button className="close_search_bar" onClick={props.my_on_blur}>
+                &times;
+            </button>
         </SearchBarStyle>
     );
 };

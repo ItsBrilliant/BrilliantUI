@@ -29,3 +29,16 @@ export function reduce_results(arr, current_num, limit) {
     const required_arr_num = Math.round((arr.length * limit) / current_num);
     return arr.slice(0, required_arr_num);
 }
+
+export function get_filtered_search_results(
+    type,
+    filter,
+    get_search_results,
+    ...args
+) {
+    if (filter.length === 0 || filter.includes(type)) {
+        return get_search_results(...args);
+    } else {
+        return [];
+    }
+}

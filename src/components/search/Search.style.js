@@ -55,6 +55,13 @@ export const SearchStyle = styled.div.attrs((props) => ({
         opacity: ${(props) => props.list_opacity};
         pointer-events: ${(props) => props.pointer_events};
     }
+    button.close_search_bar {
+        margin-left: auto;
+        background-color: transparent;
+        color: ${main_text_color};
+        font-size: 16px;
+        opacity: ${(props) => props.list_opacity};
+    }
 `;
 
 export const SearchResultStyle = styled.div`
