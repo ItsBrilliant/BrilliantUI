@@ -12,6 +12,16 @@ export function SearchList(props) {
     const all_events = useSelector((state) => state.events);
     const all_emails = useEmails();
     const all_tasks = useTasks(); //'status', 'Done', (a, b) => a !== b);
+    const get_search_results = (type, data) => {
+        return get_filtered_search_results(
+            type,
+            props.search_filters,
+            filter_search_objects,
+            data,
+            type,
+            props.search_value
+        );
+    };
     if (!props.visible) {
         return null;
     }
@@ -26,45 +36,13 @@ export function SearchList(props) {
         />
     );
     if (props.search_value.length >= 2) {
-        const conversations = get_filtered_search_results(
-            'emails',
-            props.search_filters,
-            filter_search_objects,
-            all_emails,
-            'email',
-            props.search_value
-        );
-        const tasks = get_filtered_search_results(
-            'tasks',
-            props.search_filters,
-            filter_search_objects,
-            all_tasks,
-            'task',
-            props.search_value
-        );
-        const events = get_filtered_search_results(
-            'events',
-            props.search_filters,
-            filter_search_objects,
-            all_events,
-            'event',
-            props.search_value
-        );
-        const files = get_filtered_search_results(
-            'files',
-            props.search_filters,
-            filter_search_objects,
-            all_emails,
-            'file',
-            props.search_value
-        );
-        const contacts = get_filtered_search_results(
+        const conversations = get_search_results('emails', all_emails);
+        const tasks = get_search_results('tasks', all_tasks);
+        const events = get_search_results('events', all_events);
+        const files = get_search_results('files', all_emails);
+        const contacts = get_search_results(
             'contacts',
-            props.search_filters,
-            filter_search_objects,
-            Contact.get_all_contacts(),
-            'contact',
-            props.search_value
+            Contact.get_all_contacts()
         );
 
         const total_num_results =

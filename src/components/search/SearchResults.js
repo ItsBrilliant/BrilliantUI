@@ -37,18 +37,18 @@ export function SearchResults(props) {
 }
 
 export const SEARCH_RESULT_PROPS = {
-    event: EVENT_PROPS,
-    email: EMAIL_PROPS,
-    file: FILE_PROPS,
-    task: TASK_PROPS,
-    contact: CONTACT_PROPS,
+    events: EVENT_PROPS,
+    emails: EMAIL_PROPS,
+    files: FILE_PROPS,
+    tasks: TASK_PROPS,
+    contacts: CONTACT_PROPS,
 };
 export const SEARCH_FILTER_FUNCTIONS = {
-    event: EVENT_FILTER_FUNCTION,
-    email: EMAIL_FILTER_FUNCTION,
-    file: FILE_FILTER_FUNCTION,
-    task: TASK_FILTER_FUNCTION,
-    contact: CONTACT_FILTER_FUNCTION,
+    events: EVENT_FILTER_FUNCTION,
+    emails: EMAIL_FILTER_FUNCTION,
+    files: FILE_FILTER_FUNCTION,
+    tasks: TASK_FILTER_FUNCTION,
+    contacts: CONTACT_FILTER_FUNCTION,
 };
 
 export function filter_search_objects(data, type, search_value) {

@@ -62,7 +62,7 @@ function DetailedConversationResults(props) {
     const threads = useThreads();
     const thread_ids = filter_search_objects(
         all_emails,
-        'email',
+        'emails',
         props.search_value
     ).map((item) => item.item.get_thread_id());
     const filtered_threads = threads
@@ -87,7 +87,7 @@ function DetailedTaskResults(props) {
     const tasks = useTasks();
     const filtered_tasks = filter_search_objects(
         tasks,
-        'task',
+        'tasks',
         props.search_value
     )
         .map((t) => t.item)
@@ -111,7 +111,7 @@ function DetailedEventResults(props) {
     const events = useSelector((state) => state.events);
     const filtered_events = filter_search_objects(
         events,
-        'event',
+        'events',
         props.search_value
     )
         .map((e) => e.item)
@@ -137,7 +137,7 @@ function DetailedContactResults(props) {
     const all_tasks = useTasks();
     const filtered_contacts = filter_search_objects(
         contacts,
-        'contact',
+        'contacts',
         props.search_value
     )
         .map((c) => c.item)
