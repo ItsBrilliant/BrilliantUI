@@ -18,6 +18,7 @@ export function SearchResults(props) {
         <SearchResultStyle
             onClick={() => {
                 my_on_click(props.item);
+                props.on_select();
             }}
         >
             <img src={props.icon} />

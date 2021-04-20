@@ -1,31 +1,44 @@
 import styled from 'styled-components/macro';
 import {
     email_container_background,
+    email_text_area_bg,
     link_hover_color,
+    main_bg_color,
     main_text_color,
 } from '../misc/StyleConsts';
+import { option_style } from '../../components/filter/Filter.styles';
 
 export const SearchBarStyle = styled.div`
-    display: flex;
-    align-items: center;
     background-color: var(--email-container-background);
-    padding: 10px;
-    margin: 10px 10px 10px 30px;
-    border-radius: 10px;
     border: 1px solid var(--main-text-color);
-    box-sizing: border-box;
-    input,
-    input::placeholder {
-        font-weight: bold;
-        background-color: transparent;
-        font-size: 16px;
-        color: var(--main-text-color);
-        outline: none;
+    border-radius: 10px;
+    margin: 10px 10px 10px 30px;
+    z-index: 2001;
+    .search_bar_input,
+    .search_filter {
+        padding: 10px;
+        box-sizing: border-box;
     }
+    .search_bar_input {
+        display: flex;
+        align-items: center;
 
-    img {
-        margin-right: 10px;
-        width: 20px;
+        input,
+        input::placeholder {
+            font-weight: bold;
+            background-color: transparent;
+            font-size: 16px;
+            color: var(--main-text-color);
+            outline: none;
+        }
+
+        img {
+            margin-right: 10px;
+            width: 20px;
+        }
+    }
+    .search_filter {
+        display: ${(props) => (props.is_active ? 'visible' : 'none')};
     }
 `;
 
@@ -41,10 +54,10 @@ export const SearchStyle = styled.div.attrs((props) => ({
     overflow: hidden;
     transition: height, width 1s ease;
     position: relative;
+    z-index: 1001;
     .SearchList {
         position: relative;
         width: ${(props) => props.width - 60}px;
-        z-index: 3000;
         background-color: ${email_container_background};
         color: ${main_text_color};
         padding: 10px;
@@ -56,10 +69,11 @@ export const SearchStyle = styled.div.attrs((props) => ({
         pointer-events: ${(props) => props.pointer_events};
     }
     button.close_search_bar {
-        margin-left: auto;
+        margin: 0 0 0 auto;
         background-color: transparent;
         color: ${main_text_color};
-        font-size: 16px;
+        font-size: 20px;
+        padding: 0;
         opacity: ${(props) => props.list_opacity};
     }
 `;
@@ -84,3 +98,44 @@ export const SearchResultStyle = styled.div`
         cursor: pointer;
     }
 `;
+export const search_filter_style = {
+    container: (provided) => ({
+        maxHeight: '100px',
+        zIndex: 1002,
+    }),
+    menuList: (provided, state) => ({
+        ...provided,
+        borderRadius: '10px',
+        backgroundColor: email_text_area_bg,
+        color: main_text_color,
+        zIndex: 1002,
+    }),
+    menu: (provided, state) => ({
+        backgroundColor: 'transparent',
+        zIndex: 1002,
+    }),
+    option: option_style,
+    multiValue: (provided, state) => ({
+        ...provided,
+        backgroundColor: link_hover_color,
+        color: 'black',
+        fontWeight: 'bold',
+        fontSize: '20px',
+        borderRadius: '10px',
+    }),
+    control: () => ({
+        backgroundColor: 'transparent',
+        zIndex: 1002,
+    }),
+    multiValueLabel: (provided) => ({
+        ...provided,
+        color: 'black',
+    }),
+    indicatorsContainer: () => ({
+        display: 'none',
+    }),
+    input: (provided) => ({
+        ...provided,
+        color: main_text_color,
+    }),
+};

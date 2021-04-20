@@ -63,6 +63,7 @@ export function SearchList(props) {
                 <SearchResults
                     item={x.item}
                     search_value={props.search_value}
+                    on_select={props.on_select}
                     {...properties}
                 />
             );
@@ -90,10 +91,7 @@ function PreviousSearches(props) {
         </SearchResultStyle>
     ));
     return (
-        <div
-            onMouseLeave={() => props.lock_focus(false)}
-            onMouseEnter={() => props.lock_focus(true)}
-        >
+        <div>
             <h4>recent searches</h4>
             {previous_searches}
         </div>

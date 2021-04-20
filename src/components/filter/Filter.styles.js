@@ -16,7 +16,7 @@ const common_menu_list_style = {
     borderRadius: '10px',
 };
 
-const option_style = (provided, state) => ({
+export const option_style = (provided, state) => ({
     ...provided,
     color: 'white',
     backgroundColor: 'transparent',

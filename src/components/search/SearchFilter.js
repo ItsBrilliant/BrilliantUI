@@ -1,6 +1,7 @@
 import React from 'react';
 import Select from 'react-select';
 import { selectify } from './utils';
+import { SearchBarStyle, search_filter_style } from './Search.style';
 
 export default function SearchFilter(props) {
     const my_on_select = (options, action) => {
@@ -26,7 +27,7 @@ export default function SearchFilter(props) {
     ]);
     return (
         <Select
-            styles={undefined}
+            styles={search_filter_style}
             options={options}
             value={selectify(props.search_filters)}
             onChange={my_on_select}
