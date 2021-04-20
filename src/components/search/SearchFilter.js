@@ -1,5 +1,6 @@
 import React from 'react';
 import Select from 'react-select';
+import { selectify } from './utils';
 
 export default function SearchFilter(props) {
     const my_on_select = (options, action) => {
@@ -34,8 +35,4 @@ export default function SearchFilter(props) {
             placeholder="Search for emails, tasks, events, contacts and files"
         />
     );
-}
-
-function selectify(options) {
-    return options.map((o) => ({ label: o, value: o }));
 }

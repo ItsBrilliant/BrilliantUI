@@ -36,7 +36,7 @@ export class Task {
         this.initiator = initiator ? initiator : Contact.CURRENT_USER;
         this.approve_status = undefined;
         this.watchers = [this.owner];
-        this.messages = DEFAULT_TASK_MESSAGES;
+        this.messages = []; //DEFAULT_TASK_MESSAGES;
         this.tags = [];
         this.status = 'To Do';
     }

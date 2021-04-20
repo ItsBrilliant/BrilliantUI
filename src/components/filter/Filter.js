@@ -5,10 +5,11 @@ import SelectedFilters from './SelectedFilters';
 import React, { useState } from 'react';
 import Select, { components } from 'react-select';
 import { main_menu_style } from './Filter.styles';
-import { FilterPriority, FilterTags, MyControl } from './FilterPriority';
+import { FilterPriority, FilterTags, FilterContacts } from './FilterSubMenu';
 import { useFilters } from '../../hooks/redux';
 import { FilterStyle } from './Filter.styles';
 import { PRIORITIES } from '../../data_objects/Consts';
+import { FILTER_NAMES } from './Consts';
 
 const MenuList = (props) => {
     return (
@@ -18,49 +19,49 @@ const MenuList = (props) => {
 
 export default function Filter(props) {
     const filters = useFilters().map((f) => ({
-        label: f.type === 'priority' ? PRIORITIES[f.value] : f.value,
+        label: get_filter_display_name(f.type, f.value),
         filter_type: f.type,
     }));
-    const [priorities_visible, set_priorities_visible] = useState(false);
-    const [tags_visible, set_tags_visible] = useState(false);
-    //  const [menu_is_open, set_menu_open] = useState(false);
-    const state_setters = {
-        priority: set_priorities_visible,
-        tags: set_tags_visible,
-    };
+    const [selected_sub_menu, set_sub_menu] = useState(null);
+    const [main_menu_open, set_main_menu] = useState(false);
+
     const dispatch = useDispatch();
     const select_menu = (options, action) => {
         if (action.action === 'select-option') {
-            for (const type in state_setters) {
-                // open the right menua and close all others
-                state_setters[type](type === action.option.value);
-            }
+            set_sub_menu(action.option.value);
         } else if (action.action === 'remove-value') {
             dispatch(RemoveFilter({ type: action.removedValue.filter_type }));
         }
     };
     const set_filter = (type, value) => {
         dispatch(SetFilter(type, value));
-        state_setters[type](false);
+        set_sub_menu(null);
+        set_main_menu(false);
+    };
+
+    const toggle_main_menu = () => {
+        set_sub_menu(null);
+        set_main_menu(!main_menu_open);
     };
 
     const options = [
         {
             label: 'Priority',
-            value: 'priority',
+            value: FILTER_NAMES.priority,
         },
         {
-            label: 'Tags',
-            value: 'tags',
+            label: 'Tag',
+            value: FILTER_NAMES.tag,
+        },
+        {
+            label: 'Contact',
+            value: FILTER_NAMES.contact,
         },
     ];
 
     return (
         <FilterStyle>
-            <span
-                //            onClick={() => set_menu_open(!menu_is_open)}
-                className="filter_label"
-            >
+            <span onClick={toggle_main_menu} className="filter_label">
                 Filter
             </span>
             ,
@@ -71,13 +72,32 @@ export default function Filter(props) {
                 value={filters}
                 onChange={select_menu}
                 placeholder=""
+                menuIsOpen={main_menu_open}
                 closeMenuOnSelect={false}
             />
             <FilterPriority
                 on_select={set_filter}
-                visible={priorities_visible}
+                visible={selected_sub_menu === FILTER_NAMES.priority}
             />
-            <FilterTags on_select={set_filter} visible={tags_visible} />;
+            <FilterTags
+                on_select={set_filter}
+                visible={selected_sub_menu === FILTER_NAMES.tag}
+            />
+            <FilterContacts
+                on_select={set_filter}
+                visible={selected_sub_menu === FILTER_NAMES.contact}
+            />
+            ;
         </FilterStyle>
     );
+}
+
+function get_filter_display_name(filter_type, filter_value) {
+    if (filter_type === 'priority') {
+        return PRIORITIES[filter_value];
+    } else if (filter_type === 'contact') {
+        return filter_value.get_name();
+    } else {
+        return filter_value;
+    }
 }

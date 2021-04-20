@@ -42,3 +42,7 @@ export function get_filtered_search_results(
         return [];
     }
 }
+
+export function selectify(options) {
+    return options.map((o) => ({ label: o, value: o }));
+}

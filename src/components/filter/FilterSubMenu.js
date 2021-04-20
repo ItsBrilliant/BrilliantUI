@@ -3,24 +3,48 @@ import Select from 'react-select';
 import { useTaskTags } from '../../hooks/redux';
 import { sub_menu_style } from './Filter.styles';
 import { PRIORITIES } from '../../data_objects/Consts';
+import { Contact } from '../../data_objects/Contact';
+import { FILTER_NAMES } from './Consts';
 
 export const MyControl = ({ children, ...rest }) => <div>{children}</div>;
 export function FilterPriority(props) {
     const options = ['Urgent', 'Important', 'Can Wait'].map((o) => ({
         label: o,
         value: PRIORITIES.indexOf(o),
-        filter_type: 'priority',
+        filter_type: FILTER_NAMES.priority,
     }));
-    return <FilterSubMenu options={options} type="priority" {...props} />;
+    return (
+        <FilterSubMenu
+            options={options}
+            type={FILTER_NAMES.priority}
+            {...props}
+        />
+    );
 }
 
 export function FilterTags(props) {
     const options = useTaskTags().map((o) => ({
         label: o,
         value: o,
-        filter_type: 'tags',
+        filter_type: FILTER_NAMES.tag,
     }));
-    return <FilterSubMenu options={options} type="tags" {...props} />;
+    return (
+        <FilterSubMenu options={options} type={FILTER_NAMES.tag} {...props} />
+    );
+}
+export function FilterContacts(props) {
+    const options = Contact.get_all_contacts().map((o) => ({
+        label: o.get_name(),
+        value: o,
+        filter_type: FILTER_NAMES.contact,
+    }));
+    return (
+        <FilterSubMenu
+            options={options}
+            type={FILTER_NAMES.contact}
+            {...props}
+        />
+    );
 }
 
 export function FilterSubMenu(props) {
@@ -37,8 +61,8 @@ export function FilterSubMenu(props) {
                 options={props.options}
                 onChange={handle_change}
                 defaultMenuIsOpen={true}
+                autoFocus={true}
                 placeholder=""
-                classNamePrefix="my_react_select"
             />
         </div>
     );
