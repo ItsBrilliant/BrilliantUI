@@ -10,8 +10,8 @@ var CALENDER_EVENT_VERSIONS = {};
 var EMAIL_VERSIONS = {};
 var NUM_EMAILS_LOADED = 0;
 var NUM_EVENTS_LOADED = 0;
-const PAGE_SIZE = 50;
-const EMAIL_CHUNK_SIZE = 3;
+const PAGE_SIZE = 150;
+const EMAIL_CHUNK_SIZE = 5;
 
 export async function append_email_attachments(emails) {
     if (!emails) {

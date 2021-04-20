@@ -77,6 +77,7 @@ export const sub_menu_style = {
     }),
     input: () => ({
         color: main_text_color,
+        zIndex: 1001,
     }),
     option: option_style,
 };

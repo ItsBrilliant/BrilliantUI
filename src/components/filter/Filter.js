@@ -93,9 +93,9 @@ export default function Filter(props) {
 }
 
 function get_filter_display_name(filter_type, filter_value) {
-    if (filter_type === 'priority') {
+    if (filter_type === FILTER_NAMES.priority) {
         return PRIORITIES[filter_value];
-    } else if (filter_type === 'contact') {
+    } else if (filter_type === FILTER_NAMES.contact) {
         return filter_value.get_name();
     } else {
         return filter_value;

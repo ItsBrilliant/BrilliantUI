@@ -34,7 +34,7 @@ export function FilterTags(props) {
 }
 export function FilterContacts(props) {
     const options = Contact.get_all_contacts().map((o) => ({
-        label: o.get_name(),
+        label: o.get_address(),
         value: o,
         filter_type: FILTER_NAMES.contact,
     }));
