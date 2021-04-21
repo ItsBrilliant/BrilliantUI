@@ -52,6 +52,7 @@ function TagChips(props) {
     return (
         <div>
             <input
+                autoFocus={true}
                 autoComplete="off"
                 className={'input'}
                 value={new_tag_value}

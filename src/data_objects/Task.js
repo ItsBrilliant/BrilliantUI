@@ -79,6 +79,12 @@ export class Task {
         }
         return 'watchers';
     }
+
+    remove_watcher(contact) {
+        this.watchers = this.watchers.filter((w) => w !== contact);
+        return 'watchers';
+    }
+
     add_message(message_body) {
         const message = new TaskMessage(
             message_body,

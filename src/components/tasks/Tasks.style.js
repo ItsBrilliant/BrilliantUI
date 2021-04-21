@@ -159,6 +159,17 @@ export const AddWatchersStyle = styled(PortalStyle)`
     .NameWithIcon {
         display: flex;
         align-items: center;
+
+        .contact_name {
+            cursor: pointer;
+            margin-right: 5px;
+        }
+
+        .minus_icon {
+            margin-left: auto;
+            font-weight: bold;
+            font-size: 26px;
+        }
     }
     .NameWithIcon:hover {
         background-color: ${link_hover_color};

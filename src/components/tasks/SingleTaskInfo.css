@@ -266,6 +266,11 @@
     position: relative;
     left: -5px;
 }
+
+.SingleTaskInfo .People p.remove_watcher {
+    cursor: pointer;
+}
+
 .SingleTaskInfo textarea.EditingTextArea {
     min-height: 60px;
     height: max-content;

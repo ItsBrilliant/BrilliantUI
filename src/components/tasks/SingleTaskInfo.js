@@ -16,7 +16,7 @@ import { Task } from '../../data_objects/Task';
 import { DateTimePickerComponent } from '@syncfusion/ej2-react-calendars';
 import { GeneralPortal } from '../misc/GeneralPortal';
 import AddTag from './AddTag';
-import AddWatchers, { NameWithIcon } from './AddWatchers.js';
+import AddWatchers, { NameWithIcon, RemoveWatcher } from './AddWatchers.js';
 import { Contact } from '../../data_objects/Contact';
 import { SelectThread } from '../../actions/email_threads';
 import { useHistory } from 'react-router-dom';
@@ -235,27 +235,28 @@ export function QuickReply(props) {
 function People(props) {
     const dispatch = useDispatch();
     const task_updater = (task) => dispatch(Update(task));
-    const [add_watchers_visible, set_visible] = useState(false);
-    const [change_owner_visible, set_change_owner_visible] = useState(false);
+    const [visible_portal, set_visible_portal] = useState(null);
     const [location, set_location] = useState({ x: 0, y: 0 });
-    const open_portal = (set_visible_func, e) => {
+    const open_portal = (portal_name, e) => {
         set_location({ x: e.pageX - 200, y: e.pageY });
-        set_visible_func(true);
+        set_visible_portal(portal_name);
     };
     const handle_add_watcher = (contact) => {
-        set_visible(false);
+        set_visible_portal(null);
         Task.update_task(task_updater, props.task, 'add_watcher', [contact]);
     };
 
+    const handle_remove_watcher = (contact) => {
+        set_visible_portal(null);
+        Task.update_task(task_updater, props.task, 'remove_watcher', [contact]);
+    };
+
     const handle_set_owner = (contact) => {
-        set_change_owner_visible(false);
+        set_visible_portal(null);
         Task.update_task(task_updater, props.task, 'owner', contact);
     };
     const owner = (
-        <span
-            className="task_owner"
-            onClick={(e) => open_portal(set_change_owner_visible, e)}
-        >
+        <span className="task_owner" onClick={(e) => open_portal('owner', e)}>
             {GroupIcon([props.owner], 1, 50)}
             <div>
                 <p className="owner_name">{props.owner.get_name()}</p>
@@ -267,18 +268,23 @@ function People(props) {
     const watchers = (
         <span>
             <div>
-                <p> Watching</p>
+                <p
+                    className="remove_watcher"
+                    onClick={(e) => open_portal('remove_watcher', e)}
+                >
+                    Watching
+                </p>
             </div>
             {GroupIcon(props.watchers, 6, 30, 22)}
             <button
-                onClick={(e) => open_portal(set_visible, e)}
+                onClick={(e) => open_portal('add_watchers', e)}
                 className="add_watchers"
             >
                 +
             </button>
             <GeneralPortal
-                visible={add_watchers_visible}
-                handle_close={() => set_visible(false)}
+                visible={visible_portal === 'add_watchers'}
+                handle_close={() => set_visible_portal(null)}
                 component={
                     <AddWatchers
                         on_select={handle_add_watcher}
@@ -287,8 +293,19 @@ function People(props) {
                 }
             />
             <GeneralPortal
-                visible={change_owner_visible}
-                handle_close={() => set_change_owner_visible(false)}
+                visible={visible_portal === 'remove_watcher'}
+                handle_close={() => set_visible_portal(null)}
+                component={
+                    <RemoveWatcher
+                        on_select={handle_remove_watcher}
+                        task={props.task}
+                        location={location}
+                    />
+                }
+            />
+            <GeneralPortal
+                visible={visible_portal === 'owner'}
+                handle_close={() => set_visible_portal(null)}
                 component={
                     <TaskOwnerSelect
                         on_select={handle_set_owner}
