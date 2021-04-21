@@ -12,6 +12,7 @@ export const EMAIL_PROPS = {
     },
     url: 'mail',
     action: (email) => SelectThread(email.get_thread_id()),
+    priority: (email) => email.get_priority(),
 };
 
 export const EMAIL_FILTER_FUNCTION = (email, search_value) =>

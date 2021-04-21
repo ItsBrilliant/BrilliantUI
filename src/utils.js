@@ -95,8 +95,12 @@ export function get_priority_style(priority_code) {
     }
 }
 
+export function get_priority_code_from_name(priority_name) {
+    return PRIORITIES.indexOf(priority_name);
+}
+
 export function get_priority_style_by_name(priority_name) {
-    return get_priority_style(PRIORITIES.indexOf(priority_name));
+    return get_priority_style(get_priority_code_from_name(priority_name));
 }
 export function get_file_icon(extension) {
     var icon_name = 'attachment.png';

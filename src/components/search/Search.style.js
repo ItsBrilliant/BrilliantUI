@@ -1,4 +1,5 @@
 import styled from 'styled-components/macro';
+import { URGENT, IMPORTANT, CAN_WAIT } from '../../data_objects/Consts';
 import {
     email_container_background,
     email_text_area_bg,
@@ -78,7 +79,23 @@ export const SearchStyle = styled.div.attrs((props) => ({
     }
 `;
 
-export const SearchResultStyle = styled.div`
+export const SearchResultStyle = styled.div.attrs((props) => {
+    let color = 'lightblue';
+    switch (props.priority) {
+        case URGENT:
+            color = 'red';
+            break;
+        case IMPORTANT:
+            color = 'orange';
+            break;
+        case CAN_WAIT:
+            color = 'green';
+            break;
+    }
+    return {
+        priority_color: color,
+    };
+})`
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -96,6 +113,16 @@ export const SearchResultStyle = styled.div`
         background-color: ${link_hover_color};
         color: black;
         cursor: pointer;
+    }
+    .search_result_priority {
+        border-radius: 100%;
+        background-color: ${(props) => props.priority_color};
+        height: 8px;
+        width: 8px;
+        align-self: center;
+        margin-left: 7px;
+        display: ${(props) =>
+            props.priority === undefined ? 'none' : 'visible'};
     }
 `;
 export const search_filter_style = {

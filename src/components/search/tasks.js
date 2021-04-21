@@ -14,6 +14,7 @@ export const TASK_PROPS = {
     },
     url: 'tasks',
     action: (task) => SelectTask(task.id),
+    priority: (task) => task.priority,
 };
 
 export const TASK_FILTER_FUNCTION = (task, search_value) =>

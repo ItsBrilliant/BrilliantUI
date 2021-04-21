@@ -83,7 +83,9 @@ export class Email {
     get_user_priority() {
         return this.email.user_priority;
     }
-
+    get_priority() {
+        return Email.get_priority(undefined, this.email.id, this);
+    }
     get_tags() {
         return this.tags;
     }
@@ -107,6 +109,9 @@ export class Email {
             let sender_priority = NO_PRIORITY;
             if (email && !email.is_sent()) {
                 sender_priority = email.get_graph_priority();
+            }
+            if (tasks === undefined) {
+                tasks = Object.values(Task.CURRENT_TASKS);
             }
             tasks = tasks.filter((t) => t.email_id === email_id);
             let priorities = tasks.map((task) =>

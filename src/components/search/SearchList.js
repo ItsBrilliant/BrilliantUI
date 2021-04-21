@@ -7,7 +7,7 @@ import { Contact } from '../../data_objects/Contact';
 import { SearchResultStyle } from './Search.style';
 import { reduce_results, get_filtered_search_results } from './utils';
 
-const MAX_RESULTS = 15;
+const MAX_RESULTS = 10;
 export function SearchList(props) {
     const all_events = useSelector((state) => state.events);
     const all_emails = useEmails();

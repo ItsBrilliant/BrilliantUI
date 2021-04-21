@@ -33,13 +33,24 @@ export function LoginPage(props) {
                 {email_labels}
                 <div className="login_page_buttons">{action_button}</div>
             </div>
-            <p style={comment_style}>-Updated April 8th</p>
+            <p style={comment_style}>Updated April 20th</p>
             <p style={comment_style}>
-                -Search for tasks, emails and events, files and contacts via the
-                search bar
+                -Search for emails, tasks, events, files and contacts via the
+                search bar with a built-in filter
             </p>
-            <p style={comment_style}>-Search bar saves previous searches</p>
-            <p style={comment_style}>-Press 'Enter' to enter search page</p>
+            <p style={comment_style}>
+                -Global filter implemented for contacts, tags, and priority
+            </p>
+            <p style={comment_style}>
+                -Change owner of a task from the task view page
+            </p>
+            <p style={comment_style}>
+                -Task conversations are stored in the database
+            </p>
+            <p style={comment_style}>
+                -"Reply to short emails" component in the feed is located at the
+                user's preffered email sending time
+            </p>
         </div>
     );
 }

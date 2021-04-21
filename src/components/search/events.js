@@ -1,5 +1,6 @@
 import { SelectCalendarDate } from '../../actions/events';
 import { format_date } from '../../utils';
+import { get_priority_code_from_name } from '../../utils';
 
 const event_time_stamp = (event) => {
     let start = format_date(event.start);
@@ -15,6 +16,7 @@ export const EVENT_PROPS = {
     time_stamp: event_time_stamp,
     url: 'calendar',
     action: (event) => SelectCalendarDate({ date: event.start, view: 'Day' }),
+    priority: (event) => get_priority_code_from_name(event.priority),
 };
 
 export const EVENT_FILTER_FUNCTION = (event, search_value) =>

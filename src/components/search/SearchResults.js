@@ -14,8 +14,10 @@ import { CONTACT_FILTER_FUNCTION, CONTACT_PROPS } from './contacts';
 
 export function SearchResults(props) {
     const my_on_click = useSearchResultSelect(props.url, props.action);
+    const priority = props.priority ? props.priority(props.item) : undefined;
     return (
         <SearchResultStyle
+            priority={priority}
             onClick={() => {
                 my_on_click(props.item);
                 props.on_select();
@@ -33,6 +35,7 @@ export function SearchResults(props) {
                 )}
             </span>
             <span className="timestamp">{props.time_stamp(props.item)}</span>
+            <span className="search_result_priority" />
         </SearchResultStyle>
     );
 }
