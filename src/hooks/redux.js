@@ -1,5 +1,9 @@
 import { useSelector } from 'react-redux';
-import { ApplyThreadFilters, ApplyTaskFilters } from './search';
+import {
+    ApplyThreadFilters,
+    ApplyTaskFilters,
+    ApplyEventFilters,
+} from './search';
 
 export function useTasks(filter_by, value, func = (a, b) => a === b) {
     const filters = useSelector((state) => state.filters);
@@ -45,6 +49,12 @@ export function useEmailsHead() {
     return threads.map(
         (t) => t.get_emails(null).sort((a, b) => b.date - a.date)[0]
     );
+}
+
+export function useEvents() {
+    const filters = useSelector((state) => state.filters);
+    const events = useSelector((state) => state.events);
+    return ApplyEventFilters(events, filters);
 }
 
 export function useFilters() {

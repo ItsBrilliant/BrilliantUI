@@ -96,6 +96,7 @@ export function get_priority_style(priority_code) {
 }
 
 export function get_priority_code_from_name(priority_name) {
+    priority_name = priority_name === 'CanWait' ? 'Can Wait' : priority_name;
     return PRIORITIES.indexOf(priority_name);
 }
 

@@ -1,6 +1,8 @@
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { FILTER_NAMES } from '../components/filter/Consts';
+import { main_text_color } from '../components/misc/StyleConsts';
+import { get_priority_code_from_name } from '../utils';
 
 export function useSearchResultSelect(url, action) {
     const history = useHistory();
@@ -28,6 +30,31 @@ export function ApplyThreadFilters(threads, filters) {
         );
     }
     return threads;
+}
+
+export function ApplyEventFilters(events, filters) {
+    if (filters[FILTER_NAMES.priority] !== undefined) {
+        events = events.filter(
+            (e) =>
+                get_priority_code_from_name(e.priority) ===
+                filters[FILTER_NAMES.priority]
+        );
+    }
+
+    if (filters[FILTER_NAMES.contact] !== undefined) {
+        events = events.filter((e) => {
+            const organizer_address = e.organizer
+                ? e.organizer.emailAddress.address
+                : undefined;
+            const attendees_addresses = e.attendees.map(
+                (a) => a.emailAddress.address
+            );
+            return [organizer_address, ...attendees_addresses].includes(
+                filters[FILTER_NAMES.contact].get_address()
+            );
+        });
+    }
+    return events;
 }
 
 export function ApplyTaskFilters(tasks, filters) {

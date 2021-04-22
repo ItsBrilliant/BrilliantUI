@@ -33,7 +33,19 @@ export function LoginPage(props) {
                 {email_labels}
                 <div className="login_page_buttons">{action_button}</div>
             </div>
-            <p style={comment_style}>Updated April 20th</p>
+            <p style={comment_style}>Updated April 22nd</p>
+            <p style={comment_style}>
+                -Search result priorities are shown on the right
+            </p>
+            <p style={comment_style}>-Task followers can be removed</p>
+            <p style={comment_style}>
+                -Tasks are sorted by clicking on the header of the column you
+                want to sort by
+            </p>
+            <p style={comment_style}>
+                -Task multiselect button on the left of task row is shown only
+                on hover
+            </p>
             <p style={comment_style}>
                 -Search for emails, tasks, events, files and contacts via the
                 search bar with a built-in filter

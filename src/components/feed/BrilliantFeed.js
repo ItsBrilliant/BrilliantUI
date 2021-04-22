@@ -19,7 +19,7 @@ import {
     fill_meetings,
     is_short_email,
 } from './utils';
-import { useEmailsHead } from '../../hooks/redux';
+import { useEmailsHead, useEvents } from '../../hooks/redux';
 import TaskInfoWrapper from '../tasks/SingleTaskInfo';
 import { now } from 'moment';
 import { get_prefered_email_time, find_closest_slot } from './utils';
@@ -33,7 +33,7 @@ const LAST_HOUR = 20;
 
 export default function BrilliantFeed() {
     const user = useSelector((state) => state.user);
-    let events = useSelector((state) => state.events);
+    let events = useEvents();
     const [selected_task_id, set_task_id] = useState(undefined);
     const head_emails = useEmailsHead();
     const slots = get_slots(NOW, INTERVAL, LAST_HOUR);

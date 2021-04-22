@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { SearchResults } from './SearchResults';
-import { useEmails, useTasks } from '../../hooks/redux';
+import { useEmails, useTasks, useEvents } from '../../hooks/redux';
 import { filter_search_objects, SEARCH_RESULT_PROPS } from './SearchResults';
 import { Contact } from '../../data_objects/Contact';
 import { SearchResultStyle } from './Search.style';
@@ -9,7 +9,7 @@ import { reduce_results, get_filtered_search_results } from './utils';
 
 const MAX_RESULTS = 10;
 export function SearchList(props) {
-    const all_events = useSelector((state) => state.events);
+    const all_events = useEvents();
     const all_emails = useEmails();
     const all_tasks = useTasks(); //'status', 'Done', (a, b) => a !== b);
     const get_search_results = (type, data) => {

@@ -18,17 +18,18 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin-top:  10px;
+    margin-top: 10px;
 }
 
-.Recipients > label{
-    min-width:35px;
+.Recipients > label {
+    min-width: 35px;
     margin-right: 5px;
     vertical-align: middle;
     background-color: var(--email-container-background);
 }
 
-.Recipients .input_container, .Subject input{
+.Recipients .input_container,
+.Subject input {
     border: 1px solid var(--main-text-color);
     border-radius: 10px;
     padding: 5px;
@@ -39,7 +40,7 @@
     outline: none;
 }
 
-.on_top .EmailComposer{
+.on_top .EmailComposer {
     z-index: 101;
 }
 
@@ -50,7 +51,8 @@
     align-items: center;
 }
 
-.subject_title_line h3, .EmailContent h3 {
+.subject_title_line h3,
+.EmailContent h3 {
     margin: 2px 0px;
     font-weight: normal;
 }
@@ -64,7 +66,9 @@
     padding: 5px;
 }
 
-.input_container:focus, .ql-editor:focus, .Subject input:focus {
+.input_container:focus,
+.ql-editor:focus,
+.Subject input:focus {
     border: 1px solid rgb(107, 161, 219);
 }
 
@@ -73,24 +77,23 @@
 }
 
 .Subject .Dropdown-control {
-        background-color: transparent;
+    background-color: transparent;
 }
 
 .Subject .Menu {
     justify-content: flex-end;
-
 }
 
 .Urgent .Dropdown-placeholder.is-selected {
-  color: red;
+    color: red;
 }
 
 .Important .Dropdown-placeholder.is-selected {
-  color: orange;
+    color: orange;
 }
 
 .CanWait .Dropdown-placeholder.is-selected {
-  color: green;
+    color: green;
 }
 
 .EmailComposer .header {
@@ -126,12 +129,12 @@
     font-size: large;
 }
 
-button:hover{
+button:hover {
     cursor: pointer;
 }
 
-#sender_address{
-    color:white;
+#sender_address {
+    color: white;
     font-size: larger;
     pointer-events: none;
 }
@@ -144,13 +147,14 @@ button:hover{
     border-radius: 10px;
     background-color: green;
     opacity: 0;
+    pointer-events: none;
     font-size: larger;
 }
 
 .email_sent_message.visible {
     opacity: 1;
     transition: opacity 0.7s ease;
-
+    pointer-events: visible;
 }
 
 .email_sent_label {

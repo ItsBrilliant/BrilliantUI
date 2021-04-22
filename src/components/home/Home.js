@@ -34,6 +34,7 @@ import BrilliantFeed from '../feed/BrilliantFeed';
 import { Search } from '../search/Search';
 import { SearchPage } from '../search/SearchPage';
 import Filter from '../filter/Filter';
+import { ApplyEventFilters } from '../../hooks/search';
 
 const history = require('history').createBrowserHistory();
 
@@ -286,7 +287,7 @@ const mapStateToProps = (state) => ({
     user: state.user.contact,
     emailThreads: state.email_threads,
     tasks: Object.values(state.tasks),
-    calendarEvents: state.events,
+    calendarEvents: ApplyEventFilters(state.events, state.filters),
 });
 
 const mapDispatchToProps = {
