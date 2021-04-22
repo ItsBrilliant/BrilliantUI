@@ -10,8 +10,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Task } from '../../data_objects/Task';
 
 export default function TaskRow(props) {
-    //   const [multiselect_visible, set_visible] = useState(false);
-    //onMouseEnter={() => set_visible(true)} onMouseLeave={() => set_visible(false)}
+    const [hovered, set_hovered] = useState(false);
+    const multiselect_button_visible =
+        hovered || props.multiselected_tasks.length > 0;
     const dispatch = useDispatch();
     const task_updater = (task) => dispatch(Update(task));
     const task_dict = useSelector((state) => state.tasks);
@@ -34,7 +35,12 @@ export default function TaskRow(props) {
     const change_priority = (value) => change_multi([value], 'set_priority');
 
     return (
-        <TaskRowStyle is_multiselected={is_multiselected}>
+        <TaskRowStyle
+            is_multiselected={is_multiselected}
+            onMouseEnter={() => set_hovered(true)}
+            onMouseLeave={() => set_hovered(false)}
+            multiselect_visible={multiselect_button_visible}
+        >
             <span
                 onClick={() => props.on_multiselect(props.task.id)}
                 className="multiselect"

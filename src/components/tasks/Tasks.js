@@ -34,9 +34,10 @@ export default function Tasks() {
     const group_priority_reversed = task_sort_methods.filter(
         (t) => t.type === 'priority'
     )[0].reversed;
-    const priorities_order = group_priority_reversed
-        ? [URGENT, IMPORTANT, CAN_WAIT]
-        : [CAN_WAIT, IMPORTANT, URGENT];
+    let priorities_order = [URGENT, IMPORTANT, CAN_WAIT];
+    if (group_priority_reversed) {
+        priorities_order.reverse();
+    }
     const my_set_multiselect = (id) => {
         if (id && !multiselected_tasks.includes(id)) {
             set_multiselect([...multiselected_tasks, id]);
@@ -59,6 +60,7 @@ export default function Tasks() {
             <MultiselectActions
                 on_delete={my_delete_tasks}
                 multiselected_tasks={multiselected_tasks}
+                on_cancel={() => set_multiselect([])}
             />
             <TaskHeader
                 selected_filter={filter_index}
@@ -117,8 +119,14 @@ function MultiselectActions(props) {
             <span>
                 {props.multiselected_tasks.length + ` ${task_word} selected`}
             </span>
-            <button onClick={() => props.on_delete(props.multiselected_tasks)}>
+            <button
+                className="delete"
+                onClick={() => props.on_delete(props.multiselected_tasks)}
+            >
                 Delete
+            </button>
+            <button className="cancel" onClick={props.on_cancel}>
+                Cancel
             </button>
         </MultiselectActionsStyle>
     );

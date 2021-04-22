@@ -48,7 +48,7 @@ export const TaskRowStyle = styled(TaskGrid)`
     color: ${main_text_color};
     height: 60px;
     margin: 5px 15px;
-    border-radius: 20px;
+    border-radius: 10px;
     border: 2px solid;
     border-color: ${(props) =>
         props.is_multiselected ? 'white' : 'transparent'};
@@ -81,6 +81,7 @@ export const TaskRowStyle = styled(TaskGrid)`
             props.is_multiselected ? 'white' : link_hover_color};
     }
     .multiselect {
+        transition: opacity 0.7s ease;
         position: relative;
         left: -10px;
         grid-area: multiselect;
@@ -90,6 +91,7 @@ export const TaskRowStyle = styled(TaskGrid)`
         border: 2px solid white;
         background-color: ${(props) =>
             props.is_multiselected ? 'white' : 'black'};
+        opacity: ${(props) => (props.multiselect_visible ? '1' : '0')};
     }
     .multiselect:hover {
         background-color: gray;
@@ -121,9 +123,11 @@ export const TaskHeaderStyle = styled(TaskGrid)`
     height: 40px;
     span.header {
         cursor: pointer;
+        justify-self: center;
+        margin: 0;
     }
     .filter_buttons {
-        grid-area: first_column;
+        grid-area: multiselect / first_column;
         margin-left: 5px;
         justify-self: start;
         button {
@@ -222,10 +226,15 @@ export const MultiselectActionsStyle = styled.div`
         border-radius: 3px;
         outline: none;
         border: none;
-        color: red;
         background-color: ${email_container_background};
         margin-left: 10px;
         pointer-events: ${(props) => (props.visible ? 'auto' : 'none')};
+    }
+    button.delete {
+        color: red;
+    }
+    button.cancel {
+        color: ${main_text_color};
     }
 `;
 
