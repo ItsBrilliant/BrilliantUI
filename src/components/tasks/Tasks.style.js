@@ -119,6 +119,9 @@ export const GroupedTasksStyle = styled.div.attrs((props) => {
 export const TaskHeaderStyle = styled(TaskGrid)`
     background-color: ${email_container_background};
     height: 40px;
+    span.header {
+        cursor: pointer;
+    }
     .filter_buttons {
         grid-area: first_column;
         margin-left: 5px;
@@ -134,6 +137,12 @@ export const TaskHeaderStyle = styled(TaskGrid)`
             background-color: ${link_hover_color};
             color: ${main_bg_color};
         }
+    }
+    .arrow {
+        height: 15px;
+        width: 15px;
+        align-self: flex-end;
+        margin: 0 5px;
     }
 `;
 

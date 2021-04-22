@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { main_text_color } from '../misc/StyleConsts';
 import { TaskHeaderStyle } from './Tasks.style';
 export function TaskHeader(props) {
     const headers = [
@@ -28,11 +29,14 @@ export function TaskHeader(props) {
 
     const header_components = headers.map((h) => (
         <span
-            className={h.value}
+            className={h.value + ' header'}
             key={h.value}
             onClick={() => handle_header_click(h.value)}
         >
-            {h.label}
+            <span>
+                {h.label}
+                <Arrow reversed={is_reversed[h.value]} />
+            </span>
         </span>
     ));
     return (
@@ -73,5 +77,29 @@ function FilterButtons(props) {
                 Following Tasks
             </button>
         </span>
+    );
+}
+
+function Arrow(props) {
+    let style;
+    if (props.reversed) {
+        style = { transform: 'rotateZ(180deg)' };
+    }
+    return (
+        <svg
+            style={style}
+            className="arrow"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 512 512"
+        >
+            <g fill={main_text_color}>
+                <path
+                    d="M374.176,110.386l-104-104.504c-0.006-0.006-0.013-0.011-0.019-0.018c-7.818-7.832-20.522-7.807-28.314,0.002
+			c-0.006,0.006-0.013,0.011-0.019,0.018l-104,104.504c-7.791,7.829-7.762,20.493,0.068,28.285
+			c7.829,7.792,20.492,7.762,28.284-0.067L236,68.442V492c0,11.046,8.954,20,20,20c11.046,0,20-8.954,20-20V68.442l69.824,70.162
+			c7.792,7.829,20.455,7.859,28.284,0.067C381.939,130.878,381.966,118.214,374.176,110.386z"
+                />
+            </g>
+        </svg>
     );
 }
