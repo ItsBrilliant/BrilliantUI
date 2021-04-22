@@ -9,6 +9,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import TaskInfoWrapper from './SingleTaskInfo';
 import { Delete, SelectTask } from '../../actions/tasks';
 import { delete_tasks_database } from '../../backend/ConnectDatabase';
+import { DEFAULT_SORT_METHODS, update_sort_methods } from './utils';
+import { TaskHeader } from './TaskHeader';
 
 const TASK_FILTERS = ['owner', 'initiator', 'watchers'];
 const EQUAL = (a, b) => a === b;
@@ -16,7 +18,9 @@ const FILTER_FUNCTIONS = [EQUAL, EQUAL, (a, b) => a.includes(b)];
 
 export default function Tasks() {
     const [filter_index, set_filter] = useState(0);
-    //const [selected_task, select_task] = useState(null);
+    const [task_sort_methods, set_sort_methods] = useState(
+        DEFAULT_SORT_METHODS
+    );
     const user = useSelector((state) => state.user.contact);
     const dispatch = useDispatch();
     const select_task_id = (id) => dispatch(SelectTask(id));
@@ -41,6 +45,9 @@ export default function Tasks() {
         delete_tasks_database(ids);
         set_multiselect([]);
     };
+    const update_sort = (new_method) => {
+        update_sort_methods(set_sort_methods, new_method, task_sort_methods);
+    };
     return (
         <Fragment>
             <MultiselectActions
@@ -50,6 +57,7 @@ export default function Tasks() {
             <TaskHeader
                 selected_filter={filter_index}
                 on_select_filter={set_filter}
+                update_sort={update_sort}
             />
             <div style={{ height: 'calc(100% - 101px)' }}>
                 <SimpleBar style={{ height: '100%' }}>
@@ -59,6 +67,7 @@ export default function Tasks() {
                         priority={URGENT}
                         tasks={tasks.filter((t) => t.priority === URGENT)}
                         multiselected_tasks={multiselected_tasks}
+                        sort_methods={task_sort_methods}
                     />
                     <GroupedTasks
                         on_multiselect={my_set_multiselect}
@@ -66,6 +75,7 @@ export default function Tasks() {
                         priority={IMPORTANT}
                         tasks={tasks.filter((t) => t.priority === IMPORTANT)}
                         multiselected_tasks={multiselected_tasks}
+                        sort_methods={task_sort_methods}
                     />
                     <GroupedTasks
                         on_multiselect={my_set_multiselect}
@@ -73,6 +83,7 @@ export default function Tasks() {
                         priority={CAN_WAIT}
                         tasks={tasks.filter((t) => t.priority === CAN_WAIT)}
                         multiselected_tasks={multiselected_tasks}
+                        sort_methods={task_sort_methods}
                     />
                 </SimpleBar>
             </div>
@@ -84,53 +95,6 @@ export default function Tasks() {
                 />
             ) : null}
         </Fragment>
-    );
-}
-
-function TaskHeader(props) {
-    return (
-        <TaskHeaderStyle className="header">
-            <FilterButtons
-                selected={props.selected_filter}
-                on_select={props.on_select_filter}
-            ></FilterButtons>
-            <span className="priority">Priority</span>
-            <span className="owner">Owner</span>
-            <span className="status">Status</span>
-            <span className="watchers">Following</span>
-            <span className="deadline">Due date</span>
-            <span className="tags">Tags</span>
-        </TaskHeaderStyle>
-    );
-}
-
-function FilterButtons(props) {
-    const class_names = [0, 1, 2].map((index) =>
-        index === props.selected ? 'selected' : null
-    );
-    return (
-        <span className="filter_buttons">
-            <button
-                className={class_names[0]}
-                onClick={() => props.on_select(0)}
-            >
-                My Tasks
-            </button>
-            <button
-                className={class_names[1]}
-                onClick={() => props.on_select(1)}
-            >
-                {' '}
-                Sent tasks
-            </button>
-            <button
-                className={class_names[2]}
-                onClick={() => props.on_select(2)}
-            >
-                {' '}
-                Following Tasks
-            </button>
-        </span>
     );
 }
 
