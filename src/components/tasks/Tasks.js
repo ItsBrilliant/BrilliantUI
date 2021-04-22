@@ -4,7 +4,7 @@ import GroupedTasks from './GroupedTasks';
 import { URGENT, IMPORTANT, CAN_WAIT } from '../../data_objects/Consts';
 import { useTasks } from '../../hooks/redux';
 import SimpleBar from 'simplebar-react';
-import { TaskHeaderStyle, MultiselectActionsStyle } from './Tasks.style';
+import { MultiselectActionsStyle } from './Tasks.style';
 import { useSelector, useDispatch } from 'react-redux';
 import TaskInfoWrapper from './SingleTaskInfo';
 import { Delete, SelectTask } from '../../actions/tasks';
@@ -26,11 +26,17 @@ export default function Tasks() {
     const select_task_id = (id) => dispatch(SelectTask(id));
     const selected_task_id = useSelector((state) => state.selected_task_id);
     const selected_task = useTasks('id', selected_task_id, EQUAL)[0];
+    const [multiselected_tasks, set_multiselect] = useState([]);
     const task_filter = [TASK_FILTERS[filter_index], 'approve_status'];
     const filter_target = [user, 'approved'];
     const filter_functions = [FILTER_FUNCTIONS[filter_index], EQUAL];
     const tasks = useTasks(task_filter, filter_target, filter_functions);
-    const [multiselected_tasks, set_multiselect] = useState([]);
+    const group_priority_reversed = task_sort_methods.filter(
+        (t) => t.type === 'priority'
+    )[0].reversed;
+    const priorities_order = group_priority_reversed
+        ? [URGENT, IMPORTANT, CAN_WAIT]
+        : [CAN_WAIT, IMPORTANT, URGENT];
     const my_set_multiselect = (id) => {
         if (id && !multiselected_tasks.includes(id)) {
             set_multiselect([...multiselected_tasks, id]);
@@ -64,24 +70,30 @@ export default function Tasks() {
                     <GroupedTasks
                         on_multiselect={my_set_multiselect}
                         select_task_id={select_task_id}
-                        priority={URGENT}
-                        tasks={tasks.filter((t) => t.priority === URGENT)}
+                        priority={priorities_order[0]}
+                        tasks={tasks.filter(
+                            (t) => t.priority === priorities_order[0]
+                        )}
                         multiselected_tasks={multiselected_tasks}
                         sort_methods={task_sort_methods}
                     />
                     <GroupedTasks
                         on_multiselect={my_set_multiselect}
                         select_task_id={select_task_id}
-                        priority={IMPORTANT}
-                        tasks={tasks.filter((t) => t.priority === IMPORTANT)}
+                        priority={priorities_order[1]}
+                        tasks={tasks.filter(
+                            (t) => t.priority === priorities_order[1]
+                        )}
                         multiselected_tasks={multiselected_tasks}
                         sort_methods={task_sort_methods}
                     />
                     <GroupedTasks
                         on_multiselect={my_set_multiselect}
                         select_task_id={select_task_id}
-                        priority={CAN_WAIT}
-                        tasks={tasks.filter((t) => t.priority === CAN_WAIT)}
+                        priority={priorities_order[2]}
+                        tasks={tasks.filter(
+                            (t) => t.priority === priorities_order[2]
+                        )}
                         multiselected_tasks={multiselected_tasks}
                         sort_methods={task_sort_methods}
                     />
