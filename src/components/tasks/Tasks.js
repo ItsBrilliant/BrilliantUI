@@ -4,7 +4,7 @@ import GroupedTasks from './GroupedTasks';
 import { URGENT, IMPORTANT, CAN_WAIT } from '../../data_objects/Consts';
 import { useTasks } from '../../hooks/redux';
 import SimpleBar from 'simplebar-react';
-import { MultiselectActionsStyle } from './Tasks.style';
+import { MultiselectActionsStyle, TasksStyle } from './Tasks.style';
 import { useSelector, useDispatch } from 'react-redux';
 import TaskInfoWrapper from './SingleTaskInfo';
 import { Delete, SelectTask } from '../../actions/tasks';
@@ -56,7 +56,7 @@ export default function Tasks() {
         update_sort_methods(set_sort_methods, new_method, task_sort_methods);
     };
     return (
-        <Fragment>
+        <TasksStyle>
             <MultiselectActions
                 on_delete={my_delete_tasks}
                 multiselected_tasks={multiselected_tasks}
@@ -108,7 +108,7 @@ export default function Tasks() {
                     close={() => select_task_id(null)}
                 />
             ) : null}
-        </Fragment>
+        </TasksStyle>
     );
 }
 

@@ -57,7 +57,7 @@ export default function TaskRow(props) {
                 default_selection={props.priority}
                 onChange={change_priority}
             />
-            <span className="owner">{GroupIcon([props.owner], 6, 35)}</span>
+            <span className="owner">{GroupIcon([props.owner], 6, 32)}</span>
             <Menu
                 style_class="status"
                 value={props.status}

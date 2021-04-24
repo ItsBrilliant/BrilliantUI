@@ -38,7 +38,7 @@ export class Task {
         this.watchers = [this.owner];
         this.messages = []; //DEFAULT_TASK_MESSAGES;
         this.tags = [];
-        this.status = 'To Do';
+        this.status = 'To do';
     }
 
     get_owner() {

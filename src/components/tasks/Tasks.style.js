@@ -4,18 +4,30 @@ import {
     main_text_color,
     email_container_background,
     main_bg_color,
+    white_lilac,
     link_hover_color,
 } from '../misc/StyleConsts';
 import { URGENT, IMPORTANT, CAN_WAIT } from '../../data_objects/Consts';
 
+export const TasksStyle = styled.div`
+    background-color: ${email_container_background};
+    margin: 24px 0 0 48px;
+    border-radius: 8px;
+    padding: 10px;
+`;
+
 const TaskGrid = styled.div`
-    color: ${main_text_color};
+    color: ${white_lilac};
     display: grid;
     grid-template-columns: 0.2fr 5fr 1fr 1fr 1fr 2fr 1fr 2.5fr;
     justify-items: center;
     align-items: center;
-    width: 100%;
+    align-self: stretch;
+    width: 1692px;
+    height: 64px;
     padding: 0 0 5px 0;
+    flex-grow: 0;
+    margin: 8px 15px;
     box-sizing: border-box;
     grid-template-areas: 'multiselect first_column priority owner status watchers deadline tags';
     .priority {
@@ -45,8 +57,9 @@ const TaskGrid = styled.div`
 export const TaskRowStyle = styled(TaskGrid)`
     font-size: 13px;
     background: ${email_text_area_bg};
-    color: ${main_text_color};
+    color: ${white_lilac};
     height: 60px;
+    width: 1692px;
     margin: 5px 15px;
     border-radius: 10px;
     border: 2px solid;
@@ -54,18 +67,26 @@ export const TaskRowStyle = styled(TaskGrid)`
         props.is_multiselected ? 'white' : 'transparent'};
     .task_text {
         grid-area: first_column;
-        padding-left: 10px;
         justify-self: start;
     }
     .task_text:hover {
         cursor: pointer;
     }
     .tag {
-        margin: 3px;
-        background-color: #eeeeee;
-        color: red;
-        padding: 0.2em 0.5em;
-        border-radius: 7px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 4px 8px;
+        text-align: center;
+        height: 22px;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 12px;
+        line-height: 120%;
+        background: #fce4ec;
+        border-radius: 4px;
+        color: #e91e63;
+        margin: 0px 8px;
     }
     .Dropdown-menu,
     .Dropdown-control {
@@ -83,7 +104,7 @@ export const TaskRowStyle = styled(TaskGrid)`
     .multiselect {
         transition: opacity 0.7s ease;
         position: relative;
-        left: -10px;
+        left: -12px;
         grid-area: multiselect;
         width: 10px;
         height: 10px;
@@ -95,6 +116,19 @@ export const TaskRowStyle = styled(TaskGrid)`
     }
     .multiselect:hover {
         background-color: gray;
+    }
+    .deadline,
+    .task_text,
+    .status {
+        font-size: 15px;
+        line-height: 120%;
+        display: flex;
+        align-items: center;
+        font-feature-settings: 'ss02' on, 'ss03' on, 'ss04' on;
+    }
+    .status .Dropdown-control,
+    .status .Dropdown-option {
+        color: ${white_lilac};
     }
 `;
 
@@ -124,22 +158,29 @@ export const TaskHeaderStyle = styled(TaskGrid)`
     span.header {
         cursor: pointer;
         justify-self: center;
-        margin: 0;
     }
     .filter_buttons {
         grid-area: multiselect / first_column;
-        margin-left: 5px;
         justify-self: start;
+
         button {
-            background-color: ${main_bg_color};
-            margin: 5px;
-            padding: 5px;
-            font-weight: bold;
+            border: 1px solid #6ba1db;
+            background-color: transparent;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 110%;
             color: ${main_text_color};
+            margin: 0px 0px;
+        }
+        button:first-child {
+            border-radius: 4px 0px 0px 4px;
+        }
+        button:last-child {
+            border-radius: 0px 4px 4px 0px;
         }
         button.selected {
             background-color: ${link_hover_color};
-            color: ${main_bg_color};
+            color: ${email_text_area_bg};
         }
     }
     .arrow {
