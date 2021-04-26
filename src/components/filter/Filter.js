@@ -10,7 +10,7 @@ import { useFilters } from '../../hooks/redux';
 import { FilterStyle } from './Filter.styles';
 import { PRIORITIES } from '../../data_objects/Consts';
 import { FILTER_NAMES } from './Consts';
-
+import { FilterIcon } from '../misc/svg_icons';
 const MenuList = (props) => {
     return (
         <components.MenuList {...props}>{props.children}</components.MenuList>
@@ -62,7 +62,8 @@ export default function Filter(props) {
     return (
         <FilterStyle>
             <span onClick={toggle_main_menu} className="filter_label">
-                Filter
+                <FilterIcon />
+                <span className="text">Filter</span>
             </span>
             ,
             <Select

@@ -4,14 +4,20 @@ import {
     SearchFilterButtonsStyle,
     SelectedFilterStyle,
 } from './SearchFilter.style';
-import { MailIcon } from '../misc/svg_icons';
+import {
+    MailIcon,
+    TaskIcon,
+    CalendarIcon,
+    FileIcon,
+    ContactIcon,
+} from '../misc/svg_icons';
 
 const search_filter_options = {
-    emails: 'Conversations',
-    tasks: 'Tasks',
-    events: 'Events',
-    contacts: 'Contacts',
-    files: 'Files',
+    emails: { label: 'Conversations', icon: <MailIcon /> },
+    tasks: { label: 'Tasks', icon: <TaskIcon /> },
+    events: { label: 'Events', icon: <CalendarIcon /> },
+    contacts: { label: 'Contacts', icon: <ContactIcon /> },
+    files: { label: 'Files', icon: <FileIcon /> },
 };
 
 export default function SearchFilterButtons(props) {
@@ -25,9 +31,9 @@ export default function SearchFilterButtons(props) {
             className="select_filter_button"
             onClick={() => props.set_selected_filter(o)}
         >
-            <MailIcon></MailIcon>
+            {search_filter_options[o].icon}
             <span className="filter_option_text">
-                {search_filter_options[o]}
+                {search_filter_options[o].label}
             </span>
         </button>
     ));
@@ -46,7 +52,7 @@ export function SelectedFilter(props) {
     return (
         <SelectedFilterStyle>
             <span className="filter_name">
-                {search_filter_options[props.selected_filter]}
+                {search_filter_options[props.selected_filter].label}
             </span>
             <button
                 onClick={() => props.set_selected_filter(null)}

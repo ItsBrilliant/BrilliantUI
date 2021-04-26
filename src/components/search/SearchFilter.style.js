@@ -60,12 +60,6 @@ export const SelectedFilterStyle = styled.div`
 export const SearchFilterButtonsStyle = styled.div`
     .title {
         /* i’m searching for */
-
-        position: static;
-        height: 18px;
-        left: 0px;
-        top: 16px;
-
         font-family: Space Grotesk;
         font-style: normal;
         font-weight: normal;
@@ -80,12 +74,6 @@ export const SearchFilterButtonsStyle = styled.div`
         /* Slate Gray */
 
         color: #7885a1;
-
-        /* Inside Auto Layout */
-
-        flex: none;
-        order: 0;
-        flex-grow: 0;
         margin: 8px 0px;
     }
     .filter_buttons {
@@ -103,11 +91,7 @@ export const SearchFilterButtonsStyle = styled.div`
         justify-content: center;
         align-items: center;
         padding: 7px 12px;
-
-        position: static;
         height: 32px;
-        left: 0px;
-        top: 0px;
 
         /* Pickled Bluewood */
 

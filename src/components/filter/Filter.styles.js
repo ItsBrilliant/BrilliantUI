@@ -87,20 +87,36 @@ export const FilterStyle = styled.div`
     display: flex;
     align-items: center;
     position: relative;
+    margin: 4px 0 0 0;
     left: 0;
     top: 0;
     .filter_label {
         text-align: center;
-        background-color: var(--email-text-area-bg);
-        color: var(--unread-text-color);
         font-size: 16px;
-        margin: 10px 20px;
-        border-radius: 10px;
-        width: 100px;
-        height: 30px;
-        padding-top: 10px;
+        width: 90px;
+        height: 44px;
         &:hover {
             cursor: pointer;
+        }
+        /* Auto Layout */
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 0px 16px;
+        background: #202842;
+        border: 1px solid #202842;
+        border-radius: 8px;
+        .text {
+            font-style: normal;
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 120%;
+            color: #bdc8df;
+            display: flex;
+            align-items: center;
+        }
+        svg {
+            margin: 0 14px 0 0;
         }
     }
 `;
