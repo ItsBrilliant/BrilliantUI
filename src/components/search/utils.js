@@ -36,7 +36,7 @@ export function get_filtered_search_results(
     get_search_results,
     ...args
 ) {
-    if (filter.length === 0 || filter.includes(type)) {
+    if (filter.length === 0 || filter.includes(type) || filter[0] === null) {
         return get_search_results(...args);
     } else {
         return [];

@@ -7,3 +7,5 @@ export const email_text_area_bg = '#181e32';
 export const link_hover_color = '#6ba1db';
 export const brigher_background = '#364160';
 export const white_lilac = '#F4F6FB';
+export const muted_mid_gray = '#202842';
+export const pickled_bluewood = '#3c4566';

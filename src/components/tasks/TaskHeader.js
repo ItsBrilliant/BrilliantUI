@@ -87,6 +87,23 @@ function Arrow(props) {
     }
     return (
         <svg
+            className="arrow"
+            style={style}
+            width="8"
+            height="8"
+            viewBox="0 0 10 10"
+            fill={main_text_color}
+            xmlns="http://www.w3.org/2000/svg"
+        >
+            <path
+                d="M1 4L5 8M5 8L9 4M5 8V0"
+                stroke="#F4F6FB"
+                stroke-width="2"
+            />
+        </svg>
+    );
+}
+/*        <svg
             style={style}
             className="arrow"
             xmlns="http://www.w3.org/2000/svg"
@@ -102,4 +119,4 @@ function Arrow(props) {
             </g>
         </svg>
     );
-}
+*/

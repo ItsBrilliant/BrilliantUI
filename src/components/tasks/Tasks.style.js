@@ -14,6 +14,8 @@ export const TasksStyle = styled.div`
     margin: 24px 0 0 48px;
     border-radius: 8px;
     padding: 10px;
+    width: 1692px;
+    height: calc(100vh - 101px);
 `;
 
 const TaskGrid = styled.div`
@@ -55,7 +57,7 @@ const TaskGrid = styled.div`
 `;
 
 export const TaskRowStyle = styled(TaskGrid)`
-    font-size: 13px;
+    font-size: 15px;
     background: ${email_text_area_bg};
     color: ${white_lilac};
     height: 60px;
@@ -184,10 +186,12 @@ export const TaskHeaderStyle = styled(TaskGrid)`
         }
     }
     .arrow {
-        height: 15px;
-        width: 15px;
-        align-self: flex-end;
+        align-self: center;
         margin: 0 5px;
+        height: 12px;
+        width: 12px;
+        position: relative;
+        top: 2px;
     }
 `;
 

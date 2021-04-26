@@ -33,36 +33,10 @@ export function LoginPage(props) {
                 {email_labels}
                 <div className="login_page_buttons">{action_button}</div>
             </div>
-            <p style={comment_style}>Updated April 22nd</p>
-            <p style={comment_style}>
-                -Search result priorities are shown on the right
-            </p>
-            <p style={comment_style}>-Task followers can be removed</p>
-            <p style={comment_style}>
-                -Tasks are sorted by clicking on the header of the column you
-                want to sort by
-            </p>
-            <p style={comment_style}>
-                -Task multiselect button on the left of task row is shown only
-                on hover
-            </p>
-            <p style={comment_style}>
-                -Search for emails, tasks, events, files and contacts via the
-                search bar with a built-in filter
-            </p>
-            <p style={comment_style}>
-                -Global filter implemented for contacts, tags, and priority
-            </p>
-            <p style={comment_style}>
-                -Change owner of a task from the task view page
-            </p>
-            <p style={comment_style}>
-                -Task conversations are stored in the database
-            </p>
-            <p style={comment_style}>
-                -"Reply to short emails" component in the feed is located at the
-                user's preffered email sending time
-            </p>
+            <p style={comment_style}>Updated April 24th</p>
+            <p style={comment_style}>-Fonts were changed to match Figma</p>
+            <p style={comment_style}>-Style improvements on tasks page</p>
+            <p style={comment_style}>-Filter works for calendar events</p>
         </div>
     );
 }

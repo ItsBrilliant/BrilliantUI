@@ -6,6 +6,7 @@ import {
     link_hover_color,
     main_bg_color,
     main_text_color,
+    muted_mid_gray,
 } from '../misc/StyleConsts';
 import { option_style } from '../../components/filter/Filter.styles';
 
@@ -23,14 +24,24 @@ export const SearchBarStyle = styled.div`
     .search_bar_input {
         display: flex;
         align-items: center;
-
+        border-bottom: ${(props) =>
+            props.is_active ? '1px solid #565f80' : 'none'};
         input,
         input::placeholder {
             font-weight: bold;
             background-color: transparent;
-            font-size: 16px;
             color: var(--main-text-color);
             outline: none;
+            font-family: Space Grotesk;
+            font-style: normal;
+            font-weight: 600;
+            font-size: 19px;
+            line-height: 120%;
+            width: ${(props) => (props.is_active ? '800px' : '100px')};
+            /* or 19px */
+
+            display: flex;
+            align-items: center;
         }
 
         img {
@@ -45,7 +56,7 @@ export const SearchBarStyle = styled.div`
 
 export const SearchStyle = styled.div.attrs((props) => ({
     width: props.list_visible ? '800' : '200',
-    height: props.list_visible ? '100vh' : '60px',
+    height: props.list_visible ? '80vh' : '60px',
     list_opacity: props.list_visible ? '1' : '0',
     pointer_events: props.list_visible ? 'auto' : 'none',
 }))`

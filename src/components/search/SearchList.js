@@ -15,7 +15,7 @@ export function SearchList(props) {
     const get_search_results = (type, data) => {
         return get_filtered_search_results(
             type,
-            props.search_filters,
+            [props.selected_filter],
             filter_search_objects,
             data,
             type,
