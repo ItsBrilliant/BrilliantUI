@@ -130,7 +130,7 @@ export class Task {
             );
             return;
         }
-        task.email_id = email.get_id();
+        task.email_id = email.get_gid();
         task.thread_id = email.get_thread_id();
         task.add_watcher(task.initiator);
         for (const receiver of email.get_receivers()) {

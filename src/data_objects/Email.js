@@ -141,6 +141,14 @@ export class Email {
         return this.email['id'];
     }
 
+    get_gid() {
+        return this.email['internetMessageId'];
+    }
+
+    is_of_id(other_id) {
+        return other_id === this.get_id() || other_id === this.get_gid();
+    }
+
     get_sender() {
         if (!this.email['sender']) {
             return null;
