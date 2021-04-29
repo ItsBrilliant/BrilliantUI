@@ -6,8 +6,6 @@ import {
     email_container_background,
 } from '../misc/StyleConsts';
 import styled from 'styled-components';
-import { contentReady } from '@syncfusion/ej2-schedule';
-import { getStartEndHours } from '@syncfusion/ej2-schedule';
 
 const FILTER_WIDTH = 400;
 const common_menu_list_style = {

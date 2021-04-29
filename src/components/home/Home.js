@@ -165,7 +165,7 @@ export class Home extends React.Component {
     }
     set_threads(emails) {
         this.props.Expand(emails);
-        const task_emails = this.props.tasks.map((t) => t.email_id);
+        const task_emails = this.props.tasks.map((t) => t.get_email_id());
         // Add tasks from each email once, after that they will come from the database
         for (const email of emails.filter(
             (e) => !task_emails.includes(e.get_id())

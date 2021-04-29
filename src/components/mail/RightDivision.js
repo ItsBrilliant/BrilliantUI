@@ -20,7 +20,7 @@ export function RightDivision(props) {
             <SimpleBar className="SimpleBar_RightDivision">
                 <Tasks
                     tasks={tasks.filter(
-                        (t) => t.thread_id === thread.id && t.approved()
+                        (t) => t.get_thread_id() === thread.id && t.approved()
                     )}
                     thread={thread}
                 />

@@ -8,6 +8,7 @@ import {
     insert_task_database,
     update_task_database,
 } from '../backend/ConnectDatabase';
+import { Email } from './Email.js';
 
 const GENERAL_TASK_DETECTION_THRESHOLD = {
     document_request: 90,
@@ -80,6 +81,13 @@ export class Task {
         return 'watchers';
     }
 
+    get_email_id() {
+        return Email.GID_TO_ID[this.email_id];
+    }
+
+    get_thread_id() {
+        return Email.GID_TO_THREAD_ID[this.email_id];
+    }
     remove_watcher(contact) {
         this.watchers = this.watchers.filter((w) => w !== contact);
         return 'watchers';
@@ -98,7 +106,7 @@ export class Task {
         email_id,
         tasks = Object.values(Task.CURRENT_TASKS)
     ) {
-        return tasks.filter((t) => t.email_id === email_id);
+        return tasks.filter((t) => t.get_email_id() === email_id);
     }
     static update_task(dispatcher, task, field_name, args) {
         let new_task = Object.assign(Object.create(task), task);

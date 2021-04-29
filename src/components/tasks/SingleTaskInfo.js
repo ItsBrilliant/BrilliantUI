@@ -60,7 +60,7 @@ export default function TaskInfoWrapper(props) {
     if (!props.task_id) {
         return null;
     }
-    const thread = thread_dict[task.thread_id];
+    const thread = thread_dict[task.get_thread_id()];
     return ReactDOM.createPortal(
         <div className="TaskInfoWrapper">
             <div className="invisible_close" onClick={props.close} />
@@ -76,7 +76,7 @@ function TaskDetails(props) {
         <>
             <QuickReply
                 to={props.task.initiator}
-                email_id={props.task.email_id}
+                email_id={props.task.get_email_id()}
                 on_close={props.close}
             />
             <Description task={props.task} updater={props.updater} />

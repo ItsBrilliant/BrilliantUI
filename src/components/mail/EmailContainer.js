@@ -16,7 +16,7 @@ export default function EmailContainer(props) {
     const user = useSelector((state) => state.user.contact);
     const email = props.email;
     const tasks = useSelector((state) => Object.values(state.tasks)).filter(
-        (t) => t.email_id === email.get_id()
+        (t) => t.get_email_id() === email.get_id()
     );
     const contacts = email
         .get_receivers()

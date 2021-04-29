@@ -6,10 +6,10 @@ import './Nav.css';
 
 export default function Nav() {
     const dispatch = useDispatch();
-    const logo = { icon: 'button_icons/logo.svg', link: '/' };
+    const logo = { icon: 'button_icons/logo.svg', link: '/feed' };
     const brilliant_mode = {
         icon: 'button_icons/brilliant.svg',
-        link: '/feed',
+        link: '/',
     };
     const accounts = { icon: 'button_icons/accounts.svg', link: '/' };
     const mail = { icon: 'button_icons/mail.svg', link: '/mail' };

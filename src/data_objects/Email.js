@@ -7,12 +7,24 @@ import { mark_read } from '../backend/utils.js';
 
 export class Email {
     static FOLDER_MAPPINGS = [];
+    static GID_TO_ID = {};
+    static GID_TO_THREAD_ID = {};
     constructor(email_json, tags, tasks) {
         this.email = email_json;
         this.tags = tags === undefined ? [] : tags;
         this.tasks = tasks === undefined ? [] : tasks;
         this.date = new Date(this.email['sentDateTime']);
         this.attachments_dict = {};
+        this.set_GID_maps();
+    }
+
+    set_GID_maps() {
+        Email.GID_TO_ID[this.email.id] = this.email.id;
+        Email.GID_TO_ID[this.email.internetMessageId] = this.email.id;
+        Email.GID_TO_THREAD_ID[
+            this.email.internetMessageId
+        ] = this.get_thread_id();
+        Email.GID_TO_THREAD_ID[this.email.id] = this.get_thread_id();
     }
 
     set_attachments_dict(attachments_dict) {
@@ -113,7 +125,7 @@ export class Email {
             if (tasks === undefined) {
                 tasks = Object.values(Task.CURRENT_TASKS);
             }
-            tasks = tasks.filter((t) => t.email_id === email_id);
+            tasks = tasks.filter((t) => t.get_email_id() === email_id);
             let priorities = tasks.map((task) =>
                 parseInt(
                     task.is_done() || task.declined()
