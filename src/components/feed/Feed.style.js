@@ -5,19 +5,21 @@ import {
     email_container_background,
     main_bg_color,
     link_hover_color,
+    white_lilac,
 } from '../misc/StyleConsts';
-import { URGENT, IMPORTANT, CAN_WAIT } from '../../data_objects/Consts';
+const FEED_WIDTH = 732;
 export const FeedElementStyle = styled.div`
     color: ${main_text_color};
+    background-color: #101421;
     display: grid;
-    grid-template-columns: 1fr 5fr 1fr;
+    grid-template-columns: 1fr 7fr 1fr;
     grid-template-rows: 40px 1fr;
     justify-items: flex-start;
-    align-items: flex-start;
-    width: 700px;
+    align-items: center;
+    width: 1230px;
     height: max-content;
-    padding: 0;
-    margin: 30px 0;
+    padding: 16px 200px;
+    margin: 16px 0px;
     box-sizing: border-box;
     grid-template-areas:
         'time title close_button'
@@ -36,7 +38,7 @@ export const FeedElementStyle = styled.div`
         grid-area: close_button;
         background-color: transparent;
         color: ${main_text_color};
-        font-size: 20px;
+        font-size: 32px;
         margin-left: auto;
     }
     .element_component {
@@ -68,7 +70,7 @@ export const BrilliantFeedStyled = styled.div`
 `;
 
 export const FeedComponentStyle = styled.div`
-    width: 100%;
+    width: ${FEED_WIDTH}px;
     .EmailThread {
         background-color: ${main_bg_color};
         margin: 10px;
@@ -93,18 +95,53 @@ export const FeedComponentStyle = styled.div`
     .component_area {
         background-color: ${email_text_area_bg};
         border-radius: 10px;
-        width: 100%;
+        width: ${FEED_WIDTH}px;
         padding: 5px;
     }
-    .ButtonsRow {
-        margin-top: 10px;
+`;
+
+export const EmailPostStyle = styled.div`
+    display: flex;
+    flex-direction: column;
+    border-radius: 8px;
+    margin: 16px 0px;
+    .threads {
         display: flex;
-        justify-content: space-between;
-        width: 100%;
+        flex-direction: column;
+        align-items: center;
+        padding: 24px 32px 16px;
+        background: #181e32;
+        border-radius: 8px;
+        align-self: stretch;
+        margin: 16px 0px;
+        .EmailThread {
+            width: 668px;
+            background-color: #202842;
+        }
+    }
+
+    .ButtonsRow {
+        display: flex;
+        justify-content: stretch;
+        width: ${FEED_WIDTH}px;
         button {
-            border: 2px solid ${main_text_color};
-            color: ${main_text_color};
-            background-color: transparent;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1;
+            height: 40px;
+
+            /* Mirage */
+
+            background: #181e32;
+            border-radius: 8px;
+            // The label
+            color: ${white_lilac};
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 120%;
+            margin: 16px 8px 0 8px;
         }
     }
 `;

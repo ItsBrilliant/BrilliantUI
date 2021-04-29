@@ -5,7 +5,7 @@ import { BrilliantFeedStyled, FeedWrapper } from './Feed.style';
 import SimpleBar from 'simplebar-react';
 import {
     NextMeeting,
-    UrgentEmails,
+    PriorityEmails,
     OverdueTasks,
     UnfinishedDrafts,
     QuickReplyFeed,
@@ -115,8 +115,8 @@ function generate_example_components(head_emails, select_task) {
     return [
         email_reply_component,
         {
-            component: <UrgentEmails priority={URGENT} emails={head_emails} />,
-            title: 'Catch up on some urgent emails',
+            component: <PriorityEmails priority={URGENT} />,
+            title: 'Reply to urgent emails',
         },
         {
             component: (
@@ -133,12 +133,7 @@ function generate_example_components(head_emails, select_task) {
             component: <UnfinishedDrafts emails={head_emails} />,
             title: 'You have unfinished drafts in you mailbox',
         },
-        {
-            component: (
-                <UrgentEmails priority={IMPORTANT} emails={head_emails} />
-            ),
-            title: 'Catch up on some important emails',
-        },
+
         {
             component: (
                 <OverdueTasks

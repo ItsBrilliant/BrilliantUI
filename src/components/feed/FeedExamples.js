@@ -19,10 +19,9 @@ import { format_date, is_same_day } from '../../utils';
 import { CalendarTask } from '../calendar/CalendarTasks';
 import EmailContainer from '../mail/EmailContainer';
 import { IncrementalStyle } from './Feed.style';
+import EmailPost from './EmailPost';
 
-export function UrgentEmails(props) {
-    const dispatch = useDispatch();
-    const history = useHistory();
+export function PriorityEmails(props) {
     let threads = useThreads();
     threads = threads.filter(
         (t) => t.has_unread() && t.get_priority() === props.priority
@@ -30,29 +29,10 @@ export function UrgentEmails(props) {
     if (threads.length === 0) {
         return null;
     }
-    const count = props.max_threads ? props.max_threads : 3;
-    threads = threads.slice(0, count);
-    const my_handle_select = (id) => {
-        dispatch(SelectThread(id));
-        history.push('mail');
-    };
-    const thread_components = threads.map((thread) => (
-        <EmailThread
-            key={thread.id}
-            id={thread.id}
-            thread={thread}
-            is_selected={false}
-            handle_select={my_handle_select}
-            priority={props.priority}
-            options_offset={{ top: 0, left: 15 }}
-        />
-    ));
-    return (
-        <FeedComponent
-            buttons={[]}
-            component={<div className="UrgentEmails">{thread_components}</div>}
-        />
-    );
+    const buttons = ['Done', 'Delay', 'Cancel'].map((b) => {
+        return { name: b, action: () => {} };
+    });
+    return <EmailPost threads={threads} buttons={buttons} />;
 }
 
 export function NextMeeting(props) {
