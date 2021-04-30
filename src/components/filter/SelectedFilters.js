@@ -1,5 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { RemoveFilter } from '../../actions/filter';
+import IconLabel from '../misc/IconLabel';
 
 export default function SelectedFilters(props) {
     const dispatch = useDispatch();
@@ -21,7 +22,7 @@ export default function SelectedFilters(props) {
 function SelectedFilter(props) {
     return (
         <div>
-            <span>{props.text}</span>
+            <IconLabel label={props.text}></IconLabel>
             <button onClick={props.remove}>&times;</button>
         </div>
     );

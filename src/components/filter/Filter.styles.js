@@ -6,6 +6,8 @@ import {
     email_container_background,
 } from '../misc/StyleConsts';
 import styled from 'styled-components';
+import { ALL_FOLDERS_MAGIC } from '../../data_objects/Consts';
+import { relativeTimeRounding } from 'moment';
 
 const FILTER_WIDTH = 400;
 const common_menu_list_style = {
@@ -36,18 +38,32 @@ export const main_menu_style = {
         zIndex: 1001,
         position: 'absolute',
         left: '-120px',
-        top: '50px',
+        top: '30px',
         width: '120px',
     }),
+
     menu: (provided, state) => ({
         backgroundColor: 'transparent',
     }),
     control: () => ({
         ...control_style,
         position: 'absolute',
-        left: '-20px',
         top: '-15px',
     }),
+    multiValue: () => ({
+        unset: 'all',
+        display: 'flex',
+    }),
+    MultiValueRemove: () => ({
+        position: 'relative',
+        left: '-35px',
+    }),
+    valueContainer: (provided, state) => ({
+        ...provided,
+        width: 'max-content',
+        position: 'relative',
+    }),
+
     option: option_style,
     indicatorsContainer: () => ({
         display: 'none',
@@ -61,7 +77,7 @@ export const sub_menu_style = {
         position: 'relative',
         left: '0',
         marginLeft: '2px',
-        top: '70px',
+        top: '30px',
         width: 'max-content',
     }),
     menu: (provided, state) => ({
@@ -73,6 +89,7 @@ export const sub_menu_style = {
         position: 'absolute',
         top: '50px',
     }),
+
     input: () => ({
         color: main_text_color,
         zIndex: 1001,
@@ -82,6 +99,7 @@ export const sub_menu_style = {
 export const FilterStyle = styled.div`
     //   border: 2px solid yellow;
     min-width: 300px;
+    width: max-content;
     display: flex;
     align-items: center;
     position: relative;

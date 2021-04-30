@@ -10,7 +10,10 @@ import { useFilters } from '../../hooks/redux';
 import { FilterStyle } from './Filter.styles';
 import { PRIORITIES } from '../../data_objects/Consts';
 import { FILTER_NAMES } from './Consts';
-import { FilterIcon } from '../misc/svg_icons';
+import { UserIcon, FilterIcon, PriorityIcon, TagIcon } from '../misc/svg_icons';
+import IconLabel from '../misc/IconLabel';
+import { main_text_color } from '../misc/StyleConsts';
+
 const MenuList = (props) => {
     return (
         <components.MenuList {...props}>{props.children}</components.MenuList>
@@ -75,6 +78,7 @@ export default function Filter(props) {
                 placeholder=""
                 menuIsOpen={main_menu_open}
                 closeMenuOnSelect={false}
+                components={{ MultiValueLabel }}
             />
             <FilterPriority
                 on_select={set_filter}
@@ -102,3 +106,28 @@ function get_filter_display_name(filter_type, filter_value) {
         return filter_value;
     }
 }
+
+const MultiValueLabel = (props) => {
+    let color = main_text_color;
+    if (props.data.filter_type === FILTER_NAMES.priority) {
+        color = { Urgent: 'red', Important: 'orange', ['Can Wait']: 'green' }[
+            props.data.label
+        ];
+    } else if (props.data.filter_type === FILTER_NAMES.tag) {
+        color = 'purple';
+    } else {
+        color = 'blue';
+    }
+    const icons_map = {
+        [FILTER_NAMES.priority]: PriorityIcon,
+        [FILTER_NAMES.contact]: UserIcon,
+        [FILTER_NAMES.tag]: TagIcon,
+    };
+    return (
+        <IconLabel
+            color={color}
+            label={props.data.label}
+            icon={icons_map[props.data.filter_type]({ color: color })}
+        />
+    );
+};

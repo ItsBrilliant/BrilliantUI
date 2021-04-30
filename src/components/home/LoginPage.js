@@ -33,6 +33,12 @@ export function LoginPage(props) {
                 {email_labels}
                 <div className="login_page_buttons">{action_button}</div>
             </div>
+            <p style={comment_style}>Updated April 29th</p>
+            <p style={comment_style}>
+                -Task in sender's email is matched to receiver's email
+            </p>
+            <p style={comment_style}>-Styled the email post component</p>
+            <p style={comment_style}>-Improvements in search style</p>
             <p style={comment_style}>Updated April 24th</p>
             <p style={comment_style}>-Fonts were changed to match Figma</p>
             <p style={comment_style}>-Style improvements on tasks page</p>
