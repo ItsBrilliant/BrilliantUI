@@ -171,7 +171,6 @@ export class Task {
         return false;
     }
 
-    // task_detection is currently 'document_request'
     static add_general_task_detection(dispatcher, email, task_type) {
         const [task_detection, id] = email.get_detection(task_type);
         if (

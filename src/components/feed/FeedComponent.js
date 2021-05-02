@@ -2,12 +2,7 @@ import React from 'react';
 import { FeedComponentStyle } from './Feed.style';
 
 export default function FeedComponent(props) {
-    return (
-        <FeedComponentStyle>
-            <div className="component_area">{props.component}</div>
-            <ButtonsRow buttons={props.buttons} />
-        </FeedComponentStyle>
-    );
+    return <FeedComponentStyle>{props.children}</FeedComponentStyle>;
 }
 
 export function ButtonsRow(props) {

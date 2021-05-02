@@ -7,16 +7,17 @@ import {
     link_hover_color,
     white_lilac,
 } from '../misc/StyleConsts';
-const FEED_WIDTH = 732;
+const INNER_FEED_WIDTH = 732;
 export const FeedElementStyle = styled.div`
     color: ${main_text_color};
     background-color: #101421;
     display: grid;
-    grid-template-columns: 1fr 7fr 1fr;
+    grid-template-columns: 80px ${INNER_FEED_WIDTH - 20}px 20px;
     grid-template-rows: 40px 1fr;
     justify-items: flex-start;
     align-items: center;
-    width: 1230px;
+    width: 1260px;
+    position: relative;
     height: max-content;
     padding: 16px 200px;
     margin: 16px 0px;
@@ -70,34 +71,16 @@ export const BrilliantFeedStyled = styled.div`
 `;
 
 export const FeedComponentStyle = styled.div`
-    width: ${FEED_WIDTH}px;
-    .EmailThread {
-        background-color: ${main_bg_color};
-        margin: 10px;
-    }
-
-    .CalendarTask {
-        margin-bottom: 5px;
-        background-color: ${main_bg_color};
-    }
-    .EmailComposer {
-        position: static;
-        height: 200px;
-    }
-    .EmailContainer {
-        height: 190px;
-        overflow: hidden;
-    }
-    .EmailContainer * {
-        background-color: transparent;
-    }
-
-    .component_area {
-        background-color: ${email_text_area_bg};
-        border-radius: 10px;
-        width: ${FEED_WIDTH}px;
-        padding: 5px;
-    }
+    width: ${INNER_FEED_WIDTH}px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 32px 16px;
+    background: #181e32;
+    border-radius: 8px;
+    align-self: stretch;
+    margin: 16px 0px;
+    box-sizing: border-box;
 `;
 
 export const EmailPostStyle = styled.div`
@@ -105,25 +88,16 @@ export const EmailPostStyle = styled.div`
     flex-direction: column;
     border-radius: 8px;
     margin: 16px 0px;
-    .threads {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 24px 32px 16px;
-        background: #181e32;
-        border-radius: 8px;
-        align-self: stretch;
-        margin: 16px 0px;
-        .EmailThread {
-            width: 668px;
-            background-color: #202842;
-        }
+    .EmailThread {
+        width: 668px;
+        margin: 0 0 16px 0;
+        background-color: #202842;
     }
 
     .ButtonsRow {
         display: flex;
         justify-content: stretch;
-        width: ${FEED_WIDTH}px;
+        width: ${INNER_FEED_WIDTH}px;
         button {
             display: flex;
             flex-direction: row;
@@ -174,3 +148,25 @@ export const IncrementalStyle = styled.div`
         }
     }
 `;
+
+/*
+    .EmailThread {
+        background-color: ${main_bg_color};
+        margin: 10px;
+    }
+
+    .CalendarTask {
+        margin-bottom: 5px;
+        background-color: ${main_bg_color};
+    }
+    .EmailComposer {
+        position: static;
+        height: 200px;
+    }
+    .EmailContainer {
+        height: 190px;
+        overflow: hidden;
+    }
+    .EmailContainer * {
+        background-color: transparent;
+    } */

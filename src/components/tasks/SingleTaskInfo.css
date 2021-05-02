@@ -255,7 +255,12 @@
     width: 70px;
     min-width: 70px;
     padding: 4px;
+    margin: 0 4px;
     color: var(--main-text-color);
+}
+
+.TopButtons button.add_tag svg {
+    margin: 0 4px;
 }
 
 .SingleTaskInfo .People button.add_watchers {

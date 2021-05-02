@@ -32,7 +32,7 @@ export default function EmailPost(props) {
     ));
     return (
         <EmailPostStyle>
-            <div className="threads">{thread_components}</div>
+            <FeedComponent>{thread_components}</FeedComponent>
             <ButtonsRow buttons={props.buttons} />
         </EmailPostStyle>
     );

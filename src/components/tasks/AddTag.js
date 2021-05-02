@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { GeneralPortal } from '../misc/GeneralPortal';
+import { main_text_color } from '../misc/StyleConsts';
+import { TagIcon } from '../misc/svg_icons';
 import { AddTagStyle } from './Tasks.style';
 
 export default function AddTag(props) {
@@ -21,6 +23,7 @@ export default function AddTag(props) {
     return (
         <>
             <button className="add_tag" onClick={open_portal}>
+                <TagIcon size="16px" color={main_text_color}></TagIcon>
                 {props.task.tags.length} tags
             </button>
             <GeneralPortal
