@@ -7,6 +7,7 @@ import {
     link_hover_color,
     white_lilac,
 } from '../misc/StyleConsts';
+const OUTER_FEED_WIDTH = 1236;
 const INNER_FEED_WIDTH = 732;
 export const FeedElementStyle = styled.div`
     color: ${main_text_color};
@@ -16,15 +17,16 @@ export const FeedElementStyle = styled.div`
     grid-template-rows: 40px 1fr;
     justify-items: flex-start;
     align-items: center;
-    width: 1260px;
+    width: ${OUTER_FEED_WIDTH}px;
     position: relative;
     height: max-content;
     padding: 16px 200px;
-    margin: 16px 0px;
+    margin: 16px 48px;
     box-sizing: border-box;
     grid-template-areas:
         'time title close_button'
         '. component component';
+
     .element_title {
         grid-area: title;
         font-size: 24px;
@@ -45,12 +47,12 @@ export const FeedElementStyle = styled.div`
     .element_component {
         width: 100%;
         grid-area: component;
-        margin-bottom: 10px;
+        margin-bottom: 0 32px 10 32px;
     }
 `;
 
 export const FeedWrapper = styled.div`
-    width: 100%;
+    width: ${OUTER_FEED_WIDTH}px;
     height: calc(100% - 60px);
     overflow: hidden;
     .simple_bar {
@@ -62,11 +64,13 @@ export const BrilliantFeedStyled = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    align-items: center;
+    align-items: flex-start;
     width: 100%;
     height: 100%;
-    h1 {
+    h1.feed_title {
+        text-align: center;
         color: white;
+        width: 100%;
     }
 `;
 

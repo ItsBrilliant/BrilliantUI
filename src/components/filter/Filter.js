@@ -116,7 +116,7 @@ const MultiValueLabel = (props) => {
     } else if (props.data.filter_type === FILTER_NAMES.tag) {
         color = 'purple';
     } else {
-        color = 'blue';
+        color = '#6BA1DB';
     }
     const icons_map = {
         [FILTER_NAMES.priority]: PriorityIcon,

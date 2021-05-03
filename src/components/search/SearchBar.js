@@ -40,11 +40,3 @@ export const SearchBar = ({ ...props }) => {
         </SearchBarStyle>
     );
 };
-/*
-<div className="search_filter">
-<SearchFilter
-    my_on_focus={props.my_on_focus}
-    search_filters={props.search_filters}
-    set_search_filters={props.set_search_filters}
-/>
-</div>*/

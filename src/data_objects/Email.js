@@ -9,24 +9,29 @@ export class Email {
     static FOLDER_MAPPINGS = [];
     static GID_TO_ID = {};
     static GID_TO_THREAD_ID = {};
+    static ID_TO_EMAIL = {};
     constructor(email_json, tags, tasks) {
         this.email = email_json;
         this.tags = tags === undefined ? [] : tags;
         this.tasks = tasks === undefined ? [] : tasks;
         this.date = new Date(this.email['sentDateTime']);
         this.attachments_dict = {};
-        this.set_GID_maps();
+        this.set_maps();
     }
 
-    set_GID_maps() {
+    set_maps() {
         Email.GID_TO_ID[this.email.id] = this.email.id;
         Email.GID_TO_ID[this.email.internetMessageId] = this.email.id;
         Email.GID_TO_THREAD_ID[
             this.email.internetMessageId
         ] = this.get_thread_id();
         Email.GID_TO_THREAD_ID[this.email.id] = this.get_thread_id();
+        Email.ID_TO_EMAIL[this.email.id] = this;
     }
 
+    static get_email_object_by_id(id) {
+        return Email.ID_TO_EMAIL[id];
+    }
     set_attachments_dict(attachments_dict) {
         this.attachments_dict = attachments_dict;
     }

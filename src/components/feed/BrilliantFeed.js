@@ -23,6 +23,7 @@ import { useEmailsHead, useEvents } from '../../hooks/redux';
 import TaskInfoWrapper from '../tasks/SingleTaskInfo';
 import { now } from 'moment';
 import { get_prefered_email_time, find_closest_slot } from './utils';
+import SuggestedTasks from './SuggestedTasks';
 
 let NOW = new Date();
 NOW.setHours(9);
@@ -76,7 +77,9 @@ export default function BrilliantFeed() {
             />
             <SimpleBar className="simple_bar">
                 <BrilliantFeedStyled>
-                    <h1>{'Good Morning, ' + user.contact.get_first_name()}</h1>
+                    <h1 className="feed_title">
+                        {'Good Morning, ' + user.contact.get_first_name()}
+                    </h1>
                     {feed_elements}
                 </BrilliantFeedStyled>
             </SimpleBar>
@@ -117,6 +120,10 @@ function generate_example_components(head_emails, select_task) {
         {
             component: <PriorityEmails priority={URGENT} />,
             title: 'Reply to urgent emails',
+        },
+        {
+            component: <SuggestedTasks priority={URGENT} />,
+            title: 'Suggested Tasks',
         },
         {
             component: (
