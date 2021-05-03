@@ -8,11 +8,20 @@ export const SuggestedTaskStyle = styled.div`
     width: 100%;
     height: max-content;
     .task_content {
-        display: flex;
-        align-items: center;
         border: 2px solid #3c4566;
         border-radius: 8px;
         align-self: stretch;
+        .upper_row {
+            display: flex;
+            align-items: center;
+        }
+        .email_context {
+            font-weight: normal;
+            font-size: 15px;
+            line-height: 120%;
+            color: ${white_lilac};
+            padding: 14px 28px;
+        }
     }
     * {
         box-sizing: border-box;

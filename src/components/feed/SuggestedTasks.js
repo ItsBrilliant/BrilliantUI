@@ -5,6 +5,7 @@ import { GroupIcon } from '../mail/EmailStamp';
 import { SuggestedTaskStyle } from './SuggestedTasks.style';
 import { Email } from '../../data_objects/Email';
 import { MailIcon } from '../misc/svg_icons';
+import { email_container_background } from '../misc/StyleConsts';
 const MAX_TASKS = 3;
 
 export default function SuggestedTasks(props) {
@@ -31,13 +32,19 @@ function SuggestedTask(props) {
             <span>{source_email.get_subject()}</span>{' '}
         </div>
     ) : null;
+    const source_context = source_email ? (
+        <div className="email_context">{source_email.get_text()}</div>
+    ) : null;
     return (
         <SuggestedTaskStyle>
             {source_subject}
             <div className="task_content">
-                {GroupIcon([props.task.initiator], 1, 32)}
-                <span className="task_text">{props.task.text}</span>
-                <TaskButtons />
+                <div className="upper_row">
+                    {GroupIcon([props.task.initiator], 1, 32)}
+                    <span className="task_text">{props.task.text}</span>
+                    <TaskButtons />
+                </div>
+                {source_context}
             </div>
         </SuggestedTaskStyle>
     );
