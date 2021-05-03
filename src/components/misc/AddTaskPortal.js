@@ -15,6 +15,21 @@ export function AddTaskPortal(props) {
     const [task_text, setText] = useState(props.task_text || DEFAULT_TASK_TEXT);
     const [priority, setPriority] = useState(props.priority);
     const [owner, setOwner] = useState(user);
+    const my_handle_ok = () => {
+        if (props.task_updater) {
+            let task = props.task;
+            task.text = task_text;
+            task.priority = task.priority;
+            task.deadline = date;
+            task.owner = owner;
+            task.approve_status = 'approved';
+            props.task_updater(task);
+        }
+        if (props.handle_ok) {
+            props.handle_ok();
+        }
+    };
+
     const add_task_portal = (
         <>
             <div
@@ -30,7 +45,7 @@ export function AddTaskPortal(props) {
                 />
                 <FooterButtons
                     handle_close={props.handle_close}
-                    handle_ok={props.handle_ok}
+                    handle_ok={my_handle_ok}
                     priority={priority}
                     task_text={task_text}
                     date={date}

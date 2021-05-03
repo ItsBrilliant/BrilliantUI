@@ -247,3 +247,13 @@ export function email_folder_filter(
     }
     return true;
 }
+
+export function get_mouse_position_style(x, y) {
+    const top_offset = y ? y - 60 : '40vh';
+    const left_offset = x ? x - 40 : '40vw';
+    return {
+        position: 'fixed',
+        top: top_offset,
+        left: left_offset,
+    };
+}

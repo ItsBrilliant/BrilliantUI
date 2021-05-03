@@ -11,6 +11,7 @@ import {
 import {
     getSelectionOffsetRelativeTo,
     get_priority_style,
+    get_mouse_position_style,
 } from '../../utils.js';
 import { GroupIcon } from './EmailStamp.js';
 import './EmailTextArea.css';
@@ -295,16 +296,6 @@ class EmailTextArea extends Component {
             </div>
         );
     }
-}
-
-function get_mouse_position_style(x, y) {
-    const top_offset = y ? y - 60 : '40vh';
-    const left_offset = x ? x - 40 : '40vw';
-    return {
-        position: 'fixed',
-        top: top_offset,
-        left: left_offset,
-    };
 }
 
 function on_proposed_task_hover(task, e) {

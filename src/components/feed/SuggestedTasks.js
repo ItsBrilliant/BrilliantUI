@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTasks } from '../../hooks/redux';
 import FeedComponent from './FeedComponent';
 import { GroupIcon } from '../mail/EmailStamp';
@@ -7,10 +7,27 @@ import { Email } from '../../data_objects/Email';
 import { MailIcon } from '../misc/svg_icons';
 import { email_container_background } from '../misc/StyleConsts';
 import { render_task_highlights } from '../mail/task_highlights';
-import { format_date } from '../../utils';
-const MAX_TASKS = 3;
+import { format_date, get_mouse_position_style } from '../../utils';
+import { useDispatch } from 'react-redux';
+import { Update } from '../../actions/tasks';
+import { AddTaskPortal } from '../misc/AddTaskPortal';
+import { Task } from '../../data_objects/Task';
+const MAX_TASKS = 13;
 
 export default function SuggestedTasks(props) {
+    const dispatch = useDispatch();
+    const task_updater = (task) => dispatch(Update(task));
+    const [add_task_portal, set_portal] = useState(null);
+    const my_set_add_task_portal = (e, task) => {
+        const position_style = get_mouse_position_style(e.pageX - 300, e.pageY);
+        const portal = get_add_task_portal(
+            task,
+            position_style,
+            task_updater,
+            () => set_portal(null)
+        );
+        set_portal(portal);
+    };
     const tasks_for_approval = useTasks('approve_status', undefined).slice(
         0,
         MAX_TASKS
@@ -19,9 +36,21 @@ export default function SuggestedTasks(props) {
         return null;
     }
     const task_components = tasks_for_approval.map((t) => (
-        <SuggestedTask task={t} />
+        <SuggestedTask
+            on_plus_click={(e) => my_set_add_task_portal(e, t)}
+            on_dismiss_click={() => {
+                Task.update_task(task_updater, t, 'approve_status', 'declined');
+                alert('declined');
+            }}
+            task={t}
+        />
     ));
-    return <div>{task_components}</div>;
+    return (
+        <>
+            {add_task_portal}
+            <div>{task_components}</div>
+        </>
+    );
 }
 
 function SuggestedTask(props) {
@@ -44,7 +73,10 @@ function SuggestedTask(props) {
                 <div className="upper_row">
                     {GroupIcon([props.task.initiator], 1, 32)}
                     <span className="task_text">{props.task.text}</span>
-                    <TaskButtons />
+                    <TaskButtons
+                        on_approve={props.on_plus_click}
+                        on_decline={props.on_dismiss_click}
+                    />
                 </div>
                 {source_context}
             </div>
@@ -86,5 +118,20 @@ function TaskSourceEmail(props) {
             </span>
             <span className="timestamp">{date}</span>
         </div>
+    );
+}
+
+function get_add_task_portal(task, position_style, task_updater, on_close) {
+    return (
+        <AddTaskPortal
+            style={position_style}
+            task_updater={task_updater}
+            handle_ok={on_close}
+            handle_close={on_close}
+            priority={task.priority}
+            task_text={task.text}
+            date={task.deadline}
+            task={task}
+        />
     );
 }
