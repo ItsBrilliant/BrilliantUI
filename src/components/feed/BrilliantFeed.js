@@ -123,7 +123,7 @@ function generate_example_components(head_emails, select_task) {
         },
         {
             component: <SuggestedTasks priority={URGENT} />,
-            title: 'Suggested Tasks',
+            title: 'New suggested tasks',
         },
         {
             component: (

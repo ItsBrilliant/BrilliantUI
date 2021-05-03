@@ -1,0 +1,19 @@
+.task_source.Urgent {
+    color: red;
+}
+
+.task_source.Important {
+    color: orange;
+}
+
+.task_source.CanWait {
+    color: green;
+}
+
+.task_source.before_approval {
+    border: 1px solid #6ba1db;
+    color: #6ba1db;
+    box-sizing: border-box;
+    border-radius: 4px;
+    padding: 1px;
+}

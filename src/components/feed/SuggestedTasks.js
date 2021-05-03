@@ -6,6 +6,8 @@ import { SuggestedTaskStyle } from './SuggestedTasks.style';
 import { Email } from '../../data_objects/Email';
 import { MailIcon } from '../misc/svg_icons';
 import { email_container_background } from '../misc/StyleConsts';
+import { render_task_highlights } from '../mail/task_highlights';
+import { format_date } from '../../utils';
 const MAX_TASKS = 3;
 
 export default function SuggestedTasks(props) {
@@ -26,18 +28,18 @@ function SuggestedTask(props) {
     const source_email = Email.get_email_object_by_id(
         props.task.get_email_id()
     );
-    const source_subject = source_email ? (
-        <div className="task_source">
-            <MailIcon />
-            <span>{source_email.get_subject()}</span>{' '}
-        </div>
-    ) : null;
+
     const source_context = source_email ? (
-        <div className="email_context">{source_email.get_text()}</div>
+        <div className="email_context">
+            {render_task_highlights(
+                source_email.get_text().slice(0, props.task.source_indexes.end),
+                [props.task]
+            )}
+        </div>
     ) : null;
     return (
         <SuggestedTaskStyle>
-            {source_subject}
+            <TaskSourceEmail email={source_email} />
             <div className="task_content">
                 <div className="upper_row">
                     {GroupIcon([props.task.initiator], 1, 32)}
@@ -59,6 +61,30 @@ function TaskButtons(props) {
             <button className="decline" onClick={props.on_decline}>
                 Dismiss
             </button>
+        </div>
+    );
+}
+
+function TaskSourceEmail(props) {
+    if (!props.email) {
+        return null;
+    }
+    const date = format_date(props.email.get_date()).date;
+    const participants = [
+        props.email.get_sender(),
+        ...props.email.get_receivers(),
+    ]
+        .slice(0, 3)
+        .map((p) => p.get_name())
+        .join(', ');
+    return (
+        <div className="TaskSourceEmail">
+            <MailIcon />
+            <span className="email_left">
+                <span className="subject">{props.email.get_subject()}</span>
+                <span className="participants">{participants}</span>
+            </span>
+            <span className="timestamp">{date}</span>
         </div>
     );
 }

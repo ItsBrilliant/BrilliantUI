@@ -18,6 +18,7 @@ import OptionsButton from '../misc/OptionsButton';
 import { connect, useDispatch } from 'react-redux';
 import { Update } from '../../actions/tasks';
 import { set_email_user_priority } from '../../backend/ConnectDatabase';
+import { render_task_highlights } from './task_highlights';
 
 class EmailTextArea extends Component {
     constructor(props) {
@@ -226,41 +227,11 @@ class EmailTextArea extends Component {
         if (!this.props.of_center_email || tasks.length === 0) {
             return <span>{text}</span>;
         }
-        var sections = [];
-        tasks = tasks.sort(function (a, b) {
-            return a.source_indexes.start - b.source_indexes.start;
-        });
-        const first_highlight = tasks[0].source_indexes;
-        if (first_highlight && first_highlight.start > 0) {
-            sections.push(<span>{text.slice(0, first_highlight.start)}</span>);
-        }
-        for (let i = 0; i < tasks.length; i++) {
-            const start = tasks[i].source_indexes.start;
-            const end = tasks[i].source_indexes.end;
-            var style = 'task_source';
-            if (tasks[i].approved()) {
-                style += ' ' + get_priority_style(tasks[i].get_priority());
-            } else {
-                style += ' before_approval';
-            }
-            sections.push(
-                <span
-                    task_id={tasks[i].id}
-                    className={style}
-                    onMouseEnter={on_proposed_task_hover.bind(this, tasks[i])}
-                >
-                    {text.slice(start, end)}
-                </span>
-            );
-            const next_start =
-                i + 1 < tasks.length
-                    ? tasks[i + 1].source_indexes.start
-                    : text.length;
-            if (next_start > end) {
-                sections.push(<span>{text.slice(end, next_start)}</span>);
-            }
-        }
-        return sections;
+        return render_task_highlights(
+            text,
+            tasks,
+            on_proposed_task_hover.bind(this)
+        );
     }
     render() {
         const subject = this.props.subject

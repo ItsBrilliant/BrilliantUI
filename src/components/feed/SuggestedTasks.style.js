@@ -31,14 +31,34 @@ export const SuggestedTaskStyle = styled.div`
         display: flex;
         align-items: center;
     }
-    .task_source {
+    .TaskSourceEmail {
         margin-bottom: 16px;
-        span {
-            font-weight: bold;
-            font-size: 15px;
-            line-height: 120%;
-            color: ${white_lilac};
+        display: flex;
+        align-items: center;
+
+        .email_left {
+            display: flex;
+            flex-direction: column;
             margin-left: 8px;
+            .subject {
+                font-weight: bold;
+                font-size: 15px;
+                line-height: 120%;
+                color: ${white_lilac};
+            }
+            .participants {
+                font-weight: 600;
+                font-size: 12px;
+                line-height: 120%;
+                color: #7885a1;
+            }
+        }
+        .timestamp {
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 110%;
+            color: #565f80;
+            margin: 0 8px 0 auto;
         }
     }
     .task_text {

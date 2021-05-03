@@ -5,9 +5,7 @@ import {
     email_text_area_bg,
     email_container_background,
 } from '../misc/StyleConsts';
-import styled from 'styled-components';
-import { ALL_FOLDERS_MAGIC } from '../../data_objects/Consts';
-import { relativeTimeRounding } from 'moment';
+import styled from 'styled-components/macro';
 
 const FILTER_WIDTH = 400;
 const common_menu_list_style = {

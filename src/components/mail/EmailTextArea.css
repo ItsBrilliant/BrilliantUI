@@ -67,23 +67,6 @@
     padding: 0;
 }
 
-.task_source.Urgent {
-    color: red;
-}
-
-.task_source.Important {
-    color: orange;
-}
-
-.task_source.CanWait {
-    color: green;
-}
-
-.task_source.before_approval {
-    background-color: rgb(34, 99, 157);
-    color: rgb(11, 3, 4);
-}
-
 .email_text_area .header .GroupIconWrapper .email_priority {
     height: 8px;
     width: 8px;
