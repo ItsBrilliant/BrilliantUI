@@ -3,7 +3,6 @@ import { link_hover_color, white_lilac } from '../misc/StyleConsts';
 
 export const SuggestedTaskStyle = styled.div`
     box-sizing: border-box;
-
     margin: 16px 0px;
     width: 100%;
     height: max-content;
@@ -11,9 +10,29 @@ export const SuggestedTaskStyle = styled.div`
         border: 2px solid #3c4566;
         border-radius: 8px;
         align-self: stretch;
-        .upper_row {
+        .task_header_row {
+            border-radius: 6px;
             display: flex;
             align-items: center;
+            &.completed_suggestion {
+                background-color: ${(props) =>
+                    props.type === 'created' ? '#565f80' : '#101421'};
+            }
+            &.dismissed {
+                background-color: #101421;
+            }
+            .summary {
+                display: flex;
+                align-items: center;
+                .text {
+                    color: #7885a1;
+                    margin: 0 8px;
+                    &.created {
+                        color: #f4f6fb;
+                    }
+                }
+                margin: 0 8px 0 auto;
+            }
         }
         .email_context {
             font-weight: normal;
@@ -31,36 +50,7 @@ export const SuggestedTaskStyle = styled.div`
         display: flex;
         align-items: center;
     }
-    .TaskSourceEmail {
-        margin-bottom: 16px;
-        display: flex;
-        align-items: center;
 
-        .email_left {
-            display: flex;
-            flex-direction: column;
-            margin-left: 8px;
-            .subject {
-                font-weight: bold;
-                font-size: 15px;
-                line-height: 120%;
-                color: ${white_lilac};
-            }
-            .participants {
-                font-weight: 600;
-                font-size: 12px;
-                line-height: 120%;
-                color: #7885a1;
-            }
-        }
-        .timestamp {
-            font-weight: 600;
-            font-size: 14px;
-            line-height: 110%;
-            color: #565f80;
-            margin: 0 8px 0 auto;
-        }
-    }
     .task_text {
         font-weight: 600;
         font-size: 16px;
@@ -91,5 +81,38 @@ export const SuggestedTaskStyle = styled.div`
         border: 2px solid ${link_hover_color};
         border-radius: 8px;
         margin: 0px 8px;
+    }
+`;
+
+export const TaskSourceEmailStyle = styled.div`
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    margin: 16px 0px;
+    width: 100%;
+
+    .email_left {
+        display: flex;
+        flex-direction: column;
+        margin-left: 8px;
+        .subject {
+            font-weight: bold;
+            font-size: 15px;
+            line-height: 120%;
+            color: ${white_lilac};
+        }
+        .participants {
+            font-weight: 600;
+            font-size: 12px;
+            line-height: 120%;
+            color: #7885a1;
+        }
+    }
+    .timestamp {
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 110%;
+        color: #565f80;
+        margin: 0 8px 0 auto;
     }
 `;

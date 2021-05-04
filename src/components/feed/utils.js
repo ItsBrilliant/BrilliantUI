@@ -72,3 +72,12 @@ export function is_short_email(email, user, max_characters = 80) {
     const text = email.get_text();
     return text.length <= max_characters;
 }
+
+export function group_tasks_by_source(tasks) {
+    const sources = tasks.map((t) => t.get_email_id());
+    let result = {};
+    for (const source of sources) {
+        result[source] = tasks.filter((t) => t.get_email_id() === source);
+    }
+    return result;
+}

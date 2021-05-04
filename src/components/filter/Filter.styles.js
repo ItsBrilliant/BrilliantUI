@@ -28,6 +28,8 @@ const control_style = {
     color: 'red',
     //   border: '1px solid green',
     zIndex: 1002,
+    position: 'absolute',
+    top: '-17px',
 };
 export const main_menu_style = {
     menuList: (provided, state) => ({
@@ -45,8 +47,6 @@ export const main_menu_style = {
     }),
     control: () => ({
         ...control_style,
-        position: 'absolute',
-        top: '-15px',
     }),
     multiValue: () => ({
         unset: 'all',

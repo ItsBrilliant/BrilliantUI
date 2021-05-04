@@ -1,4 +1,5 @@
 import React from 'react';
+import { link_hover_color } from './StyleConsts';
 export const MailIcon = (props) => {
     var forward_props = Object.assign(
         { color: '#F4F6FB', width: '17', height: '14' },
@@ -161,6 +162,21 @@ export const TagIcon = (props) => {
     return (
         <GeneralSvg
             path_d="M15.7656 5.03454L10.9656 0.234597C10.6528 -0.078199 10.1472 -0.078199 9.83443 0.234597L0.234548 9.83448C0.00575132 10.0633 -0.0630478 10.4073 0.0609506 10.7065C0.184949 11.0049 0.476945 11.2001 0.800141 11.2001H4.80009V15.2C4.80009 15.5232 4.99529 15.8152 5.29369 15.9392C5.39288 15.98 5.49688 16 5.60008 16C5.80808 16 6.01288 15.9184 6.16567 15.7656L15.7656 6.16572C16.0784 5.85293 16.0784 5.34733 15.7656 5.03454Z"
+            viewBox={`0 0 ${width} ${height}`}
+            {...forward_props}
+        />
+    );
+};
+
+export const VIcon = (props) => {
+    const [width, height] = ['24', '20'];
+    var forward_props = Object.assign(
+        { color: link_hover_color, width: width, height: height },
+        props
+    );
+    return (
+        <GeneralSvg
+            path_d="M24.0001 3.08103L7.67109 20L6.10352e-05 12.0518L2.97365 8.97077L7.67109 13.8379L21.0265 0L24.0001 3.08103Z"
             viewBox={`0 0 ${width} ${height}`}
             {...forward_props}
         />

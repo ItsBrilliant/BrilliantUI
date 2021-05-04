@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import FeedElement from './FeedElement';
 import FeedComponent from './FeedComponent';
 import { BrilliantFeedStyled, FeedWrapper } from './Feed.style';
@@ -19,7 +19,7 @@ import {
     fill_meetings,
     is_short_email,
 } from './utils';
-import { useEmailsHead, useEvents } from '../../hooks/redux';
+import { useEmailsHead, useEvents, useTasks } from '../../hooks/redux';
 import TaskInfoWrapper from '../tasks/SingleTaskInfo';
 import { now } from 'moment';
 import { get_prefered_email_time, find_closest_slot } from './utils';
@@ -31,8 +31,15 @@ NOW.setMinutes(0);
 NOW.setSeconds(0);
 const INTERVAL = 60;
 const LAST_HOUR = 20;
-
+var num_tasks = 0;
+var tasks_for_approval;
 export default function BrilliantFeed() {
+    let tasks = useTasks('approve_status', undefined).slice(0, 5);
+
+    useEffect(() => {
+        tasks_for_approval = tasks;
+        num_tasks = tasks.length;
+    }, [num_tasks]);
     const user = useSelector((state) => state.user);
     let events = useEvents();
     const [selected_task_id, set_task_id] = useState(undefined);
@@ -45,7 +52,11 @@ export default function BrilliantFeed() {
         slots,
         get_prefered_email_time(user.prefered_email_time)
     );
-    const components = generate_example_components(head_emails, set_task_id);
+    const components = generate_example_components(
+        head_emails,
+        set_task_id,
+        tasks_for_approval
+    );
     for (const component of components) {
         let force_index = component.is_email_reply
             ? email_reply_slot_index
@@ -101,7 +112,11 @@ function allocate_meeting_component_slots(slots, events) {
     return feed_array_with_meetings;
 }
 
-function generate_example_components(head_emails, select_task) {
+function generate_example_components(
+    head_emails,
+    select_task,
+    tasks_for_approval
+) {
     let short_emails = head_emails.filter((e) => is_short_email(e));
     short_emails = short_emails.sort((a, b) => b.date - a.date);
     short_emails = short_emails.slice(0, 5);
@@ -122,7 +137,7 @@ function generate_example_components(head_emails, select_task) {
             title: 'Reply to urgent emails',
         },
         {
-            component: <SuggestedTasks priority={URGENT} />,
+            component: <SuggestedTasks tasks={tasks_for_approval} />,
             title: 'New suggested tasks',
         },
         {
