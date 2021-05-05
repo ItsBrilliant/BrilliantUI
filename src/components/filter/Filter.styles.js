@@ -103,7 +103,7 @@ export const FilterStyle = styled.div`
     position: relative;
     margin: 4px 0 0 0;
     left: 0;
-    top: 0;
+    top: 1px;
     .filter_label {
         text-align: center;
         font-size: 16px;

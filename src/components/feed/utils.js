@@ -70,12 +70,10 @@ export function is_incoming_email(email) {
     );
 }
 
-export function is_short_incoming_email(email, max_characters = 130) {
-    if (!is_incoming_email(email)) {
-        return false;
-    }
-    const text = email.get_text();
-    return text.length <= max_characters;
+export function is_in_last_x_days(email, days) {
+    const max_diff = days * 1000 * 60 * 60 * 24;
+    const date = email.get_date();
+    return new Date() - date < max_diff;
 }
 
 export function group_tasks_by_source(tasks) {

@@ -13,18 +13,13 @@ import PriorityEmails from './PriorityEmails';
 import { IMPORTANT, URGENT } from '../../data_objects/Consts';
 import { useSelector } from 'react-redux';
 import { is_same_day, format_date } from '../../utils';
-import {
-    get_slots,
-    add_feed_component,
-    fill_meetings,
-    is_short_incoming_email,
-} from './utils';
-import { useEmailsHead, useEvents, useTasks } from '../../hooks/redux';
+import { get_slots, add_feed_component, fill_meetings } from './utils';
+import { useEmailsHead, useEvents } from '../../hooks/redux';
 import TaskInfoWrapper from '../tasks/SingleTaskInfo';
-import { now } from 'moment';
 import { get_prefered_email_time, find_closest_slot } from './utils';
 import SuggestedTasks from './SuggestedTasks';
 import ShortEmails from './ShortEmails';
+import FollowupEmails from './FollowupEmails';
 
 let NOW = new Date();
 NOW.setHours(9);
@@ -102,22 +97,8 @@ function allocate_meeting_component_slots(slots, events) {
     return feed_array_with_meetings;
 }
 
-function generate_example_components(head_emails, select_task) {
-    let short_emails = head_emails.filter((e) => is_short_incoming_email(e));
-    short_emails = short_emails.sort((a, b) => b.date - a.date);
-    short_emails = short_emails.slice(0, 5);
-    const email_reply_component = {
-        component: (
-            <QuickReplyFeed
-                emails={short_emails}
-                remove_email={() => alert('removed')}
-            />
-        ),
-        title: 'Reply to some short emails',
-        is_email_reply: true,
-    };
+function generate_example_components() {
     return [
-        email_reply_component,
         {
             component: <PriorityEmails priority={URGENT} />,
             title: 'Reply to urgent emails',
@@ -129,6 +110,10 @@ function generate_example_components(head_emails, select_task) {
         {
             component: <ShortEmails />,
             title: 'Reply to short emails',
+        },
+        {
+            component: <FollowupEmails />,
+            title: 'Check up on past due responses',
         },
     ];
 }

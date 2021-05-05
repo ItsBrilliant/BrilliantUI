@@ -17,7 +17,11 @@ export const EMAIL_PROPS = {
 
 export const EMAIL_FILTER_FUNCTION = (email, search_value) =>
     search_value &&
-    (email.get_subject().toLowerCase().includes(search_value.toLowerCase()) ||
+    ((email.get_subject() &&
+        email
+            .get_subject()
+            .toLowerCase()
+            .includes(search_value.toLowerCase())) ||
         (email.get_sender() &&
             email.get_sender().get_address().includes(search_value)));
 
