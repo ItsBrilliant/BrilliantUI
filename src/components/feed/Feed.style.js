@@ -122,6 +122,29 @@ export const EmailPostStyle = styled.div`
             margin: 16px 8px 0 8px;
         }
     }
+    .ViewAll {
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        & * {
+            margin: 0 4px;
+        }
+        .chevron {
+            margin: 0;
+            &.expanded {
+                transform: rotateZ(180deg);
+            }
+        }
+        button {
+            width: 70px;
+            height: 18px;
+            font-weight: bold;
+            font-size: 15px;
+            line-height: 120%;
+            color: #565f80;
+            background-color: transparent;
+        }
+    }
 `;
 
 export const IncrementalStyle = styled.div`

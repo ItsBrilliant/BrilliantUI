@@ -38,6 +38,8 @@ export const GeneralSvg = (props) => (
             clip-rule="evenodd"
             d={props.path_d}
             fill={props.color}
+            stroke={props.stroke}
+            stroke-width={props.strokeWidth}
         />
     </svg>
 );
@@ -177,6 +179,48 @@ export const VIcon = (props) => {
     return (
         <GeneralSvg
             path_d="M24.0001 3.08103L7.67109 20L6.10352e-05 12.0518L2.97365 8.97077L7.67109 13.8379L21.0265 0L24.0001 3.08103Z"
+            viewBox={`0 0 ${width} ${height}`}
+            {...forward_props}
+        />
+    );
+};
+
+export const LineIcon = (props) => {
+    const [width, height] = [props.width || '289', props.height || '2'];
+    const color = props.color || '#2C3554';
+    return (
+        <svg
+            width={width}
+            height={height}
+            viewBox={`0 0 ${width} ${height}`}
+            xmlns="http://www.w3.org/2000/svg"
+        >
+            <line
+                x1="0.5"
+                y1="0.999889"
+                x2="289"
+                y2="0.999864"
+                stroke={color}
+                stroke-width="2"
+            />
+        </svg>
+    );
+};
+export const ChevronIcon = (props) => {
+    const [width, height] = ['15', '9'];
+    var forward_props = Object.assign(
+        {
+            color: 'transparent',
+            stroke: '#565F80',
+            strokeWidth: '2',
+            width: width,
+            height: height,
+        },
+        props
+    );
+    return (
+        <GeneralSvg
+            path_d="M1.5 0.999877L7.5 6.99988L13.5 0.999878"
             viewBox={`0 0 ${width} ${height}`}
             {...forward_props}
         />

@@ -5,11 +5,11 @@ import { BrilliantFeedStyled, FeedWrapper } from './Feed.style';
 import SimpleBar from 'simplebar-react';
 import {
     NextMeeting,
-    PriorityEmails,
     OverdueTasks,
     UnfinishedDrafts,
     QuickReplyFeed,
 } from './FeedExamples';
+import PriorityEmails from './PriorityEmails';
 import { IMPORTANT, URGENT } from '../../data_objects/Consts';
 import { useSelector } from 'react-redux';
 import { is_same_day, format_date } from '../../utils';
@@ -17,13 +17,14 @@ import {
     get_slots,
     add_feed_component,
     fill_meetings,
-    is_short_email,
+    is_short_incoming_email,
 } from './utils';
 import { useEmailsHead, useEvents, useTasks } from '../../hooks/redux';
 import TaskInfoWrapper from '../tasks/SingleTaskInfo';
 import { now } from 'moment';
 import { get_prefered_email_time, find_closest_slot } from './utils';
 import SuggestedTasks from './SuggestedTasks';
+import ShortEmails from './ShortEmails';
 
 let NOW = new Date();
 NOW.setHours(9);
@@ -102,7 +103,7 @@ function allocate_meeting_component_slots(slots, events) {
 }
 
 function generate_example_components(head_emails, select_task) {
-    let short_emails = head_emails.filter((e) => is_short_email(e));
+    let short_emails = head_emails.filter((e) => is_short_incoming_email(e));
     short_emails = short_emails.sort((a, b) => b.date - a.date);
     short_emails = short_emails.slice(0, 5);
     const email_reply_component = {
@@ -126,30 +127,8 @@ function generate_example_components(head_emails, select_task) {
             title: 'New suggested tasks',
         },
         {
-            component: (
-                <OverdueTasks
-                    on_select={select_task}
-                    reference_time={NOW}
-                    priority={URGENT}
-                />
-            ),
-            title: 'These urgent tasks are due today',
-        },
-
-        {
-            component: <UnfinishedDrafts emails={head_emails} />,
-            title: 'You have unfinished drafts in you mailbox',
-        },
-
-        {
-            component: (
-                <OverdueTasks
-                    on_select={select_task}
-                    reference_time={NOW}
-                    priority={IMPORTANT}
-                />
-            ),
-            title: 'These important tasks are due today',
+            component: <ShortEmails />,
+            title: 'Reply to short emails',
         },
     ];
 }

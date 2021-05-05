@@ -14,7 +14,6 @@ export class Thread {
     }
     static group_functions = {};
     static sort_functions = {};
-    static threads = {};
     static SELECTED_FOLDER_ID = undefined;
     static get_group_function(group_type) {
         return Thread.group_functions[group_type];

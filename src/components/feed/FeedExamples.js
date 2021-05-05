@@ -1,9 +1,5 @@
 import React, { useState } from 'react';
-import { useTasks, useThreads, useEmails } from '../../hooks/redux';
-import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import { SelectThread } from '../../actions/email_threads';
-import { QuickReply } from '../tasks/SingleTaskInfo';
+import { useTasks } from '../../hooks/redux';
 import { send_quick_reply } from '../misc/email_composer_utils.js';
 import { EmailComposer } from '../misc/EmailComposer';
 import EmailTextArea from '../mail/EmailTextArea';
@@ -19,21 +15,6 @@ import { format_date, is_same_day } from '../../utils';
 import { CalendarTask } from '../calendar/CalendarTasks';
 import EmailContainer from '../mail/EmailContainer';
 import { IncrementalStyle } from './Feed.style';
-import EmailPost from './EmailPost';
-
-export function PriorityEmails(props) {
-    let threads = useThreads();
-    threads = threads.filter(
-        (t) => t.has_unread() && t.get_priority() === props.priority
-    );
-    if (threads.length === 0) {
-        return null;
-    }
-    const buttons = ['Done', 'Delay', 'Cancel'].map((b) => {
-        return { name: b, action: () => {} };
-    });
-    return <EmailPost threads={threads} buttons={buttons} />;
-}
 
 export function NextMeeting(props) {
     const time_span =

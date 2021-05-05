@@ -44,6 +44,11 @@ export function useEmails() {
     return res;
 }
 
+export function useThreadsFromEmails(emails) {
+    let threads_dict = useSelector((state) => state.email_threads);
+    return emails.map((e) => threads_dict[e.get_thread_id()]);
+}
+
 export function useEmailsHead() {
     const threads = useThreads();
     return threads.map(

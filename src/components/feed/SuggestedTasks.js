@@ -13,10 +13,10 @@ import { render_task_highlights } from '../mail/task_highlights';
 import { format_date, get_mouse_position_style } from '../../utils';
 import { useDispatch } from 'react-redux';
 import { Update } from '../../actions/tasks';
-import { AddTaskPortal } from '../misc/AddTaskPortal';
 import { Task } from '../../data_objects/Task';
 import { group_tasks_by_source } from './utils';
 import { white_lilac } from '../misc/StyleConsts';
+import { get_add_task_portal } from './utils';
 
 const MAX_TASKS = 7;
 export default function SuggestedTasks(props) {
@@ -229,7 +229,8 @@ function CommonSourceSuggestions(props) {
         my_set_completed('declined');
     };
     const source_email = Email.get_email_object_by_id(props.source_id);
-    const uncompleted = props.suggestions.length - completed_suggestions.length;
+    const num_incomplete =
+        props.suggestions.length - completed_suggestions.length;
     const invididual_suggestions = props.suggestions.map((task) => {
         const source_context = source_email ? (
             <div className="email_context">
@@ -252,41 +253,12 @@ function CommonSourceSuggestions(props) {
     const completed_source = completed_suggestions.includes('created') ? (
         <CompletedSource email={source_email} />
     ) : null;
-    const result = uncompleted > 0 ? invididual_suggestions : completed_source;
+    const result =
+        num_incomplete > 0 ? invididual_suggestions : completed_source;
     return (
         <div style={{ marginBottom: '20px', width: '100%' }}>
             <TaskSourceEmail email={source_email} />
             {result}
         </div>
-    );
-}
-
-function get_add_task_portal(
-    task,
-    position_style,
-    task_updater,
-    on_create_task,
-    on_close
-) {
-    const handle_ok = (text, date, priority, owner) => {
-        task.text = text;
-        task.priority = priority;
-        task.deadline = date;
-        task.owner = owner;
-        task.approve_status = 'approved';
-        task_updater(task);
-        on_create_task();
-    };
-    return (
-        <AddTaskPortal
-            style={position_style}
-            task_updater={task_updater}
-            handle_ok={handle_ok}
-            handle_close={on_close}
-            priority={task.priority}
-            task_text={task.text}
-            date={task.deadline}
-            task={task}
-        />
     );
 }

@@ -17,7 +17,7 @@ export default class EmailThread extends Component {
         };
     }
     get_selected_email() {
-        return this.props.thread.get_emails()[0];
+        return this.props.display_email || this.props.thread.get_emails()[0];
     }
 
     get_style() {

@@ -1,6 +1,7 @@
 import { DateTimePicker } from '@syncfusion/ej2-react-calendars';
 import { Contact } from '../../data_objects/Contact';
 import { format_date } from '../../utils';
+import { AddTaskPortal } from '../misc/AddTaskPortal';
 
 export function get_slots(now, minutes_interval, last_hour) {
     const hour = now.getHours();
@@ -61,12 +62,16 @@ export function add_feed_component(arr, component, force_index) {
     return false;
 }
 
-export function is_short_email(email, user, max_characters = 80) {
-    if (
+export function is_incoming_email(email) {
+    return !(
         email.is_draft() ||
         email.is_deleted() ||
         email.get_sender() === Contact.CURRENT_USER
-    ) {
+    );
+}
+
+export function is_short_incoming_email(email, max_characters = 130) {
+    if (!is_incoming_email(email)) {
         return false;
     }
     const text = email.get_text();
@@ -80,4 +85,34 @@ export function group_tasks_by_source(tasks) {
         result[source] = tasks.filter((t) => t.get_email_id() === source);
     }
     return result;
+}
+
+export function get_add_task_portal(
+    task,
+    position_style,
+    task_updater,
+    on_create_task,
+    on_close
+) {
+    const handle_ok = (text, date, priority, owner) => {
+        task.text = text;
+        task.priority = priority;
+        task.deadline = date;
+        task.owner = owner;
+        task.approve_status = 'approved';
+        task_updater(task);
+        on_create_task();
+    };
+    return (
+        <AddTaskPortal
+            style={position_style}
+            task_updater={task_updater}
+            handle_ok={handle_ok}
+            handle_close={on_close}
+            priority={task.priority}
+            task_text={task.text}
+            date={task.deadline}
+            task={task}
+        />
+    );
 }
