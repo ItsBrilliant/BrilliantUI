@@ -16,18 +16,8 @@ export function AddTaskPortal(props) {
     const [priority, setPriority] = useState(props.priority);
     const [owner, setOwner] = useState(user);
     const my_handle_ok = () => {
-        if (props.task_updater) {
-            let task = props.task;
-            task.text = task_text;
-            task.priority = task.priority;
-            task.deadline = date;
-            task.owner = owner;
-            task.approve_status = 'approved';
-            props.task_updater(task);
-        }
-        if (props.handle_ok) {
-            props.handle_ok();
-        }
+        props.handle_ok(task_text, date, priority, owner);
+        props.handle_close();
     };
 
     const add_task_portal = (

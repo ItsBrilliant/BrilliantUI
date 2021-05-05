@@ -16,37 +16,42 @@ import { Update } from '../../actions/tasks';
 import { AddTaskPortal } from '../misc/AddTaskPortal';
 import { Task } from '../../data_objects/Task';
 import { group_tasks_by_source } from './utils';
+import { white_lilac } from '../misc/StyleConsts';
 
 const MAX_TASKS = 7;
-var num_tasks = 0;
-var tasks_for_approval;
 export default function SuggestedTasks(props) {
-    let tasks = useTasks('approve_status', undefined).slice(0, MAX_TASKS);
+    const [tasks_for_suggestion, set_tasks_for_suggestion] = useState([]);
+    let tasks = useTasks('approve_status', undefined);
+    tasks = tasks
+        .filter((t) => !tasks_for_suggestion.includes(t))
+        .sort((t1, t2) => t1.priority - t2.priority)
+        .slice(0, MAX_TASKS - tasks_for_suggestion.length);
+    const tasks_union = [...tasks_for_suggestion, ...tasks];
+    const current_num_tasks = tasks_union.length;
     useEffect(() => {
-        tasks_for_approval = tasks.sort((t1, t2) => t1.priority - t2.priority);
-        num_tasks = tasks.length;
-    }, [num_tasks]);
-    const dispatch = useDispatch();
-    const task_updater = (task) => dispatch(Update(task));
+        if (current_num_tasks > tasks_for_suggestion.length) {
+            set_tasks_for_suggestion(
+                tasks_union.sort((t1, t2) => t1.priority - t2.priority)
+            );
+        }
+    }, [tasks_for_suggestion]);
     const [add_task_portal, set_portal] = useState(null);
-    const [completed_suggestions, set_completed] = useState([]);
-    const my_set_completed = (type) => {
-        set_completed([...completed_suggestions, type]);
-    };
+    const [num_completed_suggestions, set_num_completed] = useState(0);
+    const complete_suggestion = () =>
+        set_num_completed(num_completed_suggestions + 1);
 
     if (
-        !tasks_for_approval ||
-        tasks_for_approval.length <= completed_suggestions.length
+        !tasks_for_suggestion ||
+        num_completed_suggestions >= tasks_for_suggestion.length
     ) {
-        console.log(completed_suggestions);
         return null;
     }
-    const group_map = group_tasks_by_source(tasks_for_approval);
+    const group_map = group_tasks_by_source(tasks_for_suggestion);
     const task_components = Object.keys(group_map).map((source_id) => {
         return (
             <CommonSourceSuggestions
                 suggestions={group_map[source_id]}
-                {...{ my_set_completed, set_portal, source_id }}
+                {...{ complete_suggestion, set_portal, source_id }}
             />
         );
     });
@@ -109,7 +114,11 @@ function TaskButtons(props) {
 
 function TaskSourceEmail(props) {
     if (!props.email) {
-        return null;
+        return (
+            <span style={{ color: white_lilac, width: '100%' }}>
+                Unknown source
+            </span>
+        );
     }
     const date = format_date(props.email.get_date()).date;
     const participants = [
@@ -148,6 +157,26 @@ function CompletedSuggestion(props) {
     );
 }
 
+function CompletedSource(props) {
+    return (
+        <SuggestedTaskStyle type={'completed_source'}>
+            <div className="task_content">
+                <div className="task_header_row completed_source">
+                    <span className="task_text">
+                        Tasks created successfully
+                    </span>
+                    <span className={'completed_source_actions'}>
+                        <button className="send">
+                            {'Send Update & Links'}
+                        </button>
+                        <button className="close">&times;</button>
+                    </span>
+                </div>
+            </div>
+        </SuggestedTaskStyle>
+    );
+}
+
 function SuggestionSummary(props) {
     let text = 'Dismissed';
     let icon = null;
@@ -164,26 +193,43 @@ function SuggestionSummary(props) {
 }
 
 function CommonSourceSuggestions(props) {
+    const [completed_suggestions, set_completed] = useState([]);
     const dispatch = useDispatch();
     const task_updater = (task) => dispatch(Update(task));
+    const my_set_completed = (type) => {
+        setTimeout(() => {
+            const updated_completed_suggestions = [
+                ...completed_suggestions,
+                type,
+            ];
+            set_completed(updated_completed_suggestions);
+            props.complete_suggestion();
+            console.log(updated_completed_suggestions);
+        }, 1000);
+    };
     const my_set_add_task_portal = (e, task, on_approve) => {
         const on_close = () => props.set_portal(null);
-        const on_ok = () => {
+        const on_create_task = () => {
             on_approve();
-            props.my_set_completed('created');
-            on_close();
+            my_set_completed('created');
         };
         const position_style = get_mouse_position_style(e.pageX - 300, e.pageY);
         const portal = get_add_task_portal(
             task,
             position_style,
             task_updater,
-            on_ok,
+            on_create_task,
             on_close
         );
         props.set_portal(portal);
     };
+
+    const my_dismiss_task = (task) => {
+        Task.update_task(task_updater, task, 'approve_status', 'declined');
+        my_set_completed('declined');
+    };
     const source_email = Email.get_email_object_by_id(props.source_id);
+    const uncompleted = props.suggestions.length - completed_suggestions.length;
     const invididual_suggestions = props.suggestions.map((task) => {
         const source_context = source_email ? (
             <div className="email_context">
@@ -199,23 +245,19 @@ function CommonSourceSuggestions(props) {
                 task={task}
                 source_context={source_context}
                 on_plus={my_set_add_task_portal}
-                on_dismiss={() => {
-                    Task.update_task(
-                        task_updater,
-                        task,
-                        'approve_status',
-                        'declined'
-                    );
-                    props.my_set_completed('declined');
-                }}
+                on_dismiss={() => my_dismiss_task(task)}
             />
         );
     });
+    const completed_source = completed_suggestions.includes('created') ? (
+        <CompletedSource email={source_email} />
+    ) : null;
+    const result = uncompleted > 0 ? invididual_suggestions : completed_source;
     return (
-        <>
+        <div style={{ marginBottom: '20px', width: '100%' }}>
             <TaskSourceEmail email={source_email} />
-            {invididual_suggestions}
-        </>
+            {result}
+        </div>
     );
 }
 
@@ -223,14 +265,23 @@ function get_add_task_portal(
     task,
     position_style,
     task_updater,
-    on_ok,
+    on_create_task,
     on_close
 ) {
+    const handle_ok = (text, date, priority, owner) => {
+        task.text = text;
+        task.priority = priority;
+        task.deadline = date;
+        task.owner = owner;
+        task.approve_status = 'approved';
+        task_updater(task);
+        on_create_task();
+    };
     return (
         <AddTaskPortal
             style={position_style}
             task_updater={task_updater}
-            handle_ok={on_ok}
+            handle_ok={handle_ok}
             handle_close={on_close}
             priority={task.priority}
             task_text={task.text}

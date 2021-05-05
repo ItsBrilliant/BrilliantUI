@@ -266,6 +266,7 @@ export const MultiselectActionsStyle = styled.div`
     transition: opacity 0.7s ease;
     padding: 5px 8px;
     border-radius: 3px;
+    z-index: 2000;
 
     button {
         border-radius: 3px;

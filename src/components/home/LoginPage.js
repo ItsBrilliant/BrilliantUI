@@ -33,16 +33,19 @@ export function LoginPage(props) {
                 {email_labels}
                 <div className="login_page_buttons">{action_button}</div>
             </div>
-            <p style={comment_style}>Updated April 29th</p>
+            <p style={comment_style}>Updated May 4th</p>
+            <p style={comment_style}>-Filter tags are styled like figma</p>
             <p style={comment_style}>
-                -Task in sender's email is matched to receiver's email
+                -Changed suggested tasks highlight style in email
             </p>
-            <p style={comment_style}>-Styled the email post component</p>
-            <p style={comment_style}>-Improvements in search style</p>
-            <p style={comment_style}>Updated April 24th</p>
-            <p style={comment_style}>-Fonts were changed to match Figma</p>
-            <p style={comment_style}>-Style improvements on tasks page</p>
-            <p style={comment_style}>-Filter works for calendar events</p>
+            <p style={comment_style}>
+                -Added Task suggestion post to feed (not finished)
+            </p>
+            <br />
+            <p style={comment_style}>Issues</p>
+            <p style={comment_style}>
+                -Tasks can't be captured by selecting text in email (wip)
+            </p>
         </div>
     );
 }

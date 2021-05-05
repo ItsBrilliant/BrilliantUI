@@ -31,15 +31,8 @@ NOW.setMinutes(0);
 NOW.setSeconds(0);
 const INTERVAL = 60;
 const LAST_HOUR = 20;
-var num_tasks = 0;
-var tasks_for_approval;
-export default function BrilliantFeed() {
-    let tasks = useTasks('approve_status', undefined).slice(0, 5);
 
-    useEffect(() => {
-        tasks_for_approval = tasks;
-        num_tasks = tasks.length;
-    }, [num_tasks]);
+export default function BrilliantFeed() {
     const user = useSelector((state) => state.user);
     let events = useEvents();
     const [selected_task_id, set_task_id] = useState(undefined);
@@ -52,11 +45,7 @@ export default function BrilliantFeed() {
         slots,
         get_prefered_email_time(user.prefered_email_time)
     );
-    const components = generate_example_components(
-        head_emails,
-        set_task_id,
-        tasks_for_approval
-    );
+    const components = generate_example_components(head_emails, set_task_id);
     for (const component of components) {
         let force_index = component.is_email_reply
             ? email_reply_slot_index
@@ -112,11 +101,7 @@ function allocate_meeting_component_slots(slots, events) {
     return feed_array_with_meetings;
 }
 
-function generate_example_components(
-    head_emails,
-    select_task,
-    tasks_for_approval
-) {
+function generate_example_components(head_emails, select_task) {
     let short_emails = head_emails.filter((e) => is_short_email(e));
     short_emails = short_emails.sort((a, b) => b.date - a.date);
     short_emails = short_emails.slice(0, 5);
@@ -137,7 +122,7 @@ function generate_example_components(
             title: 'Reply to urgent emails',
         },
         {
-            component: <SuggestedTasks tasks={tasks_for_approval} />,
+            component: <SuggestedTasks />,
             title: 'New suggested tasks',
         },
         {

@@ -19,6 +19,7 @@ button {
     position: fixed;
     left: 0;
     top: 0;
+    z-index: 2000;
 }
 
 .invisible_portal_wrapper {

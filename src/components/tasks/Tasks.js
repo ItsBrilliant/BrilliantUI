@@ -56,59 +56,61 @@ export default function Tasks() {
         update_sort_methods(set_sort_methods, new_method, task_sort_methods);
     };
     return (
-        <TasksStyle>
+        <>
             <MultiselectActions
                 on_delete={my_delete_tasks}
                 multiselected_tasks={multiselected_tasks}
                 on_cancel={() => set_multiselect([])}
             />
-            <TaskHeader
-                selected_filter={filter_index}
-                on_select_filter={set_filter}
-                update_sort={update_sort}
-            />
-            <div style={{ height: 'calc(100% - 101px)' }}>
-                <SimpleBar style={{ height: '100%' }}>
-                    <GroupedTasks
-                        on_multiselect={my_set_multiselect}
-                        select_task_id={select_task_id}
-                        priority={priorities_order[0]}
-                        tasks={tasks.filter(
-                            (t) => t.priority === priorities_order[0]
-                        )}
-                        multiselected_tasks={multiselected_tasks}
-                        sort_methods={task_sort_methods}
-                    />
-                    <GroupedTasks
-                        on_multiselect={my_set_multiselect}
-                        select_task_id={select_task_id}
-                        priority={priorities_order[1]}
-                        tasks={tasks.filter(
-                            (t) => t.priority === priorities_order[1]
-                        )}
-                        multiselected_tasks={multiselected_tasks}
-                        sort_methods={task_sort_methods}
-                    />
-                    <GroupedTasks
-                        on_multiselect={my_set_multiselect}
-                        select_task_id={select_task_id}
-                        priority={priorities_order[2]}
-                        tasks={tasks.filter(
-                            (t) => t.priority === priorities_order[2]
-                        )}
-                        multiselected_tasks={multiselected_tasks}
-                        sort_methods={task_sort_methods}
-                    />
-                </SimpleBar>
-            </div>
-            {selected_task ? (
-                <TaskInfoWrapper
-                    thread_id={selected_task.thread_id}
-                    task_id={selected_task.id}
-                    close={() => select_task_id(null)}
+            <TasksStyle>
+                <TaskHeader
+                    selected_filter={filter_index}
+                    on_select_filter={set_filter}
+                    update_sort={update_sort}
                 />
-            ) : null}
-        </TasksStyle>
+                <div style={{ height: 'calc(100% - 101px)' }}>
+                    <SimpleBar style={{ height: '100%' }}>
+                        <GroupedTasks
+                            on_multiselect={my_set_multiselect}
+                            select_task_id={select_task_id}
+                            priority={priorities_order[0]}
+                            tasks={tasks.filter(
+                                (t) => t.priority === priorities_order[0]
+                            )}
+                            multiselected_tasks={multiselected_tasks}
+                            sort_methods={task_sort_methods}
+                        />
+                        <GroupedTasks
+                            on_multiselect={my_set_multiselect}
+                            select_task_id={select_task_id}
+                            priority={priorities_order[1]}
+                            tasks={tasks.filter(
+                                (t) => t.priority === priorities_order[1]
+                            )}
+                            multiselected_tasks={multiselected_tasks}
+                            sort_methods={task_sort_methods}
+                        />
+                        <GroupedTasks
+                            on_multiselect={my_set_multiselect}
+                            select_task_id={select_task_id}
+                            priority={priorities_order[2]}
+                            tasks={tasks.filter(
+                                (t) => t.priority === priorities_order[2]
+                            )}
+                            multiselected_tasks={multiselected_tasks}
+                            sort_methods={task_sort_methods}
+                        />
+                    </SimpleBar>
+                </div>
+                {selected_task ? (
+                    <TaskInfoWrapper
+                        thread_id={selected_task.thread_id}
+                        task_id={selected_task.id}
+                        close={() => select_task_id(null)}
+                    />
+                ) : null}
+            </TasksStyle>
+        </>
     );
 }
 

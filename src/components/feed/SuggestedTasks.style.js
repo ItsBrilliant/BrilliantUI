@@ -11,9 +11,34 @@ export const SuggestedTaskStyle = styled.div`
         border-radius: 8px;
         align-self: stretch;
         .task_header_row {
+            min-height: 64px;
             border-radius: 6px;
             display: flex;
             align-items: center;
+            padding: 0 16px;
+            &.completed_source {
+                background-color: #6ba1db;
+                .completed_source_actions {
+                    display: flex;
+                    align-items: center;
+                    margin: 0 0 0 auto;
+                    button.send {
+                        padding: 12px 16px;
+                        height: 39px;
+                        background: #0a0b0f;
+                        border-radius: 8px;
+                        margin: 0px 16px;
+                        font-size: 14px;
+                        line-height: 110%;
+                        color: #f4f6fb;
+                    }
+                    button.close {
+                        font-size: 32px;
+                        color: #0a0b0f;
+                        background-color: transparent;
+                    }
+                }
+            }
             &.completed_suggestion {
                 background-color: ${(props) =>
                     props.type === 'created' ? '#565f80' : '#101421'};
@@ -57,7 +82,8 @@ export const SuggestedTaskStyle = styled.div`
         line-height: 120%;
         display: flex;
         align-items: center;
-        color: ${white_lilac};
+        color: ${(props) =>
+            props.type === 'completed_source' ? '#0A0B0F' : white_lilac};
     }
 
     button.approve {

@@ -29,7 +29,7 @@ export class Task {
         initiator
     ) {
         this.id = id ? id : v4();
-        this.text = text;
+        this.text = text || 'Task';
         this.deadline = new Date(deadline);
         this.priority = priority;
         this.source_indexes = source_indexes;
