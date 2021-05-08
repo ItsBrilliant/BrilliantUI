@@ -68,8 +68,8 @@ export default function Tasks() {
                     on_select_filter={set_filter}
                     update_sort={update_sort}
                 />
-                <div style={{ height: 'calc(100% - 101px)' }}>
-                    <SimpleBar style={{ height: '100%' }}>
+                <div style={{ height: 'calc(100% - 40px)' }}>
+                    <SimpleBar style={{ height: 'calc(100% - 20px)' }}>
                         <GroupedTasks
                             on_multiselect={my_set_multiselect}
                             select_task_id={select_task_id}

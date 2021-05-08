@@ -15,7 +15,7 @@ import { get_prefered_email_time, find_closest_slot } from './utils';
 import SuggestedTasks from './SuggestedTasks';
 import ShortEmails from './ShortEmails';
 import FollowupEmails from './FollowupEmails';
-import { OverdueTasks } from './TaskTriage';
+import { HangingTasks, OverdueTasks } from './TaskTriage';
 
 let NOW = new Date();
 NOW.setHours(9);
@@ -96,13 +96,27 @@ function allocate_meeting_component_slots(slots, events) {
 function generate_example_components() {
     return [
         {
-            component: <OverdueTasks />,
-            title: 'These urgent Tasks are due soon',
+            component: <HangingTasks />,
+            title:
+                'These urgent tasks have been in your todo list for over a week',
         },
+        {
+            component: (
+                <OverdueTasks days_from_deadline={5} priority={URGENT} />
+            ),
+            title: 'These urgent tasks are due soon',
+        },
+
         {
             component: <PriorityEmails priority={URGENT} />,
             title: 'Reply to urgent emails',
         },
+
+        {
+            component: <OverdueTasks days_from_deadline={0} />,
+            title: 'These tasks are due today',
+        },
+
         {
             component: <SuggestedTasks />,
             title: 'New suggested tasks',

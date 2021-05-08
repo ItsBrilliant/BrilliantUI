@@ -8,11 +8,12 @@
     width: 100vw;
     min-width: max-content;
     min-height: max-content;
+    box-sizing: border-box;
 }
 
 .not_nav {
     background-color: var(--main-bg-color);
-    height: 100%;
+    height: 100vh;
     width: calc(100% - 64px);
 }
 

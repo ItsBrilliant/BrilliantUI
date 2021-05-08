@@ -21,7 +21,7 @@ export default function EmailPost(props) {
         return null;
     }
     const my_handle_select = (id) => {
-        alert('selected: ' + id);
+        //  alert('selected: ' + id);
         // dispatch(SelectThread(id));
         // history.push('mail');
     };

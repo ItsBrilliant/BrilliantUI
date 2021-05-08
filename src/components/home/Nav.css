@@ -8,6 +8,7 @@
     height: 100%;
     align-items: center;
     overflow: visible;
+    box-sizing: border-box;
 }
 
 .NavCluster {
@@ -25,7 +26,9 @@
     width: 40px;
     height: 40px;
 }
-
+.nav_link.logo {
+    background-color: transparent;
+}
 .nav_link a div {
     width: 40px;
     height: 40px;
@@ -52,6 +55,11 @@
 }
 .nav_link:hover {
     background-color: var(--link_hover_color);
+}
+
+.nav_link.logo:hover {
+    transform: rotateZ(-20deg);
+    background-color: transparent;
 }
 
 .plus {

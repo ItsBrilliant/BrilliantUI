@@ -8,14 +8,16 @@ import {
     link_hover_color,
 } from '../misc/StyleConsts';
 import { URGENT, IMPORTANT, CAN_WAIT } from '../../data_objects/Consts';
-
+const TASKS_WIDTH = 1962;
 export const TasksStyle = styled.div`
     background-color: ${email_container_background};
     margin: 24px 0 0 48px;
     border-radius: 8px;
     padding: 10px;
-    width: 1692px;
-    height: calc(100vh - 101px);
+    width: ${TASKS_WIDTH}px;
+    height: calc(100vh - 100px);
+    box-sizing: border-box;
+    overflow: hidden;
 `;
 
 const TaskGrid = styled.div`
@@ -25,7 +27,7 @@ const TaskGrid = styled.div`
     justify-items: center;
     align-items: center;
     align-self: stretch;
-    width: 1692px;
+    width: ${TASKS_WIDTH}px;
     height: 64px;
     padding: 0 0 5px 0;
     flex-grow: 0;
@@ -61,7 +63,7 @@ export const TaskRowStyle = styled(TaskGrid)`
     background: ${email_text_area_bg};
     color: ${white_lilac};
     height: 60px;
-    width: 1692px;
+    width: ${TASKS_WIDTH};
     margin: 5px 15px;
     border-radius: 10px;
     border: 2px solid;
@@ -157,6 +159,7 @@ export const GroupedTasksStyle = styled.div.attrs((props) => {
 export const TaskHeaderStyle = styled(TaskGrid)`
     background-color: ${email_container_background};
     height: 40px;
+    width: ${TASKS_WIDTH}px;
     span.header {
         cursor: pointer;
         justify-self: center;

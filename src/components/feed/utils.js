@@ -1,7 +1,4 @@
-import { DateTimePicker } from '@syncfusion/ej2-react-calendars';
 import { Contact } from '../../data_objects/Contact';
-import { format_date } from '../../utils';
-import { AddTaskPortal } from '../misc/AddTaskPortal';
 
 export function get_slots(now, minutes_interval, last_hour) {
     const hour = now.getHours();
@@ -70,19 +67,14 @@ export function is_incoming_email(email) {
     );
 }
 
-export function sort_task_by_priority_time(a, b) {
-    const priority_diff = a.priority - b.priority;
-    if (priority_diff !== 0) {
-        return priority_diff;
-    } else {
-        return b.creation_time - a.creation_time;
-    }
+export function is_in_last_x_days(email, days) {
+    const email_date = email.get_date();
+    return get_days_diff(new Date(), email_date) < days;
 }
 
-export function is_in_last_x_days(email, days) {
-    const max_diff = days * 1000 * 60 * 60 * 24;
-    const date = email.get_date();
-    return new Date() - date < max_diff;
+export function get_days_diff(date1, date2) {
+    const day_ms = 1000 * 60 * 60 * 24;
+    return (date1 - date2) / day_ms;
 }
 
 export function group_tasks_by_source(tasks) {
@@ -92,34 +84,4 @@ export function group_tasks_by_source(tasks) {
         result[source] = tasks.filter((t) => t.get_email_id() === source);
     }
     return result;
-}
-
-export function get_add_task_portal(
-    task,
-    position_style,
-    task_updater,
-    on_create_task,
-    on_close
-) {
-    const handle_ok = (text, date, priority, owner) => {
-        task.text = text;
-        task.priority = priority;
-        task.deadline = date;
-        task.owner = owner;
-        task.approve_status = 'approved';
-        task_updater(task);
-        on_create_task();
-    };
-    return (
-        <AddTaskPortal
-            style={position_style}
-            task_updater={task_updater}
-            handle_ok={handle_ok}
-            handle_close={on_close}
-            priority={task.priority}
-            task_text={task.text}
-            date={task.deadline}
-            task={task}
-        />
-    );
 }

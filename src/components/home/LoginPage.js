@@ -33,10 +33,16 @@ export function LoginPage(props) {
                 {email_labels}
                 <div className="login_page_buttons">{action_button}</div>
             </div>
+            <p style={comment_style}>Updated May 8th</p>
+            <p style={comment_style}>
+                Added tasks posts: overdue tasks, get tasks done, long hanging
+                tasks (without button functionality)
+            </p>
+            <br />
             <p style={comment_style}>Updated May 5th</p>
             <p style={comment_style}>
                 -Added Email feed posts - followup, urgent emails reply , short
-                emails reply (limited functionality)
+                emails reply (without button functionality)
             </p>
             <br />
             <p style={comment_style}>Updated May 4th</p>
@@ -45,7 +51,8 @@ export function LoginPage(props) {
                 -Changed suggested tasks highlight style in email
             </p>
             <p style={comment_style}>
-                -Added Task suggestion post to feed (limited functionality)
+                -Added Task suggestion post to feed (without sending links on
+                completion)
             </p>
         </div>
     );

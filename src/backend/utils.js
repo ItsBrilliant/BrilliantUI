@@ -50,8 +50,8 @@ export function convert_from_database_value(field, value) {
         return value.map((w) => Contact.create_contact_from_address(w));
     } else if (['initiator', 'owner'].includes(field)) {
         return Contact.create_contact_from_address(value);
-    } else if (field === 'deadline') {
-        // deadline is already converted in the constructor
+    } else if (field === 'deadline' || field == 'creation_time') {
+        // deadline and creation time are already converted in the constructor
         return undefined;
     } else if (field === 'meeting') {
         let local_times = value.times.map((t) => new Date(t));

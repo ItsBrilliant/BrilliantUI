@@ -16,7 +16,7 @@ import { Update } from '../../actions/tasks';
 import { Task } from '../../data_objects/Task';
 import { group_tasks_by_source } from './utils';
 import { white_lilac } from '../misc/StyleConsts';
-import { get_add_task_portal, sort_task_by_priority_time } from './utils';
+import { get_add_task_portal, sort_task_by_priority_time } from './TaskPost';
 
 const MAX_TASKS = 7;
 export default function SuggestedTasks(props) {

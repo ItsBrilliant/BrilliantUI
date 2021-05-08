@@ -28,7 +28,7 @@ export default function Nav() {
     );
     return (
         <div className="Nav">
-            {NavCluster([logo])}
+            {NavCluster([logo], 'logo')}
             {NavCluster([brilliant_mode])}
             {NavCluster([mail, task, calendar, people, files])}
             {NavCluster([layout, accounts])}
@@ -41,11 +41,15 @@ export default function Nav() {
     );
 }
 //            <img className='nav_link' src={icon} />
-function NavCluster(icon_links) {
+function NavCluster(icon_links, style_class) {
+    let link_style = 'nav_link';
+    if (style_class) {
+        link_style = link_style + ' ' + style_class;
+    }
     return (
         <div className="NavCluster">
             {icon_links.map((i_l) => (
-                <div className="nav_link" key={i_l.icon}>
+                <div className={link_style} key={i_l.icon}>
                     <Link to={i_l.link}>
                         <div></div>
                     </Link>
