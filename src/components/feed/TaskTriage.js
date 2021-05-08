@@ -11,8 +11,6 @@ export function OverdueTasks(props) {
     if (tasks.length === 0) {
         return null;
     }
-    const buttons = ['Quick Solve All', 'Book Time'].map((b) => {
-        return { name: b, action: () => {} };
-    });
-    return <TaskPost tasks={tasks} buttons={buttons} />;
+
+    return <TaskPost tasks={tasks} />;
 }

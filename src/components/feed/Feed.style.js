@@ -85,6 +85,11 @@ export const FeedComponentStyle = styled.div`
     align-self: stretch;
     margin: 16px 0px;
     box-sizing: border-box;
+    .EmailThread {
+        width: 668px;
+        margin: 0 0 16px 0;
+        background-color: #202842;
+    }
 `;
 
 export const EmailPostStyle = styled.div`

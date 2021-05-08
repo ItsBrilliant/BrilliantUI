@@ -1,8 +1,7 @@
 import styled from 'styled-components/macro';
 import { link_hover_color, white_lilac } from '../misc/StyleConsts';
-
+import { PostStyle } from './FeedPost';
 export const SingleTaskStyle = styled.div`
-    box-sizing: border-box;
     display: flex;
     padding: 18px 24px;
     width: 732px;
@@ -11,6 +10,7 @@ export const SingleTaskStyle = styled.div`
     border-radius: 8px;
     align-self: stretch;
     margin: 16px 0px;
+    box-sizing: border-box;
     & > * {
         display: flex;
         flex-direction: column;
@@ -49,7 +49,6 @@ export const SingleTaskStyle = styled.div`
         }
     }
     .right_section {
-        box-sizing: border-box;
         margin-left: auto;
         justify-content: space-between;
         align-items: center;

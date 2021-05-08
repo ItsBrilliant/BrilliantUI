@@ -6,10 +6,24 @@ import { ClockIcon, VerticalDots } from '../misc/svg_icons';
 import { format_date } from '../../utils';
 import OptionsButton from '../misc/OptionsButton';
 import { get_priority_style } from '../../utils';
+import FeedPost from './FeedPost';
 
 export default function TaskPost(props) {
-    const task_components = props.tasks.map((t) => <SingleTask task={t} />);
-    return <div>{task_components}</div>;
+    const map_func = (tasks) =>
+        tasks.map((t) => <SingleTask key={t.id} task={t} />);
+    const buttons = ['Quick Solve All', 'Book Time'].map((b) => {
+        return { name: b, action: () => {} };
+    });
+    return (
+        <FeedPost
+            items={props.tasks}
+            map_to_components={map_func}
+            default_limit={2}
+            expanded_limit={5}
+            buttons={buttons}
+            type="tasks"
+        />
+    );
 }
 
 function SingleTask(props) {
