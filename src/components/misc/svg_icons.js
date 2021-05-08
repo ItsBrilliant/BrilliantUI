@@ -13,23 +13,20 @@ export const MailIcon = (props) => {
         />
     );
 };
-
-export const MailIconOld = () => (
-    <svg
-        width="17"
-        height="14"
-        viewBox="0 0 17 14"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-    >
-        <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
-            d="M1.03733 1.02513C0 2.05025 0 3.70017 0 7C0 10.2998 0 11.9497 1.03733 12.9749C2.07466 14 3.74422 14 7.08333 14H9.91667C13.2558 14 14.9253 14 15.9627 12.9749C17 11.9497 17 10.2998 17 7C17 3.70017 17 2.05025 15.9627 1.02513C14.9253 0 13.2558 0 9.91667 0H7.08333C3.74422 0 2.07466 0 1.03733 1.02513ZM15.1298 3.80141C15.411 3.63604 15.5833 3.33655 15.5833 3.01316C15.5833 2.30169 14.7992 1.86109 14.1805 2.22492L9.22459 5.13929C8.77817 5.40181 8.22217 5.40181 7.77574 5.13931L2.81947 2.22488C2.20076 1.86107 1.41667 2.30167 1.41667 3.01315C1.41667 3.33655 1.58899 3.63604 1.87021 3.80141L7.77557 7.27401C8.222 7.53652 8.778 7.53652 9.22442 7.27401L15.1298 3.80141Z"
-            fill="#F4F6FB"
+export const ClockIcon = (props) => {
+    const [width, height] = ['18', '18'];
+    var forward_props = Object.assign(
+        { color: '#565F80', width: width, height: height },
+        props
+    );
+    return (
+        <GeneralSvg
+            path_d="M9.00001 0.669189C4.41667 0.669189 0.666672 4.41919 0.666672 9.00252C0.666672 13.5859 4.41667 17.3359 9.00001 17.3359C13.5833 17.3359 17.3333 13.5859 17.3333 9.00252C17.3333 4.41919 13.5833 0.669189 9.00001 0.669189ZM12.5 12.5025L8.16667 9.83586V4.83586H9.41667V9.16919L13.1667 11.4192L12.5 12.5025Z"
+            viewBox={`0 0 ${width} ${height}`}
+            {...forward_props}
         />
-    </svg>
-);
+    );
+};
 
 export const GeneralSvg = (props) => (
     <svg width={props.width} height={props.height} viewBox={props.viewBox}>
@@ -224,5 +221,36 @@ export const ChevronIcon = (props) => {
             viewBox={`0 0 ${width} ${height}`}
             {...forward_props}
         />
+    );
+};
+
+export const VerticalDots = (props) => {
+    const width = props.width || '15';
+    const height = props.height || '17';
+    const color = props.color || '#3C4566';
+    return (
+        <svg
+            width={width}
+            height={height}
+            viewBox={`0 0 ${width} ${height}`}
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+            <g clip-path="url(#clip0)">
+                <circle cx="11" cy="2.00146" r="2" fill={color} />
+                <circle cx="11" cy="8.00146" r="2" fill={color} />
+                <circle cx="11" cy="14.0015" r="2" fill={color} />
+            </g>
+            <defs>
+                <clipPath id="clip0">
+                    <rect
+                        width="15"
+                        height="16"
+                        fill="white"
+                        transform="translate(0 0.00146484)"
+                    />
+                </clipPath>
+            </defs>
+        </svg>
     );
 };

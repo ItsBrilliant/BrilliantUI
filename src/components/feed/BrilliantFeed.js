@@ -3,12 +3,7 @@ import FeedElement from './FeedElement';
 import FeedComponent from './FeedComponent';
 import { BrilliantFeedStyled, FeedWrapper } from './Feed.style';
 import SimpleBar from 'simplebar-react';
-import {
-    NextMeeting,
-    OverdueTasks,
-    UnfinishedDrafts,
-    QuickReplyFeed,
-} from './FeedExamples';
+import { NextMeeting, UnfinishedDrafts, QuickReplyFeed } from './FeedExamples';
 import PriorityEmails from './PriorityEmails';
 import { IMPORTANT, URGENT } from '../../data_objects/Consts';
 import { useSelector } from 'react-redux';
@@ -20,6 +15,7 @@ import { get_prefered_email_time, find_closest_slot } from './utils';
 import SuggestedTasks from './SuggestedTasks';
 import ShortEmails from './ShortEmails';
 import FollowupEmails from './FollowupEmails';
+import { OverdueTasks } from './TaskTriage';
 
 let NOW = new Date();
 NOW.setHours(9);
@@ -99,6 +95,10 @@ function allocate_meeting_component_slots(slots, events) {
 
 function generate_example_components() {
     return [
+        {
+            component: <OverdueTasks />,
+            title: 'These urgent Tasks are due soon',
+        },
         {
             component: <PriorityEmails priority={URGENT} />,
             title: 'Reply to urgent emails',

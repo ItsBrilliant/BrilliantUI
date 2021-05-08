@@ -9,7 +9,7 @@ export const TASK_PROPS = {
     bottom_line: (task) => task.owner.get_name(),
     icon: 'button_icons/task.svg',
     time_stamp: (task) => {
-        let timestamp = format_date(task.creation_time);
+        let timestamp = format_date(task.deadline);
         return timestamp.date + ' ' + timestamp.time;
     },
     url: 'tasks',
