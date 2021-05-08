@@ -13,8 +13,6 @@ const DEFAULT_LIMIT = 3;
 export const DAYS_RECENT = 7;
 export default function EmailPost(props) {
     const [expanded, set_expanded] = useState(false);
-    const dispatch = useDispatch();
-    const history = useHistory();
     const toggle_expansion = () => {
         set_expanded(!expanded);
     };
@@ -27,6 +25,7 @@ export default function EmailPost(props) {
         // dispatch(SelectThread(id));
         // history.push('mail');
     };
+    const needs_expansion = threads.length > DEFAULT_LIMIT;
     const limit = expanded ? EXPANDED_LIMIT : DEFAULT_LIMIT;
     let emails = props.emails;
     threads = threads.slice(0, limit);
@@ -51,10 +50,12 @@ export default function EmailPost(props) {
         <EmailPostStyle>
             <FeedComponent>
                 {thread_components}
-                <ViewAll
-                    toggle_expansion={toggle_expansion}
-                    expanded={expanded}
-                />
+                {needs_expansion ? (
+                    <ViewAll
+                        toggle_expansion={toggle_expansion}
+                        expanded={expanded}
+                    />
+                ) : null}
             </FeedComponent>
             <ButtonsRow buttons={props.buttons} />
         </EmailPostStyle>

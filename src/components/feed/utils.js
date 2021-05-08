@@ -70,6 +70,15 @@ export function is_incoming_email(email) {
     );
 }
 
+export function sort_task_by_priority_time(a, b) {
+    const priority_diff = a.priority - b.priority;
+    if (priority_diff !== 0) {
+        return priority_diff;
+    } else {
+        return b.creation_time - a.creation_time;
+    }
+}
+
 export function is_in_last_x_days(email, days) {
     const max_diff = days * 1000 * 60 * 60 * 24;
     const date = email.get_date();

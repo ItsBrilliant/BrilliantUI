@@ -33,18 +33,19 @@ export function LoginPage(props) {
                 {email_labels}
                 <div className="login_page_buttons">{action_button}</div>
             </div>
+            <p style={comment_style}>Updated May 5th</p>
+            <p style={comment_style}>
+                -Added Email feed posts - followup, urgent emails reply , short
+                emails reply (limited functionality)
+            </p>
+            <br />
             <p style={comment_style}>Updated May 4th</p>
             <p style={comment_style}>-Filter tags are styled like figma</p>
             <p style={comment_style}>
                 -Changed suggested tasks highlight style in email
             </p>
             <p style={comment_style}>
-                -Added Task suggestion post to feed (not finished)
-            </p>
-            <br />
-            <p style={comment_style}>Issues</p>
-            <p style={comment_style}>
-                -Tasks can't be captured by selecting text in email (wip)
+                -Added Task suggestion post to feed (limited functionality)
             </p>
         </div>
     );

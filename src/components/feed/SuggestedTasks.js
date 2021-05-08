@@ -16,15 +16,15 @@ import { Update } from '../../actions/tasks';
 import { Task } from '../../data_objects/Task';
 import { group_tasks_by_source } from './utils';
 import { white_lilac } from '../misc/StyleConsts';
-import { get_add_task_portal } from './utils';
+import { get_add_task_portal, sort_task_by_priority_time } from './utils';
 
 const MAX_TASKS = 7;
 export default function SuggestedTasks(props) {
     const [tasks_for_suggestion, set_tasks_for_suggestion] = useState([]);
-    let tasks = useTasks('approve_status', undefined);
+    let tasks = useTasks(['approve_status', 'meeting'], [undefined, undefined]);
     tasks = tasks
         .filter((t) => !tasks_for_suggestion.includes(t))
-        .sort((t1, t2) => t1.priority - t2.priority)
+        .sort(sort_task_by_priority_time)
         .slice(0, MAX_TASKS - tasks_for_suggestion.length);
     const tasks_union = [...tasks_for_suggestion, ...tasks];
     const current_num_tasks = tasks_union.length;

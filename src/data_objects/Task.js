@@ -26,11 +26,15 @@ export class Task {
         source_indexes = [],
         owner,
         id,
-        initiator
+        initiator,
+        creation_time
     ) {
         this.id = id ? id : v4();
         this.text = text || 'Task';
         this.deadline = new Date(deadline);
+        this.creation_time = creation_time
+            ? new Date(creation_time)
+            : new Date();
         this.priority = priority;
         this.source_indexes = source_indexes;
         this.owner = owner ? owner : Contact.CURRENT_USER;
