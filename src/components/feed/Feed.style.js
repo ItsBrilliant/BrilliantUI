@@ -7,6 +7,7 @@ import {
     link_hover_color,
     white_lilac,
 } from '../misc/StyleConsts';
+import { PostStyle } from './FeedPost';
 const OUTER_FEED_WIDTH = 1236;
 const INNER_FEED_WIDTH = 732;
 export const FeedElementStyle = styled.div`
@@ -85,70 +86,13 @@ export const FeedComponentStyle = styled.div`
     align-self: stretch;
     margin: 16px 0px;
     box-sizing: border-box;
-    .EmailThread {
-        width: 668px;
-        margin: 0 0 16px 0;
-        background-color: #202842;
-    }
 `;
 
-export const EmailPostStyle = styled.div`
-    display: flex;
-    flex-direction: column;
-    border-radius: 8px;
-    margin: 16px 0px;
+export const EmailPostStyle = styled(PostStyle)`
     .EmailThread {
         width: 668px;
         margin: 0 0 16px 0;
         background-color: #202842;
-    }
-
-    .ButtonsRow {
-        display: flex;
-        justify-content: stretch;
-        width: ${INNER_FEED_WIDTH}px;
-        button {
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-            flex-grow: 1;
-            height: 40px;
-
-            /* Mirage */
-
-            background: #181e32;
-            border-radius: 8px;
-            // The label
-            color: ${white_lilac};
-            font-weight: 600;
-            font-size: 16px;
-            line-height: 120%;
-            margin: 16px 8px 0 8px;
-        }
-    }
-    .ViewAll {
-        box-sizing: border-box;
-        display: flex;
-        align-items: center;
-        & * {
-            margin: 0 4px;
-        }
-        .chevron {
-            margin: 0;
-            &.expanded {
-                transform: rotateZ(180deg);
-            }
-        }
-        button {
-            width: 70px;
-            height: 18px;
-            font-weight: bold;
-            font-size: 15px;
-            line-height: 120%;
-            color: #565f80;
-            background-color: transparent;
-        }
     }
 `;
 

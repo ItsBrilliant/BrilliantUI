@@ -9,12 +9,15 @@ export const SingleTaskStyle = styled.div`
     background: #181e32;
     border-radius: 8px;
     align-self: stretch;
-    margin: 16px 0px;
+    margin: 0 0 16px 0;
     box-sizing: border-box;
     & > * {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
+    }
+    &:last-child {
+        margin: 0;
     }
     .left_section {
         .task_title {

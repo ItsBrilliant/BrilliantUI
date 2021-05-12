@@ -70,7 +70,7 @@ export default function BrilliantFeed() {
             <SimpleBar className="simple_bar">
                 <BrilliantFeedStyled>
                     <h1 className="feed_title">
-                        {'Good Morning, ' + user.contact.get_first_name()}
+                        {'Hi, ' + user.contact.get_first_name()}
                     </h1>
                     {feed_elements}
                 </BrilliantFeedStyled>
@@ -97,8 +97,7 @@ function generate_example_components() {
     return [
         {
             component: <HangingTasks />,
-            title:
-                'These urgent tasks have been in your todo list for over a week',
+            title: 'These urgent tasks have been in your todo list for over a week',
         },
         {
             component: (
@@ -124,6 +123,7 @@ function generate_example_components() {
         {
             component: <ShortEmails />,
             title: 'Reply to short emails',
+            is_email_reply: true,
         },
         {
             component: <FollowupEmails />,
